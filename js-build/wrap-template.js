@@ -10,31 +10,26 @@ var libsodium = (function () {
 	// Horrifying UTF-8, base64 and hex codecs
 
 	//UTF8 to Uint8Array
-	function encode_utf8(s) {
-	return encode_latin1(unescape(encodeURIComponent(s)));
-	}
+	function string_to_Uint8Array(s){
+		var escapedStr = unescape(encodeURIComponent(s));
 
-	function encode_latin1(s) {
-	var result = new Uint8Array(s.length);
-	for (var i = 0; i < s.length; i++) {
-		var c = s.charCodeAt(i);
-		if ((c & 0xff) !== c) throw {message: "Cannot encode string in Latin1", str: s};
-		result[i] = (c & 0xff);
-	}
-	return result;
+		var latin1 = new Uint8Array(escapedStr.length);
+		for (var i = 0; i < escapedStr.length; i++) {
+			var c = escapedStr.charCodeAt(i);
+			if ((c & 0xff) !== c) throw {message: "Cannot encode string in Latin1", str: s};
+			latin1[i] = (c & 0xff);
+		}
+		return latin1;
 	}
 
 	//Uint8Array to UTF8
-	function decode_utf8(bs) {
-	return decodeURIComponent(escape(decode_latin1(bs)));
-	}
-
-	function decode_latin1(bs) {
-	var encoded = [];
-	for (var i = 0; i < bs.length; i++) {
-		encoded.push(String.fromCharCode(bs[i]));
-	}
-	return encoded.join('');
+	function uint8Array_to_String(b){
+		var encoded = [];
+		for (var i = 0; i < bs.length; i++) {
+			encoded.push(String.fromCharCode(bs[i]));
+		}
+		encoded = encoded.join('');
+		return decodeURIComponent(escape(encoded));
 	}
 
 	function to_hex(bs) {
@@ -149,7 +144,7 @@ var libsodium = (function () {
 		if (result instanceof TargetBuffer) {
 			var buf = result.extractBytes();
 			if (selectedEncoding == 'uint8array') return buf;
-			else if (selectedEncoding == 'utf8') return decode_utf8(buf);
+			else if (selectedEncoding == 'utf8') return uint8Array_to_String(buf);
 			else if (selectedEncoding == 'hex') return to_hex(buf);
 			else if (selectedEncoding == 'base64') return to_base64(buf);
 			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
@@ -252,10 +247,6 @@ var libsodium = (function () {
 
 	{wraps_here}
 
-	exports.encode_utf8   	    = encode_utf8;
-	exports.encode_latin1       = encode_latin1;
-	exports.decode_utf8         = decode_utf8;
-	exports.decode_latin1       = decode_latin1;
 	exports.to_hex              = to_hex;
 	exports.from_hex            = from_hex;
 	exports.is_hex              = is_hex;

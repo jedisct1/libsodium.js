@@ -76,7 +76,7 @@ function buildSymbol(symbolDescription){
 			}
 			funcBody += currentParameterCode + '\n';
 		}
-		funcCode += paramsArray + '){\n\t';
+		funcCode += paramsArray + '){\n\tvar toDealloc = [];\n\t';
 
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++){
@@ -94,6 +94,7 @@ function buildSymbol(symbolDescription){
 		//Writing the target call
 		funcBody += sc(symbolDescription.target) + '\n';
 		funcBody += sc(symbolDescription.return) + '\n';
+		funcBody += 'free_all(toDealloc);\n';
 		funcBody = injectTabs(funcBody);
 		funcCode += funcBody + '}\n';
 
