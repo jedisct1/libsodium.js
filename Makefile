@@ -15,5 +15,4 @@ libsodium/configure: libsodium/configure.ac
 	cd libsodium && ./autogen.sh
 
 libsodium/configure.ac: .gitmodules
-	git submodule init
-	git submodule update
+	git submodule update --init --recursive
