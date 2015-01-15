@@ -14,3 +14,6 @@ libsodium/test/js.done: libsodium/configure
 libsodium/configure: libsodium/configure.ac
 	cd libsodium && ./autogen.sh
 
+libsodium/configure.ac: .gitmodules
+	git submodule init
+	git submodule update
