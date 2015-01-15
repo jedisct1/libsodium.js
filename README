@@ -1,2 +1,6 @@
 libsodium.js
 ============
+
+Compilation:
+
+    $ make
