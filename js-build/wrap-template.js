@@ -247,6 +247,8 @@ var libsodium = (function () {
 
 	{wraps_here}
 
+	exports.uint8Array_to_String = uint8Array_to_String;
+	exports.string_to_Uint8Array = string_to_Uint8Array;
 	exports.to_hex              = to_hex;
 	exports.from_hex            = from_hex;
 	exports.is_hex              = is_hex;

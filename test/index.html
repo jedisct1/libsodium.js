@@ -172,7 +172,7 @@
 
 				var plainText1 = libsodium.crypto_box_open_easy(cipherText1, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
 				var plainText2 = libsodium.crypto_box_open_easy(cipherText2, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
-				log('Plaintext: ' + libsodium.decode_utf8(plainText1));
+				log('Plaintext: ' + libsodium.uint8Array_to_String(plainText1));
 				log('Are plaintexts equal: ' + (to_hex(plainText1) == to_hex(plainText2)));
 
 				log('DETACHED TESTING');
@@ -183,7 +183,7 @@
 
 				plainText1 = libsodium.crypto_box_open_detached(from_hex(detachedCipher1.ciphertext), from_hex(detachedCipher1.mac), nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
 				plainText2 = libsodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
-				log('Plaintext: ' + libsodium.decode_utf8(plainText1));
+				log('Plaintext: ' + libsodium.uint8Array_to_String(plainText1));
 				log('Are plaintexts equal: ' + (to_hex(plainText1) == to_hex(plainText2)));
 
 				return logStr;
@@ -202,8 +202,8 @@
 				var cipher = libsodium.crypto_secretbox_easy(message, nonce, key);
 				log('Ciphertext: ' + to_hex(cipher));
 				var plaintext = libsodium.crypto_secretbox_open_easy(cipher, nonce, key);
-				log('Plaintext: ' + libsodium.decode_utf8(plaintext));
-				log('Plaintext and initial message are equal: ' + (libsodium.decode_utf8(plaintext) == message));
+				log('Plaintext: ' + libsodium.uint8Array_to_String(plaintext));
+				log('Plaintext and initial message are equal: ' + (libsodium.uint8Array_to_String(plaintext) == message));
 
 				libsodium_test.secretbox_easy();
 				log('Test vectors passed with success');

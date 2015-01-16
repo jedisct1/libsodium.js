@@ -7,6 +7,7 @@ all: libsodium/libsodium-js/lib/libsodium-wrap.js
 	ls -l out
 
 libsodium/libsodium-js/lib/libsodium-wrap.js: libsodium/test/js.done
+	echo "Building wrapper\n"
 	iojs js-build/build-wrapper.js || nodejs js-build/build-wrapper.js || node js-build/build-wrapper.js
 
 libsodium/test/js.done: libsodium/configure

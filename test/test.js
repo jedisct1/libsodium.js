@@ -221,7 +221,7 @@ var libsodium_test = (function(){
 			function expandKey(){
 				if (v.k.length < libsodium.crypto_auth_keybytes){
 					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_keybytes);
-					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;
@@ -244,7 +244,7 @@ var libsodium_test = (function(){
 			function expandKey(){
 				if (v.k.length < libsodium.crypto_auth_keybytes){
 					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha512_keybytes);
-					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;
@@ -267,7 +267,7 @@ var libsodium_test = (function(){
 			function expandKey(){
 				if (v.k.length < libsodium.crypto_auth_keybytes){
 					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha256_keybytes);
-					var utf8KeyBuffer = libsodium.encode_utf8(v.k);
+					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;
