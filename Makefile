@@ -3,7 +3,7 @@ all: libsodium/libsodium-js/lib/libsodium-wrap.js
 	mkdir -p out
 	cp libsodium/libsodium-js/lib/*.js out/
 	cp libsodium/libsodium-js/lib/*.mem out/
-	cp out/* test/    
+	cp out/* test/
 	ls -l out
 
 libsodium/libsodium-js/lib/libsodium-wrap.js: libsodium/test/js.done
@@ -25,3 +25,8 @@ clean:
 	rm -r out
 	rm -r libsodium/libsodium-js
 	cd libsodium && make clean
+
+rewrap:
+	rm libsodium/libsodium-js/lib/libsodium-wrap.js
+	make libsodium/libsodium-js/lib/libsodium-wrap.js
+	make

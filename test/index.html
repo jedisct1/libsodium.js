@@ -52,6 +52,13 @@
 			var from_hex = libsodium.from_hex;
 
 			function curve25519Test(){
+				var sArray = [
+					libsodium.crypto_scalarmult,
+					libsodium.crypto_scalarmult_base
+				];
+				if (!checkAvailability(sArray)){
+					return 'Curve25519 (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -84,6 +91,16 @@
 			}
 
 			function ed25519Test(){
+				var sArray = [
+					libsodium.crypto_sign_seed_keypair,
+					libsodium.crypto_sign,
+					libsodium.crypto_sign_detached,
+					libsodium.crypto_sign_open,
+					libsodium.crypto_sign_verify_detached
+				];
+				if (!checkAvailability(sArray)){
+					return 'Ed25519 (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -115,6 +132,13 @@
 			}
 
 			function test25519(){
+				var sArray = [
+					libsodium.crypto_sign_ed25519_pk_to_curve25519,
+					libsodium.crypto_sign_ed25519_sk_to_curve25519
+				];
+				if (!checkAvailability(sArray)){
+					return 'Ed25519 -> Curve25519 transformation (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -150,6 +174,16 @@
 			}
 
 			function testCryptoBox(){
+				var sArray = [
+					libsodium.crypto_box_seed_keypair,
+					libsodium.crypto_box_easy,
+					libsodium.crypto_box_open_easy,
+					libsodium.crypto_box_detached,
+					libsodium.crypto_box_open_detached
+				];
+				if (!checkAvailability(sArray)){
+					return 'CryptoBox (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -190,6 +224,13 @@
 			}
 
 			function testCryptoSecretBox(){
+				var sArray = [
+					libsodium.crypto_secretbox_easy,
+					libsodium.crypto_secretbox_open_easy
+				];
+				if (!checkAvailability(sArray)){
+					return 'Curve25519 (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -212,6 +253,12 @@
 			}
 
 			function testHash(){
+				var sArray = [
+					libsodium.crypto_hash
+				];
+				if (!checkAvailability(sArray)){
+					return 'Hash (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -231,6 +278,13 @@
 			}
 
 			function testHmac(){
+				var sArray = [
+					libsodium.crypto_auth,
+					libsodium.crypto_auth_verify
+				];
+				if (!checkAvailability(sArray)){
+					return 'CryptoAuth (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -254,6 +308,12 @@
 			}
 
 			function testScrypt(){
+				var sArray = [
+					libsodium.crypto_pwhash_scryptsalsa208sha256_ll
+				];
+				if (!checkAvailability(sArray)){
+					return 'Scrypt (or parts of it) is missing from the js-compiled libsodium.<br>Please add the missing symbols to the "EXPORTED_FUNCTIONS" array in emscripten.sh, then run `make clean` and `make`';
+				}
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
@@ -290,6 +350,13 @@
 				}
 				bufStr += ']';
 				return bufStr;
+			}
+
+			function checkAvailability(symbolArray){
+				if (!Array.isArray(symbolArray)) throw new TypeError('symbolArray must be an array');
+				var andAll = true;
+				symbolArray.forEach(function(e){andAll = andAll && e});
+				return andAll;
 			}
 		</script>
 	</body>

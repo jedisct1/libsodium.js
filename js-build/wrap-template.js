@@ -4,7 +4,7 @@ var libsodium = (function () {
 
 	var libsodium_raw = Module;
 	var result_encoding = 'uint8array';
-	libsodium_raw._sodium_init();
+	//libsodium_raw._sodium_init();
 
 	//---------------------------------------------------------------------------
 	// Horrifying UTF-8, base64 and hex codecs
@@ -25,8 +25,8 @@ var libsodium = (function () {
 	//Uint8Array to UTF8
 	function uint8Array_to_String(b){
 		var encoded = [];
-		for (var i = 0; i < bs.length; i++) {
-			encoded.push(String.fromCharCode(bs[i]));
+		for (var i = 0; i < b.length; i++) {
+			encoded.push(String.fromCharCode(b[i]));
 		}
 		encoded = encoded.join('');
 		return decodeURIComponent(escape(encoded));
