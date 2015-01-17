@@ -17,7 +17,7 @@ var sodium = (function () {
         var stir = libsodium.Runtime.addFunction(function() {
             libsodium.randomValues = null;
             try {
-                function randomValuesStandard($len) {
+                var randomValuesStandard = function($len) {
                     $len = $len | 0;
                     var buf = new Int8Array($len);
                     window.crypto.getRandomValues(buf);
@@ -28,7 +28,7 @@ var sodium = (function () {
             } catch (e) {
                 try {
                     var crypto = require('crypto');
-                    function randomValuesIOJS($len) {
+                    var randomValuesIOJS = function($len) {
                         $len = $len | 0;
                         return crypto.randomBytes($len);
                     }
