@@ -7,7 +7,7 @@
 		{
 			"name": "hash",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_onetimeauth_bytes()"
+			"size": "libsodium._crypto_onetimeauth_bytes()"
 		},
 		{
 			"name": "message",
@@ -16,10 +16,10 @@
 		{
 			"name": "key",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_onetimeauth_keybytes()"
+			"size": "libsodium._crypto_onetimeauth_keybytes()"
 		}
 	],
 	"outputs": [],
-	"target": "var result = libsodium_raw._crypto_onetimeauth_verify(hash_byte, message_byte, message_size, 0, key_byte)",
+	"target": "var result = libsodium._crypto_onetimeauth_verify(hash_byte, message_byte, message_size, 0, key_byte)",
 	"return": "return result == 0"
 }

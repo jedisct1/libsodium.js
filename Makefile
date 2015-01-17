@@ -1,12 +1,12 @@
 
-all: libsodium/libsodium-js/lib/libsodium-wrap.js
+all: libsodium/libsodium-js/lib/sodium.js
 	mkdir -p out
 	cp libsodium/libsodium-js/lib/*.js out/
 	cp libsodium/libsodium-js/lib/*.mem out/
 	cp out/* test/
 	ls -l out
 
-libsodium/libsodium-js/lib/libsodium-wrap.js: libsodium/test/js.done
+libsodium/libsodium-js/lib/sodium.js: libsodium/test/js.done
 	echo "Building wrapper\n"
 	iojs js-build/build-wrapper.js || nodejs js-build/build-wrapper.js || node js-build/build-wrapper.js
 
@@ -26,6 +26,6 @@ clean:
 	cd libsodium && make clean
 
 rewrap:
-	rm -f libsodium/libsodium-js/lib/libsodium-wrap.js
-	make libsodium/libsodium-js/lib/libsodium-wrap.js
+	rm -f libsodium/libsodium-js/lib/sodium.js
+	make libsodium/libsodium-js/lib/sodium.js
 	make

@@ -10,16 +10,16 @@
 		{
 			"name": "key",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_auth_keybytes()"
+			"size": "libsodium._crypto_auth_keybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "tag",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_auth_bytes()"
+			"size": "libsodium._crypto_auth_bytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_auth(tag_byte, message_byte, message_size, 0, key_byte)",
+	"target": "libsodium._crypto_auth(tag_byte, message_byte, message_size, 0, key_byte)",
 	"return": "return encodeResult(tag, resultEncoding)"
 }

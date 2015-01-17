@@ -42,7 +42,7 @@ finalizeWrapper();
 function buildSymbol(symbolDescription){
 	if (typeof symbolDescription != 'object') throw new TypeError('symbolDescription must be a function');
 	if (symbolDescription.type == 'function'){
-		var targetName = 'libsodium_raw._' + symbolDescription.name;
+		var targetName = 'libsodium._' + symbolDescription.name;
 		//Add encoding parameter to input list if encodingChoice is true
 		if (!symbolDescription.noEncoding){
 			symbolDescription.inputs.push({name: "resultEncoding", type: "encoding"})
@@ -128,7 +128,7 @@ function applyMacro(macroCode, symbols, substitutes){
 
 function finalizeWrapper(){
 	scriptBuffer = applyMacro(scriptBuffer, ['{wraps_here}', '{exports_here}'], [functionsCode, exportsCode]);
-	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'libsodium-wrap.js'), scriptBuffer);
+	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'sodium.js'), scriptBuffer);
 	fs.writeFileSync(path.join(__dirname, '../API.md'), docBuilder.getResultDoc());
 }
 
@@ -153,7 +153,7 @@ function loadConstants(){
 		var currentConstant = {
 			name: constList[i],
 			type: "uint",
-			target: "libsodium_raw._" + constList[i] + '()'
+			target: "libsodium._" + constList[i] + '()'
 		}
 		constSymbolsArray.push(currentConstant);
 	}

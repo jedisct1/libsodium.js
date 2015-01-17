@@ -9,26 +9,26 @@
 		{
 			"name": "nonce",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_box_noncebytes()"
+			"size": "libsodium._crypto_box_noncebytes()"
 		},
 		{
 			"name": "publicKey",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_box_publickeybytes()"
+			"size": "libsodium._crypto_box_publickeybytes()"
 		},
 		{
 			"name": "secretKey",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_box_secretkeybytes()"
+			"size": "libsodium._crypto_box_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "ciphertext",
 			"type": "buffer",
-			"size": "message_size + libsodium_raw._crypto_box_macbytes()"
+			"size": "message_size + libsodium._crypto_box_macbytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_box_easy(ciphertext_byte, message_byte, message_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
+	"target": "libsodium._crypto_box_easy(ciphertext_byte, message_byte, message_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
 	"return": "return encodeResult(ciphertext, resultEncoding)"
 }

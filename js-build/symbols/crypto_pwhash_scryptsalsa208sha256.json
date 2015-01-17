@@ -9,7 +9,7 @@
 		{
 			"name": "salt",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_pwhash_scryptsalsa208sha256_saltbytes()"
+			"size": "libsodium._crypto_pwhash_scryptsalsa208sha256_saltbytes()"
 		},
 		{
 			"name": "opsLimit",
@@ -31,6 +31,6 @@
 			"size": "keyLength"
 		}
 	],
-	"target": "libsodium_raw._crypto_pwhash_scryptsalsa208sha256(derivedKey_byte, keyLength, 0, password_byte, password_size, 0, salt_byte, 0, opsLimit, memLimit)",
+	"target": "libsodium._crypto_pwhash_scryptsalsa208sha256(derivedKey_byte, keyLength, 0, password_byte, password_size, 0, salt_byte, 0, opsLimit, memLimit)",
 	"return": "return encodeResult(derivedKey, resultEncoding)"
 }

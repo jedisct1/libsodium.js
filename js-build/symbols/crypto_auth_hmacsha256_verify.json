@@ -7,7 +7,7 @@
 		{
 			"name": "tag",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_auth_hmacsha256_bytes()"
+			"size": "libsodium._crypto_auth_hmacsha256_bytes()"
 		},
 		{
 			"name": "message",
@@ -16,10 +16,10 @@
 		{
 			"name": "key",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_auth_hmacsha256_keybytes()"
+			"size": "libsodium._crypto_auth_hmacsha256_keybytes()"
 		}
 	],
 	"outputs": [],
-	"target": "var result = libsodium_raw._crypto_auth_hmacsha256_verify(tag_byte, message_byte, message_size, 0, key_byte)",
+	"target": "var result = libsodium._crypto_auth_hmacsha256_verify(tag_byte, message_byte, message_size, 0, key_byte)",
 	"return": "return (result != -1);"
 }

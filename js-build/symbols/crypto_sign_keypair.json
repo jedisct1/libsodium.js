@@ -7,14 +7,14 @@
 		{
 			"type": "buffer",
 			"name": "publicKey",
-			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+			"size": "libsodium._crypto_sign_publickeybytes()"
 		},
 		{
 			"type": "buffer",
 			"name": "privateKey",
-			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign_keypair(publicKey_byte, privateKey_byte);",
+	"target": "libsodium._crypto_sign_keypair(publicKey_byte, privateKey_byte);",
 	"return": "return encodeResult({publicKey: publicKey, privateKey: privateKey, keyType: 'ed25519'}, resultEncoding);"
 }

@@ -10,16 +10,16 @@
 		{
 			"name": "publicKey",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_sign_publickeybytes()"
+			"size": "libsodium._crypto_sign_publickeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"type": "buffer",
 			"name": "message",
-			"size": "signedMessage_size - libsodium_raw._crypto_sign_bytes()"
+			"size": "signedMessage_size - libsodium._crypto_sign_bytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte)",
+	"target": "libsodium._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte)",
 	"return": "return encodeResult(message, resultEncoding)"
 }

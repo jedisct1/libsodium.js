@@ -5,12 +5,12 @@
 	"inputs": [
 		{
 			"name": "privateKey",
-			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
+			"size": "libsodium._crypto_scalarmult_scalarbytes()",
 			"type": "buffer"
 		},
 		{
 			"name": "publicKey",
-			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()",
+			"size": "libsodium._crypto_scalarmult_scalarbytes()",
 			"type": "buffer"
 		}
 	],
@@ -18,9 +18,9 @@
 		{
 			"type": "buffer",
 			"name": "sharedSecret",
-			"size": "libsodium_raw._crypto_scalarmult_bytes()"
+			"size": "libsodium._crypto_scalarmult_bytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_scalarmult(sharedSecret_byte, privateKey_byte, publicKey_byte)",
+	"target": "libsodium._crypto_scalarmult(sharedSecret_byte, privateKey_byte, publicKey_byte)",
 	"return": "return encodeResult(sharedSecret, resultEncoding)"
 }

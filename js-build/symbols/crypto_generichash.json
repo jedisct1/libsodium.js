@@ -10,16 +10,16 @@
 		{
 			"name": "key",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_generichash_keybytes()"
+			"size": "libsodium._crypto_generichash_keybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "hash",
-			"size": "libsodium_raw._crypto_generichash_bytes()",
+			"size": "libsodium._crypto_generichash_bytes()",
 			"type": "buffer"
 		}
 	],
-	"target": "libsodium_raw._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size)",
+	"target": "libsodium._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size)",
 	"return": "return encodeResult(hash, resultEncoding)"
 }

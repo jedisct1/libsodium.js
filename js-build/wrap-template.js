@@ -1,21 +1,21 @@
-var libsodium = (function () {
+var sodium = (function () {
 	'use strict';
 	var exports = {};
 
-	var libsodium_raw = Module;
+	var libsodium = require('libsodium');
 	var result_encoding = 'uint8array';
 
     (function() {
-        var implementation_name = libsodium_raw.Runtime.addFunction(function() {
+        var implementation_name = libsodium.Runtime.addFunction(function() {
             return "js";
         });
 
-        var random = libsodium_raw.Runtime.addFunction(function() {
-            return (libsodium_raw.randomValues(1)[0] | 0) & 0xffffffff;
+        var random = libsodium.Runtime.addFunction(function() {
+            return (libsodium.randomValues(1)[0] | 0) & 0xffffffff;
         });
 
-        var stir = libsodium_raw.Runtime.addFunction(function() {
-            libsodium_raw.randomValues = null;
+        var stir = libsodium.Runtime.addFunction(function() {
+            libsodium.randomValues = null;
             try {
                 function randomValuesStandard($len) {
                     $len = $len | 0;
@@ -24,7 +24,7 @@ var libsodium = (function () {
                     return buf;
                 }
                 randomValuesStandard(8);
-                libsodium_raw.randomValues = randomValuesStandard;
+                libsodium.randomValues = randomValuesStandard;
             } catch (e) {
                 try {
                     var crypto = require('crypto');
@@ -33,7 +33,7 @@ var libsodium = (function () {
                         return crypto.randomBytes($len);
                     }
                     randomValuesIOJS(8);
-                    libsodium_raw.randomValues = randomValuesIOJS;
+                    libsodium.randomValues = randomValuesIOJS;
                 } catch (e) {
                     throw 'No secure random number generator found';
                 }
@@ -41,40 +41,40 @@ var libsodium = (function () {
             return 0;
         });
 
-        var uniform = libsodium_raw.Runtime.addFunction(function($upper_bound) {
+        var uniform = libsodium.Runtime.addFunction(function($upper_bound) {
             $upper_bound = $upper_bound | 0;
             if ($upper_bound >>> 0 < 2) {
                 return 0;
             }
             var min = ((0 - $upper_bound | 0) >>> 0) % ($upper_bound >>> 0) | 0, r;
             do {
-                r = libsodium_raw._randombytes_random();
+                r = libsodium._randombytes_random();
             } while (r >>> 0 < min >>> 0);
 
             return (r >>> 0) % ($upper_bound >>> 0) | 0;
         });
 
-        var buf = libsodium_raw.Runtime.addFunction(function($buf, $len) {
+        var buf = libsodium.Runtime.addFunction(function($buf, $len) {
             $buf = $buf | 0;
             $len = $len | 0;
-            libsodium_raw.writeArrayToMemory(libsodium_raw.randomValues($len), $buf);
+            libsodium.writeArrayToMemory(libsodium.randomValues($len), $buf);
         });
 
-        var close = libsodium_raw.Runtime.addFunction(function() {
+        var close = libsodium.Runtime.addFunction(function() {
             return 0;
         });
 
-        var st = libsodium_raw._malloc(6 * 4);
-        libsodium_raw.setValue(st + 0 * 4, implementation_name, 'i32');
-        libsodium_raw.setValue(st + 1 * 4, random, 'i32');
-        libsodium_raw.setValue(st + 2 * 4, stir, 'i32');
-        libsodium_raw.setValue(st + 3 * 4, uniform, 'i32');
-        libsodium_raw.setValue(st + 4 * 4, buf, 'i32');
-        libsodium_raw.setValue(st + 5 * 4, close, 'i32');
-        libsodium_raw._randombytes_set_implementation(st);
+        var st = libsodium._malloc(6 * 4);
+        libsodium.setValue(st + 0 * 4, implementation_name, 'i32');
+        libsodium.setValue(st + 1 * 4, random, 'i32');
+        libsodium.setValue(st + 2 * 4, stir, 'i32');
+        libsodium.setValue(st + 3 * 4, uniform, 'i32');
+        libsodium.setValue(st + 4 * 4, buf, 'i32');
+        libsodium.setValue(st + 5 * 4, close, 'i32');
+        libsodium._randombytes_set_implementation(st);
     })();
 
-	libsodium_raw._sodium_init();
+	libsodium._sodium_init();
 
 	//---------------------------------------------------------------------------
 	// Horrifying UTF-8, base64 and hex codecs
@@ -243,7 +243,7 @@ var libsodium = (function () {
 	// Allocation
 
 	function MALLOC(nbytes) {
-	var result = libsodium_raw._malloc(nbytes);
+	var result = libsodium._malloc(nbytes);
 	if (result === 0) {
 		throw {message: "malloc() failed", nbytes: nbytes};
 	}
@@ -251,7 +251,7 @@ var libsodium = (function () {
 	}
 
 	function FREE(pointer) {
-	libsodium_raw._free(pointer);
+	libsodium._free(pointer);
 	}
 
 	//---------------------------------------------------------------------------
@@ -259,9 +259,9 @@ var libsodium = (function () {
 	function injectBytes(bs, leftPadding) {
 	var p = leftPadding || 0;
 	var address = MALLOC(bs.length + p);
-	libsodium_raw.HEAPU8.set(bs, address + p);
+	libsodium.HEAPU8.set(bs, address + p);
 	for (var i = address; i < address + p; i++) {
-		libsodium_raw.HEAPU8[i] = 0;
+		libsodium.HEAPU8[i] = 0;
 	}
 	return address;
 	}
@@ -273,7 +273,7 @@ var libsodium = (function () {
 
 	function extractBytes(address, length) {
 	var result = new Uint8Array(length);
-	result.set(libsodium_raw.HEAPU8.subarray(address, address + length));
+	result.set(libsodium.HEAPU8.subarray(address, address + length));
 	return result;
 	}
 
@@ -286,7 +286,7 @@ var libsodium = (function () {
 
 	function check(function_name, result) {
 	if (result !== 0) {
-		throw {message: "libsodium_raw." + function_name + " signalled an error"};
+		throw {message: "libsodium." + function_name + " signalled an error"};
 	}
 	}
 
@@ -328,10 +328,12 @@ var libsodium = (function () {
 	exports.set_encoding        = set_encoding;
 	exports.get_encoding        = get_encoding;
 	exports.symbols             = symbols;
-	exports.raw                 = libsodium_raw;
-	exports.init                = libsodium_raw._sodium_init;
+	exports.raw                 = libsodium;
+	exports.init                = libsodium._sodium_init;
 
 	{exports_here}
 
 	return exports;
 })();
+
+var module = module || { }, exports = module.exports = sodium;

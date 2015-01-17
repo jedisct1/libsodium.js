@@ -10,14 +10,14 @@
 		{
 			"name": "privateKey",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"type": "buffer",
 			"name": "signature",
-			"size": "message.length + libsodium_raw._crypto_sign_bytes()"
+			"size": "message.length + libsodium._crypto_sign_bytes()"
 		},
 		{
 			"type": "buffer",
@@ -25,6 +25,6 @@
 			"size": "8"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte)",
+	"target": "libsodium._crypto_sign(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte)",
 	"return": "return encodeResult(signature, resultEncoding)"
 }

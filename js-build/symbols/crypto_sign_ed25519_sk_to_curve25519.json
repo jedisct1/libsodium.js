@@ -5,16 +5,16 @@
 		{
 			"name": "edSk",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_sign_secretkeybytes()"
+			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "cSk",
 			"type": "buffer",
-			"size": "libsodium_raw._crypto_scalarmult_scalarbytes()"
+			"size": "libsodium._crypto_scalarmult_scalarbytes()"
 		}
 	],
-	"target": "libsodium_raw._crypto_sign_ed25519_sk_to_curve25519(cSk_byte, edSk_byte)",
+	"target": "libsodium._crypto_sign_ed25519_sk_to_curve25519(cSk_byte, edSk_byte)",
 	"return": "return encodeResult(cSk, resultEncoding)"
 }
