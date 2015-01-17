@@ -2,7 +2,6 @@
 all: libsodium/libsodium-js/lib/sodium.js
 	mkdir -p out
 	cp libsodium/libsodium-js/lib/*.js out/
-	cp libsodium/libsodium-js/lib/*.mem out/
 	cp out/* test/
 	ls -l out
 

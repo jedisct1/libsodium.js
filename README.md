@@ -12,7 +12,7 @@ Running `make` will clone libsodium v1.0.2, build it, and then build the wrapper
 
 ## Usage:
 
-* Once you've compiled libsodium, import the contents of the `out` folder to your application. Note that you can place the js files anywhere in the app, but from what I've seen, the `libsodium.js.mem` file (I hear you asking ["But what does it do?"](http://kripken.github.io/emscripten-site/docs/tools_reference/emcc.html#emcc-memory-init-file)) must be located in the root folder of your app. (And if you're able to place it elsewhere, please let me now as I'm interested)
+* Once you've compiled libsodium, import the contents of the `out` folder to your application.
 * To find out what are the available methods and how to use them, please have a look at the `API.md`, written at the end of the compilation process
 
 List of wrapped algorithms and functions:
