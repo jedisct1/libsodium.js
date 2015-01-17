@@ -2,7 +2,7 @@ var sodium = (function () {
 	'use strict';
 	var exports = {};
 
-	var libsodium = Module || require('libsodium');
+	var libsodium = typeof(require) !== 'undefined' ? require('libsodium') : Module;
 	var result_encoding = 'uint8array';
 
     (function() {
