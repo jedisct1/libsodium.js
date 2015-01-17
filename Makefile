@@ -11,9 +11,7 @@ libsodium/libsodium-js/lib/libsodium-wrap.js: libsodium/test/js.done
 	iojs js-build/build-wrapper.js || nodejs js-build/build-wrapper.js || node js-build/build-wrapper.js
 
 libsodium/test/js.done: libsodium/configure
-	#cd libsodium && ./autogen.sh
-	cp emscripten.sh libsodium/dist-build/ && \
-	cd libsodium && ./dist-build/emscripten.sh
+	cd libsodium && ./autogen.sh &&./dist-build/emscripten.sh
 
 libsodium/configure: libsodium/configure.ac
 	cd libsodium && ./autogen.sh
@@ -22,11 +20,12 @@ libsodium/configure.ac: .gitmodules
 	git submodule update --init --recursive
 
 clean:
-	rm -r out
-	rm -r libsodium/libsodium-js
+	rm -rf out
+	rm -rf libsodium/libsodium-js
+	rm -f libsodium/test/js.done
 	cd libsodium && make clean
 
 rewrap:
-	-rm libsodium/libsodium-js/lib/libsodium-wrap.js
+	rm -f libsodium/libsodium-js/lib/libsodium-wrap.js
 	make libsodium/libsodium-js/lib/libsodium-wrap.js
 	make
