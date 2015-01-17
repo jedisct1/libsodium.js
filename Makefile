@@ -11,7 +11,7 @@ libsodium/libsodium-js/lib/libsodium-wrap.js: libsodium/test/js.done
 	iojs js-build/build-wrapper.js || nodejs js-build/build-wrapper.js || node js-build/build-wrapper.js
 
 libsodium/test/js.done: libsodium/configure
-	cd libsodium && ./autogen.sh &&./dist-build/emscripten.sh
+	cd libsodium && ./dist-build/emscripten.sh
 
 libsodium/configure: libsodium/configure.ac
 	cd libsodium && ./autogen.sh
