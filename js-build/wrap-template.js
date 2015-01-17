@@ -103,12 +103,12 @@ var sodium = (function () {
 	}
 
 	function to_hex(bs) {
-	var encoded = [];
-	for (var i = 0; i < bs.length; i++) {
-		encoded.push("0123456789abcdef"[(bs[i] >> 4) & 15]);
-		encoded.push("0123456789abcdef"[bs[i] & 15]);
-	}
-	return encoded.join('');
+		var encoded = [];
+		for (var i = 0; i < bs.length; i++) {
+			encoded.push("0123456789abcdef"[(bs[i] >> 4) & 15]);
+			encoded.push("0123456789abcdef"[bs[i] & 15]);
+		}
+		return encoded.join('');
 	}
 
 	function from_hex(s) {
@@ -185,8 +185,8 @@ var sodium = (function () {
 			if (nIdx > 0 && (nIdx * 4 / 3) % 76 === 0 && !noNewLine) { sB64Enc += "\r\n"; }
 			nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
 			if (nMod3 === 2 || aBytes.length - nIdx === 1) {
-			sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
-			nUint24 = 0;
+				sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+				nUint24 = 0;
 			}
 		}
 		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
@@ -243,38 +243,38 @@ var sodium = (function () {
 	// Allocation
 
 	function MALLOC(nbytes) {
-	var result = libsodium._malloc(nbytes);
-	if (result === 0) {
-		throw {message: "malloc() failed", nbytes: nbytes};
-	}
-	return result;
+		var result = libsodium._malloc(nbytes);
+		if (result === 0) {
+			throw {message: "malloc() failed", nbytes: nbytes};
+		}
+		return result;
 	}
 
 	function FREE(pointer) {
-	libsodium._free(pointer);
+		libsodium._free(pointer);
 	}
 
 	//---------------------------------------------------------------------------
 
 	function injectBytes(bs, leftPadding) {
-	var p = leftPadding || 0;
-	var address = MALLOC(bs.length + p);
-	libsodium.HEAPU8.set(bs, address + p);
-	for (var i = address; i < address + p; i++) {
-		libsodium.HEAPU8[i] = 0;
-	}
-	return address;
+		var p = leftPadding || 0;
+		var address = MALLOC(bs.length + p);
+		libsodium.HEAPU8.set(bs, address + p);
+		for (var i = address; i < address + p; i++) {
+			libsodium.HEAPU8[i] = 0;
+		}
+		return address;
 	}
 
 	function check_injectBytes(function_name, what, thing, expected_length, leftPadding) {
-	check_length(function_name, what, thing, expected_length);
-	return injectBytes(thing, leftPadding);
+		check_length(function_name, what, thing, expected_length);
+		return injectBytes(thing, leftPadding);
 	}
 
 	function extractBytes(address, length) {
-	var result = new Uint8Array(length);
-	result.set(libsodium.HEAPU8.subarray(address, address + length));
-	return result;
+		var result = new Uint8Array(length);
+		result.set(libsodium.HEAPU8.subarray(address, address + length));
+		return result;
 	}
 
 	//---------------------------------------------------------------------------
@@ -285,34 +285,34 @@ var sodium = (function () {
 	}
 
 	function check(function_name, result) {
-	if (result !== 0) {
-		throw {message: "libsodium." + function_name + " signalled an error"};
-	}
+		if (result !== 0) {
+			throw {message: "libsodium." + function_name + " signalled an error"};
+		}
 	}
 
 	function check_length(function_name, what, thing, expected_length) {
-	if (thing.length !== expected_length) {
-		throw {message: "libsodium." + function_name + " expected " +
-			expected_length + "-byte " + what + " but got length " + thing.length};
-	}
+		if (thing.length !== expected_length) {
+			throw {message: "libsodium." + function_name + " expected " +
+				expected_length + "-byte " + what + " but got length " + thing.length};
+		}
 	}
 
 	function TargetBuffer(length) {
-	this.length = length;
-	this.address = MALLOC(length);
+		this.length = length;
+		this.address = MALLOC(length);
 	}
 
 	TargetBuffer.prototype.extractBytes = function (offset) {
-	var result = extractBytes(this.address + (offset || 0), this.length - (offset || 0));
-	FREE(this.address);
-	this.address = null;
-	return result;
+		var result = extractBytes(this.address + (offset || 0), this.length - (offset || 0));
+		FREE(this.address);
+		this.address = null;
+		return result;
 	};
 
 	function free_all(addresses) {
-	for (var i = 0; i < addresses.length; i++) {
-		FREE(addresses[i]);
-	}
+		for (var i = 0; i < addresses.length; i++) {
+			FREE(addresses[i]);
+		}
 	}
 
 	{wraps_here}
