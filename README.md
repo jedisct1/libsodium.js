@@ -33,7 +33,7 @@ Once you've built and wrapped libsodium, you can test the library by opening [te
 
 ## Authors
 
-Built by Frank Denis and Ahmad Ben Mrad
+Built by Ahmad Ben Mrad and Frank Denis
 
 ## License
 
