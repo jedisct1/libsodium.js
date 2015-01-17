@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var docBuilder = require('./build-doc');
 
 //Loading preset macros
 var macros = {};
@@ -109,7 +110,7 @@ function buildSymbol(symbolDescription){
 		console.log('What the hell is the symbol type ' + symbolDescription.type + ' ?');
 		process.exit(1);
 	}
-
+	docBuilder.buildDocForSymbol(symbolDescription);
 }
 
 function applyMacro(macroCode, symbols, substitutes){
@@ -128,6 +129,7 @@ function applyMacro(macroCode, symbols, substitutes){
 function finalizeWrapper(){
 	scriptBuffer = applyMacro(scriptBuffer, ['{wraps_here}', '{exports_here}'], [functionsCode, exportsCode]);
 	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'libsodium-wrap.js'), scriptBuffer);
+	fs.writeFileSync(path.join(__dirname, '../API.md'), docBuilder.getResultDoc());
 }
 
 function injectTabs(code){
@@ -146,14 +148,23 @@ function loadConstants(){
 		console.error('constants file must contain an array of strings');
 		process.exit(1);
 	}
+	var constSymbolsArray = [];
 	for (var i = 0; i < constList.length; i++){
 		var currentConstant = {
 			name: constList[i],
 			type: "uint",
 			target: "libsodium_raw._" + constList[i] + '()'
 		}
-		symbols.push(currentConstant);
+		constSymbolsArray.push(currentConstant);
 	}
+	constSymbolsArray.sort(function(a, b){
+		if (a.name < b.name) return -1;
+		else if (a.name > b.name) return 1;
+		else return 0;
+	});
+	constSymbolsArray.forEach(function(s){
+		if (s) symbols.push(s);
+	});
 }
 
 function checkStrArray(a){

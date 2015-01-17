@@ -27,6 +27,6 @@ clean:
 	cd libsodium && make clean
 
 rewrap:
-	rm libsodium/libsodium-js/lib/libsodium-wrap.js
+	-rm libsodium/libsodium-js/lib/libsodium-wrap.js
 	make libsodium/libsodium-js/lib/libsodium-wrap.js
 	make
