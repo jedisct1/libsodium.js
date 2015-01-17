@@ -4,7 +4,77 @@ var libsodium = (function () {
 
 	var libsodium_raw = Module;
 	var result_encoding = 'uint8array';
-	//libsodium_raw._sodium_init();
+
+    (function() {
+        var implementation_name = libsodium_raw.Runtime.addFunction(function() {
+            return "js";
+        });
+
+        var random = libsodium_raw.Runtime.addFunction(function() {
+            return (libsodium_raw.randomValues(1)[0] | 0) & 0xffffffff;
+        });
+
+        var stir = libsodium_raw.Runtime.addFunction(function() {
+            libsodium_raw.randomValues = null;
+            try {
+                function randomValuesStandard($len) {
+                    $len = $len | 0;
+                    var buf = new Int8Array($len);
+                    window.crypto.getRandomValues(buf);
+                    return buf;
+                }
+                randomValuesStandard(8);
+                libsodium_raw.randomValues = randomValuesStandard;
+            } catch (e) {
+                try {
+                    var crypto = require('crypto');
+                    function randomValuesIOJS($len) {
+                        $len = $len | 0;
+                        return crypto.randomBytes($len);
+                    }
+                    randomValuesIOJS(8);
+                    libsodium_raw.randomValues = randomValuesIOJS;
+                } catch (e) {
+                    throw 'No secure random number generator found';
+                }
+            }
+            return 0;
+        });
+
+        var uniform = libsodium_raw.Runtime.addFunction(function($upper_bound) {
+            $upper_bound = $upper_bound | 0;
+            if ($upper_bound >>> 0 < 2) {
+                return 0;
+            }
+            var min = ((0 - $upper_bound | 0) >>> 0) % ($upper_bound >>> 0) | 0, r;
+            do {
+                r = libsodium_raw._randombytes_random();
+            } while (r >>> 0 < min >>> 0);
+
+            return (r >>> 0) % ($upper_bound >>> 0) | 0;
+        });
+
+        var buf = libsodium_raw.Runtime.addFunction(function($buf, $len) {
+            $buf = $buf | 0;
+            $len = $len | 0;
+            libsodium_raw.writeArrayToMemory(libsodium_raw.randomValues($len), $buf);
+        });
+
+        var close = libsodium_raw.Runtime.addFunction(function() {
+            return 0;
+        });
+
+        var st = libsodium_raw._malloc(6 * 4);
+        libsodium_raw.setValue(st + 0 * 4, implementation_name, 'i32');
+        libsodium_raw.setValue(st + 1 * 4, random, 'i32');
+        libsodium_raw.setValue(st + 2 * 4, stir, 'i32');
+        libsodium_raw.setValue(st + 3 * 4, uniform, 'i32');
+        libsodium_raw.setValue(st + 4 * 4, buf, 'i32');
+        libsodium_raw.setValue(st + 5 * 4, close, 'i32');
+        libsodium_raw._randombytes_set_implementation(st);
+    })();
+
+	libsodium_raw._sodium_init();
 
 	//---------------------------------------------------------------------------
 	// Horrifying UTF-8, base64 and hex codecs
