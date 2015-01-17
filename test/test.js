@@ -1,12 +1,12 @@
-var libsodium_test = (function(){
+var sodium_test = (function(){
 
 	var t = {};
-	var to_hex = libsodium.to_hex;
-	var from_hex = libsodium.from_hex;
-	var is_hex = libsodium.is_hex;
+	var to_hex = sodium.to_hex;
+	var from_hex = sodium.from_hex;
+	var is_hex = sodium.is_hex;
 
 	t.scrypt = function(){
-		if (typeof libsodium.crypto_pwhash_scryptsalsa208sha256 != 'function')
+		if (typeof sodium.crypto_pwhash_scryptsalsa208sha256 != 'function')
 			throw new Error('scrypt cannot be found in the js-built library');
 
 		var vectors = [
@@ -33,7 +33,7 @@ var libsodium_test = (function(){
 		vectors.forEach(testVector);
 
 		function testVector(v){
-			var derivedKey = libsodium.crypto_pwhash_scryptsalsa208sha256_ll(v.pass, v.salt, v.opsLimit, v.r, v.p, v.keyLength);
+			var derivedKey = sodium.crypto_pwhash_scryptsalsa208sha256_ll(v.pass, v.salt, v.opsLimit, v.r, v.p, v.keyLength);
 			if (v.result != to_hex(derivedKey)){
 				throw new Error('Error in pwhash_scryptsalsa208sha256_ll with vector ' + JSON.stringify(v));
 			}
@@ -45,7 +45,7 @@ var libsodium_test = (function(){
 
 		function scalarmult_base_test(){
 			var secretKey = '5dab087e624a8a4b79e17f8b83800ee66f3bb1292618b6fd1c2f8b27ff88e0eb';
-			var publicKey = libsodium.crypto_scalarmult_base(from_hex(secretKey));
+			var publicKey = sodium.crypto_scalarmult_base(from_hex(secretKey));
 			var expectedPubKey = 'de9edb7d7b7dc1b4d35b61c2ece435373f8343c85b78674dadfc7e146f882b4f';
 			if (to_hex(publicKey) != expectedPubKey) throw new Error('Error in scalarmult_base');
 		}
@@ -65,7 +65,7 @@ var libsodium_test = (function(){
 		];
 
 		function scalarmult_test(v){
-			var sharedSecret = libsodium.crypto_scalarmult(from_hex(v.secretKey), from_hex(v.publicKey));
+			var sharedSecret = sodium.crypto_scalarmult(from_hex(v.secretKey), from_hex(v.publicKey));
 			if (v.sharedSecret != to_hex(sharedSecret)) throw new Error('Error in scalarmult with vector ' + JSON.stringify(v));
 		}
 		scalarmult_vectors.forEach(scalarmult_test);
@@ -106,11 +106,11 @@ var libsodium_test = (function(){
 			callback(undefined, {tested: nTests, count: vData.length});
 
 			function testVector(v){
-				var publicKey = v.sk.substr(64); //libsodium.crypto_sign_ed25519_sk_to_pk(v.sk);
+				var publicKey = v.sk.substr(64); //sodium.crypto_sign_ed25519_sk_to_pk(v.sk);
 				if (publicKey != v.pk) throw new Error('error with sk to pk derivation in Ed25519');
-				var signature = libsodium.crypto_sign_detached(from_hex(v.m), from_hex(v.sk));
+				var signature = sodium.crypto_sign_detached(from_hex(v.m), from_hex(v.sk));
 				if (to_hex(signature) != v.s) throw new Error('unexpected signature in Ed25519');
-				var isValid = libsodium.crypto_sign_verify_detached(signature, from_hex(v.m), from_hex(publicKey));
+				var isValid = sodium.crypto_sign_verify_detached(signature, from_hex(v.m), from_hex(publicKey));
 				if (!isValid) throw new Error('invalid signature in Ed25519');
 			}
 		};
@@ -133,9 +133,9 @@ var libsodium_test = (function(){
 		}
 
 		function secretbox_test(v){
-			var cipher = libsodium.crypto_secretbox_easy(from_hex(v.m), from_hex(v.nonce), from_hex(v.key));
+			var cipher = sodium.crypto_secretbox_easy(from_hex(v.m), from_hex(v.nonce), from_hex(v.key));
 			if (to_hex(cipher) != v.c) throw new Error('Unexpected ciphertext');
-			var plaintext = libsodium.crypto_secretbox_open_easy(cipher, from_hex(v.nonce), from_hex(v.key));
+			var plaintext = sodium.crypto_secretbox_open_easy(cipher, from_hex(v.nonce), from_hex(v.key));
 			if (!(plaintext && to_hex(plaintext) == v.m)) throw new Error('Unexpected plaintext');
 		}
 	};
@@ -162,16 +162,16 @@ var libsodium_test = (function(){
 			}
 		];
 
-		if (libsodium.crypto_hash) for (var i = 0; i < sha512Vectors.length; i++) sha512_test(sha512Vectors[i]);
-		if (libsodium.crypto_hash_sha256) for (var i = 0; i < sha256Vectors.length; i++) sha256_test(sha256Vectors[i]);
+		if (sodium.crypto_hash) for (var i = 0; i < sha512Vectors.length; i++) sha512_test(sha512Vectors[i]);
+		if (sodium.crypto_hash_sha256) for (var i = 0; i < sha256Vectors.length; i++) sha256_test(sha256Vectors[i]);
 
 		function sha512_test(v){
-			var hash = libsodium.crypto_hash(v.m);
+			var hash = sodium.crypto_hash(v.m);
 			if (to_hex(hash) != v.h) throw new Error('Unexpected hash value for vector ' + JSON.stringify(v));
 		}
 
 		function sha256_test(v){
-			var hash = libsodium.crypto_hash_sha256(v.m);
+			var hash = sodium.crypto_hash_sha256(v.m);
 			if (to_hex(hash) != v.h) throw new Error('Unexpected hash value for vector ' + JSON.stringify(v));
 		}
 
@@ -201,9 +201,9 @@ var libsodium_test = (function(){
 			}
 		];
 
-		if (libsodium.crypto_auth) for (var i = 0; i < hmacSHA512256Vectors.length; i++) testHmacSHA512256Vector(hmacSHA512256Vectors[i]);
-		if (libsodium.crypto_auth_hmacsha512) for (var i = 0; i < hmacSHA512Vectors.length; i++) testHmacSHA512Vector(hmacSHA512Vectors[i]);
-		if (libsodium.crypto_auth_hmacsha256) for (var i = 0; i < hmacSHA256Vectors.length; i++) testHmacSHA256Vector(hmacSHA256Vectors[i]);
+		if (sodium.crypto_auth) for (var i = 0; i < hmacSHA512256Vectors.length; i++) testHmacSHA512256Vector(hmacSHA512256Vectors[i]);
+		if (sodium.crypto_auth_hmacsha512) for (var i = 0; i < hmacSHA512Vectors.length; i++) testHmacSHA512Vector(hmacSHA512Vectors[i]);
+		if (sodium.crypto_auth_hmacsha256) for (var i = 0; i < hmacSHA256Vectors.length; i++) testHmacSHA256Vector(hmacSHA256Vectors[i]);
 
 		function testHmacSHA512256Vector(v){
 			var key;
@@ -212,16 +212,16 @@ var libsodium_test = (function(){
 			} else {
 				key = expandKey();
 			}
-			var tag = libsodium.crypto_auth(v.m, key);
+			var tag = sodium.crypto_auth(v.m, key);
 			var tagHex = to_hex(tag);
 			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA512/256 value for vector: ' + JSON.stringify(v));
-			var validTag = libsodium.crypto_auth_verify(tag, v.m, key);
+			var validTag = sodium.crypto_auth_verify(tag, v.m, key);
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA512/256 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < libsodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_keybytes);
-					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
+				if (v.k.length < sodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_keybytes);
+					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;
@@ -235,16 +235,16 @@ var libsodium_test = (function(){
 			} else {
 				key = expandKey();
 			}
-			var tag = libsodium.crypto_auth_hmacsha512(v.m, key);
+			var tag = sodium.crypto_auth_hmacsha512(v.m, key);
 			var tagHex = to_hex(tag);
 			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA512 value for vector: ' + JSON.stringify(v));
-			var validTag = libsodium.crypto_auth_hmacsha512_verify(tag, v.m, key);
+			var validTag = sodium.crypto_auth_hmacsha512_verify(tag, v.m, key);
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA512 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < libsodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha512_keybytes);
-					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
+				if (v.k.length < sodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha512_keybytes);
+					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;
@@ -258,16 +258,16 @@ var libsodium_test = (function(){
 			} else {
 				key = expandKey();
 			}
-			var tag = libsodium.crypto_auth_hmacsha256(v.m, key);
+			var tag = sodium.crypto_auth_hmacsha256(v.m, key);
 			var tagHex = to_hex(tag);
 			if (tagHex != v.h) throw new Error('Unexpected HMAC-SHA256 value for vector: ' + JSON.stringify(v));
-			var validTag = libsodium.crypto_auth_hmacsha256_verify(tag, v.m, key);
+			var validTag = sodium.crypto_auth_hmacsha256_verify(tag, v.m, key);
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA256 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < libsodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(libsodium.crypto_auth_hmacsha256_keybytes);
-					var utf8KeyBuffer = libsodium.string_to_Uint8Array(v.k);
+				if (v.k.length < sodium.crypto_auth_keybytes){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha256_keybytes);
+					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
 				} else return v.k;

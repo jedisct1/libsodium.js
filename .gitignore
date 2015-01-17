@@ -1,4 +1,5 @@
 *~
 out
 test/libsodium*
+test/sodium*
 API.md
