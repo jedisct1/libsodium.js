@@ -77,7 +77,7 @@ function buildSymbol(symbolDescription){
 			}
 			funcBody += currentParameterCode + '\n';
 		}
-		funcCode += paramsArray + '){\n\tvar toDealloc = [];\n\t';
+		funcCode += paramsArray + '){\n\t\tvar toDealloc = [];\n\t';
 
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++){
@@ -95,17 +95,17 @@ function buildSymbol(symbolDescription){
 		//Writing the target call
 		funcBody += sc(symbolDescription.target) + '\n';
 		funcBody += sc(symbolDescription.return) + '\n';
-		funcBody += 'free_all(toDealloc);\n';
+		funcBody += 'free_all(toDealloc);';
 		funcBody = injectTabs(funcBody);
-		funcCode += funcBody + '}\n';
+		funcCode += funcBody + '\n\t}\n';
 
 		functionsCode += funcCode;
-		exportsCode += '\n\tif (typeof ' + targetName + ' == \'function\')  exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
+		exportsCode += '\n\t\tif (typeof ' + targetName + ' == \'function\')  exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
 	} else if (symbolDescription.type == 'uint'){
 		var constVal = symbolDescription.target;
 		var symbolName = symbolDescription.target.replace(new RegExp(/\(\)$/), '');
 		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
-		exportsCode += '\n\tif (typeof ' + symbolName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + constVal + ';';
+		exportsCode += '\n\t\tif (typeof ' + symbolName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + constVal + ';';
 	} else {
 		console.log('What the hell is the symbol type ' + symbolDescription.type + ' ?');
 		process.exit(1);
@@ -133,7 +133,7 @@ function finalizeWrapper(){
 }
 
 function injectTabs(code){
-	return code.replace(/\n/g, '\n\t');
+	return ('\n' + code).replace(/\n/g, '\n\t\t');
 }
 
 function loadConstants(){
