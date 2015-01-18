@@ -32,5 +32,6 @@
 		}
 	],
 	"target": "libsodium._crypto_pwhash_scryptsalsa208sha256(derivedKey_byte, keyLength, 0, password_byte, password_size, 0, salt_byte, 0, opsLimit, memLimit)",
-	"return": "return encodeResult(derivedKey, resultEncoding)"
+	"expect": "=== 0",
+	"return": "encodeResult(derivedKey, resultEncoding)"
 }

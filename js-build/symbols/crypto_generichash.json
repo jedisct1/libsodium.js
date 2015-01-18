@@ -21,5 +21,6 @@
 		}
 	],
 	"target": "libsodium._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size)",
-	"return": "return encodeResult(hash, resultEncoding)"
+	"expect": "=== 0",
+	"return": "encodeResult(hash, resultEncoding)"
 }

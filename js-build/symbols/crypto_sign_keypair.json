@@ -15,6 +15,7 @@
 			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
-	"target": "libsodium._crypto_sign_keypair(publicKey_byte, privateKey_byte);",
-	"return": "return encodeResult({publicKey: publicKey, privateKey: privateKey, keyType: 'ed25519'}, resultEncoding);"
+	"target": "libsodium._crypto_sign_keypair(publicKey_byte, privateKey_byte)",
+	"expect": "=== 0",
+	"return": "encodeResult({publicKey: publicKey, privateKey: privateKey, keyType: 'ed25519'}, resultEncoding)"
 }

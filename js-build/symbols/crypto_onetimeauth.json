@@ -21,5 +21,6 @@
 		}
 	],
 	"target": "libsodium._crypto_onetimeauth(hash_byte, message_byte, message_size, 0, key_byte)",
+	"expect": "=== 0",
 	"return": "encodeResult(hash, resultEncoding)"
 }

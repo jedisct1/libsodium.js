@@ -93,9 +93,29 @@ function buildSymbol(symbolDescription){
 			funcBody += currentOutputCode + '\n';
 		}
 		//Writing the target call
-		funcBody += sc(symbolDescription.target) + '\n';
-		funcBody += sc(symbolDescription.return) + '\n';
-		funcBody += 'free_all(toDealloc);';
+		if (symbolDescription.expect !== undefined && symbolDescription.return !== undefined) {
+			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
+			funcBody += '\tvar ret = ' + symbolDescription.return + '\n';
+			funcBody += '\tfree_all(toDealloc);\n';
+			funcBody += '\treturn ret;\n';
+			funcBody += '}\n';
+			funcBody += 'free_all(toDealloc)\n';
+			funcBody += 'throw new Error();\n';
+		} else if (symbolDescription.expect !== undefined) {
+			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
+			funcBody += '\tfree_all(toDealloc);\n';
+			funcBody += '\treturn;\n';
+			funcBody += '}\n';
+			funcBody += 'free_all(toDealloc)\n';
+			funcBody += 'throw new Error();\n';
+		} else if (symbolDescription.return !== undefined) {
+			funcBody += sc(symbolDescription.target) + '\n';
+			funcBody += '\tvar ret = ' + symbolDescription.return + '\n';
+			funcBody += '\tfree_all(toDealloc);\n';
+			funcBody += '\treturn ret;\n';
+		} else {
+			funcBody += sc(symbolDescription.target) + '\n';
+		}
 		funcBody = injectTabs(funcBody);
 		funcCode += funcBody + '\n\t}\n';
 

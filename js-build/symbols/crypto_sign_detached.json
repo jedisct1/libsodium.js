@@ -25,6 +25,7 @@
 			"name": "slen"
 		}
 	],
-	"target": "libsodium._crypto_sign_detached(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte);",
-	"return": "return encodeResult(signature, resultEncoding)"
+	"target": "libsodium._crypto_sign_detached(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte)",
+	"expect": "=== 0",
+	"return": "encodeResult(signature, resultEncoding)"
 }

@@ -35,5 +35,6 @@
 		}
 	],
 	"target": "libsodium._crypto_box_detached(ciphertext_byte, mac_byte, message_byte, message_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
-	"return": "return encodeResult({ciphertext: ciphertext, mac: mac}, resultEncoding)"
+	"expect": "=== 0",
+	"return": "encodeResult({ciphertext: ciphertext, mac: mac}, resultEncoding)"
 }
