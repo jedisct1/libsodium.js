@@ -2,7 +2,7 @@
 
 var {var_name}_byte, {var_name}_size = ({var_size}) | 0;
 
-if (typeof {var_name} == undefined) {
+if ({var_name} == undefined) {
 	free_all(toDealloc);
 	throw new Error('{var_name} cannot be null or undefined');
 }
