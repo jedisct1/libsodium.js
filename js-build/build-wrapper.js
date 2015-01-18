@@ -46,20 +46,15 @@ function buildSymbol(symbolDescription){
 	if (typeof symbolDescription != 'object') throw new TypeError('symbolDescription must be a function');
 	if (symbolDescription.type == 'function'){
 		var targetName = 'libsodium._' + symbolDescription.name;
-		//Add encoding parameter to input list if encodingChoice is true
-		if (!symbolDescription.noEncoding){
-			symbolDescription.inputs.push({name: "resultEncoding", type: "encoding"})
-		}
 		var funcCode = '\n\tfunction ' + symbolDescription.name + '(';
 		var funcBody = '';
 		//Adding parameters array in function's interface, their conversions in the function's body
-		var paramsArray = '';
+		var paramsArray = [];
 		for (var i = 0; i < symbolDescription.inputs.length; i++){
 			//Adding parameter in function's parameter list
 			var currentParameter = symbolDescription.inputs[i];
 			var currentParameterCode;
-			paramsArray += currentParameter.name;
-			if (i != symbolDescription.inputs.length - 1) paramsArray += ', ';
+			paramsArray.push(currentParameter.name);
 			//Adding the correspondant parameter handling macro, into the function body
 			if (currentParameter.type == 'buf'){
 				currentParameterCode = macros['input_buf'];
@@ -76,8 +71,14 @@ function buildSymbol(symbolDescription){
 			}
 			funcBody += currentParameterCode + '\n';
 		}
-		funcCode += paramsArray + '){\n\t\tvar toDealloc = [];\n\t';
-
+		if (!symbolDescription.noEncoding) {
+			paramsArray.push('resultEncoding');
+		}
+		funcCode += paramsArray.join(', ') + ') {\n';
+		funcCode += '\t\tvar toDealloc = [];\n';
+		if (!symbolDescription.noEncoding) {
+			funcCode += '\t\tcheckEncoding(resultEncoding);\n';
+		}
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++){
 			var currentOutput = symbolDescription.outputs[i];
