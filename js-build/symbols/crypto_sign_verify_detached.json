@@ -20,6 +20,6 @@
 		}
 	],
 	"outputs": [],
-	"target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_byte, message_byte, message_size, 0, publicKey_byte)",
+	"target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_byte, message_byte, message_size, 0, publicKey_byte) | 0",
 	"return": "verificationResult === 0"
 }

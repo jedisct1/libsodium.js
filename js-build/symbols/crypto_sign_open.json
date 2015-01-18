@@ -20,7 +20,7 @@
 			"size": "signedMessage_size - libsodium._crypto_sign_bytes()"
 		}
 	],
-	"target": "libsodium._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte)",
+	"target": "libsodium._crypto_sign_open(message_byte, message_size, signedMessage_byte, signedMessage_size, 0, publicKey_byte) | 0",
 	"expect": "=== 0",
 	"return": "encodeResult(message, resultEncoding)"
 }

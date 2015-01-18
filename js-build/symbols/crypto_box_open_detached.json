@@ -35,7 +35,7 @@
 			"size": "ciphertext_size"
 		}
 	],
-	"target": "libsodium._crypto_box_open_detached(plaintext_byte, ciphertext_byte, mac_byte, ciphertext_size, 0, nonce_byte, publicKey_byte, secretKey_byte)",
+	"target": "libsodium._crypto_box_open_detached(plaintext_byte, ciphertext_byte, mac_byte, ciphertext_size, 0, nonce_byte, publicKey_byte, secretKey_byte) | 0",
 	"expect": "=== 0",
 	"return": "encodeResult(plaintext, resultEncoding)"
 }

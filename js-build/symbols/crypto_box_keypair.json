@@ -14,7 +14,7 @@
 			"name": "secretKey"
 		}
 	],
-	"target": "libsodium._crypto_box_keypair(publicKey_byte, secretKey_byte)",
+	"target": "libsodium._crypto_box_keypair(publicKey_byte, secretKey_byte) | 0",
 	"expect": "=== 0",
 	"return": "encodeResult({publicKey: publicKey, privateKey: secretKey, keyType: 'curve25519'}, resultEncoding)"
 }
