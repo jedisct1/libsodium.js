@@ -119,12 +119,12 @@ function buildSymbol(symbolDescription){
 		funcCode += funcBody + '\n\t}\n';
 
 		functionsCode += funcCode;
-		exportsCode += '\n\tif (typeof ' + targetName + ' == \'function\')  exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
+		exportsCode += '\n\tif (typeof ' + targetName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
 	} else if (symbolDescription.type === 'uint'){
 		var constVal = symbolDescription.target;
 		var symbolName = symbolDescription.target.replace(new RegExp(/\(\)$/), '');
 		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
-		exportsCode += '\n\tif (typeof ' + symbolName + ' ==\'function\') exports.' + symbolDescription.name + ' = ' + constVal + ' | 0;';
+		exportsCode += '\n\tif (typeof ' + symbolName + ' ==\'function\') var ' + symbolDescription.name + ' = exports.' + symbolDescription.name + ' = ' + constVal + ' | 0;';
 	} else {
 		console.error('What is the symbol type ' + symbolDescription.type + '?');
 		process.exit(1);
