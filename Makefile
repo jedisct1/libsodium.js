@@ -24,6 +24,9 @@ clean:
 	rm -f libsodium/test/js.done
 	cd libsodium && make clean
 
+distclean: clean
+	cd libsodium && make distclean
+
 rewrap:
 	rm -f libsodium/libsodium-js/lib/sodium.js
 	make libsodium/libsodium-js/lib/sodium.js
