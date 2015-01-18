@@ -82,7 +82,7 @@ function buildSymbol(symbolDescription){
 			if (currentOutput.type == 'buf'){
 				currentOutputCode = macros['output_buf'];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
-			} else if (!(currentOutput.type == 'uint')) {
+			} else {
 				console.error('What is the output type ' + currentOutput.type + '?');
 				process.exit(1);
 			}
