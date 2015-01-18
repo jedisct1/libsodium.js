@@ -178,9 +178,9 @@ var sodium = (function () {
 		if (!enc) {
 			return;
 		} else if (typeof enc !== 'string') {
-			throw new TypeError('When defined, {var_name} must be a string');
+			throw new TypeError('When defined, the output encoding must be a string');
 		} else if (!is_encoding(enc)) {
-			throw new Error('{var_name} is not a supported encoding');
+			throw new Error(enc + ' is not a supported encoding');
 		}
 	}
 
