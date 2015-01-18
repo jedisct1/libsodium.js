@@ -240,10 +240,7 @@ var sodium = (function () {
 	}
 
 	TargetBuf.prototype.extractBytes = function (offset) {
-		var result = extractBytes(this.address + (offset || 0), this.length - (offset || 0));
-		FREE(this.address);
-		this.address = null;
-		return result;
+		return extractBytes(this.address + (offset || 0), this.length - (offset || 0));
 	};
 
 	function free_all(addresses) {
