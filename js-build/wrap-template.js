@@ -170,6 +170,20 @@ var sodium = (function () {
 		return encFound;
 	}
 
+	function check_encoding(enc, toDealloc) {
+		if (!enc) {
+			return;
+		}
+		if (typeof enc !== 'string') {
+			free_all(toDealloc);
+			throw new TypeError('When defined, {var_name} must be a string');
+		}
+		if (!is_encoding(enc)) {
+			free_all(toDealloc);
+			throw new Error('{var_name} is not a supported encoding');
+		}
+	}
+
 	//---------------------------------------------------------------------------
 	// Allocation
 
