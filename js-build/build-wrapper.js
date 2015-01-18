@@ -21,6 +21,9 @@ var exportsCode = '';
 var symbols = [];
 var symbolsFiles = fs.readdirSync(path.join(__dirname, 'symbols')).sort();
 for (var i = 0; i < symbolsFiles.length; i++){
+	if (!symbolsFiles[i].endsWith('.json')) {
+		continue;
+	}
 	var currentSymbol = fs.readFileSync(path.join(__dirname, 'symbols', symbolsFiles[i]), {encoding: 'utf8'});
 	try {
 		currentSymbol = JSON.parse(currentSymbol);
