@@ -1,4 +1,5 @@
 var docStr = '# Libsodium.js wrapper - API usage' + newParagraph();
+docStr += 'Once you\'ve included libsodium.js and sodium.js, all the available wrapped functions and constants can be accessed in the `sodium` object.' + newParagraph();
 docStr += 'To learn about the role of each method, please refer to the original [documentation](http://doc.libsodium.org) of libsodium' + newParagraph();
 docStr += 'List of existing types:' + newLine();
 docStr += '* Buffer : An Uint8Array of a determined size. Used for keys, nonces, etc...' + newLine();
@@ -7,6 +8,20 @@ docStr += '* Uint : An unsigned integer' + newLine();
 docStr += '* Encoding : A string indicating in which encoding you want the result to be returned. Supported values are "uint8array", "utf8", "hex", "base64". Optional parameter. Not available on all functions. Defaults to uint8array. Note that you can change the default encoding by calling `libsodium.set_encoding(encodingName)`' + newParagraph();
 docStr += 'Please note that a function that returns more than one variable will in fact return an object, which will contain the outputs in question and whose attributes will be named after the outputs\' names' + newParagraph();
 docStr += 'Please also note that these are the function available "in general" in the wrapper. The actual number of availble functions in given build may be inferior to that, depending on what functions you choose to build to JS.' + newParagraph();
+docStr += 'In addition to the main functions listed below, the library comes with a short list of helper methods. And here they are:' + newLine();
+docStr += '* `uint8array_to_String(buffer)` : converts an Uint8Array into a UTF8 standard string' + newLine();
+docStr += '* `string_to_Uint8Array(string)` : converts a standard string into a Uint8Array' + newLine();
+docStr += '* `to_hex(buffer)` : returns the hexadecimal representation of the provided buffer' + newLine();
+docStr += '* `from_hex(string)` : converts the provided hex-string into a Uint8Array and returns it' + newLine();
+docStr += '* `is_hex(string)` : determines whether the provided string looks like hex data or not' + newLine();
+docStr += '* `to_base64(buffer)` : returns the base64 representation of the provided buffer' + newLine();
+docStr += '* `from_base64(string)` : tries to convert the supposedly base64 string into a Uint8Array' + newLine();
+docStr += '* `available_encodings()` : returns a list of the available encodings' + newLine();
+docStr += '* `set_encoding(encodingName)` : reset the default result encoding to the encoding named `encodingName`' + newLine();
+docStr += '* `get_encoding()` : get the name of the encoding currently set as default' + newLine();
+docStr += '* `symbols()` : returns a list of the currently methods and constants' + newLine();
+docStr += '* `raw` : attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine()
+docStr += '* `init()` : reference to the `libsodium.sodium_init()` method. Doesn\'t need to be called, as it is called by sodium.js on loading.' + newParagraph();
 
 exports.buildDocForSymbol = function(s){
 	if (typeof s != 'object') throw new TypeError('s must be a object');
