@@ -1,4 +1,4 @@
-// ---------- output
+// ---------- output (buf)
 
 var {var_name}_size = ({var_size}) | 0,
     {var_name} = new TargetBuf({var_name}_size),

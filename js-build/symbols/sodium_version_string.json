@@ -1,0 +1,9 @@
+{
+	"name": "sodium_version_string",
+	"dependencies": [],
+	"type": "function",
+	"inputs": [],
+	"outputs": [],
+	"target": "var version = libsodium._sodium_version_string()",
+	"return": "libsodium.Pointer_stringify(version)"
+}
