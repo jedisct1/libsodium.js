@@ -99,14 +99,14 @@ function buildSymbol(symbolDescription){
 			funcBody += '\tfree_all(toDealloc);\n';
 			funcBody += '\treturn ret;\n';
 			funcBody += '}\n';
-			funcBody += 'free_all(toDealloc)\n';
+			funcBody += 'free_all(toDealloc);\n';
 			funcBody += 'throw new Error();\n';
 		} else if (symbolDescription.expect !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
 			funcBody += '\tfree_all(toDealloc);\n';
 			funcBody += '\treturn;\n';
 			funcBody += '}\n';
-			funcBody += 'free_all(toDealloc)\n';
+			funcBody += 'free_all(toDealloc);\n';
 			funcBody += 'throw new Error();\n';
 		} else if (symbolDescription.return !== undefined) {
 			funcBody += sc(symbolDescription.target) + '\n';

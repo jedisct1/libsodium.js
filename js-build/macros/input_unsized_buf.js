@@ -1,6 +1,6 @@
 // ---------- input: {var_name} (unsized_buf)
 
-var {var_name}_byte, {var_name}_size = {var_name}.length;
+var {var_name}_byte, {var_name}_size = {var_name}.length | 0;
 
 if ({var_name} == undefined) {
 	free_all(toDealloc);
