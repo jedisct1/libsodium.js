@@ -201,19 +201,15 @@ var sodium = (function () {
 
 	//---------------------------------------------------------------------------
 
-	function injectBytes(bs, leftPadding) {
-		var p = leftPadding || 0;
-		var address = MALLOC(bs.length + p);
-		libsodium.HEAPU8.set(bs, address + p);
-		for (var i = address; i < address + p; i++) {
-			libsodium.HEAPU8[i] = 0;
-		}
+	function injectBytes(bs) {
+		var address = MALLOC(bs.length);
+		libsodium.HEAPU8.set(bs, address);
 		return address;
 	}
 
-	function check_injectBytes(function_name, what, thing, expected_length, leftPadding) {
+	function check_injectBytes(function_name, what, thing, expected_length) {
 		check_length(function_name, what, thing, expected_length);
-		return injectBytes(thing, leftPadding);
+		return injectBytes(thing);
 	}
 
 	function extractBytes(address, length) {
