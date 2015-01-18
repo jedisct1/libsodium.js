@@ -68,7 +68,7 @@ function buildSymbol(symbolDescription){
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
 				//Unknown parameter type. What to do?
-				console.log('What is the input type ' + currentParameter.type + '?');
+				console.error('What is the input type ' + currentParameter.type + '?');
 				process.exit(1);
 			}
 			funcBody += currentParameterCode + '\n';
@@ -83,7 +83,7 @@ function buildSymbol(symbolDescription){
 				currentOutputCode = macros['output_buf'];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
 			} else if (!(currentOutput.type == 'uint')) {
-				console.log('What is the output type ' + currentOutput.type + '?');
+				console.error('What is the output type ' + currentOutput.type + '?');
 				process.exit(1);
 			}
 			funcBody += currentOutputCode + '\n';
@@ -123,7 +123,7 @@ function buildSymbol(symbolDescription){
 		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
 		exportsCode += '\n\tif (typeof ' + symbolName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + constVal + ';';
 	} else {
-		console.log('What is the symbol type ' + symbolDescription.type + '?');
+		console.error('What is the symbol type ' + symbolDescription.type + '?');
 		process.exit(1);
 	}
 	docBuilder.buildDocForSymbol(symbolDescription);
