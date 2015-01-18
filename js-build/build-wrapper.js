@@ -95,7 +95,7 @@ function buildSymbol(symbolDescription){
 		//Writing the target call
 		if (symbolDescription.expect !== undefined && symbolDescription.return !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
-			funcBody += '\tvar ret = ' + symbolDescription.return + '\n';
+			funcBody += '\tvar ret = ' + symbolDescription.return + ';\n';
 			funcBody += '\tfree_all(toDealloc);\n';
 			funcBody += '\treturn ret;\n';
 			funcBody += '}\n';
