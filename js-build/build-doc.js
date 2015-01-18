@@ -1,4 +1,5 @@
 var docStr = '# Libsodium.js wrapper - API usage' + newParagraph();
+docStr += 'Once you\'ve included libsodium.js and sodium.js, all the available wrapped functions and constants can be accessed in the `sodium` object.' + newParagraph(); 
 docStr += 'To learn about the role of each method, please refer to the original [documentation](http://doc.libsodium.org) of libsodium' + newParagraph();
 docStr += 'List of existing types:' + newLine();
 docStr += '* Buffer : An Uint8Array of a determined size. Used for keys, nonces, etc...' + newLine();
