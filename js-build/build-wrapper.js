@@ -61,14 +61,10 @@ function buildSymbol(symbolDescription){
 			if (currentParameter.type == 'buf'){
 				currentParameterCode = macros['input_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
-			} else if (currentParameter.type == 'uint'){
-				currentParameterCode = macros['input_uint'];
-				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
-			} else if (currentParameter.type == 'unsized_buf'){
-				currentParameterCode = macros['input_unsized_buf'];
-				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
-			} else if (currentParameter.type == 'encoding'){
-				currentParameterCode = macros['input_encoding'];
+			} else if (currentParameter.type == 'uint' ||
+					   currentParameter.type == 'unsized_buf' ||
+					   currentParameter.type == 'encoding') {
+				currentParameterCode = macros['input_' + currentParameter.type];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
 				//Unknown parameter type. What to do?
