@@ -120,11 +120,11 @@ function buildSymbol(symbolDescription){
 
 		functionsCode += funcCode;
 		exportsCode += '\n\tif (typeof ' + targetName + ' == \'function\')  exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
-	} else if (symbolDescription.type == 'uint'){
+	} else if (symbolDescription.type === 'uint'){
 		var constVal = symbolDescription.target;
 		var symbolName = symbolDescription.target.replace(new RegExp(/\(\)$/), '');
 		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
-		exportsCode += '\n\tif (typeof ' + symbolName + ' == \'function\') exports.' + symbolDescription.name + ' = ' + constVal + ';';
+		exportsCode += '\n\tif (typeof ' + symbolName + ' ==\'function\') exports.' + symbolDescription.name + ' = ' + constVal + ' | 0;';
 	} else {
 		console.error('What is the symbol type ' + symbolDescription.type + '?');
 		process.exit(1);
@@ -156,7 +156,7 @@ function injectTabs(code){
 }
 
 function loadConstants(){
-	var constList = fs.readFileSync(path.join(__dirname, 'constants.json'), {encoding: 'utf8'});
+	var constList = fs.readFileSync(path.join(__dirname, 'constants_uint.json'), {encoding: 'utf8'});
 	try {
 		constList = JSON.parse(constList);
 	} catch (e){

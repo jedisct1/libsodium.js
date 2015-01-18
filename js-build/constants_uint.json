@@ -50,7 +50,8 @@
 	"crypto_stream_salsa20_noncebytes",
 	"crypto_stream_keybytes",
 	"crypto_stream_noncebytes",
-	"crypto_stream_primitive",
 	"crypto_stream_aes128ctr_keybytes",
-	"crypto_stream_aes128ctr_noncebytes"
+	"crypto_stream_aes128ctr_noncebytes",
+	"sodium_library_version_major",
+	"sodium_library_version_minor"
 ]
