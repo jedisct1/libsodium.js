@@ -2,19 +2,19 @@ var docStr = '# Libsodium.js wrapper - API usage' + newParagraph();
 docStr += 'Once you\'ve included libsodium.js and sodium.js, all the available wrapped functions and constants can be accessed in the `sodium` object.' + newParagraph();
 docStr += 'To learn about the role of each method, please refer to the original [documentation](http://doc.libsodium.org) of libsodium' + newParagraph();
 docStr += 'List of existing types:' + newLine();
-docStr += '* Buffer : An Uint8Array of a determined size. Used for keys, nonces, etc...' + newLine();
-docStr += '* Unsized Buffer : An Uint8Array of an arbitrary size. Used for messages to sign, encrypt, hash, etc...' + newLine();
+docStr += '* Buf : An Uint8Array of a determined size. Used for keys, nonces, etc...' + newLine();
+docStr += '* Unsized Buf : An Uint8Array of an arbitrary size. Used for messages to sign, encrypt, hash, etc...' + newLine();
 docStr += '* Uint : An unsigned integer' + newLine();
 docStr += '* Encoding : A string indicating in which encoding you want the result to be returned. Supported values are "uint8array", "utf8", "hex", "base64". Optional parameter. Not available on all functions. Defaults to uint8array. Note that you can change the default encoding by calling `libsodium.set_encoding(encodingName)`' + newParagraph();
 docStr += 'Please note that a function that returns more than one variable will in fact return an object, which will contain the outputs in question and whose attributes will be named after the outputs\' names' + newParagraph();
 docStr += 'Please also note that these are the function available "in general" in the wrapper. The actual number of availble functions in given build may be inferior to that, depending on what functions you choose to build to JS.' + newParagraph();
 docStr += 'In addition to the main functions listed below, the library comes with a short list of helper methods. And here they are:' + newLine();
-docStr += '* `uint8array_to_String(buffer)` : converts an Uint8Array into a UTF8 standard string' + newLine();
+docStr += '* `uint8array_to_String(buf)` : converts an Uint8Array into a UTF8 standard string' + newLine();
 docStr += '* `string_to_Uint8Array(string)` : converts a standard string into a Uint8Array' + newLine();
-docStr += '* `to_hex(buffer)` : returns the hexadecimal representation of the provided buffer' + newLine();
+docStr += '* `to_hex(buf)` : returns the hexadecimal representation of the provided buf' + newLine();
 docStr += '* `from_hex(string)` : converts the provided hex-string into a Uint8Array and returns it' + newLine();
 docStr += '* `is_hex(string)` : determines whether the provided string looks like hex data or not' + newLine();
-docStr += '* `to_base64(buffer)` : returns the base64 representation of the provided buffer' + newLine();
+docStr += '* `to_base64(buf)` : returns the base64 representation of the provided buf' + newLine();
 docStr += '* `from_base64(string)` : tries to convert the supposedly base64 string into a Uint8Array' + newLine();
 docStr += '* `available_encodings()` : returns a list of the available encodings' + newLine();
 docStr += '* `set_encoding(encodingName)` : reset the default result encoding to the encoding named `encodingName`' + newLine();
@@ -36,10 +36,10 @@ exports.buildDocForSymbol = function(s){
 		for (var i = 0; i < s.inputs.length; i++){
 			sDoc += '* `' + s.inputs[i].name + '`: ';
 			var paramType = s.inputs[i].type;
-			if (paramType == 'buffer'){
-				sDoc += 'Buffer (size: ' + s.inputs[i].size + ')';
-			} else if (paramType == 'unsized_buffer'){
-				sDoc += 'Unsized buffer';
+			if (paramType == 'buf'){
+				sDoc += 'Buf (size: ' + s.inputs[i].size + ')';
+			} else if (paramType == 'unsized_buf'){
+				sDoc += 'Unsized buf';
 			} else if (paramType == 'uint'){
 				sDoc += 'Unsigned Integer';
 			} else if (paramType == 'encoding'){
@@ -52,8 +52,8 @@ exports.buildDocForSymbol = function(s){
 			for (var i = 0; i < s.outputs.length; i++){
 				sDoc += '* `' + s.outputs[i].name + '`: ';
 				var outputType = s.outputs[i].type;
-				if (outputType == 'buffer'){
-					sDoc += 'Buffer (size: ' + s.outputs[i].size + ')';
+				if (outputType == 'buf'){
+					sDoc += 'Buf (size: ' + s.outputs[i].size + ')';
 				} else if (outputType == 'uint'){
 					sDoc += 'Unsigned Integer';
 				} else throw new Error('Unknown output type: ' + outputType);

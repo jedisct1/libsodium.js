@@ -4,33 +4,33 @@
 	"inputs": [
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "nonce",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_noncebytes()"
 		},
 		{
 			"name": "publicKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_publickeybytes()"
 		},
 		{
 			"name": "secretKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "ciphertext",
-			"type": "buffer",
+			"type": "buf",
 			"size": "message_size"
 		},
 		{
 			"name": "mac",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_macbytes()"
 		}
 	],

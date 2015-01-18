@@ -5,22 +5,22 @@
 	"inputs": [
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "privateKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
-			"type": "buffer",
+			"type": "buf",
 			"name": "signature",
 			"size": "message.length + libsodium._crypto_sign_bytes()"
 		},
 		{
-			"type": "buffer",
+			"type": "buf",
 			"name": "slen",
 			"size": "8"
 		}

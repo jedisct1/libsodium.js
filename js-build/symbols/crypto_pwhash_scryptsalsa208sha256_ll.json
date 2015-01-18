@@ -4,11 +4,11 @@
 	"inputs": [
 		{
 			"name": "password",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "salt",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "opsLimit",
@@ -31,7 +31,7 @@
 		{
 			"name": "derivedKey",
 			"size": "keyLength",
-			"type": "buffer"
+			"type": "buf"
 		}
 	],
 	"target": "libsodium._crypto_pwhash_scryptsalsa208sha256_ll(password_byte, password_size, salt_byte, salt_size, opsLimit, 0, r, p, derivedKey_byte, keyLength) | 0",

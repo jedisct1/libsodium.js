@@ -5,13 +5,13 @@
 	"inputs": [
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		}
 	],
 	"outputs": [
 		{
 			"name": "hash",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_hash_sha512_bytes()"
 		}
 	],

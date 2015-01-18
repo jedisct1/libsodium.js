@@ -4,7 +4,7 @@
 	"inputs": [
 		{
 			"name": "seed",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_seedbytes()"
 		}
 	],
@@ -12,11 +12,11 @@
 		{
 			"name": "publicKey",
 			"size": "libsodium._crypto_box_publickeybytes()",
-			"type": "buffer"
+			"type": "buf"
 		},
 		{
 			"name": "privateKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_secretkeybytes()"
 		}
 	],

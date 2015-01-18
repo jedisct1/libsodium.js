@@ -5,18 +5,18 @@
 	"inputs": [
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "key",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_onetimeauth_keybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "hash",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_onetimeauth_bytes()"
 		}
 	],

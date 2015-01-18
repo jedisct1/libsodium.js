@@ -5,11 +5,11 @@
 	"inputs": [
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "key",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_generichash_keybytes()"
 		}
 	],
@@ -17,7 +17,7 @@
 		{
 			"name": "hash",
 			"size": "libsodium._crypto_generichash_bytes()",
-			"type": "buffer"
+			"type": "buf"
 		}
 	],
 	"target": "libsodium._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size) | 0",

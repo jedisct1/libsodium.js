@@ -5,14 +5,14 @@
 	"inputs": [
 		{
 			"name": "privateKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "seed",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_seedbytes()"
 		}
 	],

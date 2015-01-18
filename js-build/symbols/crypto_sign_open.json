@@ -5,17 +5,17 @@
 	"inputs": [
 		{
 			"name": "signedMessage",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "publicKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_publickeybytes()"
 		}
 	],
 	"outputs": [
 		{
-			"type": "buffer",
+			"type": "buf",
 			"name": "message",
 			"size": "signedMessage_size - libsodium._crypto_sign_bytes()"
 		}

@@ -4,14 +4,14 @@
 	"inputs": [
 		{
 			"name": "edSk",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_secretkeybytes()"
 		}
 	],
 	"outputs": [
 		{
 			"name": "cSk",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_scalarmult_scalarbytes()"
 		}
 	],

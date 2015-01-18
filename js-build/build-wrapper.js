@@ -13,7 +13,7 @@ for (var i = 0; i < macrosFiles.length; i++){
 
 var templateCode = fs.readFileSync(path.join(__dirname, 'wrap-template.js'), {encoding: 'utf8'});
 
-var scriptBuffer = templateCode;
+var scriptBuf = templateCode;
 var functionsCode = '';
 var exportsCode = '';
 
@@ -58,13 +58,13 @@ function buildSymbol(symbolDescription){
 			paramsArray += currentParameter.name;
 			if (i != symbolDescription.inputs.length - 1) paramsArray += ', ';
 			//Adding the correspondant parameter handling macro, into the function body
-			if (currentParameter.type == 'buffer'){
+			if (currentParameter.type == 'buf'){
 				currentParameterCode = macros['input_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
 			} else if (currentParameter.type == 'uint'){
 				currentParameterCode = macros['input_uint'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
-			} else if (currentParameter.type == 'unsized_buffer'){
+			} else if (currentParameter.type == 'unsized_buf'){
 				currentParameterCode = macros['input_unsized_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else if (currentParameter.type == 'encoding'){
@@ -83,7 +83,7 @@ function buildSymbol(symbolDescription){
 		for (var i = 0; i < symbolDescription.outputs.length; i++){
 			var currentOutput = symbolDescription.outputs[i];
 			var currentOutputCode;
-			if (currentOutput.type == 'buffer'){
+			if (currentOutput.type == 'buf'){
 				currentOutputCode = macros['output_buf'];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
 			} else if (!(currentOutput.type == 'uint')) {
@@ -147,8 +147,8 @@ function applyMacro(macroCode, symbols, substitutes){
 }
 
 function finalizeWrapper(){
-	scriptBuffer = applyMacro(scriptBuffer, ['{wraps_here}', '{exports_here}'], [functionsCode, exportsCode]);
-	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'sodium.js'), scriptBuffer);
+	scriptBuf = applyMacro(scriptBuf, ['{wraps_here}', '{exports_here}'], [functionsCode, exportsCode]);
+	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'sodium.js'), scriptBuf);
 	fs.writeFileSync(path.join(__dirname, '../API.md'), docBuilder.getResultDoc());
 }
 

@@ -6,12 +6,12 @@
 		{
 			"name": "privateKey",
 			"size": "libsodium._crypto_scalarmult_scalarbytes()",
-			"type": "buffer"
+			"type": "buf"
 		}
 	],
 	"outputs": [
 		{
-			"type": "buffer",
+			"type": "buf",
 			"name": "publicKey",
 			"size": "libsodium._crypto_scalarmult_scalarbytes()"
 		}

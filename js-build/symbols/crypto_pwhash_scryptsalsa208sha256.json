@@ -4,11 +4,11 @@
 	"inputs": [
 		{
 			"name": "password",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "salt",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_pwhash_scryptsalsa208sha256_saltbytes()"
 		},
 		{
@@ -27,7 +27,7 @@
 	"outputs": [
 		{
 			"name": "derivedKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "keyLength"
 		}
 	],

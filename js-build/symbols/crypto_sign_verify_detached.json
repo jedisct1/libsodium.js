@@ -6,16 +6,16 @@
 	"inputs": [
 		{
 			"name": "signature",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_bytes()"
 		},
 		{
 			"name": "message",
-			"type": "unsized_buffer"
+			"type": "unsized_buf"
 		},
 		{
 			"name": "publicKey",
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_sign_publickeybytes()"
 		}
 	],

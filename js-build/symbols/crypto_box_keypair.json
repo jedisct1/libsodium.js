@@ -4,12 +4,12 @@
 	"inputs": [],
 	"outputs": [
 		{
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_publickeybytes()",
 			"name": "publicKey"
 		},
 		{
-			"type": "buffer",
+			"type": "buf",
 			"size": "libsodium._crypto_box_secretkeybytes()",
 			"name": "secretKey"
 		}

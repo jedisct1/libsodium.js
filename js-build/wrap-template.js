@@ -142,7 +142,7 @@ var sodium = (function () {
 	function encodeResult(result, optionalEncoding){
 		var selectedEncoding = optionalEncoding || result_encoding;
 		if (!is_encoding(selectedEncoding)) throw new Error(selectedEncoding + ' encoding is not available');
-		if (result instanceof TargetBuffer) {
+		if (result instanceof TargetBuf) {
 			var buf = result.extractBytes();
 			if (selectedEncoding == 'uint8array') return buf;
 			else if (selectedEncoding == 'utf8') return uint8Array_to_String(buf);
@@ -158,7 +158,7 @@ var sodium = (function () {
 			return encodedResult;
 		} else if (typeof result == 'string') {
 			return result;
-		} else { //What to do if we have a result to encode, that is not a buffer nor an object?
+		} else { //What to do if we have a result to encode, that is not a buf nor an object?
 			throw new TypeError('Cannot encode result');
 		}
 	}
@@ -228,12 +228,12 @@ var sodium = (function () {
 		}
 	}
 
-	function TargetBuffer(length) {
+	function TargetBuf(length) {
 		this.length = length;
 		this.address = MALLOC(length);
 	}
 
-	TargetBuffer.prototype.extractBytes = function (offset) {
+	TargetBuf.prototype.extractBytes = function (offset) {
 		var result = extractBytes(this.address + (offset || 0), this.length - (offset || 0));
 		FREE(this.address);
 		this.address = null;
