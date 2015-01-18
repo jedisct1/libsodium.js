@@ -172,7 +172,7 @@ function loadConstants(){
 		var currentConstant = {
 			name: constList[i],
 			type: "uint",
-			target: "libsodium._" + constList[i] + '()'
+			target: "libsodium._" + constList[i].toLowerCase() + '()'
 		}
 		constSymbolsArray.push(currentConstant);
 	}
