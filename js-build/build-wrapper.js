@@ -110,9 +110,9 @@ function buildSymbol(symbolDescription){
 			funcBody += 'throw new Error();\n';
 		} else if (symbolDescription.return !== undefined) {
 			funcBody += sc(symbolDescription.target) + '\n';
-			funcBody += '\tvar ret = ' + symbolDescription.return + '\n';
-			funcBody += '\tfree_all(toDealloc);\n';
-			funcBody += '\treturn ret;\n';
+			funcBody += 'var ret = (' + symbolDescription.return + ');\n';
+			funcBody += 'free_all(toDealloc);\n';
+			funcBody += 'return ret;\n';
 		} else {
 			funcBody += sc(symbolDescription.target) + '\n';
 		}
