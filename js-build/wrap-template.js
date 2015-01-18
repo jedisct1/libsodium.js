@@ -30,7 +30,11 @@ var sodium = (function () {
 			encoded.push(String.fromCharCode(b[i]));
 		}
 		encoded = encoded.join('');
-		return decodeURIComponent(escape(encoded));
+		try {
+			return decodeURIComponent(escape(encoded));
+		} catch (e) {
+			throw new Error('Cannot convert to a UTF8 string');
+		}
 	}
 
 	function to_hex(bs) {
