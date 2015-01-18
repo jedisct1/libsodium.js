@@ -170,7 +170,7 @@ var sodium = (function () {
 		return encFound;
 	}
 
-	function check_encoding(enc, toDealloc) {
+	function check_encoding(toDealloc, enc) {
 		if (!enc) {
 			return;
 		}
@@ -254,6 +254,16 @@ var sodium = (function () {
 		for (var i = 0; i < addresses.length; i++) {
 			FREE(addresses[i]);
 		}
+	}
+
+	function throwError(toDealloc, err) {
+		free_all(toDealloc);
+		throw new Error(err);
+	}
+
+	function throwTypeError(toDealloc, err) {
+		free_all(toDealloc);
+		throw new TypeError(err);
 	}
 
 	{wraps_here}
