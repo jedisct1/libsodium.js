@@ -6,5 +6,5 @@ if ({var_name} && typeof {var_name} !== 'string') {
 }
 if ({var_name} && !is_encoding({var_name})) {
 	free_all(toDealloc);
-	throw new Error('{var_name} is not a valid encoding');
+	throw new Error('{var_name} is not a supported encoding');
 }

@@ -22,5 +22,5 @@ if ({var_name} instanceof Uint8Array) {
 	toDealloc.push({var_name}_byte);
 } else {
 	free_all(toDealloc);
-	throw new TypeError('Illegal input type for {var_name}');
+	throw new TypeError('Unsupported input type for {var_name}');
 }
