@@ -266,6 +266,12 @@ var sodium = (function () {
 		throw new TypeError(err);
 	}
 
+	function requireDefined(toDealloc, varValue, varName) {
+		if (varValue == undefined) {
+			throwError(toDealloc, varName + ' cannot be null or undefined');
+		}
+	}
+
 	{wraps_here}
 
 	exports.uint8Array_to_String = uint8Array_to_String;
