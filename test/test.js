@@ -219,8 +219,8 @@ var sodium_test = (function(){
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA512/256 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < sodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_keybytes);
+				if (v.k.length < sodium.crypto_auth_KEYBYTES){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_KEYBYTES);
 					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
@@ -242,8 +242,8 @@ var sodium_test = (function(){
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA512 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < sodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha512_keybytes);
+				if (v.k.length < sodium.crypto_auth_hmacsha512_KEYBYTES){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha512_KEYBYTES);
 					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
@@ -265,8 +265,8 @@ var sodium_test = (function(){
 			if (!validTag) throw new Error('Cannot verify HMAC-SHA256 value for vector: ' + JSON.stringify(v));
 
 			function expandKey(){
-				if (v.k.length < sodium.crypto_auth_keybytes){
-					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha256_keybytes);
+				if (v.k.length < sodium.crypto_auth_hmacsha256_KEYBYTES){
+					var newKeyBuffer = new Uint8Array(sodium.crypto_auth_hmacsha256_KEYBYTES);
 					var utf8KeyBuffer = sodium.string_to_Uint8Array(v.k);
 					for (var i = 0; i < v.k.length; i++) newKeyBuffer[i] = utf8KeyBuffer[i];
 					return newKeyBuffer;
