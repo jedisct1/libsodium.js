@@ -62,14 +62,14 @@
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
-				log('scalarmult_scalarbytes: ' + sodium.crypto_scalarmult_scalarbytes);
-				log('scalarmult_bytes: ' + sodium.crypto_scalarmult_bytes);
+				log('scalarmult_SCALARBYTES: ' + sodium.crypto_scalarmult_SCALARBYTES);
+				log('scalarmult_BYTES: ' + sodium.crypto_scalarmult_BYTES);
 
-				var c25519scalar1 = randBuffer(sodium.crypto_scalarmult_scalarbytes);
+				var c25519scalar1 = randBuffer(sodium.crypto_scalarmult_SCALARBYTES);
 				var c25519publicKey1 = sodium.crypto_scalarmult_base(c25519scalar1);
 				log('Private key 1:&nbsp;' + to_hex(c25519scalar1));
 				log('Pubkey 1:&nbsp;' + to_hex(c25519publicKey1));
-				var c25519scalar2 = randBuffer(sodium.crypto_scalarmult_scalarbytes);
+				var c25519scalar2 = randBuffer(sodium.crypto_scalarmult_SCALARBYTES);
 				var c25519publicKey2 = sodium.crypto_scalarmult_base(c25519scalar2);
 				log('Private key 2:&nbsp;' + to_hex(c25519scalar2));
 				log('Pubkey 2:&nbsp;' + to_hex(c25519publicKey2));
@@ -104,7 +104,7 @@
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
-				var ed25519seed = randBuffer(sodium.crypto_sign_seedbytes);
+				var ed25519seed = randBuffer(sodium.crypto_sign_SEEDBYTES);
 				var ed25519keypair = sodium.crypto_sign_seed_keypair(ed25519seed, 'hex');
 				var msg = 'Message';
 				log('Message to be signed: ' + msg);
@@ -142,8 +142,8 @@
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
-				var ed25519seed1 = randBuffer(sodium.crypto_sign_seedbytes);
-				var ed25519seed2 = randBuffer(sodium.crypto_sign_seedbytes);
+				var ed25519seed1 = randBuffer(sodium.crypto_sign_SEEDBYTES);
+				var ed25519seed2 = randBuffer(sodium.crypto_sign_SEEDBYTES);
 				var ed25519keypair1 = sodium.crypto_sign_seed_keypair(ed25519seed1, 'hex');
 				var ed25519keypair2 = sodium.crypto_sign_seed_keypair(ed25519seed2, 'hex');
 
@@ -187,10 +187,10 @@
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
-				var nonce = randBuffer(sodium.crypto_box_noncebytes);
+				var nonce = randBuffer(sodium.crypto_box_NONCEBYTES);
 				log('Nonce: ' + to_hex(nonce));
-				var seed1 = randBuffer(sodium.crypto_box_seedbytes);
-				var seed2 = randBuffer(sodium.crypto_box_seedbytes);
+				var seed1 = randBuffer(sodium.crypto_box_SEEDBYTES);
+				var seed2 = randBuffer(sodium.crypto_box_SEEDBYTES);
 				log('Seed 1: ' + to_hex(seed1));
 				log('Seed 2: ' + to_hex(seed2));
 				var keyPair1 = sodium.crypto_box_seed_keypair(seed1, 'hex');
@@ -234,9 +234,9 @@
 				var logStr = '';
 				function log(s){logStr+=s+'<br>';}
 
-				var nonce = randBuffer(sodium.crypto_secretbox_noncebytes);
+				var nonce = randBuffer(sodium.crypto_secretbox_NONCEBYTES);
 				log('Nonce: ' + to_hex(nonce));
-				var key = randBuffer(sodium.crypto_secretbox_keybytes);
+				var key = randBuffer(sodium.crypto_secretbox_KEYBYTES);
 				log('Key: ' + to_hex(key));
 
 				var message = 'Crypto Secretbox testing';
@@ -290,7 +290,7 @@
 
 				var message = 'Message to be signed';
 				log('Message: "' + message + '"');
-				var hmacKey = randBuffer(sodium.crypto_auth_keybytes);
+				var hmacKey = randBuffer(sodium.crypto_auth_KEYBYTES);
 				log('HMAC key: ' + to_hex(hmacKey));
 				var tag = sodium.crypto_auth(message, hmacKey);
 				log('HMAC tag: ' + to_hex(tag));
