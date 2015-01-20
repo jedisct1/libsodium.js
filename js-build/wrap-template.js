@@ -1,8 +1,14 @@
-var sodium = (function () {
-	'use strict';
+'use strict';
+(function(root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['libsodium'], factory);
+    } else if (typeof exports === 'object') {
+        module.exports = factory(require('libsodium'));
+    } else {
+        root.sodium = factory(root.libsodium || Module);
+    }
+}(this, function(libsodium) {
 	var exports = {};
-
-	var libsodium = typeof(require) !== 'undefined' ? require('libsodium') : Module;
 	var result_encoding = 'uint8array';
 
 	libsodium._sodium_init();
@@ -288,6 +294,4 @@ var sodium = (function () {
 	{exports_here}
 
 	return exports;
-})();
-
-var module = module || { }, exports = module.exports = sodium;
+}));
