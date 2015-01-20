@@ -275,6 +275,16 @@
 		}
 	}
 
+    function inputToUint8Array(toDealloc, varValue, varName) {
+		requireDefined(toDealloc, varValue, varName);
+		if (!(varValue instanceof Uint8Array)) {
+			return varValue;
+		} else if (typeof varValue === 'string') {
+			return string_to_Uint8Array(varValue);
+		}
+		throwTypeError(toDealloc, 'unsupported input type for ' + varName);
+    }
+
 	{wraps_here}
 
 	exports.uint8Array_to_String = uint8Array_to_String;
