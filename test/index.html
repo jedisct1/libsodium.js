@@ -6,7 +6,6 @@
 	<script type="text/javascript" src="libsodium.js"></script>
 	<script type="text/javascript" src="sodium.js"></script>
 	<script type="text/javascript" src="test.js"></script>
-	<!--<script type="text/javascript" src="pre.js"></script>-->
 	<style>
 		#message{
 			font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
@@ -33,7 +32,6 @@
 	</style>
 	<body>
 		<div>
-			<!--<button onclick="libsodium.init();">Init</button>-->
 			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>
 			<button onclick="message.innerHTML=test25519();">Test Ed25519 -> Curve25519</button>
@@ -155,14 +153,10 @@
 					privateKey: sodium.crypto_sign_ed25519_sk_to_curve25519(from_hex(ed25519keypair1.privateKey))
 				};
 
-				//log('Curve25519 keypair 1 : ' + JSON.stringify(curve25519keypair1));
-
 				var curve25519keypair2 = {
 					publicKey: sodium.crypto_sign_ed25519_pk_to_curve25519(from_hex(ed25519keypair2.publicKey)),
 					privateKey: sodium.crypto_sign_ed25519_sk_to_curve25519(from_hex(ed25519keypair2.privateKey))
 				};
-
-				//log('Curve25519 keypair 2 : ' + JSON.stringify(curve25519keypair2));
 
 				var sharedSecret1 = sodium.crypto_scalarmult(curve25519keypair1.privateKey, curve25519keypair2.publicKey);
 				log('Shared secret 1: ' + to_hex(sharedSecret1));
