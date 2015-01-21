@@ -165,7 +165,7 @@
 	// AllocatedBuf: pointer allocated using _malloc() + length
 	function AllocatedBuf(length) {
 		this.length = length;
-		this.address = _MALLOC(length);
+		this.address = _malloc(length);
 	}
 
 	// Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
@@ -177,29 +177,29 @@
 
 	// _malloc() a region and initialize it with the content of a Uint8Array
 	function _toAllocatedBufAddress(bytes) {
-		var address = _MALLOC(bytes.length);
+		var address = _malloc(bytes.length);
 		libsodium.HEAPU8.set(bytes, address);
 		return address;
 	}
 
-	function _MALLOC(nbytes) {
-		var result = libsodium._malloc(nbytes);
+	function _malloc(length) {
+		var result = libsodium._malloc(length);
 		if (result === 0) {
 			throw {
 				message: "malloc() failed",
-				nbytes: nbytes
+				length: length
 			};
 		}
 		return result;
 	}
 
-	function _FREE(pointer) {
+	function _free(pointer) {
 		libsodium._free(pointer);
 	}
 
 	function _free_all(addresses) {
 		for (var i = 0; i < addresses.length; i++) {
-			_FREE(addresses[i]);
+			_free(addresses[i]);
 		}
 	}
 
