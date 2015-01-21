@@ -5,5 +5,5 @@ var {var_name}_byte, {var_name}_size = ({var_size}) | 0;
 if ({var_name}.length !== {var_name}_size) {
 	_throwTypeError(toDealloc, 'invalid {var_name} size');
 }
-{var_name}_byte = _injectBytes({var_name});
+{var_name}_byte = _toTargetBufAddress({var_name});
 toDealloc.push({var_name}_byte);

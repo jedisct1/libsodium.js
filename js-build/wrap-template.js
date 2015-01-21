@@ -176,7 +176,7 @@
 	};
 
 	// _malloc() a region and initialize it with the content of a Uint8Array
-	function _injectBytes(bytes) {
+	function _toTargetBufAddress(bytes) {
 		var address = _MALLOC(bytes.length);
 		libsodium.HEAPU8.set(bytes, address);
 		return address;
