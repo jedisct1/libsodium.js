@@ -23,38 +23,38 @@ docStr += '* `symbols()` : returns a list of the currently methods and constants
 docStr += '* `raw` : attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine()
 docStr += '* `init()` : reference to the `libsodium.sodium_init()` method. Doesn\'t need to be called, as it is called by sodium.js on loading.' + newParagraph();
 
-exports.buildDocForSymbol = function(s){
+exports.buildDocForSymbol = function (s) {
 	if (typeof s != 'object') throw new TypeError('s must be a object');
 	if (!(s.type && (s.type == 'function' || s.type == 'uint'))) throw new Error('Invalid symbol type');
 	var sDoc = '## ' + s.name + newLine();
 
-	if (s.type == 'function'){
+	if (s.type == 'function') {
 		if (!Array.isArray(s.inputs)) throw new Error('Invalid type for symbol.inputs. Symbol: ' + JSON.stringify(s));
 		if (!Array.isArray(s.outputs)) throw new Error('Invalid type for symbol.outputs. Symbol: ' + JSON.stringify(s));
 		sDoc += 'Function' + newParagraph();
 		sDoc += '__Parameters:__' + newLine();
-		for (var i = 0; i < s.inputs.length; i++){
+		for (var i = 0; i < s.inputs.length; i++) {
 			sDoc += '* `' + s.inputs[i].name + '`: ';
 			var paramType = s.inputs[i].type;
-			if (paramType == 'buf'){
+			if (paramType == 'buf') {
 				sDoc += 'Buf (size: ' + s.inputs[i].size + ')';
-			} else if (paramType == 'unsized_buf'){
+			} else if (paramType == 'unsized_buf') {
 				sDoc += 'Unsized buf';
-			} else if (paramType == 'uint'){
+			} else if (paramType == 'uint') {
 				sDoc += 'Unsigned Integer';
-			} else if (paramType == 'encoding'){
+			} else if (paramType == 'encoding') {
 				sDoc += 'Encoding type';
 			} else throw new Error('Unknown parameter type: ' + paramType);
 			sDoc += newLine();
 		}
 		sDoc += newLine() + '__Outputs:__' + newLine();
-		if (s.outputs.length > 0){
-			for (var i = 0; i < s.outputs.length; i++){
+		if (s.outputs.length > 0) {
+			for (var i = 0; i < s.outputs.length; i++) {
 				sDoc += '* `' + s.outputs[i].name + '`: ';
 				var outputType = s.outputs[i].type;
-				if (outputType == 'buf'){
+				if (outputType == 'buf') {
 					sDoc += 'Buf (size: ' + s.outputs[i].size + ')';
-				} else if (outputType == 'uint'){
+				} else if (outputType == 'uint') {
 					sDoc += 'Unsigned Integer';
 				} else throw new Error('Unknown output type: ' + outputType);
 				sDoc += newLine();
@@ -71,14 +71,14 @@ exports.buildDocForSymbol = function(s){
 	docStr += sDoc;
 }
 
-exports.getResultDoc = function(){
+exports.getResultDoc = function () {
 	return docStr;
 }
 
-function newLine(){
+function newLine() {
 	return '\r\n';
 }
 
-function newParagraph(){
+function newParagraph() {
 	return '\r\n\r\n';
 }
