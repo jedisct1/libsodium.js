@@ -283,7 +283,7 @@
 
 	function inputToUint8Array(toDealloc, varValue, varName) {
 		requireDefined(toDealloc, varValue, varName);
-		if (!(varValue instanceof Uint8Array)) {
+		if (varValue instanceof Uint8Array) {
 			return varValue;
 		} else if (typeof varValue === 'string') {
 			return string_to_Uint8Array(varValue);
