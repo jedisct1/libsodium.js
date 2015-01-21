@@ -39,10 +39,10 @@ exports.buildDocForSymbol = function (s) {
 				sDoc += 'Buf (size: ' + s.inputs[i].size + ')';
 			} else if (paramType == 'unsized_buf') {
 				sDoc += 'Unsized buf';
+			} else if (paramType == 'unsized_buf_optional') {
+				sDoc += 'Optional unsized buf';
 			} else if (paramType == 'uint') {
 				sDoc += 'Unsigned Integer';
-			} else if (paramType == 'encoding') {
-				sDoc += 'Encoding type';
 			} else throw new Error('Unknown parameter type: ' + paramType);
 			sDoc += newLine();
 		}

@@ -13,7 +13,7 @@
 		},
 		{
 			"name": "key",
-			"type": "unsized_buf"
+			"type": "unsized_buf_optional"
 		}
 	],
 	"outputs": [
