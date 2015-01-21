@@ -16,7 +16,7 @@
 	//---------------------------------------------------------------------------
 	// Codecs
 
-	function string_to_Uint8Array(str) {
+	function from_string(str) {
 		if (typeof TextEncoder === 'function') {
 			return new TextEncoder('utf-8').encode(str);
 		}
@@ -262,14 +262,14 @@
 		if (varValue instanceof Uint8Array) {
 			return varValue;
 		} else if (typeof varValue === 'string') {
-			return string_to_Uint8Array(varValue);
+			return from_string(varValue);
 		}
 		throwTypeError(toDealloc, 'unsupported input type for ' + varName);
 	}
 
 	{{wraps_here}}
 
-	exports.string_to_Uint8Array = string_to_Uint8Array;
+	exports.from_string = from_string;
 	exports.to_hex = to_hex;
 	exports.from_hex = from_hex;
 	exports.to_base64 = to_base64;
