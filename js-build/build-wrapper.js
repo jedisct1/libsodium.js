@@ -40,13 +40,51 @@ for (var i = 0; i < symbolsFiles.length; i++) {
 	symbols.push(currentSymbol);
 }
 
-//Load constants symbols
-loadConstants();
-
 for (var i = 0; i < symbols.length; i++) {
 	buildSymbol(symbols[i]);
 }
+exportsCode += "\n";
+exportFunctions(symbols);
+exportConstants(loadConstants());
 finalizeWrapper();
+
+function exportFunctions(symbols) {
+    var keys = [ ];
+    for (var i = 0; i < symbols.length; i++) {
+        keys.push('"' + symbols[i].name + '"');
+    }
+    exportsCode += "\tvar functions = [" + keys.sort().join(", ") + "];\n";
+    exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
+    exportsCode += "\t\tvar raw = libsodium[\"_\" + functions[i]];\n";
+    exportsCode += "\t\tif (typeof raw === \"function\") exports[functions[i]] = raw\n";
+    exportsCode += "\t}\n";
+}
+
+function exportConstants(constSymbols) {
+    var keys = [ ];
+    for (var i = 0; i < constSymbols.length; i++) {
+        if (constSymbols[i].type === 'uint') {
+            keys.push('"' + constSymbols[i].name + '"');
+        }
+    }
+    exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
+    exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
+    exportsCode += "\t\tvar raw = libsodium[\"_\" + constants[i].toLowerCase()];\n";
+    exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw();\n"
+    exportsCode += "\t}\n";
+
+    var keys = [ ];
+    for (var i = 0; i < constSymbols.length; i++) {
+        if (constSymbols[i].type === 'string') {
+            keys.push('"' + constSymbols[i].name + '"');
+        }
+    }
+    exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
+    exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
+    exportsCode += "\t\tvar raw = libsodium[\"_\" + constants_str[i].toLowerCase()];\n";
+    exportsCode += "\t\tif (typeof raw === \"function\") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n"
+    exportsCode += "\t}\n";
+}
 
 function buildSymbol(symbolDescription) {
 	if (typeof symbolDescription != 'object') throw new TypeError('symbolDescription must be a function');
@@ -123,12 +161,6 @@ function buildSymbol(symbolDescription) {
 		funcCode += funcBody + '\n\t}\n';
 
 		functionsCode += funcCode;
-		exportsCode += '\n\tif (typeof ' + targetName + ' === "function") exports.' + symbolDescription.name + ' = ' + symbolDescription.name + ';';
-	} else if (symbolDescription.type === 'uint') {
-		var constVal = symbolDescription.target;
-		var symbolName = symbolDescription.target.replace(new RegExp(/\(\)$/), '');
-		if (!(/\(\)$/.test(constVal))) constVal += '()'; //Add the () for a function call
-		exportsCode += '\n\tif (typeof ' + symbolName + ' === "function") var ' + symbolDescription.name + ' = exports.' + symbolDescription.name + ' = ' + constVal + ' | 0;';
 	} else {
 		console.error('What is the symbol type ' + symbolDescription.type + '?');
 		process.exit(1);
@@ -160,7 +192,7 @@ function injectTabs(code) {
 }
 
 function loadConstants() {
-	var constList = fs.readFileSync(path.join(__dirname, 'constants_uint.json'), {
+	var constList = fs.readFileSync(path.join(__dirname, 'constants.json'), {
 		encoding: 'utf8'
 	});
 	try {
@@ -169,32 +201,30 @@ function loadConstants() {
 		console.error('Invalid constants list');
 		process.exit(1);
 	}
-	if (!(Array.isArray(constList) && checkStrArray(constList))) {
-		console.error('constants file must contain an array of strings');
+	if (!(Array.isArray(constList) && checkObjectArray(constList))) {
+		console.error('constants file must contain an array of objects');
 		process.exit(1);
 	}
-	var constSymbolsArray = [];
+	var constSymbols = [ ];
 	for (var i = 0; i < constList.length; i++) {
 		var currentConstant = {
-			name: constList[i],
-			type: "uint",
-			target: "libsodium._" + constList[i].toLowerCase() + '()'
+			name: constList[i].name,
+			type: constList[i].type
 		}
-		constSymbolsArray.push(currentConstant);
+		constSymbols.push(currentConstant);
 	}
-	constSymbolsArray.sort(function (a, b) {
-		if (a.name < b.name) return -1;
-		else if (a.name > b.name) return 1;
-		else return 0;
-	});
-	constSymbolsArray.forEach(function (s) {
-		if (s) symbols.push(s);
-	});
+    return constSymbols;
 }
 
 function checkStrArray(a) {
 	for (var i = 0; i < a.length; i++)
-		if (typeof a[i] != 'string') return false;
+		if (typeof a[i] !== 'string') return false;
+	return true;
+}
+
+function checkObjectArray(a) {
+	for (var i = 0; i < a.length; i++)
+		if (typeof a[i] !== 'object') return false;
 	return true;
 }
 

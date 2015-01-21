@@ -243,6 +243,5 @@
 	};
 
 	{{exports_here}}
-
 	return exports;
 }));
