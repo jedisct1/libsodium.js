@@ -108,18 +108,8 @@
 		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
 	}
 
-	function available_output_formats() {
+	function output_formats() {
 		return ['uint8array', 'text', 'hex', 'base64'];
-	}
-
-	function set_output_format(format) {
-		if (typeof format !== 'string') throw new TypeError('output format must be a string');
-		if (!is_output_format(format)) throw new Error(format + ' output format is not available');
-		output_format = format;
-	}
-
-	function get_output_format() {
-		return output_format;
 	}
 
 	function formatOutput(output, optionalOutputFormat) {
@@ -146,7 +136,7 @@
 	}
 
 	function is_output_format(format) {
-		var formats = available_output_formats();
+		var formats = output_formats();
 		for (var i = 0; i < formats.length; i++) {
 			if (formats[i] === format) return true;
 		}
@@ -268,15 +258,13 @@
 	{{wraps_here}}
 
 	var exports = {
-			available_output_formats: available_output_formats,
 			from_hex: from_hex,
 			from_string: from_string,
-			get_output_format: get_output_format,
 			libsodium: libsodium,
-			set_output_format: set_output_format,
+			output_formats: output_formats,
 			symbols: symbols,
 			to_base64: to_base64,
-			to_hex: to_hex,
+			to_hex: to_hex
 	};
 
 	{{exports_here}}
