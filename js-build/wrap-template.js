@@ -48,7 +48,7 @@
 		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
 		var result = new Uint8Array(s.length / 2);
 		for (var i = 0; i < s.length; i += 2) {
-			result[i] = parseInt(s.substr(i, 2), 16);
+			result[i >>> 1] = parseInt(s.substr(i, 2), 16);
 		}
 		return result;
 	}
