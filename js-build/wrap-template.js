@@ -22,20 +22,23 @@
 			return new TextEncoder('utf-8').encode(str);
 		}
 		str = unescape(encodeURIComponent(str));
-		var ret = new Uint8Array(str.length);
+		var bytes = new Uint8Array(str.length);
 		for (var i = 0; i < str.length; i++) {
-			ret[i] = str.charCodeAt(i);
+			bytes[i] = str.charCodeAt(i);
 		}
-		return ret;
+		return bytes;
 	}
 
 	function to_hex(bytes) {
-		var encoded = [];
-		for (var i = 0; i < bs.length; i++) {
-			encoded.push("0123456789abcdef" [(bs[i] >> 4) & 15]);
-			encoded.push("0123456789abcdef" [bs[i] & 15]);
-		}
-		return encoded.join('');
+		var str = '', b, c, x;
+		for (var i = 0; i < bytes.length; i++) {
+			c = bytes[i] & 0xf;
+			b = bytes[i] >>> 4;
+			x = (87 + c + (((c - 10) >> 31) & -39)) << 8 |
+			    (87 + b + (((b - 10) >> 31) & -39));
+			str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
+        }
+        return str;
 	}
 
 	function from_hex(s) {
