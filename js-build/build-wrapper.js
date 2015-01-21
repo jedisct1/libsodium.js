@@ -78,12 +78,12 @@ function buildSymbol(symbolDescription) {
 			funcBody += currentParameterCode + '\n';
 		}
 		if (!symbolDescription.noEncoding) {
-			paramsArray.push('resultEncoding');
+			paramsArray.push('outputFormat');
 		}
 		funcCode += paramsArray.join(', ') + ') {\n';
 		funcCode += '\t\tvar toDealloc = [];\n';
 		if (!symbolDescription.noEncoding) {
-			funcCode += '\t\tcheckEncoding(resultEncoding);\n';
+			funcCode += '\t\tcheckOutputFormat(outputFormat);\n';
 		}
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {

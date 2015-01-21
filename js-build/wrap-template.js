@@ -8,8 +8,7 @@
 		root.sodium = factory(root.libsodium || Module);
 	}
 }(this, function (libsodium) {
-	var exports = {};
-	var result_encoding = 'uint8array';
+	var output_format = 'uint8array';
 
 	libsodium._sodium_init();
 
@@ -109,59 +108,58 @@
 		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
 	}
 
-	function available_encodings() {
+	function available_output_formats() {
 		return ['hex', 'base64', 'utf8', 'uint8array'];
 	}
 
-	function set_encoding(enc) {
-		if (typeof enc != 'string') throw new TypeError('encoding name must be a string');
-		if (!is_encoding(enc)) throw new Error(enc + ' encoding is not available');
-		result_encoding = enc;
+	function set_output_format(format) {
+		if (typeof format !== 'string') throw new TypeError('output format must be a string');
+		if (!is_output_format(format)) throw new Error(format + ' output format is not available');
+		output_format = format;
 	}
 
-	function get_encoding() {
-		return result_encoding;
+	function get_output_format() {
+		return output_format;
 	}
 
-	function encodeResult(result, optionalEncoding) {
-		var selectedEncoding = optionalEncoding || result_encoding;
-		if (!is_encoding(selectedEncoding)) throw new Error(selectedEncoding + ' encoding is not available');
-		if (result instanceof TargetBuf) {
-			if (selectedEncoding == 'uint8array') return result.extractBytes();
-			else if (selectedEncoding == 'utf8') return libsodium.Pointer_stringify(result.address, result.length);
-			else if (selectedEncoding == 'hex') return to_hex(result.extractBytes());
-			else if (selectedEncoding == 'base64') return to_base64(result.extractBytes());
-			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
-		} else if (typeof result == 'object') { //Composed results. Example : key pairs
-			var props = Object.keys(result);
-			var encodedResult = {};
+	function formatOutput(output, optionalOutputFormat) {
+		var selectedOutputFormat = optionalOutputFormat || output_format;
+		if (!is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
+		if (output instanceof TargetBuf) {
+			if (selectedOutputFormat == 'uint8array') return output.extractBytes();
+			else if (selectedOutputFormat == 'utf8') return libsodium.Pointer_stringify(output.address, output.length);
+			else if (selectedOutputFormat == 'hex') return to_hex(output.extractBytes());
+			else if (selectedOutputFormat == 'base64') return to_base64(output.extractBytes());
+			else throw new Error('What is output format "' + selectedOutputFormat + '"?');
+		} else if (typeof output == 'object') { //Composed output. Example : key pairs
+			var props = Object.keys(output);
+			var formattedOutput = {};
 			for (var i = 0; i < props.length; i++) {
-				encodedResult[props[i]] = encodeResult(result[props[i]], selectedEncoding);
+				formattedOutput[props[i]] = formatOutput(output[props[i]], selectedOutputFormat);
 			}
-			return encodedResult;
-		} else if (typeof result == 'string') {
-			return result;
+			return formattedOutput;
+		} else if (typeof output == 'string') {
+			return output;
 		} else {
-			throw new TypeError('Cannot encode result');
+			throw new TypeError('Cannot format output');
 		}
 	}
 
-	function is_encoding(enc) {
-		var encs = available_encodings();
-		var encFound = false;
-		for (var i = 0; i < encs.length; i++) {
-			if (encs[i] == enc) encFound = true;
+	function is_output_format(format) {
+		var formats = available_output_formats();
+		for (var i = 0; i < formats.length; i++) {
+			if (formats[i] === format) return true;
 		}
-		return encFound;
+		return false;
 	}
 
-	function checkEncoding(enc) {
-		if (!enc) {
+	function checkOutputFormat(format) {
+		if (!format) {
 			return;
-		} else if (typeof enc !== 'string') {
-			throw new TypeError('When defined, the output encoding must be a string');
-		} else if (!is_encoding(enc)) {
-			throw new Error(enc + ' is not a supported encoding');
+		} else if (typeof format !== 'string') {
+			throw new TypeError('When defined, the output format must be a string');
+		} else if (!is_output_format(format)) {
+			throw new Error(format + ' is not a supported output format');
 		}
 	}
 
@@ -269,17 +267,17 @@
 
 	{{wraps_here}}
 
-	exports.from_string = from_string;
-	exports.to_hex = to_hex;
-	exports.from_hex = from_hex;
-	exports.to_base64 = to_base64;
-	exports.from_base64 = from_base64;
-	exports.available_encodings = available_encodings;
-	exports.set_encoding = set_encoding;
-	exports.get_encoding = get_encoding;
-	exports.symbols = symbols;
-	exports.raw = libsodium;
-	exports.init = libsodium._sodium_init;
+	var exports = {
+			available_output_formats: available_output_formats,
+			from_hex: from_hex,
+			from_string: from_string,
+			get_output_format: get_output_format,
+			libsodium: libsodium,
+			set_output_format: set_output_format,
+			symbols: symbols,
+			to_base64: to_base64,
+			to_hex: to_hex,
+	};
 
 	{{exports_here}}
 

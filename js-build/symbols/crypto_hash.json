@@ -17,5 +17,5 @@
 	],
 	"target": "libsodium._crypto_hash(hash_byte, message_byte, message_size, 0) | 0",
 	"expect": "=== 0",
-	"return": "encodeResult(hash, resultEncoding)"
+	"return": "formatOutput(hash, outputFormat)"
 }

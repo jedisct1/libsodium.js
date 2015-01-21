@@ -2,7 +2,7 @@
 	"name": "sodium_version_string",
 	"dependencies": [],
 	"type": "function",
-	"noEncoding": true,
+	"noOutputFormat": true,
 	"inputs": [],
 	"outputs": [],
 	"target": "var version = libsodium._sodium_version_string()",

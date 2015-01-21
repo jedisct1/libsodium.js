@@ -22,5 +22,5 @@
 	],
 	"target": "libsodium._crypto_auth(tag_byte, message_byte, message_size, 0, key_byte) | 0",
 	"expect": "=== 0",
-	"return": "encodeResult(tag, resultEncoding)"
+	"return": "formatOutput(tag, outputFormat)"
 }

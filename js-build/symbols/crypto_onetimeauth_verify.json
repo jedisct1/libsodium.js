@@ -2,7 +2,7 @@
 	"name": "crypto_onetimeauth_verify",
 	"type": "function",
 	"dependencies": [],
-	"noEncoding": true,
+	"noOutputFormat": true,
 	"inputs": [
 		{
 			"name": "hash",

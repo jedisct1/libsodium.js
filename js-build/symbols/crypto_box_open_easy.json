@@ -31,5 +31,5 @@
 	],
 	"target": "libsodium._crypto_box_open_easy(plaintext_byte, ciphertext_byte, ciphertext_size, 0, nonce_byte, publicKey_byte, secretKey_byte) | 0",
 	"expect": "=== 0",
-	"return": "encodeResult(plaintext, resultEncoding)"
+	"return": "formatOutput(plaintext, outputFormat)"
 }

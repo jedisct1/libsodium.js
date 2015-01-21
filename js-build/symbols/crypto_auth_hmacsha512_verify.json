@@ -2,7 +2,7 @@
 	"name": "crypto_auth_verify",
 	"dependencies": ["_crypto_auth_hmacsha512_keybytes", "_crypto_auth_hmacsha512_bytes"],
 	"type": "function",
-	"noEncoding": true,
+	"noOutputFormat": true,
 	"inputs": [
 		{
 			"name": "tag",

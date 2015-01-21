@@ -27,5 +27,5 @@
 	],
 	"target": "libsodium._crypto_sign_detached(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte) | 0",
 	"expect": "=== 0",
-	"return": "encodeResult(signature, resultEncoding)"
+	"return": "formatOutput(signature, outputFormat)"
 }

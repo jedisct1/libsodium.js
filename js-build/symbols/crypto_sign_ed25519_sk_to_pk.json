@@ -18,5 +18,5 @@
 	],
 	"target": "libsodium._crypto_sign_ed25519_sk_to_pk(publicKey_byte, privateKey_byte) | 0",
 	"expect": "=== 0",
-	"return": "encodeResult(publicKey, resultEncoding)"
+	"return": "formatOutput(publicKey, outputFormat)"
 }
