@@ -162,16 +162,25 @@
 	//---------------------------------------------------------------------------
 	// Memory management
 
+	// TargetBuf: pointer allocated using _malloc() + length
 	function TargetBuf(length) {
 		this.length = length;
 		this.address = _MALLOC(length);
 	}
 
+	// Copy the content of a TargetBuf (_malloc()'d memory) into a Uint8Array
 	TargetBuf.prototype.extractBytes = function () {
 		var result = new Uint8Array(this.length);
 		result.set(libsodium.HEAPU8.subarray(address, this.address + this.length));
 		return result;
 	};
+
+	// _malloc() a region and initialize it with the content of a Uint8Array
+	function _injectBytes(bytes) {
+		var address = _MALLOC(bytes.length);
+		libsodium.HEAPU8.set(bytes, address);
+		return address;
+	}
 
 	function _MALLOC(nbytes) {
 		var result = libsodium._malloc(nbytes);
@@ -186,12 +195,6 @@
 
 	function _FREE(pointer) {
 		libsodium._free(pointer);
-	}
-
-	function _injectBytes(bytes) {
-		var address = _MALLOC(bytes.length);
-		libsodium.HEAPU8.set(bytes, address);
-		return address;
 	}
 
 	function _free_all(addresses) {
