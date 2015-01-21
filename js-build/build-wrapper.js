@@ -49,14 +49,16 @@ exportConstants(loadConstants());
 finalizeWrapper();
 
 function exportFunctions(symbols) {
-	var keys = [ ];
+	var exported_functions = [ ], functions = [ ];
 	for (var i = 0; i < symbols.length; i++) {
-		keys.push('"' + symbols[i].name + '"');
+		exported_functions.push('"' + symbols[i].name + '"');
+		functions.push(symbols[i].name);
 	}
-	exportsCode += "\tvar functions = [" + keys.sort().join(", ") + "];\n";
+	exportsCode += "\tvar exported_functions = [" + exported_functions.sort().join(", ") + "],\n";
+	exportsCode += "\t	functions = [" + functions.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
-	exportsCode += "\t\tif (typeof libsodium[\"_\" + functions[i]] === \"function\") {\n";
-	exportsCode += "\t\t\teval(\"exports['\" + functions[i] + \"'] = \" + functions[i]);\n";
+	exportsCode += "\t\tif (typeof libsodium[\"_\" + exported_functions[i]] === \"function\") {\n";
+	exportsCode += "\t\t\texports[exported_functions[i]] = functions[i];\n";
 	exportsCode += "\t\t}\n";
 	exportsCode += "\t}\n";
 }
