@@ -196,11 +196,11 @@
 				var cipherText1 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
 				var cipherText2 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
 				log('Ciphertext: ' + to_hex(cipherText1));
-				log('Ciphertexts are equal: ' + (to_hex(cipherText1) == to_hex(cipherText2)));
+				log('Ciphertexts are equal: ' + (cipherText1 === cipherText2));
 
 				var plainText1 = sodium.crypto_box_open_easy(cipherText1, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
 				var plainText2 = sodium.crypto_box_open_easy(cipherText2, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
-				log('Plaintext: ' + plainText1);
+				log('plainText: ' + plainText1);
 				log('Are plaintexts equal: ' + (plainText1 === plainText2));
 
 				log('DETACHED TESTING');
@@ -211,7 +211,7 @@
 
 				plainText1 = sodium.crypto_box_open_detached(from_hex(detachedCipher1.ciphertext), from_hex(detachedCipher1.mac), nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
 				plainText2 = sodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
-				log('Plaintext: ' + plaintext1);
+				log('plainText: ' + plainText1);
 				log('Are plaintexts equal: ' + (plainText1 === plainText2));
 
 				return logStr;
@@ -236,9 +236,9 @@
 				var message = 'Crypto Secretbox testing';
 				var cipher = sodium.crypto_secretbox_easy(message, nonce, key);
 				log('Ciphertext: ' + to_hex(cipher));
-				var plaintext = sodium.crypto_secretbox_open_easy(cipher, nonce, key, 'utf8');
-				log('Plaintext: ' + plaintext);
-				log('Plaintext and initial message are equal: ' + (plaintext === message));
+				var plainText = sodium.crypto_secretbox_open_easy(cipher, nonce, key, 'utf8');
+				log('plainText: ' + plainText);
+				log('plainText and initial message are equal: ' + (plainText === message));
 
 				sodium_test.secretbox_easy();
 				log('Test vectors passed with success');
