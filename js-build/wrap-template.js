@@ -203,30 +203,30 @@
 		}
 	}
 
-	function _throw_error(toDealloc, err) {
-		_free_all(toDealloc);
+	function _free_and_throw_error(address_pool, err) {
+		_free_all(address_pool);
 		throw new Error(err);
 	}
 
-	function _throw_type_error(toDealloc, err) {
-		_free_all(toDealloc);
+	function _free_and_throw_type_error(address_pool, err) {
+		_free_all(address_pool);
 		throw new TypeError(err);
 	}
 
-	function _require_defined(toDealloc, varValue, varName) {
+	function _require_defined(address_pool, varValue, varName) {
 		if (varValue == undefined) {
-			_throw_type_error(toDealloc, varName + ' cannot be null or undefined');
+			_free_and_throw_type_error(address_pool, varName + ' cannot be null or undefined');
 		}
 	}
 
-	function _input_to_Uint8Array(toDealloc, varValue, varName) {
-		_require_defined(toDealloc, varValue, varName);
+	function _any_to_Uint8Array(address_pool, varValue, varName) {
+		_require_defined(address_pool, varValue, varName);
 		if (varValue instanceof Uint8Array) {
 			return varValue;
 		} else if (typeof varValue === 'string') {
 			return from_string(varValue);
 		}
-		_throw_type_error(toDealloc, 'unsupported input type for ' + varName);
+		_free_and_throw_type_error(address_pool, 'unsupported input type for ' + varName);
 	}
 
 	{{wraps_here}}

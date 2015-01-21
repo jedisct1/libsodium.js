@@ -80,7 +80,7 @@ function buildSymbol(symbolDescription) {
 			paramsArray.push('outputFormat');
 		}
 		funcCode += paramsArray.join(', ') + ') {\n';
-		funcCode += '\t\tvar toDealloc = [];\n';
+		funcCode += '\t\tvar address_pool = [];\n';
 		if (!symbolDescription.noOutputFormat) {
 			funcCode += '\t\t_check_output_format(outputFormat);\n';
 		}
@@ -101,20 +101,20 @@ function buildSymbol(symbolDescription) {
 		if (symbolDescription.expect !== undefined && symbolDescription.return !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
 			funcBody += '\tvar ret = ' + symbolDescription.return+';\n';
-			funcBody += '\t_free_all(toDealloc);\n';
+			funcBody += '\t_free_all(address_pool);\n';
 			funcBody += '\treturn ret;\n';
 			funcBody += '}\n';
-			funcBody += '_throw_error(toDealloc);\n';
+			funcBody += '_free_and_throw_error(address_pool);\n';
 		} else if (symbolDescription.expect !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
-			funcBody += '\t_free_all(toDealloc);\n';
+			funcBody += '\t_free_all(address_pool);\n';
 			funcBody += '\treturn;\n';
 			funcBody += '}\n';
-			funcBody += '_throw_error(toDealloc);\n';
+			funcBody += '_free_and_throw_error(address_pool);\n';
 		} else if (symbolDescription.return !== undefined) {
 			funcBody += sc(symbolDescription.target) + '\n';
 			funcBody += 'var ret = (' + symbolDescription.return+');\n';
-			funcBody += '_free_all(toDealloc);\n';
+			funcBody += '_free_all(address_pool);\n';
 			funcBody += 'return ret;\n';
 		} else {
 			funcBody += sc(symbolDescription.target) + '\n';
