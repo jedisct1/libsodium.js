@@ -27,6 +27,15 @@
 		return bytes;
 	}
 
+	function from_hex(s) {
+		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
+		var result = new Uint8Array(s.length / 2);
+		for (var i = 0; i < s.length; i += 2) {
+			result[i >>> 1] = parseInt(s.substr(i, 2), 16);
+		}
+		return result;
+	}
+
 	function to_hex(bytes) {
 		var str = '', b, c, x;
 		for (var i = 0; i < bytes.length; i++) {
@@ -41,15 +50,6 @@
 
 	function is_hex(s) {
 		return (typeof s === 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
-	}
-
-	function from_hex(s) {
-		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
-		var result = new Uint8Array(s.length / 2);
-		for (var i = 0; i < s.length; i += 2) {
-			result[i >>> 1] = parseInt(s.substr(i, 2), 16);
-		}
-		return result;
 	}
 
 	function from_base64(sBase64, nBlocksSize) {
