@@ -70,7 +70,7 @@ function exportConstants(constSymbols) {
 	exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
 	exportsCode += "\t\tvar raw = libsodium[\"_\" + constants[i].toLowerCase()];\n";
-	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw();\n"
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw()|0;\n"
 	exportsCode += "\t}\n";
 
 	var keys = [ ];
