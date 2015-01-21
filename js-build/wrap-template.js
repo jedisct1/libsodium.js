@@ -281,7 +281,6 @@
 	exports.string_to_Uint8Array = string_to_Uint8Array;
 	exports.to_hex = to_hex;
 	exports.from_hex = from_hex;
-	exports.is_hex = is_hex;
 	exports.to_base64 = to_base64;
 	exports.from_base64 = from_base64;
 	exports.available_encodings = available_encodings;
