@@ -26,7 +26,6 @@
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_SALTBYTES", "type": "uint" },
-	{ "name": "crypto_pwhash_scryptsalsa208sha256_STR", "type": "string" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_STRBYTES", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_STRPREFIX", "type": "string" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_STR_VERIFY", "type": "uint" },
