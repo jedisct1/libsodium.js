@@ -29,7 +29,7 @@
 		return ret;
 	}
 
-	function to_hex(bs) {
+	function to_hex(bytes) {
 		var encoded = [];
 		for (var i = 0; i < bs.length; i++) {
 			encoded.push("0123456789abcdef" [(bs[i] >> 4) & 15]);
@@ -148,7 +148,7 @@
 			return encodedResult;
 		} else if (typeof result == 'string') {
 			return result;
-		} else { //What to do if we have a result to encode, that is not a buf nor an object?
+		} else {
 			throw new TypeError('Cannot encode result');
 		}
 	}
