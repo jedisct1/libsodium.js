@@ -40,7 +40,7 @@
 	}
 
 	function is_hex(s) {
-		return (typeof s == 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
+		return (typeof s === 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
 	}
 
 	function from_hex(s) {
@@ -109,7 +109,7 @@
 	}
 
 	function available_output_formats() {
-		return ['hex', 'base64', 'utf8', 'uint8array'];
+		return ['uint8array', 'text', 'hex', 'base64'];
 	}
 
 	function set_output_format(format) {
@@ -127,7 +127,7 @@
 		if (!is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
 		if (output instanceof TargetBuf) {
 			if (selectedOutputFormat == 'uint8array') return output.extractBytes();
-			else if (selectedOutputFormat == 'utf8') return libsodium.Pointer_stringify(output.address, output.length);
+			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
 			else if (selectedOutputFormat == 'hex') return to_hex(output.extractBytes());
 			else if (selectedOutputFormat == 'base64') return to_base64(output.extractBytes());
 			else throw new Error('What is output format "' + selectedOutputFormat + '"?');
@@ -138,7 +138,7 @@
 				formattedOutput[props[i]] = formatOutput(output[props[i]], selectedOutputFormat);
 			}
 			return formattedOutput;
-		} else if (typeof output == 'string') {
+		} else if (typeof output == 'text') {
 			return output;
 		} else {
 			throw new TypeError('Cannot format output');
