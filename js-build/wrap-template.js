@@ -29,19 +29,6 @@
 		return ret;
 	}
 
-	//Uint8Array to UTF8
-	function uint8Array_to_String(bytes) {
-		var str = '';
-		for (var i = 0; i < byes.length; i++) {
-			str += String.fromCharCode(b[i]);
-		}
-		try {
-			return decodeURIComponent(escape(str));
-		} catch (e) {
-			throw new Error('Cannot convert to a UTF8 string');
-		}
-	}
-
 	function to_hex(bs) {
 		var encoded = [];
 		for (var i = 0; i < bs.length; i++) {
@@ -147,11 +134,10 @@
 		var selectedEncoding = optionalEncoding || result_encoding;
 		if (!is_encoding(selectedEncoding)) throw new Error(selectedEncoding + ' encoding is not available');
 		if (result instanceof TargetBuf) {
-			var buf = result.extractBytes();
-			if (selectedEncoding == 'uint8array') return buf;
-			else if (selectedEncoding == 'utf8') return uint8Array_to_String(buf);
-			else if (selectedEncoding == 'hex') return to_hex(buf);
-			else if (selectedEncoding == 'base64') return to_base64(buf);
+			if (selectedEncoding == 'uint8array') return result.extractBytes();
+			else if (selectedEncoding == 'utf8') return libsodium.Pointer_stringify(result);
+			else if (selectedEncoding == 'hex') return to_hex(result.extractBytes());
+			else if (selectedEncoding == 'base64') return to_base64(result.extractBytes());
 			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
 		} else if (typeof result == 'object') { //Composed results. Example : key pairs
 			var props = Object.keys(result);
@@ -289,7 +275,6 @@
 
 	{{wraps_here}}
 
-	exports.uint8Array_to_String = uint8Array_to_String;
 	exports.string_to_Uint8Array = string_to_Uint8Array;
 	exports.to_hex = to_hex;
 	exports.from_hex = from_hex;
