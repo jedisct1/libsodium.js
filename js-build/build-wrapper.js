@@ -49,41 +49,41 @@ exportConstants(loadConstants());
 finalizeWrapper();
 
 function exportFunctions(symbols) {
-    var keys = [ ];
-    for (var i = 0; i < symbols.length; i++) {
-        keys.push('"' + symbols[i].name + '"');
-    }
-    exportsCode += "\tvar functions = [" + keys.sort().join(", ") + "];\n";
-    exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
-    exportsCode += "\t\tvar raw = libsodium[\"_\" + functions[i]];\n";
-    exportsCode += "\t\tif (typeof raw === \"function\") exports[functions[i]] = raw\n";
-    exportsCode += "\t}\n";
+	var keys = [ ];
+	for (var i = 0; i < symbols.length; i++) {
+		keys.push('"' + symbols[i].name + '"');
+	}
+	exportsCode += "\tvar functions = [" + keys.sort().join(", ") + "];\n";
+	exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
+	exportsCode += "\t\tvar raw = libsodium[\"_\" + functions[i]];\n";
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[functions[i]] = raw\n";
+	exportsCode += "\t}\n";
 }
 
 function exportConstants(constSymbols) {
-    var keys = [ ];
-    for (var i = 0; i < constSymbols.length; i++) {
-        if (constSymbols[i].type === 'uint') {
-            keys.push('"' + constSymbols[i].name + '"');
-        }
-    }
-    exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
-    exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
-    exportsCode += "\t\tvar raw = libsodium[\"_\" + constants[i].toLowerCase()];\n";
-    exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw();\n"
-    exportsCode += "\t}\n";
+	var keys = [ ];
+	for (var i = 0; i < constSymbols.length; i++) {
+		if (constSymbols[i].type === 'uint') {
+			keys.push('"' + constSymbols[i].name + '"');
+		}
+	}
+	exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
+	exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
+	exportsCode += "\t\tvar raw = libsodium[\"_\" + constants[i].toLowerCase()];\n";
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw();\n"
+	exportsCode += "\t}\n";
 
-    var keys = [ ];
-    for (var i = 0; i < constSymbols.length; i++) {
-        if (constSymbols[i].type === 'string') {
-            keys.push('"' + constSymbols[i].name + '"');
-        }
-    }
-    exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
-    exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
-    exportsCode += "\t\tvar raw = libsodium[\"_\" + constants_str[i].toLowerCase()];\n";
-    exportsCode += "\t\tif (typeof raw === \"function\") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n"
-    exportsCode += "\t}\n";
+	var keys = [ ];
+	for (var i = 0; i < constSymbols.length; i++) {
+		if (constSymbols[i].type === 'string') {
+			keys.push('"' + constSymbols[i].name + '"');
+		}
+	}
+	exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
+	exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
+	exportsCode += "\t\tvar raw = libsodium[\"_\" + constants_str[i].toLowerCase()];\n";
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n"
+	exportsCode += "\t}\n";
 }
 
 function buildSymbol(symbolDescription) {
@@ -213,7 +213,7 @@ function loadConstants() {
 		}
 		constSymbols.push(currentConstant);
 	}
-    return constSymbols;
+	return constSymbols;
 }
 
 function checkStrArray(a) {
