@@ -32,11 +32,11 @@
 		return bytes;
 	}
 
-	function from_hex(s) {
-		if (!is_hex(s)) throw new TypeError("The provided string doesn't look like hex data");
-		var result = new Uint8Array(s.length / 2);
-		for (var i = 0; i < s.length; i += 2) {
-			result[i >>> 1] = parseInt(s.substr(i, 2), 16);
+	function from_hex(str) {
+		if (!is_hex(str)) throw new TypeError("The provided string doesn't look like hex data");
+		var result = new Uint8Array(str.length / 2);
+		for (var i = 0; i < str.length; i += 2) {
+			result[i >>> 1] = parseInt(str.substr(i, 2), 16);
 		}
 		return result;
 	}
@@ -53,8 +53,8 @@
         return str;
 	}
 
-	function is_hex(s) {
-		return (typeof s === "string" && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
+	function is_hex(str) {
+		return (typeof str === "string" && /^[0-9a-f]+$/i.test(str) && str.length % 2 == 0);
 	}
 
 	function from_base64(sBase64, nBlocksSize) {
@@ -162,7 +162,7 @@
 	//---------------------------------------------------------------------------
 	// Memory management
 
-	// AllocatedBuf: pointer allocated using _malloc() + length
+	// AllocatedBuf: address allocated using _malloc() + length
 	function AllocatedBuf(length) {
 		this.length = length;
 		this.address = _malloc(length);
@@ -193,8 +193,8 @@
 		return result;
 	}
 
-	function _free(pointer) {
-		libsodium._free(pointer);
+	function _free(address) {
+		libsodium._free(address);
 	}
 
 	function _free_all(addresses) {
