@@ -167,8 +167,10 @@
 		this.address = _MALLOC(length);
 	}
 
-	TargetBuf.prototype.extractBytes = function (offset) {
-		return _extractBytes(this.address + (offset || 0), this.length - (offset || 0));
+	TargetBuf.prototype.extractBytes = function () {
+		var result = new Uint8Array(this.length);
+		result.set(libsodium.HEAPU8.subarray(address, this.address + this.length));
+		return result;
 	};
 
 	function _MALLOC(nbytes) {
@@ -186,16 +188,10 @@
 		libsodium._free(pointer);
 	}
 
-	function _injectBytes(bs) {
-		var address = _MALLOC(bs.length);
-		libsodium.HEAPU8.set(bs, address);
+	function _injectBytes(bytes) {
+		var address = _MALLOC(bytes.length);
+		libsodium.HEAPU8.set(bytes, address);
 		return address;
-	}
-
-	function _extractBytes(address, length) {
-		var result = new Uint8Array(length);
-		result.set(libsodium.HEAPU8.subarray(address, address + length));
-		return result;
 	}
 
 	function _free_all(addresses) {
