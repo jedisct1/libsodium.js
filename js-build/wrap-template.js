@@ -90,6 +90,9 @@
 				47 :
 				65;
 		}
+		if (typeof aBytes === 'string') {
+			throw new Exception('input has to be an array');
+		}
 		var nMod3 = 2,
 			sB64Enc = "";
 		for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
