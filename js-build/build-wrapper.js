@@ -49,12 +49,12 @@ exportConstants(loadConstants());
 finalizeWrapper();
 
 function exportFunctions(symbols) {
-	var exported_functions = [ ], functions = [ ];
+	var keys = [ ], functions = [ ];
 	for (var i = 0; i < symbols.length; i++) {
-		exported_functions.push('"' + symbols[i].name + '"');
+		keys.push('"' + symbols[i].name + '"');
 		functions.push(symbols[i].name);
 	}
-	exportsCode += "\tvar exported_functions = [" + exported_functions.sort().join(", ") + "],\n";
+	exportsCode += "\tvar exported_functions = [" + keys.sort().join(", ") + "],\n";
 	exportsCode += "\t	functions = [" + functions.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
 	exportsCode += "\t\tif (typeof libsodium[\"_\" + exported_functions[i]] === \"function\") {\n";
