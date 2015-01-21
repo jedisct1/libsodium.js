@@ -128,7 +128,7 @@
 		if (!is_encoding(selectedEncoding)) throw new Error(selectedEncoding + ' encoding is not available');
 		if (result instanceof TargetBuf) {
 			if (selectedEncoding == 'uint8array') return result.extractBytes();
-			else if (selectedEncoding == 'utf8') return libsodium.Pointer_stringify(result);
+			else if (selectedEncoding == 'utf8') return libsodium.Pointer_stringify(result.address, result.length);
 			else if (selectedEncoding == 'hex') return to_hex(result.extractBytes());
 			else if (selectedEncoding == 'base64') return to_base64(result.extractBytes());
 			else throw new Error('Internal error: what is encoding "' + selectedEncoding + '"?');
