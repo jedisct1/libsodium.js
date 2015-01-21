@@ -12,6 +12,11 @@
 
 	libsodium._sodium_init();
 
+	// List of functions and constants defined in the wrapped libsodium
+	function symbols() {
+		return Object.keys(exports).sort();
+	}
+
 	//---------------------------------------------------------------------------
 	// Codecs
 
@@ -155,7 +160,16 @@
 	}
 
 	//---------------------------------------------------------------------------
-	// Allocation
+	// Memory management
+
+	function TargetBuf(length) {
+		this.length = length;
+		this.address = _MALLOC(length);
+	}
+
+	TargetBuf.prototype.extractBytes = function (offset) {
+		return _extractBytes(this.address + (offset || 0), this.length - (offset || 0));
+	};
 
 	function _MALLOC(nbytes) {
 		var result = libsodium._malloc(nbytes);
@@ -172,8 +186,6 @@
 		libsodium._free(pointer);
 	}
 
-	//---------------------------------------------------------------------------
-
 	function _injectBytes(bs) {
 		var address = _MALLOC(bs.length);
 		libsodium.HEAPU8.set(bs, address);
@@ -185,22 +197,6 @@
 		result.set(libsodium.HEAPU8.subarray(address, address + length));
 		return result;
 	}
-
-	//---------------------------------------------------------------------------
-
-	//Returns the list of functions and constants defined in the wrapped libsodium
-	function symbols() {
-		return Object.keys(exports).sort();
-	}
-
-	function TargetBuf(length) {
-		this.length = length;
-		this.address = _MALLOC(length);
-	}
-
-	TargetBuf.prototype.extractBytes = function (offset) {
-		return _extractBytes(this.address + (offset || 0), this.length - (offset || 0));
-	};
 
 	function _free_all(addresses) {
 		for (var i = 0; i < addresses.length; i++) {
