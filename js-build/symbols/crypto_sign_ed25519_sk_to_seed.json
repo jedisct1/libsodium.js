@@ -16,7 +16,7 @@
 			"size": "libsodium._crypto_sign_seedbytes()"
 		}
 	],
-	"target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_byte, privateKey_byte) | 0",
+	"target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_address, privateKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(seed, outputFormat)"
 }

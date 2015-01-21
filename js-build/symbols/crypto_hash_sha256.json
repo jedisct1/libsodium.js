@@ -15,7 +15,7 @@
 			"type": "buf"
 		}
 	],
-	"target": "libsodium._crypto_hash_sha256(hash_byte, message_byte, message_size, 0) | 0",
+	"target": "libsodium._crypto_hash_sha256(hash_address, message_address, message_size, 0) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(hash, outputFormat)"
 }

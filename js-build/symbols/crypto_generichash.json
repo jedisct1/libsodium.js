@@ -20,7 +20,7 @@
 			"type": "buf"
 		}
 	],
-	"target": "libsodium._crypto_generichash(hash_byte, hash_size, message_byte, message_size, key_byte, key_size) | 0",
+	"target": "libsodium._crypto_generichash(hash_address, hash_size, message_address, message_size, key_address, key_size) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(hash, outputFormat)"
 }

@@ -34,7 +34,7 @@
 			"size": "libsodium._crypto_box_macbytes()"
 		}
 	],
-	"target": "libsodium._crypto_box_detached(ciphertext_byte, mac_byte, message_byte, message_size, 0, nonce_byte, publicKey_byte, secretKey_byte) | 0",
+	"target": "libsodium._crypto_box_detached(ciphertext_address, mac_address, message_address, message_size, 0, nonce_address, publicKey_address, secretKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput({ciphertext: ciphertext, mac: mac}, outputFormat)"
 }

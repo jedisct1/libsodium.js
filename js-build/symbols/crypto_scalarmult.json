@@ -21,7 +21,7 @@
 			"size": "libsodium._crypto_scalarmult_bytes()"
 		}
 	],
-	"target": "libsodium._crypto_scalarmult(sharedSecret_byte, privateKey_byte, publicKey_byte) | 0",
+	"target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(sharedSecret, outputFormat)"
 }
