@@ -54,11 +54,6 @@
 		return result;
 	}
 
-	/*
-	 * Base64 <-> Uint8Array conversion tools.
-	 * Harvested from MDN:
-	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
-	 */
 	function b64ToUint6(nChr) {
 		return nChr > 64 && nChr < 91 ?
 			nChr - 65 : nChr > 96 && nChr < 123 ?
