@@ -1,0 +1,26 @@
+{
+	"name": "crypto_generichash_final",
+	"dependencies": [],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "state",
+            "size": "357",
+			"type": "buf"
+		},
+		{
+			"name": "hash_length",
+            "type": "uint"
+		}
+	],
+	"outputs": [
+		{
+			"name": "hash",
+			"size": "hash_length",
+			"type": "buf"
+		}
+	],
+	"target": "libsodium._crypto_generichash_final(state_address, hash_address, hash_length) | 0",
+	"expect": "=== 0",
+    "return": "_format_output(hash, outputFormat)"
+}
