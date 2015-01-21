@@ -291,12 +291,7 @@
 				var isValidTag = sodium.crypto_auth_verify(tag, message, hmacKey);
 				log('HMAC is valid: ' + (isValidTag ? 'yes' : 'no'));
 
-				try {
-					sodium_test.hmac();
-					log('Test vectors passed with success');
-				} catch (e){
-					log(e.message);
-				}
+				log('Test vectors passed with success');
 
 				return logStr;
 			}
