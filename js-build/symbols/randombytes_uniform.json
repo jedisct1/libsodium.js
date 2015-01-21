@@ -8,6 +8,6 @@
 			"type": "uint"
 		}
 	],
-	"target": "var bytes = libsodium._randombytes_uniform(upper_bound) >>> 0",
-	"return": "bytes"
+	"target": "var random_value = libsodium._randombytes_uniform(upper_bound) >>> 0",
+	"return": "random_value"
 }
