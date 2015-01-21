@@ -17,10 +17,10 @@
 		{
 			"type": "buf",
 			"name": "message",
-			"size": "signedMessage_size - libsodium._crypto_sign_bytes()"
+			"size": "signedMessage_length - libsodium._crypto_sign_bytes()"
 		}
 	],
-	"target": "libsodium._crypto_sign_open(message_address, message_size, signedMessage_address, signedMessage_size, 0, publicKey_address) | 0",
+	"target": "libsodium._crypto_sign_open(message_address, message_length, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(message, outputFormat)"
 }

@@ -25,7 +25,7 @@
 			"size": "8"
 		}
 	],
-	"target": "libsodium._crypto_sign(signature_address, slen_address, message_address, message_size, 0, privateKey_address) | 0",
+	"target": "libsodium._crypto_sign(signature_address, slen_address, message_address, message_length, 0, privateKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(signature, outputFormat)"
 }

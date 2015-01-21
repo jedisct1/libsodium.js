@@ -32,10 +32,10 @@
 		{
 			"name": "plaintext",
 			"type": "buf",
-			"size": "ciphertext_size"
+			"size": "ciphertext_length"
 		}
 	],
-	"target": "libsodium._crypto_box_open_detached(plaintext_address, ciphertext_address, mac_address, ciphertext_size, 0, nonce_address, publicKey_address, secretKey_address) | 0",
+	"target": "libsodium._crypto_box_open_detached(plaintext_address, ciphertext_address, mac_address, ciphertext_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_formatOutput(plaintext, outputFormat)"
 }
