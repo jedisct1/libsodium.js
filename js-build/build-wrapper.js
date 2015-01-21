@@ -153,7 +153,7 @@ function applyMacro(macroCode, symbols, substitutes) {
 }
 
 function finalizeWrapper() {
-	scriptBuf = applyMacro(scriptBuf, ['{wraps_here}', '{exports_here}'], [functionsCode, exportsCode]);
+	scriptBuf = applyMacro(scriptBuf, ['{{wraps_here}}', '{{exports_here}}'], [functionsCode, exportsCode]);
 	fs.writeFileSync(path.join(__dirname, '../libsodium/libsodium-js/lib', 'sodium.js'), scriptBuf);
 	fs.writeFileSync(path.join(__dirname, '../API.md'), docBuilder.getResultDoc());
 }

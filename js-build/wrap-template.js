@@ -291,7 +291,7 @@
 		throwTypeError(toDealloc, 'unsupported input type for ' + varName);
 	}
 
-	{wraps_here}
+	{{wraps_here}}
 
 	exports.uint8Array_to_String = uint8Array_to_String;
 	exports.string_to_Uint8Array = string_to_Uint8Array;
@@ -307,7 +307,7 @@
 	exports.raw = libsodium;
 	exports.init = libsodium._sodium_init;
 
-	{exports_here}
+	{{exports_here}}
 
 	return exports;
 }));
