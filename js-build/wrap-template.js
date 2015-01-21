@@ -122,10 +122,10 @@
 		var selectedOutputFormat = optionalOutputFormat || output_format;
 		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
 		if (output instanceof AllocatedBuf) {
-			if (selectedOutputFormat == 'uint8array') return output.toUint8Array();
+			if (selectedOutputFormat == 'uint8array') return output.to_Uint8Array();
 			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
-			else if (selectedOutputFormat == 'hex') return to_hex(output.toUint8Array());
-			else if (selectedOutputFormat == 'base64') return to_base64(output.toUint8Array());
+			else if (selectedOutputFormat == 'hex') return to_hex(output.to_Uint8Array());
+			else if (selectedOutputFormat == 'base64') return to_base64(output.to_Uint8Array());
 			else throw new Error('What is output format "' + selectedOutputFormat + '"?');
 		} else if (typeof output == 'object') { //Composed output. Example : key pairs
 			var props = Object.keys(output);
@@ -169,14 +169,14 @@
 	}
 
 	// Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
-	AllocatedBuf.prototype.toUint8Array = function () {
+	AllocatedBuf.prototype.to_Uint8Array = function () {
 		var result = new Uint8Array(this.length);
 		result.set(libsodium.HEAPU8.subarray(this.address, this.address + this.length));
 		return result;
 	};
 
 	// _malloc() a region and initialize it with the content of a Uint8Array
-	function _toAllocatedBufAddress(bytes) {
+	function _to_allocated_buf_address(bytes) {
 		var address = _malloc(bytes.length);
 		libsodium.HEAPU8.set(bytes, address);
 		return address;
@@ -203,30 +203,30 @@
 		}
 	}
 
-	function _throwError(toDealloc, err) {
+	function _throw_error(toDealloc, err) {
 		_free_all(toDealloc);
 		throw new Error(err);
 	}
 
-	function _throwTypeError(toDealloc, err) {
+	function _throw_type_error(toDealloc, err) {
 		_free_all(toDealloc);
 		throw new TypeError(err);
 	}
 
-	function _requireDefined(toDealloc, varValue, varName) {
+	function _require_defined(toDealloc, varValue, varName) {
 		if (varValue == undefined) {
-			_throwTypeError(toDealloc, varName + ' cannot be null or undefined');
+			_throw_type_error(toDealloc, varName + ' cannot be null or undefined');
 		}
 	}
 
-	function _inputToUint8Array(toDealloc, varValue, varName) {
-		_requireDefined(toDealloc, varValue, varName);
+	function _input_to_Uint8Array(toDealloc, varValue, varName) {
+		_require_defined(toDealloc, varValue, varName);
 		if (varValue instanceof Uint8Array) {
 			return varValue;
 		} else if (typeof varValue === 'string') {
 			return from_string(varValue);
 		}
-		_throwTypeError(toDealloc, 'unsupported input type for ' + varName);
+		_throw_type_error(toDealloc, 'unsupported input type for ' + varName);
 	}
 
 	{{wraps_here}}
