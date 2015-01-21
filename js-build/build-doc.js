@@ -55,6 +55,8 @@ exports.buildDocForSymbol = function (s) {
 					sDoc += 'Buf (size: ' + s.outputs[i].size + ')';
 				} else if (outputType == 'uint') {
 					sDoc += 'Unsigned Integer';
+				} else if (outputType == 'generichash_state') {
+					sDoc += 'Unsigned Integer';
 				} else throw new Error('Unknown output type: ' + outputType);
 				sDoc += newLine();
 			}

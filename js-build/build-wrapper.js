@@ -129,9 +129,12 @@ function buildSymbol(symbolDescription) {
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {
 			var currentOutput = symbolDescription.outputs[i];
 			var currentOutputCode;
-			if (currentOutput.type == 'buf') {
+			if (currentOutput.type === 'buf') {
 				currentOutputCode = macros['output_buf'];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
+			} else if (currentOutput.type === 'generichash_state') {
+				currentOutputCode = macros['output_generichash_state'];
+				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}'], [currentOutput.name]);
 			} else {
 				console.error('What is the output type ' + currentOutput.type + '?');
 				process.exit(1);
