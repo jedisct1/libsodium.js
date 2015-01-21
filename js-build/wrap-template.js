@@ -41,6 +41,10 @@
         return str;
 	}
 
+	function is_hex(s) {
+		return (typeof s == 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
+	}
+
 	function from_hex(s) {
 		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
 		var result = new Uint8Array(s.length / 2);
@@ -50,11 +54,7 @@
 		return result;
 	}
 
-	function is_hex(s) {
-		return (typeof s == 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
-	}
-
-	/**
+	/*
 	 * Base64 <-> Uint8Array conversion tools.
 	 * Harvested from MDN:
 	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Base64_encoding_and_decoding
@@ -69,7 +69,17 @@
 			0;
 	}
 
-	function base64DecToArr(sBase64, nBlocksSize) {
+	function uint6ToB64(nUint6) {
+		return nUint6 < 26 ?
+			nUint6 + 65 : nUint6 < 52 ?
+			nUint6 + 71 : nUint6 < 62 ?
+			nUint6 - 4 : nUint6 === 62 ?
+			43 : nUint6 === 63 ?
+			47 :
+			65;
+	}
+
+	function from_base64(sBase64, nBlocksSize) {
 		var
 			sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""),
 			nInLen = sB64Enc.length,
@@ -88,19 +98,7 @@
 		return taBytes;
 	}
 
-	/* Base64 string to array encoding */
-
-	function uint6ToB64(nUint6) {
-		return nUint6 < 26 ?
-			nUint6 + 65 : nUint6 < 52 ?
-			nUint6 + 71 : nUint6 < 62 ?
-			nUint6 - 4 : nUint6 === 62 ?
-			43 : nUint6 === 63 ?
-			47 :
-			65;
-	}
-
-	function base64EncArr(aBytes, noNewLine) {
+	function to_base64(aBytes, noNewLine) {
 		var nMod3 = 2,
 			sB64Enc = "";
 		for (var nLen = aBytes.length, nUint24 = 0, nIdx = 0; nIdx < nLen; nIdx++) {
@@ -116,8 +114,6 @@
 		}
 		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
 	}
-	var to_base64 = base64EncArr;
-	var from_base64 = base64DecToArr;
 
 	function available_encodings() {
 		return ['hex', 'base64', 'utf8', 'uint8array'];
