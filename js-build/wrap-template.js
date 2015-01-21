@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 (function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['libsodium'], factory);
-	} else if (typeof exports === 'object') {
-		module.exports = factory(require('libsodium'));
+	if (typeof define === "function" && define.amd) {
+		define(["libsodium"], factory);
+	} else if (typeof exports === "object") {
+		module.exports = factory(require("libsodium"));
 	} else {
 		root.sodium = factory(root.libsodium || Module);
 	}
 }(this, function (libsodium) {
-	var output_format = 'uint8array';
+	var output_format = "uint8array";
 
 	libsodium._sodium_init();
 
@@ -21,8 +21,8 @@
 	// Codecs
 
 	function from_string(str) {
-		if (typeof TextEncoder === 'function') {
-			return new TextEncoder('utf-8').encode(str);
+		if (typeof TextEncoder === "function") {
+			return new TextEncoder("utf-8").encode(str);
 		}
 		str = unescape(encodeURIComponent(str));
 		var bytes = new Uint8Array(str.length);
@@ -33,7 +33,7 @@
 	}
 
 	function from_hex(s) {
-		if (!is_hex(s)) throw new TypeError('The provided string doesn\'t look like hex data');
+		if (!is_hex(s)) throw new TypeError("The provided string doesn't look like hex data");
 		var result = new Uint8Array(s.length / 2);
 		for (var i = 0; i < s.length; i += 2) {
 			result[i >>> 1] = parseInt(s.substr(i, 2), 16);
@@ -42,7 +42,7 @@
 	}
 
 	function to_hex(bytes) {
-		var str = '', b, c, x;
+		var str = "", b, c, x;
 		for (var i = 0; i < bytes.length; i++) {
 			c = bytes[i] & 0xf;
 			b = bytes[i] >>> 4;
@@ -54,7 +54,7 @@
 	}
 
 	function is_hex(s) {
-		return (typeof s === 'string' && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
+		return (typeof s === "string" && /^([a-f]|[0-9])+$/i.test(s) && s.length % 2 == 0);
 	}
 
 	function from_base64(sBase64, nBlocksSize) {
@@ -95,8 +95,8 @@
 				47 :
 				65;
 		}
-		if (typeof aBytes === 'string') {
-			throw new Exception('input has to be an array');
+		if (typeof aBytes === "string") {
+			throw new Exception("input has to be an array");
 		}
 		var nMod3 = 2,
 			sB64Enc = "";
@@ -111,33 +111,33 @@
 				nUint24 = 0;
 			}
 		}
-		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? '' : nMod3 === 1 ? '=' : '==');
+		return sB64Enc.substr(0, sB64Enc.length - 2 + nMod3) + (nMod3 === 2 ? "" : nMod3 === 1 ? "=" : "==");
 	}
 
 	function output_formats() {
-		return ['uint8array', 'text', 'hex', 'base64'];
+		return ["uint8array", "text", "hex", "base64"];
 	}
 
 	function _format_output(output, optionalOutputFormat) {
 		var selectedOutputFormat = optionalOutputFormat || output_format;
-		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
+		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + " output format is not available");
 		if (output instanceof AllocatedBuf) {
-			if (selectedOutputFormat == 'uint8array') return output.to_Uint8Array();
-			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
-			else if (selectedOutputFormat == 'hex') return to_hex(output.to_Uint8Array());
-			else if (selectedOutputFormat == 'base64') return to_base64(output.to_Uint8Array());
-			else throw new Error('What is output format "' + selectedOutputFormat + '"?');
-		} else if (typeof output == 'object') { //Composed output. Example : key pairs
+			if (selectedOutputFormat == "uint8array") return output.to_Uint8Array();
+			else if (selectedOutputFormat == "text") return libsodium.Pointer_stringify(output.address, output.length);
+			else if (selectedOutputFormat == "hex") return to_hex(output.to_Uint8Array());
+			else if (selectedOutputFormat == "base64") return to_base64(output.to_Uint8Array());
+			else throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
+		} else if (typeof output == "object") { //Composed output. Example : key pairs
 			var props = Object.keys(output);
 			var formattedOutput = {};
 			for (var i = 0; i < props.length; i++) {
 				formattedOutput[props[i]] = _format_output(output[props[i]], selectedOutputFormat);
 			}
 			return formattedOutput;
-		} else if (typeof output == 'text') {
+		} else if (typeof output == "text") {
 			return output;
 		} else {
-			throw new TypeError('Cannot format output');
+			throw new TypeError("Cannot format output");
 		}
 	}
 
@@ -152,10 +152,10 @@
 	function _check_output_format(format) {
 		if (!format) {
 			return;
-		} else if (typeof format !== 'string') {
-			throw new TypeError('When defined, the output format must be a string');
+		} else if (typeof format !== "string") {
+			throw new TypeError("When defined, the output format must be a string");
 		} else if (!_is_output_format(format)) {
-			throw new Error(format + ' is not a supported output format');
+			throw new Error(format + " is not a supported output format");
 		}
 	}
 
@@ -215,7 +215,7 @@
 
 	function _require_defined(address_pool, varValue, varName) {
 		if (varValue == undefined) {
-			_free_and_throw_type_error(address_pool, varName + ' cannot be null or undefined');
+			_free_and_throw_type_error(address_pool, varName + " cannot be null or undefined");
 		}
 	}
 
@@ -223,10 +223,10 @@
 		_require_defined(address_pool, varValue, varName);
 		if (varValue instanceof Uint8Array) {
 			return varValue;
-		} else if (typeof varValue === 'string') {
+		} else if (typeof varValue === "string") {
 			return from_string(varValue);
 		}
-		_free_and_throw_type_error(address_pool, 'unsupported input type for ' + varName);
+		_free_and_throw_type_error(address_pool, "unsupported input type for " + varName);
 	}
 
 	{{wraps_here}}
