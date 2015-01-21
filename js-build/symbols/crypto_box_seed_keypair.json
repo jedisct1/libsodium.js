@@ -22,5 +22,5 @@
 	],
 	"target": "libsodium._crypto_box_seed_keypair(publicKey_byte, privateKey_byte, seed_byte) | 0",
 	"expect": "=== 0",
-	"return": "formatOutput({publicKey: publicKey, privateKey: privateKey}, outputFormat)"
+	"return": "_formatOutput({publicKey: publicKey, privateKey: privateKey}, outputFormat)"
 }

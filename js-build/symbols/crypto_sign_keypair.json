@@ -17,5 +17,5 @@
 	],
 	"target": "libsodium._crypto_sign_keypair(publicKey_byte, privateKey_byte) | 0",
 	"expect": "=== 0",
-	"return": "formatOutput({publicKey: publicKey, privateKey: privateKey, keyType: 'ed25519'}, outputFormat)"
+	"return": "_formatOutput({publicKey: publicKey, privateKey: privateKey, keyType: 'ed25519'}, outputFormat)"
 }

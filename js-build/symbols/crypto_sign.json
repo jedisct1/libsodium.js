@@ -27,5 +27,5 @@
 	],
 	"target": "libsodium._crypto_sign(signature_byte, slen_byte, message_byte, message_size, 0, privateKey_byte) | 0",
 	"expect": "=== 0",
-	"return": "formatOutput(signature, outputFormat)"
+	"return": "_formatOutput(signature, outputFormat)"
 }

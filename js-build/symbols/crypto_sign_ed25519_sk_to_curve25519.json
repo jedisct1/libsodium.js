@@ -17,5 +17,5 @@
 	],
 	"target": "libsodium._crypto_sign_ed25519_sk_to_curve25519(cSk_byte, edSk_byte) | 0",
 	"expect": "=== 0",
-	"return": "formatOutput(cSk, outputFormat)"
+	"return": "_formatOutput(cSk, outputFormat)"
 }

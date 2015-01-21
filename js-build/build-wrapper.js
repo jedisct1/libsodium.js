@@ -66,8 +66,7 @@ function buildSymbol(symbolDescription) {
 				currentParameterCode = macros['input_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
 			} else if (currentParameter.type == 'uint' ||
-				currentParameter.type == 'unsized_buf' ||
-				currentParameter.type == 'encoding') {
+				currentParameter.type == 'unsized_buf') {
 				currentParameterCode = macros['input_' + currentParameter.type];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
@@ -77,13 +76,13 @@ function buildSymbol(symbolDescription) {
 			}
 			funcBody += currentParameterCode + '\n';
 		}
-		if (!symbolDescription.noEncoding) {
+		if (!symbolDescription.noOutputFormat) {
 			paramsArray.push('outputFormat');
 		}
 		funcCode += paramsArray.join(', ') + ') {\n';
 		funcCode += '\t\tvar toDealloc = [];\n';
-		if (!symbolDescription.noEncoding) {
-			funcCode += '\t\tcheckOutputFormat(outputFormat);\n';
+		if (!symbolDescription.noOutputFormat) {
+			funcCode += '\t\t_checkOutputFormat(outputFormat);\n';
 		}
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {
@@ -102,22 +101,22 @@ function buildSymbol(symbolDescription) {
 		if (symbolDescription.expect !== undefined && symbolDescription.return !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
 			funcBody += '\tvar ret = ' + symbolDescription.return+';\n';
-			funcBody += '\tfree_all(toDealloc);\n';
+			funcBody += '\t_free_all(toDealloc);\n';
 			funcBody += '\treturn ret;\n';
 			funcBody += '}\n';
-			funcBody += 'free_all(toDealloc);\n';
+			funcBody += '_free_all(toDealloc);\n';
 			funcBody += 'throw new Error();\n';
 		} else if (symbolDescription.expect !== undefined) {
 			funcBody += 'if (' + symbolDescription.target + ' ' + symbolDescription.expect + ') {\n';
-			funcBody += '\tfree_all(toDealloc);\n';
+			funcBody += '\t_free_all(toDealloc);\n';
 			funcBody += '\treturn;\n';
 			funcBody += '}\n';
-			funcBody += 'free_all(toDealloc);\n';
+			funcBody += '_free_all(toDealloc);\n';
 			funcBody += 'throw new Error();\n';
 		} else if (symbolDescription.return !== undefined) {
 			funcBody += sc(symbolDescription.target) + '\n';
 			funcBody += 'var ret = (' + symbolDescription.return+');\n';
-			funcBody += 'free_all(toDealloc);\n';
+			funcBody += '_free_all(toDealloc);\n';
 			funcBody += 'return ret;\n';
 		} else {
 			funcBody += sc(symbolDescription.target) + '\n';

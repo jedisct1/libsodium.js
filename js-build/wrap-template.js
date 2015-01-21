@@ -53,7 +53,7 @@
 	}
 
 	function from_base64(sBase64, nBlocksSize) {
-		function b64ToUint6(nChr) {
+		function _b64ToUint6(nChr) {
 			return nChr > 64 && nChr < 91 ?
 				nChr - 65 : nChr > 96 && nChr < 123 ?
 				nChr - 71 : nChr > 47 && nChr < 58 ?
@@ -69,7 +69,7 @@
 			taBytes = new Uint8Array(nOutLen);
 		for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
 			nMod4 = nInIdx & 3;
-			nUint24 |= b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
+			nUint24 |= _b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
 			if (nMod4 === 3 || nInLen - nInIdx === 1) {
 				for (nMod3 = 0; nMod3 < 3 && nOutIdx < nOutLen; nMod3++, nOutIdx++) {
 					taBytes[nOutIdx] = nUint24 >>> (16 >>> nMod3 & 24) & 255;
@@ -81,7 +81,7 @@
 	}
 
 	function to_base64(aBytes, noNewLine) {
-		function uint6ToB64(nUint6) {
+		function _uint6ToB64(nUint6) {
 			return nUint6 < 26 ?
 				nUint6 + 65 : nUint6 < 52 ?
 				nUint6 + 71 : nUint6 < 62 ?
@@ -102,7 +102,7 @@
 			}
 			nUint24 |= aBytes[nIdx] << (16 >>> nMod3 & 24);
 			if (nMod3 === 2 || aBytes.length - nIdx === 1) {
-				sB64Enc += String.fromCharCode(uint6ToB64(nUint24 >>> 18 & 63), uint6ToB64(nUint24 >>> 12 & 63), uint6ToB64(nUint24 >>> 6 & 63), uint6ToB64(nUint24 & 63));
+				sB64Enc += String.fromCharCode(_uint6ToB64(nUint24 >>> 18 & 63), _uint6ToB64(nUint24 >>> 12 & 63), _uint6ToB64(nUint24 >>> 6 & 63), _uint6ToB64(nUint24 & 63));
 				nUint24 = 0;
 			}
 		}
@@ -113,9 +113,9 @@
 		return ['uint8array', 'text', 'hex', 'base64'];
 	}
 
-	function formatOutput(output, optionalOutputFormat) {
+	function _formatOutput(output, optionalOutputFormat) {
 		var selectedOutputFormat = optionalOutputFormat || output_format;
-		if (!is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
+		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
 		if (output instanceof TargetBuf) {
 			if (selectedOutputFormat == 'uint8array') return output.extractBytes();
 			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
@@ -126,7 +126,7 @@
 			var props = Object.keys(output);
 			var formattedOutput = {};
 			for (var i = 0; i < props.length; i++) {
-				formattedOutput[props[i]] = formatOutput(output[props[i]], selectedOutputFormat);
+				formattedOutput[props[i]] = _formatOutput(output[props[i]], selectedOutputFormat);
 			}
 			return formattedOutput;
 		} else if (typeof output == 'text') {
@@ -136,7 +136,7 @@
 		}
 	}
 
-	function is_output_format(format) {
+	function _is_output_format(format) {
 		var formats = output_formats();
 		for (var i = 0; i < formats.length; i++) {
 			if (formats[i] === format) return true;
@@ -144,12 +144,12 @@
 		return false;
 	}
 
-	function checkOutputFormat(format) {
+	function _checkOutputFormat(format) {
 		if (!format) {
 			return;
 		} else if (typeof format !== 'string') {
 			throw new TypeError('When defined, the output format must be a string');
-		} else if (!is_output_format(format)) {
+		} else if (!_is_output_format(format)) {
 			throw new Error(format + ' is not a supported output format');
 		}
 	}
@@ -157,7 +157,7 @@
 	//---------------------------------------------------------------------------
 	// Allocation
 
-	function MALLOC(nbytes) {
+	function _MALLOC(nbytes) {
 		var result = libsodium._malloc(nbytes);
 		if (result === 0) {
 			throw {
@@ -168,24 +168,19 @@
 		return result;
 	}
 
-	function FREE(pointer) {
+	function _FREE(pointer) {
 		libsodium._free(pointer);
 	}
 
 	//---------------------------------------------------------------------------
 
-	function injectBytes(bs) {
-		var address = MALLOC(bs.length);
+	function _injectBytes(bs) {
+		var address = _MALLOC(bs.length);
 		libsodium.HEAPU8.set(bs, address);
 		return address;
 	}
 
-	function check_injectBytes(function_name, what, thing, expected_length) {
-		check_length(function_name, what, thing, expected_length);
-		return injectBytes(thing);
-	}
-
-	function extractBytes(address, length) {
+	function _extractBytes(address, length) {
 		var result = new Uint8Array(length);
 		result.set(libsodium.HEAPU8.subarray(address, address + length));
 		return result;
@@ -198,62 +193,45 @@
 		return Object.keys(exports).sort();
 	}
 
-	function check(function_name, result) {
-		if (result !== 0) {
-			throw {
-				message: "libsodium." + function_name + " signalled an error"
-			};
-		}
-	}
-
-	function check_length(function_name, what, thing, expected_length) {
-		if (thing.length !== expected_length) {
-			throw {
-				message: "libsodium." + function_name + " expected " +
-					expected_length + "-byte " + what + " but got length " + thing.length
-			};
-		}
-	}
-
 	function TargetBuf(length) {
 		this.length = length;
-		this.address = MALLOC(length);
+		this.address = _MALLOC(length);
 	}
 
 	TargetBuf.prototype.extractBytes = function (offset) {
-		return extractBytes(this.address + (offset || 0), this.length - (offset || 0));
+		return _extractBytes(this.address + (offset || 0), this.length - (offset || 0));
 	};
 
-	function free_all(addresses) {
+	function _free_all(addresses) {
 		for (var i = 0; i < addresses.length; i++) {
-			FREE(addresses[i]);
+			_FREE(addresses[i]);
 		}
 	}
 
-	function throwError(toDealloc, err) {
-		free_all(toDealloc);
+	function _throwError(toDealloc, err) {
+		_free_all(toDealloc);
 		throw new Error(err);
 	}
 
-	function throwTypeError(toDealloc, err) {
-		free_all(toDealloc);
+	function _throwTypeError(toDealloc, err) {
+		_free_all(toDealloc);
 		throw new TypeError(err);
 	}
 
-	function requireDefined(toDealloc, varValue, varName) {
+	function _requireDefined(toDealloc, varValue, varName) {
 		if (varValue == undefined) {
-			throwError(toDealloc, varName + ' cannot be null or undefined');
+			_throwTypeError(toDealloc, varName + ' cannot be null or undefined');
 		}
 	}
 
-	function inputToUint8Array(toDealloc, varValue, varName) {
-		requireDefined(toDealloc, varValue, varName);
+	function _inputToUint8Array(toDealloc, varValue, varName) {
+		_requireDefined(toDealloc, varValue, varName);
 		if (varValue instanceof Uint8Array) {
 			return varValue;
 		} else if (typeof varValue === 'string') {
 			return from_string(varValue);
 		}
-		throwTypeError(toDealloc, 'unsupported input type for ' + varName);
+		_throwTypeError(toDealloc, 'unsupported input type for ' + varName);
 	}
 
 	{{wraps_here}}
