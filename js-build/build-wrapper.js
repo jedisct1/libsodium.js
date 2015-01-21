@@ -100,6 +100,7 @@ function buildSymbol(symbolDescription) {
 		var funcBody = '';
 		//Adding parameters array in function's interface, their conversions in the function's body
 		var paramsArray = [];
+		symbolDescription.inputs = symbolDescription.inputs || [];
 		for (var i = 0; i < symbolDescription.inputs.length; i++) {
 			//Adding parameter in function's parameter list
 			var currentParameter = symbolDescription.inputs[i];
@@ -127,7 +128,7 @@ function buildSymbol(symbolDescription) {
 			funcCode += '\t\t_check_output_format(outputFormat);\n';
 		}
 		//Writing the outputs declaration code
-		symbolDescription.outputs = symbolDescription.outputs || [ ];
+		symbolDescription.outputs = symbolDescription.outputs || [];
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {
 			var currentOutput = symbolDescription.outputs[i];
 			var currentOutputCode;

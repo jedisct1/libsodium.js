@@ -2,7 +2,6 @@
 	"name": "randombytes_random",
 	"dependencies": [],
 	"type": "function",
-	"inputs": [],
 	"target": "var random_value = libsodium._randombytes_random() >>> 0",
 	"return": "random_value"
 }
