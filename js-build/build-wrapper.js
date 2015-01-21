@@ -134,8 +134,8 @@ function buildSymbol(symbolDescription) {
 			if (currentOutput.type === 'buf') {
 				currentOutputCode = macros['output_buf'];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
-			} else if (currentOutput.type === 'generichash_state') {
-				currentOutputCode = macros['output_generichash_state'];
+			} else if (macros['output_' + currentOutput.type]) {
+				currentOutputCode = macros['output_' + currentOutput.type];
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}'], [currentOutput.name]);
 			} else {
 				console.error('What is the output type ' + currentOutput.type + '?');
