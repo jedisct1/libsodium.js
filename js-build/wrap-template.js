@@ -122,10 +122,10 @@
 		var selectedOutputFormat = optionalOutputFormat || output_format;
 		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
 		if (output instanceof TargetBuf) {
-			if (selectedOutputFormat == 'uint8array') return output.extractBytes();
+			if (selectedOutputFormat == 'uint8array') return output.toUint8Array();
 			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
-			else if (selectedOutputFormat == 'hex') return to_hex(output.extractBytes());
-			else if (selectedOutputFormat == 'base64') return to_base64(output.extractBytes());
+			else if (selectedOutputFormat == 'hex') return to_hex(output.toUint8Array());
+			else if (selectedOutputFormat == 'base64') return to_base64(output.toUint8Array());
 			else throw new Error('What is output format "' + selectedOutputFormat + '"?');
 		} else if (typeof output == 'object') { //Composed output. Example : key pairs
 			var props = Object.keys(output);
@@ -169,9 +169,9 @@
 	}
 
 	// Copy the content of a TargetBuf (_malloc()'d memory) into a Uint8Array
-	TargetBuf.prototype.extractBytes = function () {
+	TargetBuf.prototype.toUint8Array = function () {
 		var result = new Uint8Array(this.length);
-		result.set(libsodium.HEAPU8.subarray(address, this.address + this.length));
+		result.set(libsodium.HEAPU8.subarray(this.address, this.address + this.length));
 		return result;
 	};
 
