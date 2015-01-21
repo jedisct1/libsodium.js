@@ -14,33 +14,29 @@
 	libsodium._sodium_init();
 
 	//---------------------------------------------------------------------------
-	// Horrifying UTF-8, base64 and hex codecs
+	// Codecs
 
-	//UTF8 to Uint8Array
-	function string_to_Uint8Array(s) {
-		var escapedStr = unescape(encodeURIComponent(s));
-
-		var latin1 = new Uint8Array(escapedStr.length);
-		for (var i = 0; i < escapedStr.length; i++) {
-			var c = escapedStr.charCodeAt(i);
-			if ((c & 0xff) !== c) throw {
-				message: "Cannot encode string in Latin1",
-				str: s
-			};
-			latin1[i] = (c & 0xff);
+	// String encoded in UTF-8 as a Uint8Array
+	function string_to_Uint8Array(str) {
+		if (typeof TextEncoder === 'function') {
+			return new TextEncoder('utf-8').encode(str);
 		}
-		return latin1;
+		str = unescape(encodeURIComponent(str));
+		var ret = new Uint8Array(str.length);
+		for (var i = 0; i < str.length; i++) {
+			ret[i] = str.charCodeAt(i);
+		}
+		return ret;
 	}
 
 	//Uint8Array to UTF8
-	function uint8Array_to_String(b) {
-		var encoded = [];
-		for (var i = 0; i < b.length; i++) {
-			encoded.push(String.fromCharCode(b[i]));
+	function uint8Array_to_String(bytes) {
+		var str = '';
+		for (var i = 0; i < byes.length; i++) {
+			str += String.fromCharCode(b[i]);
 		}
-		encoded = encoded.join('');
 		try {
-			return decodeURIComponent(escape(encoded));
+			return decodeURIComponent(escape(str));
 		} catch (e) {
 			throw new Error('Cannot convert to a UTF8 string');
 		}
