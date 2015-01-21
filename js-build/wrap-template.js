@@ -16,7 +16,6 @@
 	//---------------------------------------------------------------------------
 	// Codecs
 
-	// String encoded in UTF-8 as a Uint8Array
 	function string_to_Uint8Array(str) {
 		if (typeof TextEncoder === 'function') {
 			return new TextEncoder('utf-8').encode(str);
@@ -150,8 +149,9 @@
 	function is_encoding(enc) {
 		var encs = available_encodings();
 		var encFound = false;
-		for (var i = 0; i < encs.length; i++)
+		for (var i = 0; i < encs.length; i++) {
 			if (encs[i] == enc) encFound = true;
+		}
 		return encFound;
 	}
 
