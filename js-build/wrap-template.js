@@ -121,7 +121,7 @@
 	function _formatOutput(output, optionalOutputFormat) {
 		var selectedOutputFormat = optionalOutputFormat || output_format;
 		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
-		if (output instanceof TargetBuf) {
+		if (output instanceof AllocatedBuf) {
 			if (selectedOutputFormat == 'uint8array') return output.toUint8Array();
 			else if (selectedOutputFormat == 'text') return libsodium.Pointer_stringify(output.address, output.length);
 			else if (selectedOutputFormat == 'hex') return to_hex(output.toUint8Array());
@@ -162,21 +162,21 @@
 	//---------------------------------------------------------------------------
 	// Memory management
 
-	// TargetBuf: pointer allocated using _malloc() + length
-	function TargetBuf(length) {
+	// AllocatedBuf: pointer allocated using _malloc() + length
+	function AllocatedBuf(length) {
 		this.length = length;
 		this.address = _MALLOC(length);
 	}
 
-	// Copy the content of a TargetBuf (_malloc()'d memory) into a Uint8Array
-	TargetBuf.prototype.toUint8Array = function () {
+	// Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
+	AllocatedBuf.prototype.toUint8Array = function () {
 		var result = new Uint8Array(this.length);
 		result.set(libsodium.HEAPU8.subarray(this.address, this.address + this.length));
 		return result;
 	};
 
 	// _malloc() a region and initialize it with the content of a Uint8Array
-	function _toTargetBufAddress(bytes) {
+	function _toAllocatedBufAddress(bytes) {
 		var address = _MALLOC(bytes.length);
 		libsodium.HEAPU8.set(bytes, address);
 		return address;
