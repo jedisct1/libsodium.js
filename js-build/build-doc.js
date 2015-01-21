@@ -43,6 +43,8 @@ exports.buildDocForSymbol = function (s) {
 				sDoc += 'Optional unsized buf';
 			} else if (paramType == 'uint') {
 				sDoc += 'Unsigned Integer';
+			} else if (paramType == 'generichash_state_address') {
+				sDoc += 'Generichash state address';
 			} else throw new Error('Unknown parameter type: ' + paramType);
 			sDoc += newLine();
 		}

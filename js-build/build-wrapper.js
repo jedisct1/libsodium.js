@@ -7,6 +7,9 @@ var macros = {};
 var macrosFiles = fs.readdirSync(path.join(__dirname, 'macros'));
 for (var i = 0; i < macrosFiles.length; i++) {
 	var macroName = macrosFiles[i].replace('.js', '');
+	if (! macroName.match(/^[a-z0-9_]+$/)) {
+		continue;
+	}
 	var macroCode = fs.readFileSync(path.join(__dirname, 'macros', macrosFiles[i]), {
 		encoding: 'utf8'
 	});
@@ -106,9 +109,7 @@ function buildSymbol(symbolDescription) {
 			if (currentParameter.type == 'buf') {
 				currentParameterCode = macros['input_buf'];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
-			} else if (currentParameter.type == 'uint' ||
-				currentParameter.type == 'unsized_buf' ||
-				currentParameter.type == 'unsized_buf_optional') {
+			} else if (macros['input_' + currentParameter.type]) {
 				currentParameterCode = macros['input_' + currentParameter.type];
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}'], [currentParameter.name]);
 			} else {
@@ -126,6 +127,7 @@ function buildSymbol(symbolDescription) {
 			funcCode += '\t\t_check_output_format(outputFormat);\n';
 		}
 		//Writing the outputs declaration code
+		symbolDescription.outputs = symbolDescription.outputs || [ ];
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {
 			var currentOutput = symbolDescription.outputs[i];
 			var currentOutputCode;
@@ -175,7 +177,7 @@ function buildSymbol(symbolDescription) {
 }
 
 function applyMacro(macroCode, symbols, substitutes) {
-	if (typeof macroCode != 'string') throw new TypeError('macroCode must be a string');
+	if (typeof macroCode != 'string') throw new TypeError('macroCode must be a string, not ' + typeof macroCode);
 	if (!(Array.isArray(symbols) && checkStrArray(symbols))) throw new TypeError('symbols must be an array of strings');
 	if (!(Array.isArray(substitutes) && checkStrArray(substitutes))) throw new TypeError('substitutes must be an array of strings');
 	if (symbols.length > substitutes.length) throw new TypeError('invalid array length for substitutes');

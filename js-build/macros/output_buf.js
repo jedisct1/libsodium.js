@@ -1,4 +1,4 @@
-// ---------- output (buf)
+// ---------- output {var_name} (buf)
 
 var {var_name}_length = ({var_size}) | 0,
     {var_name} = new AllocatedBuf({var_name}_length),
