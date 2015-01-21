@@ -236,9 +236,9 @@
 				var message = 'Crypto Secretbox testing';
 				var cipher = sodium.crypto_secretbox_easy(message, nonce, key);
 				log('Ciphertext: ' + to_hex(cipher));
-				var plaintext = sodium.crypto_secretbox_open_easy(cipher, nonce, key);
-				log('Plaintext: ' + sodium.uint8Array_to_String(plaintext));
-				log('Plaintext and initial message are equal: ' + (sodium.uint8Array_to_String(plaintext) == message));
+				var plaintext = sodium.crypto_secretbox_open_easy(cipher, nonce, key, 'utf8');
+				log('Plaintext: ' + plaintext);
+				log('Plaintext and initial message are equal: ' + (plaintext === message));
 
 				sodium_test.secretbox_easy();
 				log('Test vectors passed with success');
