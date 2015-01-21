@@ -193,15 +193,15 @@
 				log('Keypair 2: ' + JSON.stringify(keyPair2));
 
 				var message = "Crypto box testing";
-				var cipherText1 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
-				var cipherText2 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
-				log('Ciphertext: ' + to_hex(cipherText1));
-				log('Ciphertexts are equal: ' + (cipherText1 === cipherText2));
+				var ciphertext1 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey));
+				var ciphertext2 = sodium.crypto_box_easy(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey));
+				log('ciphertext: ' + to_hex(ciphertext1));
+				log('Ciphertexts are equal: ' + (ciphertext1 === ciphertext2));
 
-				var plainText1 = sodium.crypto_box_open_easy(cipherText1, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
-				var plainText2 = sodium.crypto_box_open_easy(cipherText2, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
-				log('plainText: ' + plainText1);
-				log('Are plaintexts equal: ' + (plainText1 === plainText2));
+				var plaintext1 = sodium.crypto_box_open_easy(ciphertext1, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
+				var plaintext2 = sodium.crypto_box_open_easy(ciphertext2, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
+				log('plaintext: ' + plaintext1);
+				log('Are plaintexts equal: ' + (plaintext1 === plaintext2));
 
 				log('DETACHED TESTING');
 				var detachedCipher1 = sodium.crypto_box_detached(message, nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'hex');
@@ -209,10 +209,10 @@
 				var detachedCipher2 = sodium.crypto_box_detached(message, nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'hex');
 				log('Detached cipher 2:<br>' + JSON.stringify(detachedCipher2));
 
-				plainText1 = sodium.crypto_box_open_detached(from_hex(detachedCipher1.ciphertext), from_hex(detachedCipher1.mac), nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
-				plainText2 = sodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
-				log('plainText: ' + plainText1);
-				log('Are plaintexts equal: ' + (plainText1 === plainText2));
+				plaintext1 = sodium.crypto_box_open_detached(from_hex(detachedCipher1.ciphertext), from_hex(detachedCipher1.mac), nonce, from_hex(keyPair1.publicKey), from_hex(keyPair2.privateKey), 'utf8');
+				plaintext2 = sodium.crypto_box_open_detached(from_hex(detachedCipher2.ciphertext), from_hex(detachedCipher2.mac), nonce, from_hex(keyPair2.publicKey), from_hex(keyPair1.privateKey), 'utf8');
+				log('plaintext: ' + plaintext1);
+				log('Are plaintexts equal: ' + (plaintext1 === plaintext2));
 
 				return logStr;
 			}
@@ -236,9 +236,9 @@
 				var message = 'Crypto Secretbox testing';
 				var cipher = sodium.crypto_secretbox_easy(message, nonce, key);
 				log('Ciphertext: ' + to_hex(cipher));
-				var plainText = sodium.crypto_secretbox_open_easy(cipher, nonce, key, 'utf8');
-				log('plainText: ' + plainText);
-				log('plainText and initial message are equal: ' + (plainText === message));
+				var plaintext = sodium.crypto_secretbox_open_easy(cipher, nonce, key, 'utf8');
+				log('plaintext: ' + plaintext);
+				log('plaintext and initial message are equal: ' + (plaintext === message));
 
 				sodium_test.secretbox_easy();
 				log('Test vectors passed with success');
