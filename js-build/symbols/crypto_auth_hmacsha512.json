@@ -22,5 +22,5 @@
 	],
 	"target": "libsodium._crypto_auth_hmacsha512(hash_address, message_address, message_length, 0, key_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(hash, outputFormat)"
+	"return": "_format_output(hash, outputFormat)"
 }

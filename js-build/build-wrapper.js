@@ -82,7 +82,7 @@ function buildSymbol(symbolDescription) {
 		funcCode += paramsArray.join(', ') + ') {\n';
 		funcCode += '\t\tvar toDealloc = [];\n';
 		if (!symbolDescription.noOutputFormat) {
-			funcCode += '\t\t_checkOutputFormat(outputFormat);\n';
+			funcCode += '\t\t_check_output_format(outputFormat);\n';
 		}
 		//Writing the outputs declaration code
 		for (var i = 0; i < symbolDescription.outputs.length; i++) {

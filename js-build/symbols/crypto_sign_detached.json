@@ -27,5 +27,5 @@
 	],
 	"target": "libsodium._crypto_sign_detached(signature_address, slen_address, message_address, message_length, 0, privateKey_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(signature, outputFormat)"
+	"return": "_format_output(signature, outputFormat)"
 }

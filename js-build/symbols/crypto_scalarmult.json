@@ -23,5 +23,5 @@
 	],
 	"target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(sharedSecret, outputFormat)"
+	"return": "_format_output(sharedSecret, outputFormat)"
 }

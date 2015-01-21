@@ -118,7 +118,7 @@
 		return ['uint8array', 'text', 'hex', 'base64'];
 	}
 
-	function _formatOutput(output, optionalOutputFormat) {
+	function _format_output(output, optionalOutputFormat) {
 		var selectedOutputFormat = optionalOutputFormat || output_format;
 		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + ' output format is not available');
 		if (output instanceof AllocatedBuf) {
@@ -131,7 +131,7 @@
 			var props = Object.keys(output);
 			var formattedOutput = {};
 			for (var i = 0; i < props.length; i++) {
-				formattedOutput[props[i]] = _formatOutput(output[props[i]], selectedOutputFormat);
+				formattedOutput[props[i]] = _format_output(output[props[i]], selectedOutputFormat);
 			}
 			return formattedOutput;
 		} else if (typeof output == 'text') {
@@ -149,7 +149,7 @@
 		return false;
 	}
 
-	function _checkOutputFormat(format) {
+	function _check_output_format(format) {
 		if (!format) {
 			return;
 		} else if (typeof format !== 'string') {

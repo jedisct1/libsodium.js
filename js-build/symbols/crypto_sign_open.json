@@ -22,5 +22,5 @@
 	],
 	"target": "libsodium._crypto_sign_open(message_address, message_length, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(message, outputFormat)"
+	"return": "_format_output(message, outputFormat)"
 }

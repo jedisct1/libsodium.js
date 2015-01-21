@@ -22,5 +22,5 @@
 	],
 	"target": "libsodium._crypto_generichash(hash_address, hash_length, message_address, message_length, key_address, key_length) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(hash, outputFormat)"
+	"return": "_format_output(hash, outputFormat)"
 }

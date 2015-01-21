@@ -18,5 +18,5 @@
 	],
 	"target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(publicKey, outputFormat)"
+	"return": "_format_output(publicKey, outputFormat)"
 }

@@ -17,5 +17,5 @@
 	],
 	"target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",
 	"expect": "=== 0",
-	"return": "_formatOutput(cPk, outputFormat)"
+	"return": "_format_output(cPk, outputFormat)"
 }
