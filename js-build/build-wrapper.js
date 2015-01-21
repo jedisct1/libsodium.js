@@ -55,8 +55,9 @@ function exportFunctions(symbols) {
 	}
 	exportsCode += "\tvar functions = [" + keys.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
-	exportsCode += "\t\tvar raw = libsodium[\"_\" + functions[i]];\n";
-	exportsCode += "\t\tif (typeof raw === \"function\") exports[functions[i]] = raw\n";
+	exportsCode += "\t\tif (typeof libsodium[\"_\" + functions[i]] === \"function\") {\n";
+	exportsCode += "\t\t\teval(\"exports['\" + functions[i] + \"'] = \" + functions[i]);\n";
+	exportsCode += "\t\t}\n";
 	exportsCode += "\t}\n";
 }
 
