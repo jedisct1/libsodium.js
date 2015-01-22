@@ -1,0 +1,13 @@
+{
+	"name": "randombytes_set_implementation",
+	"dependencies": ["_randombytes_set_implementation"],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "implementation",
+			"type": "randombytes_implementation"
+		}
+	],
+	"target": "libsodium._randombytes_set_implementation(implementation_address) | 0",
+	"expect": "=== 0"
+}

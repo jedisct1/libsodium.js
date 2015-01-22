@@ -45,6 +45,8 @@ exports.buildDocForSymbol = function (s) {
 				sDoc += 'Unsigned Integer';
 			} else if (paramType == 'generichash_state_address') {
 				sDoc += 'Generichash state address';
+			} else if (paramType == 'randombytes_implementation') {
+				sDoc += 'Randombytes implementation';
 			} else throw new Error('Unknown parameter type: ' + paramType);
 			sDoc += newLine();
 		}
