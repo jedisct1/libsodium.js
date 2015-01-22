@@ -2,7 +2,8 @@
 all: libsodium/libsodium-js/lib/sodium.js
 	mkdir -p out
 	cp libsodium/libsodium-js/lib/*.js out/
-	cp out/* test/
+	ln -f out/libsodium.js test/
+	ln -f out/sodium.js test/    
 	ls -l out
 
 libsodium/libsodium-js/lib/sodium.js: libsodium/test/js.done js-build/build-wrapper.js js-build/build-doc.js js-build/wrap-template.js
