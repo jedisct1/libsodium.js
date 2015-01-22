@@ -17,6 +17,29 @@
 		return Object.keys(exports).sort();
 	}
 
+	function memzero(bytes) {
+		if (! bytes instanceof Uint8Array) {
+			throw new TypeError("Only Uint8Array instances can be wiped");
+		}
+		for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+			bytes[i] = 0;
+		}
+	}
+
+	function memcmp(b1, b2) {
+		if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
+			throw new TypeError("Only Uint8Array instances can be compared");
+		}
+		if (b1.length !== b2.length) {
+			throw new TypeError("Only instances of identical length can be compared");
+		}
+		var d = 0 | 0, i = 0 | 0, j = b1.length;
+		for (var d = 0 | 0, i = 0 | 0, j = b1.length; i < j; i++) {
+			d |= b1[i] ^ b2[i];
+		}
+		return d === 0;
+	}
+
 	//---------------------------------------------------------------------------
 	// Codecs
 
@@ -49,8 +72,8 @@
 			x = (87 + c + (((c - 10) >> 31) & -39)) << 8 |
 			    (87 + b + (((b - 10) >> 31) & -39));
 			str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
-        }
-        return str;
+		}
+		return str;
 	}
 
 	function is_hex(str) {
@@ -236,6 +259,8 @@
 			from_hex: from_hex,
 			from_string: from_string,
 			libsodium: libsodium,
+			memcmp: memcmp,
+			memzero: memzero,
 			output_formats: output_formats,
 			symbols: symbols,
 			to_base64: to_base64,
