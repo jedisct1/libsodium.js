@@ -1,5 +1,5 @@
-"use strict";
 (function (root, factory) {
+	"use strict";
 	if (typeof define === "function" && define.amd) {
 		define(["libsodium"], factory);
 	} else if (typeof exports === "object") {
@@ -33,7 +33,6 @@
 		if (b1.length !== b2.length) {
 			throw new TypeError("Only instances of identical length can be compared");
 		}
-		var d = 0 | 0, i = 0 | 0, j = b1.length;
 		for (var d = 0 | 0, i = 0 | 0, j = b1.length; i < j; i++) {
 			d |= b1[i] ^ b2[i];
 		}
@@ -77,7 +76,7 @@
 	}
 
 	function is_hex(str) {
-		return (typeof str === "string" && /^[0-9a-f]+$/i.test(str) && str.length % 2 == 0);
+		return (typeof str === "string" && /^[0-9a-f]+$/i.test(str) && str.length % 2 === 0);
 	}
 
 	function from_base64(sBase64, nBlocksSize) {
@@ -145,19 +144,19 @@
 		var selectedOutputFormat = optionalOutputFormat || output_format;
 		if (!_is_output_format(selectedOutputFormat)) throw new Error(selectedOutputFormat + " output format is not available");
 		if (output instanceof AllocatedBuf) {
-			if (selectedOutputFormat == "uint8array") return output.to_Uint8Array();
-			else if (selectedOutputFormat == "text") return libsodium.Pointer_stringify(output.address, output.length);
-			else if (selectedOutputFormat == "hex") return to_hex(output.to_Uint8Array());
-			else if (selectedOutputFormat == "base64") return to_base64(output.to_Uint8Array());
+			if (selectedOutputFormat === "uint8array") return output.to_Uint8Array();
+			else if (selectedOutputFormat === "text") return libsodium.Pointer_stringify(output.address, output.length);
+			else if (selectedOutputFormat === "hex") return to_hex(output.to_Uint8Array());
+			else if (selectedOutputFormat === "base64") return to_base64(output.to_Uint8Array());
 			else throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
-		} else if (typeof output == "object") { //Composed output. Example : key pairs
+		} else if (typeof output === "object") { //Composed output. Example : key pairs
 			var props = Object.keys(output);
 			var formattedOutput = {};
 			for (var i = 0; i < props.length; i++) {
 				formattedOutput[props[i]] = _format_output(output[props[i]], selectedOutputFormat);
 			}
 			return formattedOutput;
-		} else if (typeof output == "text") {
+		} else if (typeof output === "string") {
 			return output;
 		} else {
 			throw new TypeError("Cannot format output");
