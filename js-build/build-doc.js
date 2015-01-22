@@ -19,7 +19,7 @@ docStr += '* `available_encodings()` : returns a list of the available encodings
 docStr += '* `set_encoding(encodingName)` : reset the default result encoding to the encoding named `encodingName`' + newLine();
 docStr += '* `get_encoding()` : get the name of the encoding currently set as default' + newLine();
 docStr += '* `symbols()` : returns a list of the currently methods and constants' + newLine();
-docStr += '* `raw` : attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine()
+docStr += '* `raw` : attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine();
 docStr += '* `init()` : reference to the `libsodium.sodium_init()` method. Doesn\'t need to be called, as it is called by sodium.js on loading.' + newParagraph();
 
 exports.buildDocForSymbol = function (s) {
@@ -54,7 +54,7 @@ exports.buildDocForSymbol = function (s) {
 		}
 		sDoc += newLine() + '__Outputs:__' + newLine();
 		if (s.outputs.length > 0) {
-			for (var i = 0; i < s.outputs.length; i++) {
+			for (i = 0; i < s.outputs.length; i++) {
 				sDoc += '* `' + s.outputs[i].name + '`: ';
 				var outputType = s.outputs[i].type;
 				if (outputType == 'buf') {
@@ -76,11 +76,11 @@ exports.buildDocForSymbol = function (s) {
 	sDoc += newParagraph();
 
 	docStr += sDoc;
-}
+};
 
 exports.getResultDoc = function () {
 	return docStr;
-}
+};
 
 function newLine() {
 	return '\r\n';

@@ -80,7 +80,7 @@ var sodium_test = (function(){
 			var vData = loadVectorsReq.responseText;
 			try {
 				vData = JSON.parse(vData);
-			} catch (e){
+			} catch (err){
 				callback(new Error('cannot parse ed25519 vectors'));
 				return;
 			}
@@ -98,7 +98,7 @@ var sodium_test = (function(){
 					testVector(currentVector);
 					testCount++;
 				}
-			} catch (e){
+			} catch (err){
 				console.log('Error on test no. ' + testCount);
 				callback(e + ' ' + JSON.stringify(currentVector));
 				return;
@@ -162,8 +162,9 @@ var sodium_test = (function(){
 			}
 		];
 
-		if (sodium.crypto_hash) for (var i = 0; i < sha512Vectors.length; i++) sha512_test(sha512Vectors[i]);
-		if (sodium.crypto_hash_sha256) for (var i = 0; i < sha256Vectors.length; i++) sha256_test(sha256Vectors[i]);
+		var i;
+		if (sodium.crypto_hash) for (i = 0; i < sha512Vectors.length; i++) sha512_test(sha512Vectors[i]);
+		if (sodium.crypto_hash_sha256) for (i = 0; i < sha256Vectors.length; i++) sha256_test(sha256Vectors[i]);
 
 		function sha512_test(v){
 			var hash = sodium.crypto_hash(v.m);
@@ -201,9 +202,10 @@ var sodium_test = (function(){
 			}
 		];
 
-		if (sodium.crypto_auth) for (var i = 0; i < hmacSHA512256Vectors.length; i++) testHmacSHA512256Vector(hmacSHA512256Vectors[i]);
-		if (sodium.crypto_auth_hmacsha512) for (var i = 0; i < hmacSHA512Vectors.length; i++) testHmacSHA512Vector(hmacSHA512Vectors[i]);
-		if (sodium.crypto_auth_hmacsha256) for (var i = 0; i < hmacSHA256Vectors.length; i++) testHmacSHA256Vector(hmacSHA256Vectors[i]);
+		var i;
+		if (sodium.crypto_auth) for (i = 0; i < hmacSHA512256Vectors.length; i++) testHmacSHA512256Vector(hmacSHA512256Vectors[i]);
+		if (sodium.crypto_auth_hmacsha512) for (i = 0; i < hmacSHA512Vectors.length; i++) testHmacSHA512Vector(hmacSHA512Vectors[i]);
+		if (sodium.crypto_auth_hmacsha256) for (i = 0; i < hmacSHA256Vectors.length; i++) testHmacSHA256Vector(hmacSHA256Vectors[i]);
 
 		function testHmacSHA512256Vector(v){
 			var key;

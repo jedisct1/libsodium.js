@@ -28,7 +28,7 @@ var exportsCode = '';
 var symbols = [];
 var symbolsFiles = fs.readdirSync(path.join(__dirname, 'symbols')).sort();
 for (var i = 0; i < symbolsFiles.length; i++) {
-	if (!(symbolsFiles[i].lastIndexOf('.json') == symbolsFiles[i].length - 5)) {
+	if (symbolsFiles[i].lastIndexOf('.json') !== symbolsFiles[i].length - 5) {
 		continue;
 	}
 	var currentSymbol = fs.readFileSync(path.join(__dirname, 'symbols', symbolsFiles[i]), {
@@ -76,11 +76,11 @@ function exportConstants(constSymbols) {
 	exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
 	exportsCode += "\t\tvar raw = libsodium[\"_\" + constants[i].toLowerCase()];\n";
-	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw()|0;\n"
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants[i]] = raw()|0;\n";
 	exportsCode += "\t}\n";
 
-	var keys = [ ];
-	for (var i = 0; i < constSymbols.length; i++) {
+	keys = [ ];
+	for (i = 0; i < constSymbols.length; i++) {
 		if (constSymbols[i].type === 'string') {
 			keys.push('"' + constSymbols[i].name + '"');
 		}
@@ -88,7 +88,7 @@ function exportConstants(constSymbols) {
 	exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
 	exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
 	exportsCode += "\t\tvar raw = libsodium[\"_\" + constants_str[i].toLowerCase()];\n";
-	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n"
+	exportsCode += "\t\tif (typeof raw === \"function\") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n";
 	exportsCode += "\t}\n";
 }
 
@@ -108,7 +108,7 @@ function buildSymbol(symbolDescription) {
 			paramsArray.push(currentParameter.name);
 			//Adding the correspondant parameter handling macro, into the function body
 			if (currentParameter.type == 'buf') {
-				currentParameterCode = macros['input_buf'];
+				currentParameterCode = macros.input_buf;
 				currentParameterCode = applyMacro(currentParameterCode, ['{var_name}', '{var_size}'], [currentParameter.name, currentParameter.size]);
 			} else if (macros['input_' + currentParameter.type]) {
 				currentParameterCode = macros['input_' + currentParameter.type];
@@ -129,11 +129,11 @@ function buildSymbol(symbolDescription) {
 		}
 		//Writing the outputs declaration code
 		symbolDescription.outputs = symbolDescription.outputs || [];
-		for (var i = 0; i < symbolDescription.outputs.length; i++) {
+		for (i = 0; i < symbolDescription.outputs.length; i++) {
 			var currentOutput = symbolDescription.outputs[i];
 			var currentOutputCode;
 			if (currentOutput.type === 'buf') {
-				currentOutputCode = macros['output_buf'];
+				currentOutputCode = macros.output_buf;
 				currentOutputCode = applyMacro(currentOutputCode, ['{var_name}', '{var_size}'], [currentOutput.name, currentOutput.size]);
 			} else if (macros['output_' + currentOutput.type]) {
 				currentOutputCode = macros['output_' + currentOutput.type];
@@ -219,7 +219,7 @@ function loadConstants() {
 		var currentConstant = {
 			name: constList[i].name,
 			type: constList[i].type
-		}
+		};
 		constSymbols.push(currentConstant);
 	}
 	return constSymbols;
