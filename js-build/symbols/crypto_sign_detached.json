@@ -18,14 +18,9 @@
 			"type": "buf",
 			"name": "signature",
 			"size": "libsodium._crypto_sign_bytes()"
-		},
-		{
-			"type": "buf",
-			"size": "8",
-			"name": "slen"
 		}
 	],
-	"target": "libsodium._crypto_sign_detached(signature_address, slen_address, message_address, message_length, 0, privateKey_address) | 0",
+	"target": "libsodium._crypto_sign_detached(signature_address, null, message_address, message_length, 0, privateKey_address) | 0",
 	"expect": "=== 0",
 	"return": "_format_output(signature, outputFormat)"
 }
