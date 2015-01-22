@@ -1,0 +1,6 @@
+{
+	"name": "randombytes_close",
+	"dependencies": [],
+	"type": "function",
+	"target": "libsodium._randombytes_close()"
+}
