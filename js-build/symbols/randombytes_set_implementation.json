@@ -1,6 +1,6 @@
 {
 	"name": "randombytes_set_implementation",
-	"dependencies": ["_randombytes_set_implementation"],
+	"dependencies": [],
 	"type": "function",
 	"inputs": [
 		{
