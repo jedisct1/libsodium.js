@@ -7,3 +7,4 @@ out/browsers/combined/sodium.js
 out/modules/libsodium/LICENSE
 out/modules/sodium/LICENSE
 webtest/sodium.js
+webtest/sodium.min.js
