@@ -1,5 +1,6 @@
+#*#
+*.tmp
 *~
-out
-test/libsodium*
-test/sodium*
 API.md
+out/browsers/combined/sodium.js
+webtest/sodium.js
