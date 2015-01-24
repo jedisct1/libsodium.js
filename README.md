@@ -23,6 +23,18 @@ file.
 
 This will add a `sodium` object to the global namespace.
 
+If a `sodium` object is already present in the global namespace, and
+the `sodium.onload` function is defined, this function will be called
+right after the library has been loaded and initialized.
+
+```html
+window.sodium = { onload: function(sodium) {
+  alert(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
+};
+...
+<script src="sodium.js" async defer></script>
+```
+
 ### Usage with AMD or RequireJS
 
 Copy the `.js` files for [libsodium and sodium](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
@@ -30,7 +42,7 @@ to your project and load the `sodium` module:
 
 ```javascript
 var sodium = require('sodium');
-console.log(sodium.crypto_generichash(64, 'test'));
+console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 ```
 
 ### Compilation
@@ -51,6 +63,7 @@ Running `make` will clone libsodium, build it, test it, build the
 wrapper, and create the modules and minified distribution files.
 
 ## List of wrapped algorithms and functions:
+
 * `crypto_aead` (ChaCha20-Poly1305)
 * `crypto_hmac` (SHA256, SHA512, and the default crypto_auth with SHA512/256)
 * `crypto_box`
@@ -63,6 +76,7 @@ wrapper, and create the modules and minified distribution files.
 * `randombytes`
 
 ## Additional helpers
+
 * `from_base64`, `to_base64`
 * `from_hex`, `to_hex`
 * `memcmp` (constant-time)
@@ -76,7 +90,7 @@ from the C test suite.
 Once you've built and wrapped libsodium, you can test the library by
 opening [test/index.html](test/index.html) in your browser. This page
 lets you test the library against random values and the original test
-vectors (in the background)
+vectors (in the background).
 
 ## Authors
 

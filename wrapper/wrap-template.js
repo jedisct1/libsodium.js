@@ -5,7 +5,11 @@
 	} else if (typeof exports === "object") {
 		module.exports = factory(require("libsodium"));
 	} else {
+		var cb = root.sodium && root.sodium.onload;
 		root.sodium = factory(root.libsodium || Module);
+		if (typeof cb === "function") {
+			cb(root.sodium);
+		}
 	}
 }(this, function (libsodium) {
 	var output_format = "uint8array";
