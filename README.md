@@ -28,9 +28,11 @@ the `sodium.onload` function is defined, this function will be called
 right after the library has been loaded and initialized.
 
 ```html
+<script>
 window.sodium = { onload: function(sodium) {
   alert(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 };
+</script>
 ...
 <script src="sodium.js" async defer></script>
 ```
