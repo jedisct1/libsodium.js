@@ -2,5 +2,8 @@
 *.tmp
 *~
 API.md
+out/browsers/combined/LICENSE
 out/browsers/combined/sodium.js
+out/modules/libsodium/LICENSE
+out/modules/sodium/LICENSE
 webtest/sodium.js
