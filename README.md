@@ -2,35 +2,71 @@
 
 ## Overview
 
-It's been possible ([and rather easy](https://github.com/jedisct1/libsodium/blob/d33d0f08e09ae9f5bbacfeaffd522a5b38024c65/dist-build/emscripten.sh))
-to compile [libsodium](https://github.com/jedisct1/libsodium) to
-JavaScript. But the resulting library is difficult to use. This
-wrapper aims at making the usage of libsodium much easier.
+The [sodium](https://github.com/jedisct1/libsodium) crypto library compiled
+to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten),
+with automatically generated wrappers to make it easy to use in web
+applications.
 
-## Compilation:
+The complete library weights 132 Kb (minified, gzipped) and can run in
+a web browser as well as server-side.
 
-    make
+## Usage
 
-Running `make` will clone libsodium v1.0.2, build it, and then build
-the wrapper file
+Ready-to-use files based on libsodium 1.0.2 can be directly copied to your
+project.
 
-## Usage:
+### Usage with global definitions, for web browsers
 
-* Once you've compiled libsodium, import the contents of the `dist` folder
-  to your application.
-* To find out what are the available methods and how to use them,
-  please have a look at the `API.md`, written at the end of the
-  compilation process
+Include a copy of the
+[sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
+file.
 
-List of wrapped algorithms and functions:
-* Curve25519
-* Ed25519
+This will add a `sodium` object to the global namespace.
+
+### Usage with AMD or RequireJS
+
+Copy the `.js` files for [libsodium and sodium](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
+to your project and load the `sodium` module:
+
+```javascript
+var sodium = require('sodium');
+console.log(sodium.crypto_generichash(64, 'test'));
+```
+
+### Compilation
+
+If you want to compile the files yourself, the following dependencies
+need to be installed on your system:
+
+* autoconf
+* automake
+* emscripten
+* git
+* io.js or nodejs
+* libtool
+* make
+* zopfli
+
+Running `make` will clone libsodium, build it, test it, build the
+wrapper, and create the modules and minified distribution files.
+
+## List of wrapped algorithms and functions:
+* `crypto_aead` (ChaCha20-Poly1305)
+* `crypto_hmac` (SHA256, SHA512, and the default crypto_auth with SHA512/256)
+* `crypto_box`
+* `crypto_secretbox`
+* `crypto_generichash` (Blake2b) and `crypto_hash` (SHA256, SHA512)
+* `crypto_pwhash` (scrypt)
+* `crypto_scalarmult` (Curve25519)
+* `crypto_sign` (Ed25519)
 * Ed25519->Curve25519 transition
-* CryptoBox
-* CryptoSecretBox
-* Scrypt
-* Hash (SHA256 & SHA512)
-* HMAC (SHA256, SHA512, and the default crypto_auth with SHA512/256)
+* `randombytes`
+
+## Additional helpers
+* `from_base64`, `to_base64`
+* `from_hex`, `to_hex`
+* `memcmp` (constant-time)
+* `memzero`
 
 ## Testing
 
@@ -44,7 +80,7 @@ vectors (in the background)
 
 ## Authors
 
-Built by Ahmad Ben Mrad and Frank Denis
+Built by Ahmad Ben Mrad and Frank Denis.
 
 ## License
 
