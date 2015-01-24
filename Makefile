@@ -9,8 +9,12 @@ WEBTEST_DIR=./webtest
 all: $(MODULES_DIR)/libsodium/libsodium.js $(MODULES_DIR)/sodium/sodium.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz webtest
 	ls -l $(MODULES_DIR)/libsodium $(MODULES_DIR)/sodium $(BROWSERS_DIR)/combined
 
-webtest: $(BROWSERS_DIR)/combined/sodium.js
+webtest: $(WEBTEST_DIR)/combined/sodium.js $(WEBTEST_DIR)/combined/sodium.min.js
+
+$(WEBTEST_DIR)/combined/sodium.js: $(BROWSERS_DIR)/combined/sodium.js
 	ln -f $(BROWSERS_DIR)/combined/sodium.js $(WEBTEST_DIR)/sodium.js
+
+$(WEBTEST_DIR)/combined/sodium.min.js: $(BROWSERS_DIR)/combined/sodium.min.js
 	ln -f $(BROWSERS_DIR)/combined/sodium.min.js $(WEBTEST_DIR)/sodium.min.js
 
 $(BROWSERS_DIR)/combined/sodium.min.js.gz: $(BROWSERS_DIR)/combined/sodium.min.js
