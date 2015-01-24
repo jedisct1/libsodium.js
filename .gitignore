@@ -2,9 +2,6 @@
 *.tmp
 *~
 API.md
-out/browsers/combined/LICENSE
-out/browsers/combined/sodium.js
-out/modules/libsodium/LICENSE
-out/modules/sodium/LICENSE
-webtest/sodium.js
-webtest/sodium.min.js
+dist/browsers/combined/sodium.js
+test/browsers/sodium.js
+test/browsers/sodium.min.js

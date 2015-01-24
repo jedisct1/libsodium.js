@@ -16,7 +16,8 @@ the wrapper file
 
 ## Usage:
 
-* Once you've compiled libsodium, import the contents of the `out` folder to your application.
+* Once you've compiled libsodium, import the contents of the `dist` folder
+  to your application.
 * To find out what are the available methods and how to use them,
   please have a look at the `API.md`, written at the end of the
   compilation process

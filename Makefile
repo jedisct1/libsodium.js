@@ -1,10 +1,10 @@
 
-OUT_DIR=./out
+OUT_DIR=./dist
 MODULES_DIR=$(OUT_DIR)/modules
 BROWSERS_DIR=$(OUT_DIR)/browsers
 LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
-WEBTEST_DIR=./webtest
+WEBTEST_DIR=./test/browsers
 
 all: $(MODULES_DIR)/libsodium/libsodium.js $(MODULES_DIR)/sodium/sodium.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz webtest
 	@echo
@@ -35,9 +35,9 @@ $(MODULES_DIR)/libsodium/libsodium.js: $(LIBSODIUM_DIR)/test/js.done
 	mkdir -p $(MODULES_DIR)/libsodium
 	cp $(LIBSODIUM_JS_DIR)/lib/libsodium.js $(MODULES_DIR)/libsodium
 
-$(MODULES_DIR)/sodium/sodium.js: $(LIBSODIUM_DIR)/test/js.done js-build/build-wrapper.js js-build/build-doc.js js-build/wrap-template.js
+$(MODULES_DIR)/sodium/sodium.js: $(LIBSODIUM_DIR)/test/js.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
 	mkdir -p $(MODULES_DIR)/sodium
-	iojs js-build/build-wrapper.js || nodejs js-build/build-wrapper.js || node js-build/build-wrapper.js
+	iojs wrapper/build-wrapper.js || nodejs wrapper/build-wrapper.js || node wrapper/build-wrapper.js
 
 $(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh
