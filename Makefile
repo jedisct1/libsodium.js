@@ -7,9 +7,6 @@ LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 WEBTEST_DIR=./webtest
 
 all: $(MODULES_DIR)/libsodium/libsodium.js $(MODULES_DIR)/sodium/sodium.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz webtest
-	ln -f LICENSE $(MODULES_DIR)/libsodium/LICENSE
-	ln -f LICENSE $(MODULES_DIR)/sodium/LICENSE
-	ln -f LICENSE $(BROWSERS_DIR)/combined/LICENSE
 	@echo
 	ls -l $(MODULES_DIR)/libsodium/ $(MODULES_DIR)/sodium/ $(BROWSERS_DIR)/combined/
 
