@@ -10,7 +10,7 @@ applications.
 The complete library weights 133 Kb (minified, gzipped) and can run in
 a web browser as well as server-side.
 
-## Usage
+## Installation
 
 Ready-to-use files based on libsodium 1.0.2 can be directly copied to your
 project.
@@ -47,23 +47,6 @@ var sodium = require('sodium');
 console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 ```
 
-### Compilation
-
-If you want to compile the files yourself, the following dependencies
-need to be installed on your system:
-
-* autoconf
-* automake
-* emscripten
-* git
-* io.js or nodejs
-* libtool
-* make
-* zopfli
-
-Running `make` will clone libsodium, build it, test it, build the
-wrapper, and create the modules and minified distribution files.
-
 ## List of wrapped algorithms and functions:
 
 * [`crypto_aead`](http://doc.libsodium.org/secret-key_cryptography/aead.html) (ChaCha20-Poly1305)
@@ -85,6 +68,63 @@ wrapper, and create the modules and minified distribution files.
 * `from_hex`, `to_hex`
 * `memcmp` (constant-time)
 * `memzero`
+
+## Usage
+
+The API exposed by the wrappers is identical to the one of the C
+library, except that buffer lengths never need to be explicitely given.
+
+Binary input buffers should be `Uint8Array` objects. However, if a string
+is given instead, the wrappers will automatically convert the string
+to an array containing a UTF-8 representation of the string.
+
+Example:
+```javascript
+var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
+    hash1 = sodium.crypto_shorthash(new Uint8Array([1, 2, 3, 4]), key),
+    hash2 = sodium.crypto_shorthash('test', key);
+```
+
+If the output is a unique binary buffer, it is returned as a
+`Uint8Array` object.
+
+However, an extra parameter can be given to all wrapped functions, in
+order to specify what format the output should be in. Valid options
+are `uint8array' (default), 'text', 'hex' and 'base64'.
+
+Example:
+```javascript
+var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
+    hash_hex = sodium.crypto_shorthash('test', key, 'hex');
+```
+
+In addition, the `from_base64`, `to_base64`, `from_hex` and `to_hex`
+functions are available to explicitly convert base64 and hexadecimal
+representations from/to `Uint8Array` objects.
+
+Functions returning more than one output buffer are returning them as
+an object. For example, the `sodium.crypto_box_keypair()` function
+returns the following object:
+```javascript
+{ keyType: 'curve25519', privateKey: (Uint8Array), publicKey: (Uint8Array) }
+```
+
+### Compilation
+
+If you want to compile the files yourself, the following dependencies
+need to be installed on your system:
+
+* autoconf
+* automake
+* emscripten
+* git
+* io.js or nodejs
+* libtool
+* make
+* zopfli
+
+Running `make` will clone libsodium, build it, test it, build the
+wrapper, and create the modules and minified distribution files.
 
 ## Authors
 
