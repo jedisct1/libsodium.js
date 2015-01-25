@@ -23,7 +23,7 @@ file.
 
 Or use [Bower](http://bower.io/):
 ```bash
-    $ bower install libsodium.js
+$ bower install libsodium.js
 ```
 
 Including the `sodium.min.js` file will add a `sodium` object to the
