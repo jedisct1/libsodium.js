@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "homepage": "https://github.com/jedisct1/libsodium.js",
   "authors": [
-    "Ahmad Ben Mrad (@batikhsouri)",
+    "Ahmad Ben Mrad (@BatikhSouri)",
     "Frank Denis (@jedisct1)"
   ],
   "description": "The Sodium cryptographic library compiled to JavaScript",
