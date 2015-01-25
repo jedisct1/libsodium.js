@@ -25,7 +25,7 @@
     "blake2",
     "siphash"
   ],
-  "license": "MIT",
+  "license": "ISC",
   "ignore": [
     "**/#*#",
     "**/*~",
