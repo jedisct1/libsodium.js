@@ -66,16 +66,18 @@ wrapper, and create the modules and minified distribution files.
 
 ## List of wrapped algorithms and functions:
 
-* `crypto_aead` (ChaCha20-Poly1305)
-* `crypto_hmac` (SHA256, SHA512, and the default crypto_auth with SHA512/256)
-* `crypto_box`
-* `crypto_secretbox`
-* `crypto_generichash` (Blake2b) and `crypto_hash` (SHA256, SHA512)
-* `crypto_pwhash` (scrypt)
-* `crypto_scalarmult` (Curve25519)
-* `crypto_sign` (Ed25519)
-* Ed25519->Curve25519 transition
-* `randombytes`
+* [`crypto_aead`](http://doc.libsodium.org/secret-key_cryptography/aead.html) (ChaCha20-Poly1305)
+* [`crypto_auth`](http://doc.libsodium.org/advanced/hmac-sha2.html) (SHA256, SHA512, and the default crypto_auth with SHA512/256)
+* [`crypto_box`](http://doc.libsodium.org/public-key_cryptography/authenticated_encryption.html)
+* [`crypto_generichash`](http://doc.libsodium.org/hashing/generic_hashing.html) (Blake2b)
+* [`crypto_hash`](http://doc.libsodium.org/advanced/sha-2_hash_function.html) (SHA512/256)
+* [`crypto_pwhash`](http://doc.libsodium.org/password_hashing/README.html) (scrypt)
+* [`crypto_scalarmult`](http://doc.libsodium.org/advanced/scalar_multiplication.html) (Curve25519)
+* [`crypto_secretbox`](http://doc.libsodium.org/secret-key_cryptography/authenticated_encryption.html)
+* [`crypto_shorthash`](http://doc.libsodium.org/hashing/short-input_hashing.html) (SipHash)
+* [`crypto_sign`](http://doc.libsodium.org/public-key_cryptography/public-key_signatures.html) (Ed25519)
+* [Ed25519->Curve25519 conversion](http://doc.libsodium.org/advanced/ed25519-curve25519.html)
+* [`randombytes`](http://doc.libsodium.org/generating_random_data/README.html)
 
 ## Additional helpers
 
