@@ -70,10 +70,10 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 
 ## Additional helpers
 
-* `from_base64`, `to_base64`
-* `from_hex`, `to_hex`
-* `memcmp` (constant-time)
-* `memzero`
+* `from_base64()`, `to_base64()`
+* `from_hex()`, `to_hex()`
+* `memcmp()` (constant-time comparison, returns `true` or `false`)
+* `memzero()` (applies to `Uint8Array` objects)
 
 ## API
 
