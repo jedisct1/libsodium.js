@@ -38,6 +38,8 @@
     "dist/browsers/combined/sodium.js",
     "libsodium",
     "node_modules",
+    "package-libsodium.json",
+    "package.json",
     "test",
     "wrapper"
   ]

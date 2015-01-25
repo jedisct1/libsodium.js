@@ -52,6 +52,14 @@ var sodium = require('sodium');
 console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 ```
 
+Alternatively, use [npm](https://www.npmjs.com/). The npm package is
+called `libsodium-wrappers`:
+
+```javascript
+var sodium = require('libsodium-wrappers');
+console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
+```
+
 ## List of wrapped algorithms and functions:
 
 * [`crypto_aead`](http://doc.libsodium.org/secret-key_cryptography/aead.html) (ChaCha20-Poly1305)
