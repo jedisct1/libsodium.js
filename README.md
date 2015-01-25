@@ -69,7 +69,7 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 * `memcmp` (constant-time)
 * `memzero`
 
-## Usage
+## API
 
 The API exposed by the wrappers is identical to the one of the C
 library, except that buffer lengths never need to be explicitely given.
