@@ -86,16 +86,6 @@ wrapper, and create the modules and minified distribution files.
 * `memcmp` (constant-time)
 * `memzero`
 
-## Testing
-
-The wrapped algorithms have been tested with test vectors harvested
-from the C test suite.
-
-Once you've built and wrapped libsodium, you can test the library by
-opening [test/index.html](test/index.html) in your browser. This page
-lets you test the library against random values and the original test
-vectors (in the background).
-
 ## Authors
 
 Built by Ahmad Ben Mrad and Frank Denis.
