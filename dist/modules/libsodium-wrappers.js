@@ -292,7 +292,7 @@
 		public_nonce = _any_to_Uint8Array(address_pool, public_nonce, "public_nonce");
 		var public_nonce_address, public_nonce_length = (libsodium._crypto_aead_chacha20poly1305_npubbytes()) | 0;
 		if (public_nonce.length !== public_nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid public_nonce length');
+			_free_and_throw_type_error(address_pool, "invalid public_nonce length");
 		}
 		public_nonce_address = _to_allocated_buf_address(public_nonce);
 		address_pool.push(public_nonce_address);
@@ -302,7 +302,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_aead_chacha20poly1305_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -360,7 +360,7 @@
 		public_nonce = _any_to_Uint8Array(address_pool, public_nonce, "public_nonce");
 		var public_nonce_address, public_nonce_length = (libsodium._crypto_aead_chacha20poly1305_npubbytes()) | 0;
 		if (public_nonce.length !== public_nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid public_nonce length');
+			_free_and_throw_type_error(address_pool, "invalid public_nonce length");
 		}
 		public_nonce_address = _to_allocated_buf_address(public_nonce);
 		address_pool.push(public_nonce_address);
@@ -370,7 +370,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_aead_chacha20poly1305_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -408,7 +408,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -446,7 +446,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_hmacsha256_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -476,7 +476,7 @@
 		tag = _any_to_Uint8Array(address_pool, tag, "tag");
 		var tag_address, tag_length = (libsodium._crypto_auth_hmacsha256_bytes()) | 0;
 		if (tag.length !== tag_length) {
-			_free_and_throw_type_error(address_pool, 'invalid tag length');
+			_free_and_throw_type_error(address_pool, "invalid tag length");
 		}
 		tag_address = _to_allocated_buf_address(tag);
 		address_pool.push(tag_address);
@@ -493,7 +493,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_hmacsha256_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -521,7 +521,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_hmacsha512_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -551,7 +551,7 @@
 		tag = _any_to_Uint8Array(address_pool, tag, "tag");
 		var tag_address, tag_length = (libsodium._crypto_auth_hmacsha512_bytes()) | 0;
 		if (tag.length !== tag_length) {
-			_free_and_throw_type_error(address_pool, 'invalid tag length');
+			_free_and_throw_type_error(address_pool, "invalid tag length");
 		}
 		tag_address = _to_allocated_buf_address(tag);
 		address_pool.push(tag_address);
@@ -568,7 +568,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_hmacsha512_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -588,7 +588,7 @@
 		tag = _any_to_Uint8Array(address_pool, tag, "tag");
 		var tag_address, tag_length = (libsodium._crypto_auth_bytes()) | 0;
 		if (tag.length !== tag_length) {
-			_free_and_throw_type_error(address_pool, 'invalid tag length');
+			_free_and_throw_type_error(address_pool, "invalid tag length");
 		}
 		tag_address = _to_allocated_buf_address(tag);
 		address_pool.push(tag_address);
@@ -605,7 +605,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_auth_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -633,7 +633,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_box_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -643,7 +643,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_box_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -653,7 +653,7 @@
 		secretKey = _any_to_Uint8Array(address_pool, secretKey, "secretKey");
 		var secretKey_address, secretKey_length = (libsodium._crypto_box_secretkeybytes()) | 0;
 		if (secretKey.length !== secretKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid secretKey length');
+			_free_and_throw_type_error(address_pool, "invalid secretKey length");
 		}
 		secretKey_address = _to_allocated_buf_address(secretKey);
 		address_pool.push(secretKey_address);
@@ -699,7 +699,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_box_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -709,7 +709,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_box_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -719,7 +719,7 @@
 		secretKey = _any_to_Uint8Array(address_pool, secretKey, "secretKey");
 		var secretKey_address, secretKey_length = (libsodium._crypto_box_secretkeybytes()) | 0;
 		if (secretKey.length !== secretKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid secretKey length');
+			_free_and_throw_type_error(address_pool, "invalid secretKey length");
 		}
 		secretKey_address = _to_allocated_buf_address(secretKey);
 		address_pool.push(secretKey_address);
@@ -786,7 +786,7 @@
 		mac = _any_to_Uint8Array(address_pool, mac, "mac");
 		var mac_address, mac_length = (libsodium._crypto_box_macbytes()) | 0;
 		if (mac.length !== mac_length) {
-			_free_and_throw_type_error(address_pool, 'invalid mac length');
+			_free_and_throw_type_error(address_pool, "invalid mac length");
 		}
 		mac_address = _to_allocated_buf_address(mac);
 		address_pool.push(mac_address);
@@ -796,7 +796,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_box_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -806,7 +806,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_box_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -816,7 +816,7 @@
 		secretKey = _any_to_Uint8Array(address_pool, secretKey, "secretKey");
 		var secretKey_address, secretKey_length = (libsodium._crypto_box_secretkeybytes()) | 0;
 		if (secretKey.length !== secretKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid secretKey length');
+			_free_and_throw_type_error(address_pool, "invalid secretKey length");
 		}
 		secretKey_address = _to_allocated_buf_address(secretKey);
 		address_pool.push(secretKey_address);
@@ -854,7 +854,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_box_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -864,7 +864,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_box_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -874,7 +874,7 @@
 		secretKey = _any_to_Uint8Array(address_pool, secretKey, "secretKey");
 		var secretKey_address, secretKey_length = (libsodium._crypto_box_secretkeybytes()) | 0;
 		if (secretKey.length !== secretKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid secretKey length');
+			_free_and_throw_type_error(address_pool, "invalid secretKey length");
 		}
 		secretKey_address = _to_allocated_buf_address(secretKey);
 		address_pool.push(secretKey_address);
@@ -905,7 +905,7 @@
 		seed = _any_to_Uint8Array(address_pool, seed, "seed");
 		var seed_address, seed_length = (libsodium._crypto_box_seedbytes()) | 0;
 		if (seed.length !== seed_length) {
-			_free_and_throw_type_error(address_pool, 'invalid seed length');
+			_free_and_throw_type_error(address_pool, "invalid seed length");
 		}
 		seed_address = _to_allocated_buf_address(seed);
 		address_pool.push(seed_address);
@@ -943,8 +943,8 @@
 		
 		_require_defined(address_pool, hash_length, "hash_length");
 		
-		if (!(typeof hash_length === 'number' && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'hash_length must be an unsigned integer');
+		if (!(typeof hash_length === "number" && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "hash_length must be an unsigned integer");
 		}
 		
 		// ---------- input: message (unsized_buf)
@@ -993,8 +993,8 @@
 		
 		_require_defined(address_pool, hash_length, "hash_length");
 		
-		if (!(typeof hash_length === 'number' && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'hash_length must be an unsigned integer');
+		if (!(typeof hash_length === "number" && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "hash_length must be an unsigned integer");
 		}
 		
 		// ---------- output hash (buf)
@@ -1032,8 +1032,8 @@
 		
 		_require_defined(address_pool, hash_length, "hash_length");
 		
-		if (!(typeof hash_length === 'number' && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'hash_length must be an unsigned integer');
+		if (!(typeof hash_length === "number" && (hash_length | 0) === hash_length) && (hash_length | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "hash_length must be an unsigned integer");
 		}
 		
 		// ---------- output state (generichash_state)
@@ -1172,7 +1172,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_onetimeauth_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1202,7 +1202,7 @@
 		hash = _any_to_Uint8Array(address_pool, hash, "hash");
 		var hash_address, hash_length = (libsodium._crypto_onetimeauth_bytes()) | 0;
 		if (hash.length !== hash_length) {
-			_free_and_throw_type_error(address_pool, 'invalid hash length');
+			_free_and_throw_type_error(address_pool, "invalid hash length");
 		}
 		hash_address = _to_allocated_buf_address(hash);
 		address_pool.push(hash_address);
@@ -1219,7 +1219,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_onetimeauth_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1247,7 +1247,7 @@
 		salt = _any_to_Uint8Array(address_pool, salt, "salt");
 		var salt_address, salt_length = (libsodium._crypto_pwhash_scryptsalsa208sha256_saltbytes()) | 0;
 		if (salt.length !== salt_length) {
-			_free_and_throw_type_error(address_pool, 'invalid salt length');
+			_free_and_throw_type_error(address_pool, "invalid salt length");
 		}
 		salt_address = _to_allocated_buf_address(salt);
 		address_pool.push(salt_address);
@@ -1256,24 +1256,24 @@
 		
 		_require_defined(address_pool, opsLimit, "opsLimit");
 		
-		if (!(typeof opsLimit === 'number' && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'opsLimit must be an unsigned integer');
+		if (!(typeof opsLimit === "number" && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "opsLimit must be an unsigned integer");
 		}
 		
 		// ---------- input: memLimit (uint)
 		
 		_require_defined(address_pool, memLimit, "memLimit");
 		
-		if (!(typeof memLimit === 'number' && (memLimit | 0) === memLimit) && (memLimit | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'memLimit must be an unsigned integer');
+		if (!(typeof memLimit === "number" && (memLimit | 0) === memLimit) && (memLimit | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "memLimit must be an unsigned integer");
 		}
 		
 		// ---------- input: keyLength (uint)
 		
 		_require_defined(address_pool, keyLength, "keyLength");
 		
-		if (!(typeof keyLength === 'number' && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'keyLength must be an unsigned integer');
+		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
 		}
 		
 		// ---------- output derivedKey (buf)
@@ -1315,32 +1315,32 @@
 		
 		_require_defined(address_pool, opsLimit, "opsLimit");
 		
-		if (!(typeof opsLimit === 'number' && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'opsLimit must be an unsigned integer');
+		if (!(typeof opsLimit === "number" && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "opsLimit must be an unsigned integer");
 		}
 		
 		// ---------- input: r (uint)
 		
 		_require_defined(address_pool, r, "r");
 		
-		if (!(typeof r === 'number' && (r | 0) === r) && (r | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'r must be an unsigned integer');
+		if (!(typeof r === "number" && (r | 0) === r) && (r | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "r must be an unsigned integer");
 		}
 		
 		// ---------- input: p (uint)
 		
 		_require_defined(address_pool, p, "p");
 		
-		if (!(typeof p === 'number' && (p | 0) === p) && (p | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'p must be an unsigned integer');
+		if (!(typeof p === "number" && (p | 0) === p) && (p | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "p must be an unsigned integer");
 		}
 		
 		// ---------- input: keyLength (uint)
 		
 		_require_defined(address_pool, keyLength, "keyLength");
 		
-		if (!(typeof keyLength === 'number' && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'keyLength must be an unsigned integer');
+		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
 		}
 		
 		// ---------- output derivedKey (buf)
@@ -1375,16 +1375,16 @@
 		
 		_require_defined(address_pool, opsLimit, "opsLimit");
 		
-		if (!(typeof opsLimit === 'number' && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'opsLimit must be an unsigned integer');
+		if (!(typeof opsLimit === "number" && (opsLimit | 0) === opsLimit) && (opsLimit | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "opsLimit must be an unsigned integer");
 		}
 		
 		// ---------- input: memLimit (uint)
 		
 		_require_defined(address_pool, memLimit, "memLimit");
 		
-		if (!(typeof memLimit === 'number' && (memLimit | 0) === memLimit) && (memLimit | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'memLimit must be an unsigned integer');
+		if (!(typeof memLimit === "number" && (memLimit | 0) === memLimit) && (memLimit | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "memLimit must be an unsigned integer");
 		}
 		
 		// ---------- output hashed_password (buf)
@@ -1438,7 +1438,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_scalarmult_scalarbytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1448,7 +1448,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_scalarmult_scalarbytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -1479,7 +1479,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_scalarmult_scalarbytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1517,7 +1517,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_secretbox_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -1527,7 +1527,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_secretbox_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1573,7 +1573,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_secretbox_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -1583,7 +1583,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_secretbox_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1621,7 +1621,7 @@
 		mac = _any_to_Uint8Array(address_pool, mac, "mac");
 		var mac_address, mac_length = (libsodium._crypto_secretbox_macbytes()) | 0;
 		if (mac.length !== mac_length) {
-			_free_and_throw_type_error(address_pool, 'invalid mac length');
+			_free_and_throw_type_error(address_pool, "invalid mac length");
 		}
 		mac_address = _to_allocated_buf_address(mac);
 		address_pool.push(mac_address);
@@ -1631,7 +1631,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_secretbox_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -1641,7 +1641,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_secretbox_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1679,7 +1679,7 @@
 		nonce = _any_to_Uint8Array(address_pool, nonce, "nonce");
 		var nonce_address, nonce_length = (libsodium._crypto_secretbox_noncebytes()) | 0;
 		if (nonce.length !== nonce_length) {
-			_free_and_throw_type_error(address_pool, 'invalid nonce length');
+			_free_and_throw_type_error(address_pool, "invalid nonce length");
 		}
 		nonce_address = _to_allocated_buf_address(nonce);
 		address_pool.push(nonce_address);
@@ -1689,7 +1689,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_secretbox_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1727,7 +1727,7 @@
 		key = _any_to_Uint8Array(address_pool, key, "key");
 		var key_address, key_length = (libsodium._crypto_shorthash_keybytes()) | 0;
 		if (key.length !== key_length) {
-			_free_and_throw_type_error(address_pool, 'invalid key length');
+			_free_and_throw_type_error(address_pool, "invalid key length");
 		}
 		key_address = _to_allocated_buf_address(key);
 		address_pool.push(key_address);
@@ -1765,7 +1765,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_sign_secretkeybytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1803,7 +1803,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_sign_secretkeybytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1834,7 +1834,7 @@
 		edPk = _any_to_Uint8Array(address_pool, edPk, "edPk");
 		var edPk_address, edPk_length = (libsodium._crypto_sign_publickeybytes()) | 0;
 		if (edPk.length !== edPk_length) {
-			_free_and_throw_type_error(address_pool, 'invalid edPk length');
+			_free_and_throw_type_error(address_pool, "invalid edPk length");
 		}
 		edPk_address = _to_allocated_buf_address(edPk);
 		address_pool.push(edPk_address);
@@ -1865,7 +1865,7 @@
 		edSk = _any_to_Uint8Array(address_pool, edSk, "edSk");
 		var edSk_address, edSk_length = (libsodium._crypto_sign_secretkeybytes()) | 0;
 		if (edSk.length !== edSk_length) {
-			_free_and_throw_type_error(address_pool, 'invalid edSk length');
+			_free_and_throw_type_error(address_pool, "invalid edSk length");
 		}
 		edSk_address = _to_allocated_buf_address(edSk);
 		address_pool.push(edSk_address);
@@ -1896,7 +1896,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_sign_secretkeybytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1927,7 +1927,7 @@
 		privateKey = _any_to_Uint8Array(address_pool, privateKey, "privateKey");
 		var privateKey_address, privateKey_length = (libsodium._crypto_sign_secretkeybytes()) | 0;
 		if (privateKey.length !== privateKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid privateKey length');
+			_free_and_throw_type_error(address_pool, "invalid privateKey length");
 		}
 		privateKey_address = _to_allocated_buf_address(privateKey);
 		address_pool.push(privateKey_address);
@@ -1994,7 +1994,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_sign_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -2025,7 +2025,7 @@
 		seed = _any_to_Uint8Array(address_pool, seed, "seed");
 		var seed_address, seed_length = (libsodium._crypto_sign_seedbytes()) | 0;
 		if (seed.length !== seed_length) {
-			_free_and_throw_type_error(address_pool, 'invalid seed length');
+			_free_and_throw_type_error(address_pool, "invalid seed length");
 		}
 		seed_address = _to_allocated_buf_address(seed);
 		address_pool.push(seed_address);
@@ -2063,7 +2063,7 @@
 		signature = _any_to_Uint8Array(address_pool, signature, "signature");
 		var signature_address, signature_length = (libsodium._crypto_sign_bytes()) | 0;
 		if (signature.length !== signature_length) {
-			_free_and_throw_type_error(address_pool, 'invalid signature length');
+			_free_and_throw_type_error(address_pool, "invalid signature length");
 		}
 		signature_address = _to_allocated_buf_address(signature);
 		address_pool.push(signature_address);
@@ -2080,7 +2080,7 @@
 		publicKey = _any_to_Uint8Array(address_pool, publicKey, "publicKey");
 		var publicKey_address, publicKey_length = (libsodium._crypto_sign_publickeybytes()) | 0;
 		if (publicKey.length !== publicKey_length) {
-			_free_and_throw_type_error(address_pool, 'invalid publicKey length');
+			_free_and_throw_type_error(address_pool, "invalid publicKey length");
 		}
 		publicKey_address = _to_allocated_buf_address(publicKey);
 		address_pool.push(publicKey_address);
@@ -2100,8 +2100,8 @@
 		
 		_require_defined(address_pool, length, "length");
 		
-		if (!(typeof length === 'number' && (length | 0) === length) && (length | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'length must be an unsigned integer');
+		if (!(typeof length === "number" && (length | 0) === length) && (length | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "length must be an unsigned integer");
 		}
 		
 		// ---------- output output (buf)
@@ -2148,8 +2148,8 @@
 		for (var i = 0; i < 6; i++) {
 			libsodium.setValue(implementation_address + i * 4,
 			    libsodium.Runtime.addFunction(implementation
-			    [['implementation_name', 'random', 'stir', 'uniform', 'buf', 'close'][i]]),
-			    'i32');
+			    [["implementation_name", "random", "stir", "uniform", "buf", "close"][i]]),
+			    "i32");
 		}
 		
 		if ((libsodium._randombytes_set_implementation(implementation_address) | 0) === 0) {
@@ -2176,8 +2176,8 @@
 		
 		_require_defined(address_pool, upper_bound, "upper_bound");
 		
-		if (!(typeof upper_bound === 'number' && (upper_bound | 0) === upper_bound) && (upper_bound | 0) > 0) {
-			_free_and_throw_type_error(address_pool, 'upper_bound must be an unsigned integer');
+		if (!(typeof upper_bound === "number" && (upper_bound | 0) === upper_bound) && (upper_bound | 0) > 0) {
+			_free_and_throw_type_error(address_pool, "upper_bound must be an unsigned integer");
 		}
 		
 		var random_value = libsodium._randombytes_uniform(upper_bound) >>> 0;
