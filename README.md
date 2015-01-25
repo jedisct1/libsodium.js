@@ -17,14 +17,13 @@ project.
 
 ### Usage with global definitions, for web browsers
 
-Include a copy of the
-[sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
-file.
-
-Or use [Bower](http://bower.io/):
+Use [Bower](http://bower.io/):
 ```bash
 $ bower install libsodium.js
 ```
+or directly include a copy of the
+[sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
+file.
 
 Including the `sodium.min.js` file will add a `sodium` object to the
 global namespace.
