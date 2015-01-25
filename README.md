@@ -44,7 +44,7 @@ window.sodium = { onload: function(sodium) {
 
 ### Usage with AMD or RequireJS
 
-Copy the `.js` files for [libsodium and sodium](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
+Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
 to your project and load the `libsodium-wrappers` module:
 
 ```javascript
