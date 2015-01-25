@@ -1,5 +1,5 @@
 var docStr = '# Libsodium.js wrapper - API usage' + newParagraph();
-docStr += 'Once you\'ve included libsodium.js and sodium.js, all the available wrapped functions and constants can be accessed in the `sodium` object.' + newParagraph();
+docStr += 'Once you\'ve included libsodium.js and libsodium-wrapper.js, all the available wrapped functions and constants can be accessed in the `sodium` object.' + newParagraph();
 docStr += 'To learn about the role of each method, please refer to the original [documentation](http://doc.libsodium.org) of libsodium' + newParagraph();
 docStr += 'List of existing types:' + newLine();
 docStr += '* Buf : An Uint8Array of a determined size. Used for keys, nonces, etc...' + newLine();
@@ -20,7 +20,6 @@ docStr += '* `set_encoding(encodingName)` : reset the default result encoding to
 docStr += '* `get_encoding()` : get the name of the encoding currently set as default' + newLine();
 docStr += '* `symbols()` : returns a list of the currently methods and constants' + newLine();
 docStr += '* `raw` : attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine();
-docStr += '* `init()` : reference to the `libsodium.sodium_init()` method. Doesn\'t need to be called, as it is called by sodium.js on loading.' + newParagraph();
 
 exports.buildDocForSymbol = function (s) {
 	if (typeof s != 'object') throw new TypeError('s must be a object');

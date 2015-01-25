@@ -45,20 +45,16 @@ window.sodium = { onload: function(sodium) {
 ### Usage with AMD or RequireJS
 
 Copy the `.js` files for [libsodium and sodium](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
-to your project and load the `sodium` module:
-
-```javascript
-var sodium = require('sodium');
-console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
-```
-
-Alternatively, use [npm](https://www.npmjs.com/). The npm package is
-called `libsodium-wrappers`:
+to your project and load the `libsodium-wrappers` module:
 
 ```javascript
 var sodium = require('libsodium-wrappers');
 console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 ```
+
+Alternatively, use [npm](https://www.npmjs.com/). The npm package is
+called `libsodium-wrappers` and includes a dependency on the raw
+`libsodium` module.
 
 ## List of wrapped algorithms and functions:
 
