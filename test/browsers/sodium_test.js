@@ -75,7 +75,7 @@ var sodium_test = (function(){
 	t.sign = function(callback){
 		if (typeof callback != 'function') throw new TypeError('callback must be defined and must be a function');
 		var loadVectorsReq = new XMLHttpRequest();
-		loadVectorsReq.open('get', 'ed-vectors.json', true);
+		loadVectorsReq.open('get', 'ed25519-vectors.json', true);
 		loadVectorsReq.onload = function(e){
 			var vData = loadVectorsReq.responseText;
 			try {
