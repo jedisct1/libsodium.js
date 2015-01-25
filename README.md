@@ -21,7 +21,13 @@ Include a copy of the
 [sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
 file.
 
-This will add a `sodium` object to the global namespace.
+Or use [Bower](http://bower.io/):
+```bash
+    $ bower install libsodium.js
+```
+
+Including the `sodium.min.js` file will add a `sodium` object to the
+global namespace.
 
 If a `sodium` object is already present in the global namespace, and
 the `sodium.onload` function is defined, this function will be called
