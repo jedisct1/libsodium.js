@@ -212,7 +212,7 @@
 		var result = libsodium._malloc(length);
 		if (result === 0) {
 			throw {
-				message: "malloc() failed",
+				message: "_malloc() failed",
 				length: length
 			};
 		}
