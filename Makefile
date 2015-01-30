@@ -4,19 +4,10 @@ MODULES_DIR=$(OUT_DIR)/modules
 BROWSERS_DIR=$(OUT_DIR)/browsers
 LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
-WEBTEST_DIR=./test/browsers
 
-all: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz webtest
+all: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz
 	@echo
 	ls -l $(MODULES_DIR)/ $(BROWSERS_DIR)/combined/
-
-webtest: $(WEBTEST_DIR)/combined/sodium.js $(WEBTEST_DIR)/combined/sodium.min.js
-
-$(WEBTEST_DIR)/combined/sodium.js: $(BROWSERS_DIR)/combined/sodium.js
-	ln -f $(BROWSERS_DIR)/combined/sodium.js $(WEBTEST_DIR)/sodium.js
-
-$(WEBTEST_DIR)/combined/sodium.min.js: $(BROWSERS_DIR)/combined/sodium.min.js
-	ln -f $(BROWSERS_DIR)/combined/sodium.min.js $(WEBTEST_DIR)/sodium.min.js
 
 $(BROWSERS_DIR)/combined/sodium.min.js.gz: $(BROWSERS_DIR)/combined/sodium.min.js
 	ln -f $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.tmp
@@ -50,8 +41,6 @@ $(LIBSODIUM_DIR)/configure.ac: .gitmodules
 
 clean:
 	rm -f $(LIBSODIUM_DIR)/test/js.done
-	rm -f $(WEBTEST_DIR)/sodium.js
-	rm -f $(WEBTEST_DIR)/sodium.min.js
 	rm -rf $(LIBSODIUM_JS_DIR)
 	rm -rf $(OUT_DIR)
 	-cd $(LIBSODIUM_DIR) && make distclean
