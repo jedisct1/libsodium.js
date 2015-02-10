@@ -72,8 +72,8 @@
 		for (var i = 0; i < bytes.length; i++) {
 			c = bytes[i] & 0xf;
 			b = bytes[i] >>> 4;
-			x = (87 + c + (((c - 10) >> 31) & -39)) << 8 |
-			    (87 + b + (((b - 10) >> 31) & -39));
+			x = (87 + c + (((c - 10) >> 8) & ~38)) << 8 |
+			    (87 + b + (((b - 10) >> 8) & ~38));
 			str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
 		}
 		return str;
