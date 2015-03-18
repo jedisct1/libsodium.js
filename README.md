@@ -42,6 +42,8 @@ window.sodium = { onload: function(sodium) {
 <script src="sodium.js" async defer></script>
 ```
 
+Alternatively, one can load it as a RequireJS module and use Browserify.
+
 ### Usage with AMD or RequireJS
 
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
