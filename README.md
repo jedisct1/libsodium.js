@@ -42,7 +42,7 @@ window.sodium = { onload: function(sodium) {
 <script src="sodium.js" async defer></script>
 ```
 
-Alternatively, one can load it as a RequireJS module and use Browserify.
+As an alternative, use a module loader or Browserify as described below.
 
 ### Usage with AMD or RequireJS
 
