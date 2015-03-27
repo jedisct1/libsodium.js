@@ -15,6 +15,35 @@ a web browser as well as server-side.
 Ready-to-use files based on libsodium 1.0.2 can be directly copied to your
 project.
 
+### Usage with global definitions, for web browsers
+
+Use [Bower](http://bower.io/):
+```bash
+$ bower install libsodium.js
+```
+or directly include a copy of the
+[sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
+file.
+
+Including the `sodium.min.js` file will add a `sodium` object to the
+global namespace.
+
+If a `sodium` object is already present in the global namespace, and
+the `sodium.onload` function is defined, this function will be called
+right after the library has been loaded and initialized.
+
+```html
+<script>
+window.sodium = { onload: function(sodium) {
+  alert(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
+}};
+</script>
+...
+<script src="sodium.js" async defer></script>
+```
+
+As an alternative, use a module loader or Browserify as described below.
+
 ### Usage with AMD or RequireJS
 
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
