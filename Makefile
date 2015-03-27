@@ -18,9 +18,9 @@ $(BROWSERS_DIR)/combined/sodium.min.js.gz: $(BROWSERS_DIR)/combined/sodium.min.j
 $(BROWSERS_DIR)/combined/sodium.min.js: $(BROWSERS_DIR)/combined/sodium.js
 	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(BROWSERS_DIR)/combined/sodium.js > $(BROWSERS_DIR)/combined/sodium.min.js
 
-$(BROWSERS_DIR)/combined/sodium.js: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js
+$(BROWSERS_DIR)/combined/sodium.js: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js wrapper/modinit.js
 	mkdir -p $(BROWSERS_DIR)/combined
-	cat $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/combined/sodium.js
+	cat wrapper/modinit.js $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/combined/sodium.js
 
 $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done
 	mkdir -p $(MODULES_DIR)
