@@ -1,8 +1,7 @@
 (function (root, factory) {
 	"use strict";
-	if (typeof process === "object") {
-		process.stdout = process.stdout || { write: function() { } };
-		process.stderr = process.stderr || process.stdout;
+	if (typeof process === "object" && typeof process.stdout === "undefined") {
+		process.stderr = process.stdout = { write: function() { } };
 	}
 	if (typeof define === "function" && define.amd) {
 		define(["libsodium"], factory);
