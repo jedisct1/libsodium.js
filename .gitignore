@@ -2,6 +2,5 @@
 *.tmp
 *~
 API.md
-dist/browsers/combined/sodium.js
 test/browsers/sodium.js
 test/browsers/sodium.min.js
