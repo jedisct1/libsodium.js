@@ -12,7 +12,7 @@ a web browser as well as server-side.
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.2 can be directly copied to your
+Ready-to-use files based on libsodium 1.0.3 can be directly copied to your
 project.
 
 ### Usage with global definitions, for web browsers
