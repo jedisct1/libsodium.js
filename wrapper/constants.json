@@ -12,6 +12,7 @@
 	{ "name": "crypto_box_MACBYTES", "type": "uint" },
 	{ "name": "crypto_box_NONCEBYTES", "type": "uint" },
 	{ "name": "crypto_box_PUBLICKEYBYTES", "type": "uint" },
+	{ "name": "crypto_box_SEALBYTES", "type": "uint" },
 	{ "name": "crypto_box_SECRETKEYBYTES", "type": "uint" },
 	{ "name": "crypto_box_SEEDBYTES", "type": "uint" },
 	{ "name": "crypto_generichash_BYTES", "type": "uint" },
