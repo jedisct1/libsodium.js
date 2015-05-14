@@ -1,4 +1,19 @@
 var Module;if(!Module)Module=(typeof Module!=="undefined"?Module:null)||{};
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var _exports = {};
+        factory(_exports);
+        root.libsodium = _exports;
+    }
+})(this, function (exports) {
+    "use strict";
+    var Module = exports;
+    Object.defineProperty(exports, '__esModule', { value: true });
+
 var d;d||(d=eval("(function() { try { return Module || {} } catch(e) { return {} } })()"));var h={},q;for(q in d)d.hasOwnProperty(q)&&(h[q]=d[q]);var aa="object"===typeof window,ba="object"===typeof process&&"function"===typeof require&&!aa,ca="function"===typeof importScripts,da=!aa&&!ba&&!ca;
 if(ba){d.print||(d.print=function(a){process.stdout.write(a+"\n")});d.printErr||(d.printErr=function(a){process.stderr.write(a+"\n")});var ea=require("fs"),fa=require("path");d.read=function(a,b){a=fa.normalize(a);var c=ea.readFileSync(a);c||a==fa.resolve(a)||(a=path.join(__dirname,"..","src",a),c=ea.readFileSync(a));c&&!b&&(c=c.toString());return c};d.readBinary=function(a){return d.read(a,!0)};d.load=function(a){ga(read(a))};d.thisProgram||(d.thisProgram=1<process.argv.length?process.argv[1].replace(/\\/g,
 "/"):"unknown-program");d.arguments=process.argv.slice(2);"undefined"!==typeof module&&(module.exports=d);process.on("uncaughtException",function(a){if(!(a instanceof y))throw a;})}else if(da)d.print||(d.print=print),"undefined"!=typeof printErr&&(d.printErr=printErr),d.read="undefined"!=typeof read?read:function(){throw"no read() available (jsc?)";},d.readBinary=function(a){if("function"===typeof readbuffer)return new Uint8Array(readbuffer(a));a=read(a,"binary");A("object"===typeof a);return a},
@@ -330,23 +345,29 @@ function rb(a){function b(){if(!d.calledRun&&(d.calledRun=!0,!I)){Ta||(Ta=!0,S(P
 S(Oa);0<T||d.calledRun||(d.setStatus?(d.setStatus("Running..."),setTimeout(function(){setTimeout(function(){d.setStatus("")},1);b()},1)):b())}}d.run=d.Kb=rb;function sb(a,b){if(!b||!d.noExitRuntime){if(!d.noExitRuntime&&(I=!0,C=ob,S(Ra),d.onExit))d.onExit(a);ba?(process.stdout.once("drain",function(){process.exit(a)}),console.log(" "),setTimeout(function(){process.exit(a)},500)):da&&"function"===typeof quit&&quit(a);throw new y(a);}}d.exit=d.Ab=sb;var ub=[];
 function H(a){void 0!==a?(d.print(a),d.V(a),a=JSON.stringify(a)):a="";I=!0;var b="abort("+a+") at "+Ea()+"\nIf this abort() is unexpected, build with -s ASSERTIONS=1 which can give more information.";ub.forEach(function(c){b=c(b,a)});throw b;}d.abort=d.abort=H;if(d.preInit)for("function"==typeof d.preInit&&(d.preInit=[d.preInit]);0<d.preInit.length;)d.preInit.pop()();var tb=!0;d.noInitialRun&&(tb=!1);rb();
 
+
+return Module;
+});
 (function (root, factory) {
-	"use strict";
 	if (typeof process === "object" && typeof process.stdout === "undefined") {
 		process.stderr = process.stdout = { write: function() { } };
 	}
 	if (typeof define === "function" && define.amd) {
-		define(["libsodium"], factory);
-	} else if (typeof exports === "object") {
-		module.exports = factory(require("libsodium"));
+		define(["exports", "libsodium"], factory);
+	} else if (typeof exports !== "undefined") {
+		factory(exports, require("libsodium"));
 	} else {
-		var cb = root.sodium && root.sodium.onload;
-		root.sodium = factory(root.libsodium || Module);
+		var _exports = {}, cb = root.sodium && root.sodium.onload;
+		factory(_exports, root.libsodium);
+		root.sodium = _exports;
 		if (typeof cb === "function") {
 			cb(root.sodium);
 		}
 	}
-}(this, function (libsodium) {
+}(this, function (exports, libsodium) {
+	"use strict";
+	Object.defineProperty(exports, '__esModule', { value: true });
+
 	var output_format = "uint8array";
 
 	libsodium._sodium_init();
@@ -2619,18 +2640,16 @@ function H(a){void 0!==a?(d.print(a),d.V(a),a=JSON.stringify(a)):a="";I=!0;var b
 	}
 
 
-	var exports = {
-			from_base64: from_base64,
-			from_hex: from_hex,
-			from_string: from_string,
-			libsodium: libsodium,
-			memcmp: memcmp,
-			memzero: memzero,
-			output_formats: output_formats,
-			symbols: symbols,
-			to_base64: to_base64,
-			to_hex: to_hex
-	};
+	exports.from_base64 = from_base64;
+	exports.from_hex = from_hex;
+	exports.from_string = from_string;
+	exports.libsodium = libsodium;
+	exports.memcmp = memcmp;
+	exports.memzero = memzero;
+	exports.output_formats = output_formats;
+	exports.symbols = symbols;
+	exports.to_base64 = to_base64;
+	exports.to_hex = to_hex;
 
 	
 	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_encrypt", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha512", "crypto_auth_verify", "crypto_auth_verify", "crypto_auth_verify", "crypto_box_detached", "crypto_box_easy", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_onetimeauth", "crypto_onetimeauth_verify", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_verify_detached", "randombytes_buf", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],

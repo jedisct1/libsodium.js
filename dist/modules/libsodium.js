@@ -1,3 +1,18 @@
+(function (root, factory) {
+    if (typeof define === "function" && define.amd) {
+        define(["exports"], factory);
+    } else if (typeof exports !== "undefined") {
+        factory(exports);
+    } else {
+        var _exports = {};
+        factory(_exports);
+        root.libsodium = _exports;
+    }
+})(this, function (exports) {
+    "use strict";
+    var Module = exports;
+    Object.defineProperty(exports, '__esModule', { value: true });
+
 var d;d||(d=eval("(function() { try { return Module || {} } catch(e) { return {} } })()"));var h={},q;for(q in d)d.hasOwnProperty(q)&&(h[q]=d[q]);var aa="object"===typeof window,ba="object"===typeof process&&"function"===typeof require&&!aa,ca="function"===typeof importScripts,da=!aa&&!ba&&!ca;
 if(ba){d.print||(d.print=function(a){process.stdout.write(a+"\n")});d.printErr||(d.printErr=function(a){process.stderr.write(a+"\n")});var ea=require("fs"),fa=require("path");d.read=function(a,b){a=fa.normalize(a);var c=ea.readFileSync(a);c||a==fa.resolve(a)||(a=path.join(__dirname,"..","src",a),c=ea.readFileSync(a));c&&!b&&(c=c.toString());return c};d.readBinary=function(a){return d.read(a,!0)};d.load=function(a){ga(read(a))};d.thisProgram||(d.thisProgram=1<process.argv.length?process.argv[1].replace(/\\/g,
 "/"):"unknown-program");d.arguments=process.argv.slice(2);"undefined"!==typeof module&&(module.exports=d);process.on("uncaughtException",function(a){if(!(a instanceof y))throw a;})}else if(da)d.print||(d.print=print),"undefined"!=typeof printErr&&(d.printErr=printErr),d.read="undefined"!=typeof read?read:function(){throw"no read() available (jsc?)";},d.readBinary=function(a){if("function"===typeof readbuffer)return new Uint8Array(readbuffer(a));a=read(a,"binary");A("object"===typeof a);return a},
@@ -329,3 +344,6 @@ function rb(a){function b(){if(!d.calledRun&&(d.calledRun=!0,!I)){Ta||(Ta=!0,S(P
 S(Oa);0<T||d.calledRun||(d.setStatus?(d.setStatus("Running..."),setTimeout(function(){setTimeout(function(){d.setStatus("")},1);b()},1)):b())}}d.run=d.Kb=rb;function sb(a,b){if(!b||!d.noExitRuntime){if(!d.noExitRuntime&&(I=!0,C=ob,S(Ra),d.onExit))d.onExit(a);ba?(process.stdout.once("drain",function(){process.exit(a)}),console.log(" "),setTimeout(function(){process.exit(a)},500)):da&&"function"===typeof quit&&quit(a);throw new y(a);}}d.exit=d.Ab=sb;var ub=[];
 function H(a){void 0!==a?(d.print(a),d.V(a),a=JSON.stringify(a)):a="";I=!0;var b="abort("+a+") at "+Ea()+"\nIf this abort() is unexpected, build with -s ASSERTIONS=1 which can give more information.";ub.forEach(function(c){b=c(b,a)});throw b;}d.abort=d.abort=H;if(d.preInit)for("function"==typeof d.preInit&&(d.preInit=[d.preInit]);0<d.preInit.length;)d.preInit.pop()();var tb=!0;d.noInitialRun&&(tb=!1);rb();
 
+
+return Module;
+});
