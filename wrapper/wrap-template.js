@@ -263,18 +263,16 @@
 
 	{{wraps_here}}
 
-	var exports = {
-			from_base64: from_base64,
-			from_hex: from_hex,
-			from_string: from_string,
-			libsodium: libsodium,
-			memcmp: memcmp,
-			memzero: memzero,
-			output_formats: output_formats,
-			symbols: symbols,
-			to_base64: to_base64,
-			to_hex: to_hex
-	};
+	exports.from_base64 = from_base64;
+	exports.from_hex = from_hex;
+	exports.from_string = from_string;
+	exports.libsodium = libsodium;
+	exports.memcmp = memcmp;
+	exports.memzero = memzero;
+	exports.output_formats = output_formats;
+	exports.symbols = symbols;
+	exports.to_base64 = to_base64;
+	exports.to_hex = to_hex;
 
 	{{exports_here}}
 	return exports;
