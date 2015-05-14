@@ -6,6 +6,9 @@
 	<script type="text/javascript" src="../dist/browsers/combined/sodium.min.js"></script>
 	<script type="text/javascript" src="test.js"></script>
 	<style>
+		p {
+			font-family: Lucida Grande
+		}
 		#message{
 			font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 			border-style: solid;
@@ -30,6 +33,9 @@
 		}
 	</style>
 	<body>
+		<p>
+			This page allows you to test various algorithms made available by libsodium.js. Each algorithm will first be tested with random values and then tested with vectors harvested from the original "libsodium" library.
+		<p>
 		<div>
 			<button onclick="message.innerHTML=curve25519Test();">Test Curve25519</button>
 			<button onclick="message.innerHTML=ed25519Test();">Test Ed25519</button>

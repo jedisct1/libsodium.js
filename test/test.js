@@ -1,5 +1,7 @@
 var sodium_test = (function(){
 
+	//This script tests a good chunk of the algorithms available in libsodium. The tests here are done with vectors harvested from the original C-written library
+
 	var t = {};
 	var to_hex = sodium.to_hex;
 	var from_hex = sodium.from_hex;
