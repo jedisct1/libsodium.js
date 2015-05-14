@@ -7,9 +7,9 @@
 	} else if (typeof exports !== "undefined") {
 		factory(exports, require("libsodium"));
 	} else {
-		var exports = {}, cb = root.sodium && root.sodium.onload;
-		factory(exports, root.libsodium);
-		root.sodium = exports;
+		var _exports = {}, cb = root.sodium && root.sodium.onload;
+		factory(_exports, root.libsodium);
+		root.sodium = _exports;
 		if (typeof cb === "function") {
 			cb(root.sodium);
 		}

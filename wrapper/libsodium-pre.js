@@ -4,9 +4,9 @@
     } else if (typeof exports !== "undefined") {
         factory(exports);
     } else {
-        var exports = {};
-        factory(exports);
-        root.libsodium = exports;
+        var _exports = {};
+        factory(_exports);
+        root.libsodium = _exports;
     }
 })(this, function (exports) {
     "use strict";
