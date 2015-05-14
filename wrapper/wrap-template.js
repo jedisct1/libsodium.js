@@ -1,20 +1,23 @@
 (function (root, factory) {
-	"use strict";
 	if (typeof process === "object" && typeof process.stdout === "undefined") {
 		process.stderr = process.stdout = { write: function() { } };
 	}
 	if (typeof define === "function" && define.amd) {
-		define(["libsodium"], factory);
-	} else if (typeof exports === "object") {
-		module.exports = factory(require("libsodium"));
+		define(["exports", "libsodium"], factory);
+	} else if (typeof exports !== "undefined") {
+		factory(exports, require("libsodium"));
 	} else {
-		var cb = root.sodium && root.sodium.onload;
-		root.sodium = factory(root.libsodium || Module);
+		var exports: {}, cb = root.sodium && root.sodium.onload;
+		factory(exports, root.libsodium);
+		root.sodium = exports;
 		if (typeof cb === "function") {
 			cb(root.sodium);
 		}
 	}
-}(this, function (libsodium) {
+}(this, function (exports, libsodium) {
+	"use strict";
+	Object.defineProperty(exports, '__esModule', { value: true });
+
 	var output_format = "uint8array";
 
 	libsodium._sodium_init();
