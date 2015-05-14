@@ -44,7 +44,7 @@ window.sodium = { onload: function(sodium) {
 
 As an alternative, use a module loader or Browserify as described below.
 
-### Usage with AMD or RequireJS
+### Usage with CommonJS
 
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
 to your project and load the `libsodium-wrappers` module.
