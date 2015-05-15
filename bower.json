@@ -1,6 +1,6 @@
 {
   "name": "libsodium.js",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "homepage": "https://github.com/jedisct1/libsodium.js",
   "authors": [
     "Ahmad Ben Mrad (@BatikhSouri)",
@@ -10,6 +10,7 @@
   "main": "dist/browsers/combined/sodium.min.js",
   "moduleType": [
     "amd",
+    "es6",
     "globals",
     "node"
   ],
