@@ -22,7 +22,7 @@ $(BROWSERS_DIR)/combined/sodium.js: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/l
 	mkdir -p $(BROWSERS_DIR)/combined
 	cat wrapper/modinit.js $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/combined/sodium.js
 
-$(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done wrapper/libsodium-pre.js wrapper/libsodium-post.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+$(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
 
