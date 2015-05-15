@@ -6,6 +6,7 @@
 	{ "name": "crypto_aead_chacha20poly1305_KEYBYTES", "type": "uint" },
 	{ "name": "crypto_aead_chacha20poly1305_NPUBBYTES", "type": "uint" },
 	{ "name": "crypto_aead_chacha20poly1305_NSECBYTES", "type": "uint" },
+	{ "name": "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "type": "uint" },
 	{ "name": "crypto_auth_BYTES", "type": "uint" },
 	{ "name": "crypto_auth_KEYBYTES", "type": "uint" },
 	{ "name": "crypto_box_BEFORENMBYTES", "type": "uint" },
