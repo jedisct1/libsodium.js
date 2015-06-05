@@ -64,11 +64,11 @@
 	}
 
 	function to_string(bytes) {
-		var str = "";
-		for (var i = 0; i < bytes.length; i++) {
-			str += String.fromCharCode(bytes[i]);
+		if (typeof TextDecoder === "function") {
+			return new TextDecoder("utf-8").decode(bytes);
 		}
-		return str;
+
+		return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
 	}
 
 	function from_hex(str) {
