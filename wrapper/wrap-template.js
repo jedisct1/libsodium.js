@@ -63,6 +63,14 @@
 		return bytes;
 	}
 
+	function to_string(bytes) {
+		if (typeof TextDecoder === "function") {
+			return new TextDecoder("utf-8").decode(bytes);
+		}
+
+		return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+	}
+
 	function from_hex(str) {
 		if (!is_hex(str)) throw new TypeError("The provided string doesn't look like hex data");
 		var result = new Uint8Array(str.length / 2);
@@ -272,6 +280,7 @@
 	exports.symbols = symbols;
 	exports.to_base64 = to_base64;
 	exports.to_hex = to_hex;
+	exports.to_string = to_string;
 
 	{{exports_here}}
 	return exports;
