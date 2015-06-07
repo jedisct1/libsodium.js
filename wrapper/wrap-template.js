@@ -65,10 +65,15 @@
 
 	function to_string(bytes) {
 		if (typeof TextDecoder === "function") {
-			return new TextDecoder("utf-8").decode(bytes);
+			return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
 		}
 
-		return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+		try {
+			return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+		}
+		catch (_) {
+			throw new TypeError("The encoded data was not valid.");
+		}
 	}
 
 	function from_hex(str) {
