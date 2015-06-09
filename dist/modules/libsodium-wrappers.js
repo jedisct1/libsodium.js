@@ -63,6 +63,19 @@
 		return bytes;
 	}
 
+	function to_string(bytes) {
+		if (typeof TextDecoder === "function") {
+			return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
+		}
+
+		try {
+			return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
+		}
+		catch (_) {
+			throw new TypeError("The encoded data was not valid.");
+		}
+	}
+
 	function from_hex(str) {
 		if (!is_hex(str)) throw new TypeError("The provided string doesn't look like hex data");
 		var result = new Uint8Array(str.length / 2);
@@ -2435,6 +2448,7 @@
 	exports.symbols = symbols;
 	exports.to_base64 = to_base64;
 	exports.to_hex = to_hex;
+	exports.to_string = to_string;
 
 	
 	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_encrypt", "crypto_aead_chacha20poly1305_ietf_decrypt", "crypto_aead_chacha20poly1305_ietf_encrypt", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha512", "crypto_auth_verify", "crypto_auth_verify", "crypto_auth_verify", "crypto_box_detached", "crypto_box_easy", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_onetimeauth", "crypto_onetimeauth_verify", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_verify_detached", "randombytes_buf", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],
