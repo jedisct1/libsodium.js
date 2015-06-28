@@ -81,6 +81,8 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 * `from_string()`, `to_string()`
 * `memcmp()` (constant-time comparison, returns `true` or `false`)
 * `memzero()` (applies to `Uint8Array` objects)
+* `increment()` (increments an arbitrary-long number stored as a
+little-endian `Uint8Array` - typically to increment nonces)
 
 ## API
 
