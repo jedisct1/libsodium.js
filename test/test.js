@@ -1,6 +1,36 @@
 (function(root, factory){
 	if (typeof exports == 'object'){ //nodejs context
-		factory(require('../dist/browsers/combined/sodium.min.js'), true);
+		/*
+		* LOAD RAW BUILD
+		*/
+		var libsodium;
+		var path = require('path');
+		try {
+			libsodium = require('libsodium');
+		} catch (e){
+		}
+		if (!libsodium){
+			console.log('Missing raw libsodium.js build. Downloading it');
+			//npm install libsodium
+			process.chdir(__dirname);
+			var spawn = require('child_process').spawn;
+			var npmInstall = spawn('npm', ['install', 'libsodium'], {cwd: process.cwd()});
+			npmInstall.on('close', function(npmExitCode){
+				if (npmExitCode == 0){ //Success
+					console.log('NPM exited with success');
+					doTests();
+				} else {
+					console.error('NPM exited with code ' + npmExitCode);
+					process.exit(npmExitCode);
+				}
+			});
+		} else doTests();
+
+		function doTests(){
+			console.log('Testing libsodium.js with vectors, through the wrappers');
+			console.log('-------------------------------------------------------');
+			factory(require(path.join(__dirname, '../dist/modules/libsodium-wrappers.js')), true);
+		}
 	} else { //Browser's context
 		factory(window.sodium);
 	}
@@ -84,11 +114,11 @@
 		};
 
 		t.sign = function(callback){
-			if (typeof callback != 'function') throw new TypeError('callback must be defined and must be a function');
+			if (!nodeEnv && typeof callback != 'function') throw new TypeError('callback must be defined and must be a function');
 
 			var vData;
 			if (nodeEnv){
-				vData = require('ed-vectors.json');
+				vData = require('./ed-vectors.json');
 				testVectors();
 			} else {
 				var loadVectorsReq = new XMLHttpRequest();
@@ -113,7 +143,7 @@
 			function testVectors(){
 				var currentVector;
 				var nTests = 64;
-				console.log('Testing ' + nTests + ' Ed25519 vectors');
+				console.log('(Testing ' + nTests + ' different Ed25519 vectors)');
 				var testCount = 0;
 				try {
 					while (testCount < nTests){
@@ -123,10 +153,12 @@
 					}
 				} catch (e){
 					console.log('Error on test no. ' + testCount);
-					callback(e + ' ' + JSON.stringify(currentVector));
+					if (callback) callback(e + ' ' + JSON.stringify(currentVector));
+					else throw new Error(e + ' ' + JSON.stringify(currentVector));
 					return;
 				}
-				callback(undefined, {tested: nTests, count: vData.length});
+				if (callback) callback(undefined, {tested: nTests, count: vData.length});
+				else return {tested: nTests, count: vData.length};
 
 				function testVector(v){
 					var publicKey = v.sk.substr(64); //sodium.crypto_sign_ed25519_sk_to_pk(v.sk);
@@ -306,6 +338,7 @@
 			['Testing HMAC', sodium_test.hmac],
 			['Testing hashing', sodium_test.hash],
 			['Testing Curve25519', sodium_test.scalarmult],
+			['Testing Ed25519', sodium_test.sign],
 			['Testing Secretbox_Easy', sodium_test.secretbox_easy]
 		];
 		for (var i = 0; i < tests.length; i++){
@@ -313,18 +346,11 @@
 				console.log(tests[i][0]);
 				tests[i][1]();
 			} catch (e){
-
+				console.error('Error while ' + tests[i][0]);
+				console.error(e);
+				process.exit(1);
 			}
 		}
-		/*try {
-
-			console.log('Testing scrypt');
-			sodium_test.scrypt();
-			console.log('Testing HMAC');
-			sodium_test.hmac();
-		} catch (e){
-
-		}*/
 	} else {
 		window.sodium_test = sodium_test;
 	}

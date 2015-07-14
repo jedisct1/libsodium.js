@@ -1,6 +1,8 @@
 #*#
 *.tmp
 *~
+node_modules/
 API.md
 test/browsers/sodium.js
 test/browsers/sodium.min.js
+test/node_modules/
