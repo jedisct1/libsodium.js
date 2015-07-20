@@ -26,6 +26,18 @@
 		return Object.keys(exports).sort();
 	}
 
+	function increment(bytes) {
+		if (! bytes instanceof Uint8Array) {
+			throw new TypeError("Only Uint8Array instances can be incremented");
+		}
+        var c = 1 << 8;
+		for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+            c >>= 8;
+            c += bytes[i];
+			bytes[i] = c & 0xff;
+		}
+	}
+
 	function memzero(bytes) {
 		if (! bytes instanceof Uint8Array) {
 			throw new TypeError("Only Uint8Array instances can be wiped");
