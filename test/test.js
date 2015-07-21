@@ -6,7 +6,7 @@
 		var libsodium;
 		var path = require('path');
 		try {
-			libsodium = require('libsodium');
+			libsodium = require(path.join(__dirname, '../libsodium'));
 		} catch (e){
 		}
 		if (!libsodium){
