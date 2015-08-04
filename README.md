@@ -7,7 +7,7 @@ to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten),
 with automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weights 137 Kb (minified, gzipped) and can run in
+The complete library weights 144 Kb (minified, gzipped) and can run in
 a web browser as well as server-side.
 
 ## Installation
@@ -81,6 +81,8 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 * `from_string()`, `to_string()`
 * `memcmp()` (constant-time comparison, returns `true` or `false`)
 * `memzero()` (applies to `Uint8Array` objects)
+* `increment()` (increments an arbitrary-long number stored as a
+little-endian `Uint8Array` - typically to increment nonces)
 
 ## API
 
