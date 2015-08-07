@@ -20,5 +20,5 @@
 	],
 	"target": "libsodium._crypto_generichash_init(state_address, key_address, key_length, hash_length) | 0",
 	"expect": "=== 0",
-    "return": "state_address"
+	"return": "state_address"
 }
