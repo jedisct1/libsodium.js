@@ -23,6 +23,8 @@
 	{ "name": "crypto_generichash_KEYBYTES_MAX", "type": "uint" },
 	{ "name": "crypto_generichash_KEYBYTES_MIN", "type": "uint" },
 	{ "name": "crypto_hash_BYTES", "type": "uint" },
+	{ "name": "crypto_onetimeauth_BYTES", "type": "uint" },
+	{ "name": "crypto_onetimeauth_KEYBYTES", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE", "type": "uint" },
 	{ "name": "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "type": "uint" },
