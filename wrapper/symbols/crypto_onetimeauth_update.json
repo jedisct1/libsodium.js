@@ -1,0 +1,17 @@
+{
+	"name": "crypto_onetimeauth_update",
+	"dependencies": [],
+	"type": "function",
+	"inputs": [
+		{
+			"name": "state_address",
+			"type": "onetimeauth_state_address"
+		},
+		{
+			"name": "message_chunk",
+			"type": "unsized_buf"
+		}
+	],
+	"target": "libsodium._crypto_onetimeauth_update(state_address, message_chunk_address, message_chunk_length) | 0",
+	"expect": "=== 0"
+}

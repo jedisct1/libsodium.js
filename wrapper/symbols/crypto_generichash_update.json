@@ -12,6 +12,6 @@
 			"type": "unsized_buf"
 		}
 	],
-	"target": "libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length, 0) | 0",
+	"target": "libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length) | 0",
 	"expect": "=== 0"
 }
