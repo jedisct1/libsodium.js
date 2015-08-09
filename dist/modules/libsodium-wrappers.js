@@ -30,10 +30,10 @@
 		if (! bytes instanceof Uint8Array) {
 			throw new TypeError("Only Uint8Array instances can be incremented");
 		}
-		var c = 1 << 8;
+        var c = 1 << 8;
 		for (var i = 0 | 0, j = bytes.length; i < j; i++) {
-			c >>= 8;
-			c += bytes[i];
+            c >>= 8;
+            c += bytes[i];
 			bytes[i] = c & 0xff;
 		}
 	}
@@ -1316,7 +1316,7 @@
 		    message_chunk_length = message_chunk.length;
 		address_pool.push(message_chunk_address);
 		
-		if ((libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length, 0) | 0) === 0) {
+		if ((libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length) | 0) === 0) {
 			_free_all(address_pool);
 			return;
 		}
@@ -1441,6 +1441,81 @@
 			var ret = _format_output(hash, outputFormat);
 			_free_all(address_pool);
 			return ret;
+		}
+		_free_and_throw_error(address_pool);
+		
+	}
+
+	function crypto_onetimeauth_final(state_address, outputFormat) {
+		var address_pool = [];
+		_check_output_format(outputFormat);
+
+		// ---------- input: state_address (onetimeauth_state_address)
+		
+		_require_defined(address_pool, state_address, "state_address");
+		
+		// ---------- output hash (buf)
+		
+		var hash_length = (libsodium._crypto_onetimeauth_bytes()) | 0,
+		    hash = new AllocatedBuf(hash_length),
+		    hash_address = hash.address;
+		
+		address_pool.push(hash_address);
+		
+		if ((libsodium._crypto_onetimeauth_final(state_address, hash_address) | 0) === 0) {
+			var ret = (libsodium._free(state_address), _format_output(hash, outputFormat));
+			_free_all(address_pool);
+			return ret;
+		}
+		_free_and_throw_error(address_pool);
+		
+	}
+
+	function crypto_onetimeauth_init(key, outputFormat) {
+		var address_pool = [];
+		_check_output_format(outputFormat);
+
+		// ---------- input: key (unsized_buf_optional)
+		
+		var key_address = null, key_length = 0;
+		if (key != undefined) {
+			key = _any_to_Uint8Array(address_pool, key, "key");
+			key_address = _to_allocated_buf_address(key);
+			key_length = key.length;
+			address_pool.push(key_address);
+		}
+		
+		// ---------- output state (onetimeauth_state)
+		
+		var state_address = new AllocatedBuf(144).address;
+		
+		if ((libsodium._crypto_onetimeauth_init(state_address, key_address) | 0) === 0) {
+			var ret = state_address;
+			_free_all(address_pool);
+			return ret;
+		}
+		_free_and_throw_error(address_pool);
+		
+	}
+
+	function crypto_onetimeauth_update(state_address, message_chunk, outputFormat) {
+		var address_pool = [];
+		_check_output_format(outputFormat);
+
+		// ---------- input: state_address (onetimeauth_state_address)
+		
+		_require_defined(address_pool, state_address, "state_address");
+		
+		// ---------- input: message_chunk (unsized_buf)
+		
+		message_chunk = _any_to_Uint8Array(address_pool, message_chunk, "message_chunk");
+		var message_chunk_address = _to_allocated_buf_address(message_chunk),
+		    message_chunk_length = message_chunk.length;
+		address_pool.push(message_chunk_address);
+		
+		if ((libsodium._crypto_onetimeauth_update(state_address, message_chunk_address, message_chunk_length) | 0) === 0) {
+			_free_all(address_pool);
+			return;
 		}
 		_free_and_throw_error(address_pool);
 		
@@ -2463,14 +2538,14 @@
 	exports.to_string = to_string;
 
 	
-	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_encrypt", "crypto_aead_chacha20poly1305_ietf_decrypt", "crypto_aead_chacha20poly1305_ietf_encrypt", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha512", "crypto_auth_verify", "crypto_auth_verify", "crypto_auth_verify", "crypto_box_detached", "crypto_box_easy", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_onetimeauth", "crypto_onetimeauth_verify", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_verify_detached", "randombytes_buf", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],
-		functions = [crypto_aead_chacha20poly1305_decrypt, crypto_aead_chacha20poly1305_encrypt, crypto_aead_chacha20poly1305_ietf_decrypt, crypto_aead_chacha20poly1305_ietf_encrypt, crypto_auth, crypto_auth_hmacsha256, crypto_auth_hmacsha512, crypto_auth_verify, crypto_auth_verify, crypto_auth_verify, crypto_box_detached, crypto_box_easy, crypto_box_keypair, crypto_box_open_detached, crypto_box_open_easy, crypto_box_seal, crypto_box_seal_open, crypto_box_seed_keypair, crypto_generichash, crypto_generichash_final, crypto_generichash_init, crypto_generichash_update, crypto_hash, crypto_hash_sha256, crypto_hash_sha512, crypto_onetimeauth, crypto_onetimeauth_verify, crypto_pwhash_scryptsalsa208sha256, crypto_pwhash_scryptsalsa208sha256_ll, crypto_pwhash_scryptsalsa208sha256_str, crypto_pwhash_scryptsalsa208sha256_str_verify, crypto_scalarmult, crypto_scalarmult_base, crypto_secretbox_detached, crypto_secretbox_easy, crypto_secretbox_open_detached, crypto_secretbox_open_easy, crypto_shorthash, crypto_sign, crypto_sign_detached, crypto_sign_ed25519_pk_to_curve25519, crypto_sign_ed25519_sk_to_curve25519, crypto_sign_ed25519_sk_to_pk, crypto_sign_ed25519_sk_to_seed, crypto_sign_keypair, crypto_sign_open, crypto_sign_seed_keypair, crypto_sign_verify_detached, randombytes_buf, randombytes_close, randombytes_random, randombytes_set_implementation, randombytes_stir, randombytes_uniform, sodium_version_string];
+	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_encrypt", "crypto_aead_chacha20poly1305_ietf_decrypt", "crypto_aead_chacha20poly1305_ietf_encrypt", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha512", "crypto_auth_verify", "crypto_auth_verify", "crypto_auth_verify", "crypto_box_detached", "crypto_box_easy", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_onetimeauth", "crypto_onetimeauth_final", "crypto_onetimeauth_init", "crypto_onetimeauth_update", "crypto_onetimeauth_verify", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_verify_detached", "randombytes_buf", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],
+		functions = [crypto_aead_chacha20poly1305_decrypt, crypto_aead_chacha20poly1305_encrypt, crypto_aead_chacha20poly1305_ietf_decrypt, crypto_aead_chacha20poly1305_ietf_encrypt, crypto_auth, crypto_auth_hmacsha256, crypto_auth_hmacsha512, crypto_auth_verify, crypto_auth_verify, crypto_auth_verify, crypto_box_detached, crypto_box_easy, crypto_box_keypair, crypto_box_open_detached, crypto_box_open_easy, crypto_box_seal, crypto_box_seal_open, crypto_box_seed_keypair, crypto_generichash, crypto_generichash_final, crypto_generichash_init, crypto_generichash_update, crypto_hash, crypto_hash_sha256, crypto_hash_sha512, crypto_onetimeauth, crypto_onetimeauth_final, crypto_onetimeauth_init, crypto_onetimeauth_update, crypto_onetimeauth_verify, crypto_pwhash_scryptsalsa208sha256, crypto_pwhash_scryptsalsa208sha256_ll, crypto_pwhash_scryptsalsa208sha256_str, crypto_pwhash_scryptsalsa208sha256_str_verify, crypto_scalarmult, crypto_scalarmult_base, crypto_secretbox_detached, crypto_secretbox_easy, crypto_secretbox_open_detached, crypto_secretbox_open_easy, crypto_shorthash, crypto_sign, crypto_sign_detached, crypto_sign_ed25519_pk_to_curve25519, crypto_sign_ed25519_sk_to_curve25519, crypto_sign_ed25519_sk_to_pk, crypto_sign_ed25519_sk_to_seed, crypto_sign_keypair, crypto_sign_open, crypto_sign_seed_keypair, crypto_sign_verify_detached, randombytes_buf, randombytes_close, randombytes_random, randombytes_set_implementation, randombytes_stir, randombytes_uniform, sodium_version_string];
 	for (var i = 0; i < functions.length; i++) {
 		if (typeof libsodium["_" + exported_functions[i]] === "function") {
 			exports[exported_functions[i]] = functions[i];
 		}
 	}
-	var constants = ["SODIUM_LIBRARY_VERSION_MAJOR", "SODIUM_LIBRARY_VERSION_MINOR", "crypto_aead_chacha20poly1305_ABYTES", "crypto_aead_chacha20poly1305_KEYBYTES", "crypto_aead_chacha20poly1305_NPUBBYTES", "crypto_aead_chacha20poly1305_NSECBYTES", "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "crypto_auth_BYTES", "crypto_auth_KEYBYTES", "crypto_box_BEFORENMBYTES", "crypto_box_MACBYTES", "crypto_box_NONCEBYTES", "crypto_box_PUBLICKEYBYTES", "crypto_box_SEALBYTES", "crypto_box_SECRETKEYBYTES", "crypto_box_SEEDBYTES", "crypto_generichash_BYTES", "crypto_generichash_BYTES_MAX", "crypto_generichash_BYTES_MIN", "crypto_generichash_KEYBYTES", "crypto_generichash_KEYBYTES_MAX", "crypto_generichash_KEYBYTES_MIN", "crypto_hash_BYTES", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_SALTBYTES", "crypto_pwhash_scryptsalsa208sha256_STRBYTES", "crypto_pwhash_scryptsalsa208sha256_STR_VERIFY", "crypto_scalarmult_BYTES", "crypto_scalarmult_SCALARBYTES", "crypto_secretbox_KEYBYTES", "crypto_secretbox_MACBYTES", "crypto_secretbox_NONCEBYTES", "crypto_shorthash_BYTES", "crypto_shorthash_KEYBYTES", "crypto_sign_BYTES", "crypto_sign_PUBLICKEYBYTES", "crypto_sign_SECRETKEYBYTES", "crypto_sign_SEEDBYTES"];
+	var constants = ["SODIUM_LIBRARY_VERSION_MAJOR", "SODIUM_LIBRARY_VERSION_MINOR", "crypto_aead_chacha20poly1305_ABYTES", "crypto_aead_chacha20poly1305_KEYBYTES", "crypto_aead_chacha20poly1305_NPUBBYTES", "crypto_aead_chacha20poly1305_NSECBYTES", "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "crypto_auth_BYTES", "crypto_auth_KEYBYTES", "crypto_box_BEFORENMBYTES", "crypto_box_MACBYTES", "crypto_box_NONCEBYTES", "crypto_box_PUBLICKEYBYTES", "crypto_box_SEALBYTES", "crypto_box_SECRETKEYBYTES", "crypto_box_SEEDBYTES", "crypto_generichash_BYTES", "crypto_generichash_BYTES_MAX", "crypto_generichash_BYTES_MIN", "crypto_generichash_KEYBYTES", "crypto_generichash_KEYBYTES_MAX", "crypto_generichash_KEYBYTES_MIN", "crypto_hash_BYTES", "crypto_onetimeauth_BYTES", "crypto_onetimeauth_KEYBYTES", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_SALTBYTES", "crypto_pwhash_scryptsalsa208sha256_STRBYTES", "crypto_pwhash_scryptsalsa208sha256_STR_VERIFY", "crypto_scalarmult_BYTES", "crypto_scalarmult_SCALARBYTES", "crypto_secretbox_KEYBYTES", "crypto_secretbox_MACBYTES", "crypto_secretbox_NONCEBYTES", "crypto_shorthash_BYTES", "crypto_shorthash_KEYBYTES", "crypto_sign_BYTES", "crypto_sign_PUBLICKEYBYTES", "crypto_sign_SECRETKEYBYTES", "crypto_sign_SEEDBYTES"];
 	for (var i = 0; i < constants.length; i++) {
 		var raw = libsodium["_" + constants[i].toLowerCase()];
 		if (typeof raw === "function") exports[constants[i]] = raw()|0;
