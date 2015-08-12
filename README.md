@@ -88,7 +88,7 @@ little-endian `Uint8Array` - typically to increment nonces)
 ## API
 
 The API exposed by the wrappers is identical to the one of the C
-library, except that buffer lengths never need to be explicitely given.
+library, except that buffer lengths never need to be explicitly given.
 
 Binary input buffers should be `Uint8Array` objects. However, if a string
 is given instead, the wrappers will automatically convert the string
