@@ -10,6 +10,19 @@ applications.
 The complete library weights 151 Kb (minified, gzipped) and can run in
 a web browser as well as server-side.
 
+### Compatibility
+
+Supported browsers/JS engines:
+
+* Chrome >= 16
+* Edge >= 0.11
+* Firefox >= 21
+* Internet Explorer >= 11
+* Mobile Safari on iOS >= 8.0 (older versions produce incorrect results)
+* NodeJS / io.js
+* Opera >= 15
+* Safari >= 6 (older versions produce incorrect results)
+
 ## Installation
 
 Ready-to-use files based on libsodium 1.0.3 can be directly copied to your
