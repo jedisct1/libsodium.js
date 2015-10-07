@@ -1,5 +1,5 @@
 {
-	"name": "crypto_auth_verify",
+	"name": "crypto_auth_hmacsha512_verify",
 	"dependencies": ["_crypto_auth_hmacsha512_keybytes", "_crypto_auth_hmacsha512_bytes"],
 	"type": "function",
 	"noOutputFormat": true,
