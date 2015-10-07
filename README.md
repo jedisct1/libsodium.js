@@ -179,7 +179,7 @@ nano libsodium/dist-build/emscripten.sh
 make
 ```
 
-NOTE : for each of the functions/constants you add, make sure that the corresponding symbol files exist in the `wrapper/symbols` folder and that the constants are listed in the `wrapper/constants.json` file.
+__NOTE:__ for each of the functions/constants you add, make sure that the corresponding symbol files exist in the `wrapper/symbols` folder and that the constants are listed in the `wrapper/constants.json` file.
 
 ## Authors
 
