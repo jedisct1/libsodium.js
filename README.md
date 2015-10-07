@@ -152,10 +152,34 @@ need to be installed on your system:
 * libtool
 * make
 * mocha (`npm install -g mocha`)
-* zopfli
+* zopfli (`npm install -g node-zopfli`)
 
 Running `make` will clone libsodium, build it, test it, build the
 wrapper, and create the modules and minified distribution files.
+
+### Custom build
+
+The build available in this repository does not contain all the functions available in the original libsodium library.
+
+Providing that you have all the build dependencies installed, here is how you can build libsodium.js to include the functions you need :
+
+```shell
+git clone https://github.com/jedisct1/libsodium.js
+cd ./libsodium.js
+
+# Get the original C version of libsodium and configure it
+make libsodium/configure
+
+# Modify the emscripten.sh
+# Specifically, add the name of the missing functions and constants in the "EXPORTED_FUNCTIONS" array.
+# Ensure that the name begins with an underscore and that it is between double quotes. 
+nano libsodium/dist-build/emscripten.sh
+
+# Build libsodium, and then libsodium.js with your chosen functions
+make
+```
+
+NOTE : for each of the functions/constants you add, make sure that the corresponding symbol files exist in the `wrapper/symbols` folder and that the constants are listed in the `wrapper/constants.json` file.
 
 ## Authors
 
