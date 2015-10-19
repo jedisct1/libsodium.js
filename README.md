@@ -19,7 +19,7 @@ Supported browsers/JS engines:
 * Firefox >= 21
 * Internet Explorer >= 11
 * Mobile Safari on iOS >= 8.0 (older versions produce incorrect results)
-* NodeJS / io.js
+* NodeJS
 * Opera >= 15
 * Safari >= 6 (older versions produce incorrect results)
 
@@ -149,7 +149,7 @@ need to be installed on your system:
 * automake
 * emscripten
 * git
-* io.js or nodejs
+* nodejs
 * libtool
 * make
 * mocha (`npm install -g mocha`)

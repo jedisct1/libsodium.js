@@ -301,9 +301,11 @@
 
 	{{wraps_here}}
 
+	exports.compare = compare;
 	exports.from_base64 = from_base64;
 	exports.from_hex = from_hex;
 	exports.from_string = from_string;
+	exports.increment = increment;
 	exports.libsodium = libsodium;
 	exports.memcmp = memcmp;
 	exports.memzero = memzero;
