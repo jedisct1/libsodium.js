@@ -60,6 +60,20 @@
 		return d === 0;
 	}
 
+	function compare(b1, b2) {
+		if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
+			throw new TypeError("Only Uint8Array instances can be compared");
+		}
+		if (b1.length !== b2.length) {
+			throw new TypeError("Only instances of identical length can be compared");
+		}
+		for (var gt = 0 | 0, eq = 1 | 1, i = 0 | 0, j = b1.length; i < j; i++) {
+            gt |= ((b2[i] - b1[i]) >> 8) & eq;
+            eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
+		}
+		return (gt + gt + eq) - 1;
+	}
+
 	//---------------------------------------------------------------------------
 	// Codecs
 
