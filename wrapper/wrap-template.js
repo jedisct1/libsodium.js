@@ -67,9 +67,9 @@
 		if (b1.length !== b2.length) {
 			throw new TypeError("Only instances of identical length can be compared");
 		}
-		for (var gt = 0 | 0, eq = 1 | 1, i = 0 | 0, j = b1.length; i < j; i++) {
-            gt |= ((b2[i] - b1[i]) >> 8) & eq;
-            eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
+		for (var gt = 0 | 0, eq = 1 | 1, i = b1.length; i-- > 0;) {
+			gt |= ((b2[i] - b1[i]) >> 8) & eq;
+			eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
 		}
 		return (gt + gt + eq) - 1;
 	}
