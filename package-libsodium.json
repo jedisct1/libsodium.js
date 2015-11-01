@@ -1,6 +1,6 @@
 {
   "name": "libsodium",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers)",
   "main": "dist/modules/libsodium.js",
   "files": ["dist/modules/libsodium.js"],
