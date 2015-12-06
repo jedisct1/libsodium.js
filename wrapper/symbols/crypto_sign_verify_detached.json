@@ -1,25 +1,25 @@
 {
-	"name": "crypto_sign_verify_detached",
-	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
-	"type": "function",
-	"noOutputFormat": true,
-	"inputs": [
-		{
-			"name": "signature",
-			"type": "buf",
-			"size": "libsodium._crypto_sign_bytes()"
-		},
-		{
-			"name": "message",
-			"type": "unsized_buf"
-		},
-		{
-			"name": "publicKey",
-			"type": "buf",
-			"size": "libsodium._crypto_sign_publickeybytes()"
-		}
-	],
-	"outputs": [],
-	"target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_address, message_address, message_length, 0, publicKey_address) | 0",
-	"return": "verificationResult === 0"
+        "name": "crypto_sign_verify_detached",
+        "dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+        "type": "function",
+        "noOutputFormat": true,
+        "inputs": [
+                {
+                        "name": "signature",
+                        "type": "buf",
+                        "size": "libsodium._crypto_sign_bytes()"
+                },
+                {
+                        "name": "message",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "publicKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_sign_publickeybytes()"
+                }
+        ],
+        "outputs": [],
+        "target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_address, message_address, message_length, 0, publicKey_address) | 0",
+        "return": "verificationResult === 0"
 }

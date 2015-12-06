@@ -1,25 +1,25 @@
 {
-	"name": "crypto_generichash_final",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "state_address",
-			"type": "generichash_state_address"
-		},
-		{
-			"name": "hash_length",
-			"type": "uint"
-		}
-	],
-	"outputs": [
-		{
-			"name": "hash",
-			"size": "hash_length",
-			"type": "buf"
-		}
-	],
-	"target": "libsodium._crypto_generichash_final(state_address, hash_address, hash_length) | 0",
-	"expect": "=== 0",
-	"return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
+        "name": "crypto_generichash_final",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "state_address",
+                        "type": "generichash_state_address"
+                },
+                {
+                        "name": "hash_length",
+                        "type": "uint"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "hash",
+                        "size": "hash_length",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._crypto_generichash_final(state_address, hash_address, hash_length) | 0",
+        "expect": "=== 0",
+        "return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
 }

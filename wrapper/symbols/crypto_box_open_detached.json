@@ -1,41 +1,41 @@
 {
-	"name": "crypto_box_open_detached",
-	"type": "function",
+        "name": "crypto_box_open_detached",
+        "type": "function",
 
-	"inputs": [
-		{
-			"name": "ciphertext",
-			"type": "unsized_buf"
-		},
-		{
-			"name": "mac",
-			"type": "buf",
-			"size": "libsodium._crypto_box_macbytes()"
-		},
-		{
-			"name": "nonce",
-			"type": "buf",
-			"size": "libsodium._crypto_box_noncebytes()"
-		},
-		{
-			"name": "publicKey",
-			"type": "buf",
-			"size": "libsodium._crypto_box_publickeybytes()"
-		},
-		{
-			"name": "secretKey",
-			"type": "buf",
-			"size": "libsodium._crypto_box_secretkeybytes()"
-		}
-	],
-	"outputs" : [
-		{
-			"name": "plaintext",
-			"type": "buf",
-			"size": "ciphertext_length"
-		}
-	],
-	"target": "libsodium._crypto_box_open_detached(plaintext_address, ciphertext_address, mac_address, ciphertext_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
-	"expect": "=== 0",
-	"return": "_format_output(plaintext, outputFormat)"
+        "inputs": [
+                {
+                        "name": "ciphertext",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "mac",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_macbytes()"
+                },
+                {
+                        "name": "nonce",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_noncebytes()"
+                },
+                {
+                        "name": "publicKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_publickeybytes()"
+                },
+                {
+                        "name": "secretKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_secretkeybytes()"
+                }
+        ],
+        "outputs" : [
+                {
+                        "name": "plaintext",
+                        "type": "buf",
+                        "size": "ciphertext_length"
+                }
+        ],
+        "target": "libsodium._crypto_box_open_detached(plaintext_address, ciphertext_address, mac_address, ciphertext_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(plaintext, outputFormat)"
 }

@@ -1,17 +1,17 @@
 {
-	"name": "crypto_generichash_update",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "state_address",
-			"type": "generichash_state_address"
-		},
-		{
-			"name": "message_chunk",
-			"type": "unsized_buf"
-		}
-	],
-	"target": "libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length) | 0",
-	"expect": "=== 0"
+        "name": "crypto_generichash_update",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "state_address",
+                        "type": "generichash_state_address"
+                },
+                {
+                        "name": "message_chunk",
+                        "type": "unsized_buf"
+                }
+        ],
+        "target": "libsodium._crypto_generichash_update(state_address, message_chunk_address, message_chunk_length) | 0",
+        "expect": "=== 0"
 }

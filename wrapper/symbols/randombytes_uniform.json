@@ -1,13 +1,13 @@
 {
-	"name": "randombytes_uniform",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "upper_bound",
-			"type": "uint"
-		}
-	],
-	"target": "var random_value = libsodium._randombytes_uniform(upper_bound) >>> 0",
-	"return": "random_value"
+        "name": "randombytes_uniform",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "upper_bound",
+                        "type": "uint"
+                }
+        ],
+        "target": "var random_value = libsodium._randombytes_uniform(upper_bound) >>> 0",
+        "return": "random_value"
 }

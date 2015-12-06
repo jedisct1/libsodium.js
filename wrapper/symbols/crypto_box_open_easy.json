@@ -1,35 +1,35 @@
 {
-	"name": "crypto_box_open_easy",
-	"type": "function",
-	"inputs": [
-		{
-			"name": "ciphertext",
-			"type": "unsized_buf"
-		},
-		{
-			"name": "nonce",
-			"type": "buf",
-			"size": "libsodium._crypto_box_noncebytes()"
-		},
-		{
-			"name": "publicKey",
-			"type": "buf",
-			"size": "libsodium._crypto_box_publickeybytes()"
-		},
-		{
-			"name": "secretKey",
-			"type": "buf",
-			"size": "libsodium._crypto_box_secretkeybytes()"
-		}
-	],
-	"outputs": [
-		{
-			"name": "plaintext",
-			"type": "buf",
-			"size": "ciphertext_length - libsodium._crypto_box_macbytes()"
-		}
-	],
-	"target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
-	"expect": "=== 0",
-	"return": "_format_output(plaintext, outputFormat)"
+        "name": "crypto_box_open_easy",
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "ciphertext",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "nonce",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_noncebytes()"
+                },
+                {
+                        "name": "publicKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_publickeybytes()"
+                },
+                {
+                        "name": "secretKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_secretkeybytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "plaintext",
+                        "type": "buf",
+                        "size": "ciphertext_length - libsodium._crypto_box_macbytes()"
+                }
+        ],
+        "target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(plaintext, outputFormat)"
 }

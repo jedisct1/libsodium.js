@@ -27,73 +27,73 @@ docStr += '* `symbols()`: returns a list of the currently methods and constants'
 docStr += '* `raw`: attribute referencing the raw emscripten-built libsodium library that we are wrapping' + newLine();
 
 exports.buildDocForSymbol = function (s) {
-	if (typeof s != 'object') throw new TypeError('s must be a object');
-	if (!(s.type && (s.type == 'function' || s.type == 'uint'))) throw new Error('Invalid symbol type');
-	var sDoc = '## ' + s.name + newLine();
+        if (typeof s != 'object') throw new TypeError('s must be a object');
+        if (!(s.type && (s.type == 'function' || s.type == 'uint'))) throw new Error('Invalid symbol type');
+        var sDoc = '## ' + s.name + newLine();
 
-	if (s.type == 'function') {
-		if (!Array.isArray(s.inputs)) throw new Error('Invalid type for symbol.inputs. Symbol: ' + JSON.stringify(s));
-		if (!Array.isArray(s.outputs)) throw new Error('Invalid type for symbol.outputs. Symbol: ' + JSON.stringify(s));
-		sDoc += 'Function' + newParagraph();
-		sDoc += '__Parameters:__' + newLine();
-		for (var i = 0; i < s.inputs.length; i++) {
-			sDoc += '* `' + s.inputs[i].name + '`: ';
-			var paramType = s.inputs[i].type;
-			if (paramType == 'buf') {
-				sDoc += 'Buf (size: ' + s.inputs[i].size + ')';
-			} else if (paramType == 'unsized_buf') {
-				sDoc += 'Unsized buf';
-			} else if (paramType == 'unsized_buf_optional') {
-				sDoc += 'Optional unsized buf';
-			} else if (paramType == 'uint') {
-				sDoc += 'Unsigned Integer';
-			} else if (paramType == 'generichash_state_address') {
-				sDoc += 'Generichash state address';
-			} else if (paramType == 'onetimeauth_state_address') {
-				sDoc += 'OneTimeAuth state address';
-			} else if (paramType == 'randombytes_implementation') {
-				sDoc += 'Randombytes implementation';
-			} else if (paramType == 'string') {
-				sDoc += 'A string';
-			} else throw new Error('Unknown parameter type: ' + paramType);
-			sDoc += newLine();
-		}
-		sDoc += newLine() + '__Outputs:__' + newLine();
-		if (s.outputs.length > 0) {
-			for (i = 0; i < s.outputs.length; i++) {
-				sDoc += '* `' + s.outputs[i].name + '`: ';
-				var outputType = s.outputs[i].type;
-				if (outputType == 'buf') {
-					sDoc += 'Buf (size: ' + s.outputs[i].size + ')';
-				} else if (outputType == 'uint') {
-					sDoc += 'Unsigned Integer';
-				} else if (outputType == 'generichash_state') {
-					sDoc += 'Generichash state';
-				} else if (outputType == 'onetimeauth_state') {
-					sDoc += 'OneTimeAuth state';
-				} else throw new Error('Unknown output type: ' + outputType);
-				sDoc += newLine();
-			}
-		} else {
-			sDoc += 'Boolean. True if method executed with success; false otherwise' + newLine();
-		}
-	} else {
-		sDoc += 'Constant' + newParagraph();
-	}
+        if (s.type == 'function') {
+                if (!Array.isArray(s.inputs)) throw new Error('Invalid type for symbol.inputs. Symbol: ' + JSON.stringify(s));
+                if (!Array.isArray(s.outputs)) throw new Error('Invalid type for symbol.outputs. Symbol: ' + JSON.stringify(s));
+                sDoc += 'Function' + newParagraph();
+                sDoc += '__Parameters:__' + newLine();
+                for (var i = 0; i < s.inputs.length; i++) {
+                        sDoc += '* `' + s.inputs[i].name + '`: ';
+                        var paramType = s.inputs[i].type;
+                        if (paramType == 'buf') {
+                                sDoc += 'Buf (size: ' + s.inputs[i].size + ')';
+                        } else if (paramType == 'unsized_buf') {
+                                sDoc += 'Unsized buf';
+                        } else if (paramType == 'unsized_buf_optional') {
+                                sDoc += 'Optional unsized buf';
+                        } else if (paramType == 'uint') {
+                                sDoc += 'Unsigned Integer';
+                        } else if (paramType == 'generichash_state_address') {
+                                sDoc += 'Generichash state address';
+                        } else if (paramType == 'onetimeauth_state_address') {
+                                sDoc += 'OneTimeAuth state address';
+                        } else if (paramType == 'randombytes_implementation') {
+                                sDoc += 'Randombytes implementation';
+                        } else if (paramType == 'string') {
+                                sDoc += 'A string';
+                        } else throw new Error('Unknown parameter type: ' + paramType);
+                        sDoc += newLine();
+                }
+                sDoc += newLine() + '__Outputs:__' + newLine();
+                if (s.outputs.length > 0) {
+                        for (i = 0; i < s.outputs.length; i++) {
+                                sDoc += '* `' + s.outputs[i].name + '`: ';
+                                var outputType = s.outputs[i].type;
+                                if (outputType == 'buf') {
+                                        sDoc += 'Buf (size: ' + s.outputs[i].size + ')';
+                                } else if (outputType == 'uint') {
+                                        sDoc += 'Unsigned Integer';
+                                } else if (outputType == 'generichash_state') {
+                                        sDoc += 'Generichash state';
+                                } else if (outputType == 'onetimeauth_state') {
+                                        sDoc += 'OneTimeAuth state';
+                                } else throw new Error('Unknown output type: ' + outputType);
+                                sDoc += newLine();
+                        }
+                } else {
+                        sDoc += 'Boolean. True if method executed with success; false otherwise' + newLine();
+                }
+        } else {
+                sDoc += 'Constant' + newParagraph();
+        }
 
-	sDoc += newParagraph();
+        sDoc += newParagraph();
 
-	docStr += sDoc;
+        docStr += sDoc;
 };
 
 exports.getResultDoc = function () {
-	return docStr;
+        return docStr;
 };
 
 function newLine() {
-	return '\r\n';
+        return '\r\n';
 }
 
 function newParagraph() {
-	return '\r\n\r\n';
+        return '\r\n\r\n';
 }

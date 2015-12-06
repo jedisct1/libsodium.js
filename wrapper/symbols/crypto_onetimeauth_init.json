@@ -1,20 +1,20 @@
 {
-	"name": "crypto_onetimeauth_init",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "key",
-			"type": "unsized_buf_optional"
-		}
-	],
-	"outputs": [
-		{
-			"name": "state",
-			"type": "onetimeauth_state"
-		}
-	],
-	"target": "libsodium._crypto_onetimeauth_init(state_address, key_address) | 0",
-	"expect": "=== 0",
-	"return": "state_address"
+        "name": "crypto_onetimeauth_init",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "key",
+                        "type": "unsized_buf_optional"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "state",
+                        "type": "onetimeauth_state"
+                }
+        ],
+        "target": "libsodium._crypto_onetimeauth_init(state_address, key_address) | 0",
+        "expect": "=== 0",
+        "return": "state_address"
 }

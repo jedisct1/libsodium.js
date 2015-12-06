@@ -1,26 +1,26 @@
 {
-	"name": "crypto_sign_open",
-	"dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "signedMessage",
-			"type": "unsized_buf"
-		},
-		{
-			"name": "publicKey",
-			"type": "buf",
-			"size": "libsodium._crypto_sign_publickeybytes()"
-		}
-	],
-	"outputs": [
-		{
-			"type": "buf",
-			"name": "message",
-			"size": "signedMessage_length - libsodium._crypto_sign_bytes()"
-		}
-	],
-	"target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
-	"expect": "=== 0",
-	"return": "_format_output(message, outputFormat)"
+        "name": "crypto_sign_open",
+        "dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "signedMessage",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "publicKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_sign_publickeybytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "type": "buf",
+                        "name": "message",
+                        "size": "signedMessage_length - libsodium._crypto_sign_bytes()"
+                }
+        ],
+        "target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(message, outputFormat)"
 }

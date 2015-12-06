@@ -1,20 +1,20 @@
 {
-	"name": "randombytes_buf",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "length",
-			"type": "uint"
-		}
-	],
-	"outputs": [
-		{
-			"name": "output",
-			"size": "length",
-			"type": "buf"
-		}
-	],
-	"target": "libsodium._randombytes_buf(output_address, length)",
-	"return": "_format_output(output, outputFormat)"
+        "name": "randombytes_buf",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "length",
+                        "type": "uint"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "output",
+                        "size": "length",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._randombytes_buf(output_address, length)",
+        "return": "_format_output(output, outputFormat)"
 }

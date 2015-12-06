@@ -1,22 +1,22 @@
 {
-	"name": "crypto_scalarmult_base",
-	"dependencies": ["_crypto_scalarmult_base", "_crypto_scalarmult_scalarbytes"],
-	"type" : "function",
-	"inputs": [
-		{
-			"name": "privateKey",
-			"size": "libsodium._crypto_scalarmult_scalarbytes()",
-			"type": "buf"
-		}
-	],
-	"outputs": [
-		{
-			"type": "buf",
-			"name": "publicKey",
-			"size": "libsodium._crypto_scalarmult_scalarbytes()"
-		}
-	],
-	"target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
-	"expect": "=== 0",
-	"return": "_format_output(publicKey, outputFormat)"
+        "name": "crypto_scalarmult_base",
+        "dependencies": ["_crypto_scalarmult_base", "_crypto_scalarmult_scalarbytes"],
+        "type" : "function",
+        "inputs": [
+                {
+                        "name": "privateKey",
+                        "size": "libsodium._crypto_scalarmult_scalarbytes()",
+                        "type": "buf"
+                }
+        ],
+        "outputs": [
+                {
+                        "type": "buf",
+                        "name": "publicKey",
+                        "size": "libsodium._crypto_scalarmult_scalarbytes()"
+                }
+        ],
+        "target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(publicKey, outputFormat)"
 }

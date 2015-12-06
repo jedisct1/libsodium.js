@@ -1,21 +1,21 @@
 {
-	"name": "crypto_onetimeauth_final",
-	"dependencies": [],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "state_address",
-			"type": "onetimeauth_state_address"
-		}
-	],
-	"outputs": [
-		{
-			"name": "hash",
-			"type": "buf",
-			"size": "libsodium._crypto_onetimeauth_bytes()"
-		}
-	],
-	"target": "libsodium._crypto_onetimeauth_final(state_address, hash_address) | 0",
-	"expect": "=== 0",
-	"return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
+        "name": "crypto_onetimeauth_final",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "state_address",
+                        "type": "onetimeauth_state_address"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "hash",
+                        "type": "buf",
+                        "size": "libsodium._crypto_onetimeauth_bytes()"
+                }
+        ],
+        "target": "libsodium._crypto_onetimeauth_final(state_address, hash_address) | 0",
+        "expect": "=== 0",
+        "return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
 }

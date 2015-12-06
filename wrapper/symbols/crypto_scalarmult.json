@@ -1,27 +1,27 @@
 {
-	"name": "crypto_scalarmult",
-	"dependencies": ["_crypto_scalarmult", "_crypto_scalarmult_scalarbytes", "_crypto_scalarmult_bytes"],
-	"type": "function",
-	"inputs": [
-		{
-			"name": "privateKey",
-			"size": "libsodium._crypto_scalarmult_scalarbytes()",
-			"type": "buf"
-		},
-		{
-			"name": "publicKey",
-			"size": "libsodium._crypto_scalarmult_scalarbytes()",
-			"type": "buf"
-		}
-	],
-	"outputs": [
-		{
-			"type": "buf",
-			"name": "sharedSecret",
-			"size": "libsodium._crypto_scalarmult_bytes()"
-		}
-	],
-	"target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
-	"expect": "=== 0",
-	"return": "_format_output(sharedSecret, outputFormat)"
+        "name": "crypto_scalarmult",
+        "dependencies": ["_crypto_scalarmult", "_crypto_scalarmult_scalarbytes", "_crypto_scalarmult_bytes"],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "privateKey",
+                        "size": "libsodium._crypto_scalarmult_scalarbytes()",
+                        "type": "buf"
+                },
+                {
+                        "name": "publicKey",
+                        "size": "libsodium._crypto_scalarmult_scalarbytes()",
+                        "type": "buf"
+                }
+        ],
+        "outputs": [
+                {
+                        "type": "buf",
+                        "name": "sharedSecret",
+                        "size": "libsodium._crypto_scalarmult_bytes()"
+                }
+        ],
+        "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(sharedSecret, outputFormat)"
 }
