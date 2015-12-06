@@ -25,7 +25,7 @@ Supported browsers/JS engines:
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.6 can be directly copied to your
+Ready-to-use files based on libsodium 1.0.7 can be directly copied to your
 project.
 
 ### Usage with global definitions, for web browsers
@@ -99,6 +99,9 @@ size. Returns `-1`, `0` or `1`)
 * `memzero()` (applies to `Uint8Array` objects)
 * `increment()` (increments an arbitrary-long number stored as a
 little-endian `Uint8Array` - typically to increment nonces)
+* `add()` (adds two arbitrary-long numbers stored as little-endian
+`Uint8Array` vectors)
+* `is_zero()` (constant-time, checks `Uint8Array` objects for all zeros)
 
 ## API
 

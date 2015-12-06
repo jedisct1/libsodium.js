@@ -38,6 +38,32 @@
 		}
 	}
 
+	function add(a, b) {
+		if (! a instanceof Uint8Array || ! b instanceof Uint8Array) {
+			throw new TypeError("Only Uint8Array instances can added");
+		}
+        var j = a.length, c = 0 | 0, i = 0 | 0;
+        if (b.length != a.length) {
+			throw new TypeError("Arguments must have the same length");
+        }
+		for (i = 0; i < j; i++) {
+            c >>= 8;
+            c += (a[i] + b[j]);
+			a[i] = c & 0xff;
+		}
+	}
+
+	function is_zero(bytes) {
+		if (! bytes instanceof Uint8Array) {
+			throw new TypeError("Only Uint8Array instances can be checked");
+		}
+        var d = 0 | 0;
+		for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+            d |= bytes[i];
+		}
+        return d === 0;
+	}
+
 	function memzero(bytes) {
 		if (! bytes instanceof Uint8Array) {
 			throw new TypeError("Only Uint8Array instances can be wiped");
@@ -301,11 +327,13 @@
 
 	{{wraps_here}}
 
+	exports.add = add;
 	exports.compare = compare;
 	exports.from_base64 = from_base64;
 	exports.from_hex = from_hex;
 	exports.from_string = from_string;
 	exports.increment = increment;
+	exports.is_zero = is_zero;
 	exports.libsodium = libsodium;
 	exports.memcmp = memcmp;
 	exports.memzero = memzero;
