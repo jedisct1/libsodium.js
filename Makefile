@@ -34,6 +34,7 @@ $(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/test/js.done wrapper/buil
 	iojs wrapper/build-wrapper.js || nodejs wrapper/build-wrapper.js || node wrapper/build-wrapper.js
 
 $(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure
+	cd $(LIBSODIUM_DIR) && env BROWSER_TESTS=1 ./dist-build/emscripten.sh
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh
 
 $(LIBSODIUM_DIR)/configure: $(LIBSODIUM_DIR)/configure.ac
