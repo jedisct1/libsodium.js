@@ -1,5 +1,6 @@
 
 OUT_DIR=./dist
+BROWSERS_TEST_DIR=./browsers-test
 MODULES_DIR=$(OUT_DIR)/modules
 BROWSERS_DIR=$(OUT_DIR)/browsers
 LIBSODIUM_DIR=./libsodium
@@ -33,8 +34,11 @@ $(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/test/js.done wrapper/buil
 	mkdir -p $(MODULES_DIR)
 	nodejs wrapper/build-wrapper.js || node wrapper/build-wrapper.js
 
-$(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure
-	cd $(LIBSODIUM_DIR) && env BROWSER_TESTS=1 ./dist-build/emscripten.sh
+$(LIBSODIUM_DIR)/test/browser-js.done: $(LIBSODIUM_DIR)/configure
+	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --browser-tests
+	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
+
+$(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/test/browser-js.done
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh
 
 $(LIBSODIUM_DIR)/configure: $(LIBSODIUM_DIR)/configure.ac
@@ -44,9 +48,10 @@ $(LIBSODIUM_DIR)/configure.ac: .gitmodules
 	git submodule update --init --recursive
 
 clean:
-	rm -f $(LIBSODIUM_DIR)/test/js.done
+	rm -f $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_DIR)/test/browser-js.done
 	rm -rf $(LIBSODIUM_JS_DIR)
 	rm -rf $(OUT_DIR)
+	rm -rf $(BROWSERS_TEST_DIR)
 	-cd $(LIBSODIUM_DIR) && make distclean
 
 distclean: clean
