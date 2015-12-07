@@ -38,6 +38,9 @@ or directly include a copy of the
 [sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
 file.
 
+Alternatively, for better performance and to avoid including a local copy,
+[libsodium.js is available on cdnjs](https://cdnjs.com/libraries/libsodium-wrappers).
+
 Including the `sodium.min.js` file will add a `sodium` object to the
 global namespace.
 
