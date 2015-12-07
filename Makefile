@@ -31,7 +31,7 @@ $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done wrapper/libsodium-pre
 
 $(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/test/js.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
 	mkdir -p $(MODULES_DIR)
-	iojs wrapper/build-wrapper.js || nodejs wrapper/build-wrapper.js || node wrapper/build-wrapper.js
+	nodejs wrapper/build-wrapper.js || node wrapper/build-wrapper.js
 
 $(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && env BROWSER_TESTS=1 ./dist-build/emscripten.sh
