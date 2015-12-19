@@ -159,7 +159,6 @@ need to be installed on your system:
 * nodejs
 * libtool
 * make
-* mocha (`npm install -g mocha`)
 * zopfli (`npm install -g node-zopfli`)
 
 Running `make` will clone libsodium, build it, test it, build the
