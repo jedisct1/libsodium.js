@@ -7,7 +7,7 @@ to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten),
 with automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weights 151 Kb (minified, gzipped) and can run in
+The complete library weights 149 Kb (minified, gzipped) and can run in
 a web browser as well as server-side.
 
 ### Compatibility
@@ -25,7 +25,7 @@ Supported browsers/JS engines:
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.7 can be directly copied to your
+Ready-to-use files based on libsodium 1.0.8 can be directly copied to your
 project.
 
 ### Usage with global definitions, for web browsers
