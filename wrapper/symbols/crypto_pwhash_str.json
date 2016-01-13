@@ -1,0 +1,28 @@
+{
+        "name": "crypto_pwhash_str",
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "password",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "opsLimit",
+                        "type": "uint"
+                },
+                {
+                        "name": "memLimit",
+                        "type": "uint"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "hashed_password",
+                        "type": "buf",
+                        "size": "libsodium._crypto_pwhash_strbytes()"
+                }
+        ],
+        "target": "libsodium._crypto_pwhash_str(hashed_password_address, password_address, password_length, 0, opsLimit, 0, memLimit) | 0",
+        "expect": "=== 0",
+        "return": "libsodium.Pointer_stringify(hashed_password_address)"
+}
