@@ -1,0 +1,16 @@
+{
+        "name": "crypto_pwhash_str_verify",
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "hashed_password",
+                        "type": "string"
+                },
+                {
+                        "name": "password",
+                        "type": "unsized_buf"
+                }
+        ],
+        "target": "var result = libsodium._crypto_pwhash_str_verify(hashed_password_address, password_address, password_length, 0) | 0",
+        "return": "result === 0"
+}

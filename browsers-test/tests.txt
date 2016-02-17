@@ -30,7 +30,8 @@ hash3.html
 onetimeauth.html
 onetimeauth2.html
 onetimeauth7.html
-pwhash.html
+pwhash_argon2i.html
+pwhash_scrypt.html
 pwhash_scrypt_ll.html
 randombytes.html
 scalarmult.html
