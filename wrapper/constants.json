@@ -32,6 +32,8 @@
         { "name": "crypto_hash_BYTES", "type": "uint" },
         { "name": "crypto_onetimeauth_BYTES", "type": "uint" },
         { "name": "crypto_onetimeauth_KEYBYTES", "type": "uint" },
+        { "name": "crypto_pwhash_ALG_ARGON2I13", "type": "uint" },
+        { "name": "crypto_pwhash_ALG_DEFAULT", "type": "uint" },
         { "name": "crypto_pwhash_MEMLIMIT_INTERACTIVE", "type": "uint" },
         { "name": "crypto_pwhash_MEMLIMIT_MODERATE", "type": "uint" },
         { "name": "crypto_pwhash_MEMLIMIT_SENSITIVE", "type": "uint" },

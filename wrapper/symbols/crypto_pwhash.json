@@ -22,6 +22,10 @@
                 {
                         "name": "keyLength",
                         "type": "uint"
+                },
+                {
+                        "name": "algorithm",
+                        "type": "uint"
                 }
         ],
         "outputs": [
@@ -31,7 +35,7 @@
                         "size": "keyLength"
                 }
         ],
-        "target": "libsodium._crypto_pwhash(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit) | 0",
+        "target": "libsodium._crypto_pwhash(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit, algorithm) | 0",
         "expect": "=== 0",
         "return": "_format_output(derivedKey, outputFormat)"
 }
