@@ -3,6 +3,10 @@
         "type": "function",
         "inputs": [
                 {
+                        "name": "keyLength",
+                        "type": "uint"
+                },
+                {
                         "name": "password",
                         "type": "unsized_buf"
                 },
@@ -17,10 +21,6 @@
                 },
                 {
                         "name": "memLimit",
-                        "type": "uint"
-                },
-                {
-                        "name": "keyLength",
                         "type": "uint"
                 },
                 {

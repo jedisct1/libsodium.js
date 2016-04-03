@@ -1735,10 +1735,18 @@
 		
 	}
 
-	function crypto_pwhash(password, salt, opsLimit, memLimit, keyLength, algorithm, outputFormat) {
+	function crypto_pwhash(keyLength, password, salt, opsLimit, memLimit, algorithm, outputFormat) {
 		var address_pool = [];
 		_check_output_format(outputFormat);
 
+		// ---------- input: keyLength (uint)
+		
+		_require_defined(address_pool, keyLength, "keyLength");
+		
+		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
+		        _free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
+		}
+		
 		// ---------- input: password (unsized_buf)
 		
 		password = _any_to_Uint8Array(address_pool, password, "password");
@@ -1772,14 +1780,6 @@
 		        _free_and_throw_type_error(address_pool, "memLimit must be an unsigned integer");
 		}
 		
-		// ---------- input: keyLength (uint)
-		
-		_require_defined(address_pool, keyLength, "keyLength");
-		
-		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
-		        _free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
-		}
-		
 		// ---------- input: algorithm (uint)
 		
 		_require_defined(address_pool, algorithm, "algorithm");
@@ -1805,10 +1805,18 @@
 		
 	}
 
-	function crypto_pwhash_scryptsalsa208sha256(password, salt, opsLimit, memLimit, keyLength, outputFormat) {
+	function crypto_pwhash_scryptsalsa208sha256(keyLength, password, salt, opsLimit, memLimit, outputFormat) {
 		var address_pool = [];
 		_check_output_format(outputFormat);
 
+		// ---------- input: keyLength (uint)
+		
+		_require_defined(address_pool, keyLength, "keyLength");
+		
+		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
+		        _free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
+		}
+		
 		// ---------- input: password (unsized_buf)
 		
 		password = _any_to_Uint8Array(address_pool, password, "password");
@@ -1840,14 +1848,6 @@
 		
 		if (!(typeof memLimit === "number" && (memLimit | 0) === memLimit) && (memLimit | 0) > 0) {
 		        _free_and_throw_type_error(address_pool, "memLimit must be an unsigned integer");
-		}
-		
-		// ---------- input: keyLength (uint)
-		
-		_require_defined(address_pool, keyLength, "keyLength");
-		
-		if (!(typeof keyLength === "number" && (keyLength | 0) === keyLength) && (keyLength | 0) > 0) {
-		        _free_and_throw_type_error(address_pool, "keyLength must be an unsigned integer");
 		}
 		
 		// ---------- output derivedKey (buf)
