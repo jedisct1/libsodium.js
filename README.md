@@ -25,7 +25,7 @@ Supported browsers/JS engines:
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.8 can be directly copied to your
+Ready-to-use files based on libsodium 1.0.10 can be directly copied to your
 project.
 
 ### Usage with global definitions, for web browsers
