@@ -1,5 +1,5 @@
 {
-        "name": "crypto_aead_chacha20poly1305_ietf_decrypt",
+        "name": "crypto_aead_chacha20poly1305_ietf_decrypt_detached",
         "type": "function",
         "inputs": [
                 {
@@ -10,6 +10,11 @@
                 {
                         "name": "ciphertext",
                         "type": "unsized_buf"
+                },
+                {
+                        "name": "mac",
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_macbytes()"
                 },
                 {
                         "name": "additional_data",
@@ -30,10 +35,10 @@
                 {
                         "name": "message",
                         "type": "buf",
-                        "size": "ciphertext_length - libsodium._crypto_aead_chacha20poly1305_ietf_abytes()"
+                        "size": "ciphertext_length"
                 }
         ],
-        "target":"libsodium._crypto_aead_chacha20poly1305_ietf_decrypt(message_address, null, secret_nonce_address, ciphertext_address, ciphertext_length, 0, additional_data_address, additional_data_length, 0, public_nonce_address, key_address)",
+        "target":"libsodium._crypto_aead_chacha20poly1305_ietf_decrypt_detached(message_address, secret_nonce_address, ciphertext_address, ciphertext_length, 0, mac_address, additional_data_address, additional_data_length, 0, public_nonce_address, key_address)",
         "expect": "=== 0",
         "return": "_format_output(message, outputFormat)"
 }
