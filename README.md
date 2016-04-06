@@ -147,6 +147,21 @@ returns the following object:
 { keyType: 'curve25519', privateKey: (Uint8Array), publicKey: (Uint8Array) }
 ```
 
+### Standard vs Sumo version
+
+The standard version (in the `dist/browsers` and `dist/modules`
+directories) contains the high-level functions, and is the recommended
+one for most projects.
+
+Alternatively, the "sumo" version, available in the
+`dist/browsers-sumo` and `dist/modules-sumo` directories contains all
+the symbols from the original library. This includes undocumented,
+untested, deprecated, low-level and easy to misuse functions.
+
+It is slightly larger than the standard version, and should be used
+only if you really need the extra symbols it provides.
+
+
 ### Compilation
 
 If you want to compile the files yourself, the following dependencies
