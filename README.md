@@ -161,7 +161,6 @@ untested, deprecated, low-level and easy to misuse functions.
 It is slightly larger than the standard version, and should be used
 only if you really need the extra symbols it provides.
 
-
 ### Compilation
 
 If you want to compile the files yourself, the following dependencies
