@@ -21,7 +21,9 @@
     "curve25519",
     "ed25519",
     "blake2",
-    "siphash"
+    "siphash",
+    "argon2",
+    "ecc"
   ],
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
   "contributors": [ "Frank Denis (@jedisct1)" ],
