@@ -7,7 +7,7 @@
     "Frank Denis (@jedisct1)"
   ],
   "description": "The Sodium cryptographic library compiled to JavaScript",
-  "main": "dist/browsers/combined/sodium.min.js",
+  "main": "dist/browsers/combined/sodium.js",
   "moduleType": [
     "amd",
     "es6",
