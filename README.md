@@ -7,7 +7,7 @@ to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten),
 with automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weights 149 Kb (minified, gzipped) and can run in
+The complete library weights 140 Kb (minified, gzipped) and can run in
 a web browser as well as server-side.
 
 ### Compatibility
