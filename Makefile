@@ -25,7 +25,7 @@ all: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_
 
 $(BROWSERS_DIR)/combined/sodium.min.js.gz: $(BROWSERS_DIR)/combined/sodium.min.js
 	ln -f $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.tmp
-	zopfli $(BROWSERS_DIR)/combined/sodium.min.js.tmp || gzip -9 $(BROWSERS_DIR)/combined/sodium.min.js.tmp
+	zopfli --i1000 $(BROWSERS_DIR)/combined/sodium.min.js.tmp || gzip -9 $(BROWSERS_DIR)/combined/sodium.min.js.tmp
 	rm -f $(BROWSERS_DIR)/combined/sodium.min.js.tmp
 	mv $(BROWSERS_DIR)/combined/sodium.min.js.tmp.gz $(BROWSERS_DIR)/combined/sodium.min.js.gz
 
@@ -39,11 +39,11 @@ $(BROWSERS_DIR)/combined/sodium.js: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/l
 	mkdir -p $(BROWSERS_DIR)/combined
 	cat wrapper/modinit.js $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/combined/sodium.js
 
-$(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_DIR)/test/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
+$(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
 
-$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_DIR)/test/js-sumo.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
 	mkdir -p $(MODULES_DIR)
 	nodejs wrapper/build-wrapper.js 2>/dev/null || node wrapper/build-wrapper.js
 
@@ -52,7 +52,7 @@ $(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_
 $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz: $(BROWSERS_SUMO_DIR)/combined/sodium.min.js
 	@echo +++ Building sumo/combined/sodium.min.js.gz
 	ln -f $(BROWSERS_SUMO_DIR)/combined/sodium.min.js $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp
-	zopfli $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp || gzip -9 $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp
+	zopfli --i1000 $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp || gzip -9 $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp
 	rm -f $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp
 	mv $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp.gz $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz
 
@@ -68,7 +68,7 @@ $(BROWSERS_SUMO_DIR)/combined/sodium.js: $(MODULES_SUMO_DIR)/libsodium.js $(MODU
 	mkdir -p $(BROWSERS_SUMO_DIR)/combined
 	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js > $(BROWSERS_SUMO_DIR)/combined/sodium.js
 
-$(MODULES_SUMO_DIR)/libsodium.js: $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_DIR)/test/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
+$(MODULES_SUMO_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
 	@echo +++ Building sumo/libsodium.js
 	mkdir -p $(MODULES_SUMO_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium.js
@@ -80,14 +80,14 @@ $(MODULES_SUMO_DIR)/libsodium-wrappers.js: $(MODULES_DIR)/libsodium-wrappers.js
 
 
 
-$(LIBSODIUM_DIR)/test/browser-js.done: $(LIBSODIUM_DIR)/configure
+$(LIBSODIUM_DIR)/browser-js.done: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --browser-tests
 	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
 
-$(LIBSODIUM_DIR)/test/js.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/test/browser-js.done
-	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh
+$(LIBSODIUM_DIR)/js.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/browser-js.done
+	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --standard
 
-$(LIBSODIUM_DIR)/test/js-sumo.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/test/js.done
+$(LIBSODIUM_DIR)/js-sumo.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/js.done
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --sumo
 
 
@@ -101,7 +101,7 @@ $(LIBSODIUM_DIR)/configure.ac: .gitmodules
 
 
 clean:
-	rm -f $(LIBSODIUM_DIR)/test/js.done $(LIBSODIUM_DIR)/test/js-sumo.done $(LIBSODIUM_DIR)/test/browser-js.done
+	rm -f $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done $(LIBSODIUM_DIR)/browser-js.done
 	rm -rf $(BROWSERS_TEST_DIR)
 	rm -rf $(LIBSODIUM_JS_DIR)
 	rm -rf $(LIBSODIUM_JS_SUMO_DIR)
