@@ -93,7 +93,6 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 
 ## Additional helpers
 
-* `from_base64()`, `to_base64()`
 * `from_hex()`, `to_hex()`
 * `from_string()`, `to_string()`
 * `memcmp()` (constant-time check for equality, returns `true` or `false`)
@@ -127,7 +126,7 @@ If the output is a unique binary buffer, it is returned as a
 
 However, an extra parameter can be given to all wrapped functions, in
 order to specify what format the output should be in. Valid options
-are `uint8array' (default), 'text', 'hex' and 'base64'.
+are `uint8array' (default), 'text' and 'hex'.
 
 Example:
 ```javascript
@@ -135,10 +134,9 @@ var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
     hash_hex = sodium.crypto_shorthash('test', key, 'hex');
 ```
 
-In addition, the `from_base64`, `to_base64`, `from_hex`, `to_hex`,
-`from_string`, and `to_string` functions are available to explicitly
-convert base64, hexadecimal, and arbitrary string representations
-from/to `Uint8Array` objects.
+In addition, the `from_hex`, `to_hex`, `from_string`, and `to_string`
+functions are available to explicitly convert hexadecimal, and
+arbitrary string representations from/to `Uint8Array` objects.
 
 Functions returning more than one output buffer are returning them as
 an object. For example, the `sodium.crypto_box_keypair()` function
