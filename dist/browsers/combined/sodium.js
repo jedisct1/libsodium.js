@@ -161,6 +161,7 @@ return{_sodium_library_version_minor:od,_sodium_hex2bin:Qa,_bitshift64Lshr:qc,_c
                 }
         }
 
+        /* not constant-time */
         function from_hex(str) {
                 if (!is_hex(str)) throw new TypeError("The provided string doesn't look like hex data");
                 var result = new Uint8Array(str.length / 2);
@@ -196,11 +197,10 @@ return{_sodium_library_version_minor:od,_sodium_hex2bin:Qa,_bitshift64Lshr:qc,_c
                                 63 :
                                 0;
                 }
-                var
-                        sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""),
-                        nInLen = sB64Enc.length,
-                        nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2,
-                        taBytes = new Uint8Array(nOutLen);
+                var sB64Enc = sBase64.replace(/[^A-Za-z0-9\+\/]/g, ""),
+                    nInLen = sB64Enc.length,
+                    nOutLen = nBlocksSize ? Math.ceil((nInLen * 3 + 1 >> 2) / nBlocksSize) * nBlocksSize : nInLen * 3 + 1 >> 2,
+                    taBytes = new Uint8Array(nOutLen);
                 for (var nMod3, nMod4, nUint24 = 0, nOutIdx = 0, nInIdx = 0; nInIdx < nInLen; nInIdx++) {
                         nMod4 = nInIdx & 3;
                         nUint24 |= _b64ToUint6(sB64Enc.charCodeAt(nInIdx)) << 18 - 6 * nMod4;
@@ -215,6 +215,9 @@ return{_sodium_library_version_minor:od,_sodium_hex2bin:Qa,_bitshift64Lshr:qc,_c
         }
 
         function to_base64(aBytes, noNewLine) {
+                if (typeof noNewLine === "undefined") {
+                        noNewLine = true;
+                }
                 function _uint6ToB64(nUint6) {
                         return nUint6 < 26 ?
                                 nUint6 + 65 : nUint6 < 52 ?
