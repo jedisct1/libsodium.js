@@ -10,4 +10,3 @@
 })(this, function (exports) {
     "use strict";
     var Module = exports;
-    Object.defineProperty(exports, '__esModule', { value: true });

@@ -15,7 +15,6 @@
         }
 }(this, function (exports, libsodium) {
         "use strict";
-        Object.defineProperty(exports, '__esModule', { value: true });
 
         var output_format = "uint8array";
 
