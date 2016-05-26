@@ -227,7 +227,7 @@ var db=[zn,Hk,Gk,Fk,Ek,Dk,Ck,Bk,Ak,zn,zn,zn,zn,zn,zn,zn,zn,zn,Xe,bf,Uc,Yc,Rc,Sc,
                                 65;
                 }
                 if (typeof aBytes === "string") {
-                        throw new Exception("input has to be an array");
+                        throw new Error("input has to be an array");
                 }
                 var nMod3 = 2,
                         sB64Enc = "";

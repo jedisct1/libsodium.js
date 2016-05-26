@@ -228,7 +228,7 @@ var db=[ip,Tl,Sl,Rl,Ql,Pl,Ol,Nl,Ml,ip,ip,ip,ip,ip,ip,ip,ip,ip,Cf,Hf,_c,cd,Xc,Yc,
                                 65;
                 }
                 if (typeof aBytes === "string") {
-                        throw new Exception("input has to be an array");
+                        throw new Error("input has to be an array");
                 }
                 var nMod3 = 2,
                         sB64Enc = "";
