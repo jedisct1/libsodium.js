@@ -119,6 +119,55 @@
                         return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
                 }
 
+                var numChunks = Math.ceil(bytes.length / toStringChunkSize);
+                if (numChunks > 1){
+                        var totalString = '';
+                        var sequenceReadOffset = 0;
+                        for (var i = 0; i < numChunks; i++){
+                                var currentChunk = Array.prototype.slice.call(bytes, i * toStringChunkSize + sequenceReadOffset, (i + 1) * toStringChunkSize + sequenceReadOffset);
+                                //Depending on how much we have shifted
+                                if (currentChunk.length == 0) continue;
+
+                                //Checking that we didn't cut the buffer in the middle of a UTF8 sequence.
+                                //If we did, remove the bytes of the "cut" sequence and
+                                //decrement sequenceReadOffset for each removed byte
+                                var sequenceDetectionComplete;
+                                var sequenceIndex = currentChunk.length;
+                                var sequenceLength = 0;
+
+                                //This loop will read the chunk from its end, looking for sequence start bytes
+                                do {
+                                        sequenceIndex--;
+                                        var currentByte = currentChunk[sequenceIndex];
+
+                                        if (currentByte >= 240){ //Beginning of a 4-byte UTF-8 sequence
+                                                sequenceLength = 4;
+                                                sequenceDetectionComplete = true;
+                                        } else if (currentByte >= 224){ //Beginning of a 3-byte UTF-8 sequence
+                                                sequenceLength = 3;
+                                                sequenceDetectionComplete = true;
+                                        } else if (currentByte >= 192){ //Beginning of a 2-byte UTF-8 sequence
+                                                sequenceLength = 2;
+                                                sequenceDetectionComplete = true;
+                                        } else if (currentByte < 128){ //A one byte UTF-8 char
+                                                sequenceLength = 1;
+                                                sequenceDetectionComplete = true;
+                                        }
+                                        //The values between [128, 192[ are part of a UTF-8 sequence.
+                                        //The loop will not exit in that case, and will iterate one byte backwards instead
+                                } while (!sequenceDetectionComplete);
+
+                                var extraBytes = sequenceLength - (currentChunk.length - sequenceIndex);
+                                for (var j = 0; j < extraBytes; j++){
+                                        sequenceReadOffset--;
+                                        currentChunk.pop();
+                                }
+
+                                totalString += to_string(currentChunk);
+                        }
+                        return totalString;
+                }
+
                 try {
                         return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
                 }
