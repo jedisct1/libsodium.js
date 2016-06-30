@@ -287,7 +287,7 @@
             if (selectedOutputFormat === "uint8array") {
                 return output.to_Uint8Array();
             } else if (selectedOutputFormat === "text") {
-                return libsodium.Pointer_stringify(output.address, output.length);
+                return to_string(output.to_Uint8Array());
             } else if (selectedOutputFormat === "hex") {
                 return to_hex(output.to_Uint8Array());
             } else if (selectedOutputFormat === "base64") {
