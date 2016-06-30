@@ -119,7 +119,8 @@
             return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
         }
 
-        var numChunks = Math.ceil(bytes.length / toStringChunkSize);
+        var toStringChunkSize = 8192,
+            numChunks = Math.ceil(bytes.length / toStringChunkSize);
         if (numChunks <= 1) {
             try {
                 return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
