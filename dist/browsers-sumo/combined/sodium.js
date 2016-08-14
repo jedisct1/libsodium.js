@@ -30,6 +30,7 @@ var Cb=[ar,un,tn,sn,rn,qn,pn,on,nn,ar,ar,ar,ar,ar,ar,ar,ar,ar,rg,xg,fd,rd,ed,pd,
 
 
 
+    ENVIRONMENT_IS_NODE && !process.removeAllListeners("uncaughtException");
     return Module;
 });
 (function (root, factory) {

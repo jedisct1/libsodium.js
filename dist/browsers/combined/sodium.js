@@ -29,6 +29,7 @@ var Cb=[sp,hm,gm,fm,em,dm,cm,bm,am,sp,sp,sp,sp,sp,sp,sp,sp,sp,Nf,Uf,ad,md,$c,kd,
 
 
 
+    ENVIRONMENT_IS_NODE && !process.removeAllListeners("uncaughtException");
     return Module;
 });
 (function (root, factory) {
