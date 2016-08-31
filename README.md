@@ -140,9 +140,8 @@ Example (secretbox):
 ```javascript
 // Load your secret key from a safe place and reuse it across multiple
 // secretbox calls. (Obviously don't use this example key for anything
-// real.) You can generate a random key by running:
+// real.)
 //
-//      openssl rand -hex 32
 var secret = Buffer.from("724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed", 'hex');
 
 // Given a message as a string, return a Buffer containing the
