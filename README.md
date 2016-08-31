@@ -128,10 +128,38 @@ However, an extra parameter can be given to all wrapped functions, in
 order to specify what format the output should be in. Valid options
 are `uint8array' (default), 'text' and 'hex'.
 
-Example:
+Example (shorthash):
+
 ```javascript
 var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
     hash_hex = sodium.crypto_shorthash('test', key, 'hex');
+```
+
+Example (secretbox):
+
+```javascript
+// Load your secret key from a safe place and reuse it across multiple
+// secretbox calls. (Obviously don't use this example key for anything
+// real.) You can generate a random key by running:
+//
+//      openssl rand -hex 32
+var secret = Buffer.from("724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed", 'hex');
+
+// Given a message as a string, return a Buffer containing the
+// nonce (in the first 24 bytes) and the encrypted contents.
+var encrypt = function(message) {
+    // You must use a different nonce for each message you encrypt.
+    var nonce = Buffer.from(sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES));
+    var buf = Buffer.from(message);
+    return Buffer.concat([nonce, Buffer.from(sodium.crypto_secretbox_easy(buf, nonce, secret))]);
+},
+
+// Decrypt takes a Buffer and returns the decrypted message as plain text.
+var decrypt = function(encryptedBuffer) {
+    var nonce = encryptedBuffer.slice(0, sodium.crypto_box_NONCEBYTES);
+    var encryptedMessage = encryptedBuffer.slice(sodium.crypto_box_NONCEBYTES);
+    return sodium.crypto_secretbox_open_easy(encryptedMessage, nonce, secret, 'text');
+}
 ```
 
 In addition, the `from_hex`, `to_hex`, `from_string`, and `to_string`
@@ -196,7 +224,7 @@ make libsodium/configure
 
 # Modify the emscripten.sh
 # Specifically, add the name of the missing functions and constants in the "EXPORTED_FUNCTIONS" array.
-# Ensure that the name begins with an underscore and that it is between double quotes. 
+# Ensure that the name begins with an underscore and that it is between double quotes.
 nano libsodium/dist-build/emscripten.sh
 
 # Build libsodium, and then libsodium.js with your chosen functions
