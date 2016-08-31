@@ -142,10 +142,10 @@ Example (secretbox):
 // secretbox calls. (Obviously don't use this example key for anything
 // real.)
 //
-var secret = Buffer.from("724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed", 'hex');
+var secret = Buffer.from('724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed', 'hex');
 
 // Given a message as a string, return a Buffer containing the
-// nonce (in the first 24 bytes) and the encrypted contents.
+// nonce (in the first 24 bytes) and the encrypted content.
 var encrypt = function(message) {
     // You must use a different nonce for each message you encrypt.
     var nonce = Buffer.from(sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES));
