@@ -2,6 +2,14 @@ var fs = require('fs');
 var path = require('path');
 var docBuilder = require('./build-doc');
 
+//Parse arguments
+const argv = process.argv;
+if (argv.length != 5) {
+    console.error('Usage: build-wrapper.js <libsodium module name> <API.md path> <wrappers path>');
+    process.exit(1);
+}
+const libsodiumModuleName = argv[2], apiPath = argv[3], wrappersPath = argv[4];
+
 //Loading preset macros
 var macros = {};
 var macrosFiles = fs.readdirSync(path.join(__dirname, 'macros'));
@@ -186,14 +194,13 @@ function applyMacro(macroCode, symbols, substitutes) {
         for (var i = 0; i < symbols.length; i++) {
                 macroCode = macroCode.replace(new RegExp(symbols[i], 'g'), substitutes[i]);
         }
-
         return macroCode;
 }
 
 function finalizeWrapper() {
-        scriptBuf = applyMacro(scriptBuf, ['{{wraps_here}}', '{{exports_here}}'], [functionsCode, exportsCode]);
-        fs.writeFileSync(path.join(__dirname, '../dist/modules', 'libsodium-wrappers.js'), scriptBuf);
-        fs.writeFileSync(path.join(__dirname, '../API.md'), docBuilder.getResultDoc());
+        scriptBuf = applyMacro(scriptBuf, ['{{wraps_here}}', '{{exports_here}}', '{{libsodium}}'], [functionsCode, exportsCode, libsodiumModuleName]);
+        fs.writeFileSync(wrappersPath, scriptBuf);
+        fs.writeFileSync(apiPath, docBuilder.getResultDoc());
 }
 
 function injectTabs(code) {

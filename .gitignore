@@ -2,5 +2,6 @@
 *.tmp
 *~
 API.md
+API_sumo.md
 test/browsers/sodium.js
 test/browsers/sodium.min.js

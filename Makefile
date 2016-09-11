@@ -11,7 +11,7 @@ LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
 
 
-all: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium.js $(BROWSERS_DIR)/combined/sodium.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz $(BROWSERS_SUMO_DIR)/combined/sodium.js $(BROWSERS_SUMO_DIR)/combined/sodium.min.js $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz
+all: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(BROWSERS_DIR)/combined/sodium.js $(BROWSERS_DIR)/combined/sodium.min.js $(BROWSERS_DIR)/combined/sodium.min.js.gz $(BROWSERS_SUMO_DIR)/combined/sodium.js $(BROWSERS_SUMO_DIR)/combined/sodium.min.js $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz
 	@echo
 	@echo Standard distribution
 	@echo =====================
@@ -43,9 +43,9 @@ $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.d
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
 
-$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/js.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
 	mkdir -p $(MODULES_DIR)
-	nodejs wrapper/build-wrapper.js 2>/dev/null || node wrapper/build-wrapper.js
+	nodejs wrapper/build-wrapper.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js 2>/dev/null || node wrapper/build-wrapper.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
 
 
@@ -56,28 +56,29 @@ $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz: $(BROWSERS_SUMO_DIR)/combined/so
 	rm -f $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp
 	mv $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.tmp.gz $(BROWSERS_SUMO_DIR)/combined/sodium.min.js.gz
 
-$(BROWSERS_SUMO_DIR)/combined/sodium.min.js: $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/modinit.js
+$(BROWSERS_SUMO_DIR)/combined/sodium.min.js: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js wrapper/modinit.js
 	@echo +++ Building sumo/combined/sodium.min.js
 	mkdir -p $(BROWSERS_SUMO_DIR)/combined
-	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_SUMO_DIR)/libsodium-wrappers.js > $(MODULES_SUMO_DIR)/libsodium-wrappers.min.js.tmp
-	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.min.js.tmp > $(BROWSERS_SUMO_DIR)/combined/sodium.min.js
+	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js > $(MODULES_SUMO_DIR)/libsodium-wrappers.min.js.tmp
+	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.min.js.tmp > $(BROWSERS_SUMO_DIR)/combined/sodium.min.js
 	rm -f $(MODULES_SUMO_DIR)/libsodium-wrappers.min.js.tmp
 
-$(BROWSERS_SUMO_DIR)/combined/sodium.js: $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/modinit.js
+$(BROWSERS_SUMO_DIR)/combined/sodium.js: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js wrapper/modinit.js
 	@echo +++ Building sumo/combined/sodium.js
 	mkdir -p $(BROWSERS_SUMO_DIR)/combined
-	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js > $(BROWSERS_SUMO_DIR)/combined/sodium.js
+	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js > $(BROWSERS_SUMO_DIR)/combined/sodium.js
 
-$(MODULES_SUMO_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
-	@echo +++ Building sumo/libsodium.js
+$(MODULES_SUMO_DIR)/libsodium-sumo.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js
+	@echo +++ Building sumo/libsodium-sumo.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium.js
+	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium-sumo.js
+	ln -s libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium.js
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers.js: $(MODULES_DIR)/libsodium-wrappers.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js: $(LIBSODIUM_DIR)/js-sumo.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	ln -f $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
-
+	nodejs wrapper/build-wrapper.js libsodium-sumo API.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js 2>/dev/null || node wrapper/build-wrapper.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js
+	ln -s libsodium-wrappers-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
 
 $(LIBSODIUM_DIR)/browser-js.done: $(LIBSODIUM_DIR)/configure

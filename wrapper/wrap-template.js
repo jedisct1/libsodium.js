@@ -3,9 +3,9 @@
         process.stderr = process.stdout = { write: function() { } };
     }
     if (typeof define === "function" && define.amd) {
-        define(["exports", "libsodium"], factory);
+        define(["exports", "{{libsodium}}"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("libsodium"));
+        factory(exports, require("{{libsodium}}"));
     } else {
         var cb = root.sodium && root.sodium.onload;
         factory((root.sodium = {}), root.libsodium);
