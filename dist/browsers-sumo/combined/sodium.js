@@ -38,9 +38,9 @@ var Cb=[ar,un,tn,sn,rn,qn,pn,on,nn,ar,ar,ar,ar,ar,ar,ar,ar,ar,rg,xg,fd,rd,ed,pd,
         process.stderr = process.stdout = { write: function() { } };
     }
     if (typeof define === "function" && define.amd) {
-        define(["exports", "libsodium"], factory);
+        define(["exports", "libsodium-sumo"], factory);
     } else if (typeof exports !== "undefined") {
-        factory(exports, require("libsodium"));
+        factory(exports, require("libsodium-sumo"));
     } else {
         var cb = root.sodium && root.sodium.onload;
         factory((root.sodium = {}), root.libsodium);
