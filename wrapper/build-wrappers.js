@@ -5,7 +5,7 @@ var docBuilder = require('./build-doc');
 //Parse arguments
 const argv = process.argv;
 if (argv.length != 5) {
-    console.error('Usage: build-wrapper.js <libsodium module name> <API.md path> <wrappers path>');
+    console.error('Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path>');
     process.exit(1);
 }
 const libsodiumModuleName = argv[2], apiPath = argv[3], wrappersPath = argv[4];

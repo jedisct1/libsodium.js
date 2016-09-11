@@ -43,9 +43,9 @@ $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.d
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
 
-$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/js.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_DIR)/libsodium-wrappers.js: $(LIBSODIUM_DIR)/js.done wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	mkdir -p $(MODULES_DIR)
-	nodejs wrapper/build-wrapper.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js 2>/dev/null || node wrapper/build-wrapper.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
+	nodejs wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js 2>/dev/null || node wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
 
 
@@ -74,10 +74,10 @@ $(MODULES_SUMO_DIR)/libsodium-sumo.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium-sumo.js
 	ln -s libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium.js
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js: $(LIBSODIUM_DIR)/js-sumo.done wrapper/build-wrapper.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js: $(LIBSODIUM_DIR)/js-sumo.done wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	nodejs wrapper/build-wrapper.js libsodium-sumo API.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js 2>/dev/null || node wrapper/build-wrapper.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js
+	nodejs wrapper/build-wrappers.js libsodium-sumo API.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js 2>/dev/null || node wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js
 	ln -s libsodium-wrappers-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
 
