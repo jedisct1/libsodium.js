@@ -7,6 +7,6 @@
     } else {
         factory(root.libsodium = {});
     }
-})(this, function (exports) {
+})(this, (function (exports) {
     "use strict";
     var Module = exports;
