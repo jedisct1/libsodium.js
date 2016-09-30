@@ -1,6 +1,6 @@
 {
   "name": "libsodium-wrappers-sumo",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers, sumo variant)",
   "main": "dist/modules/libsodium-wrappers-sumo.js",
   "files": ["dist/modules/libsodium-wrappers-sumo.js", "package.json"],
@@ -9,7 +9,7 @@
     "url": "https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium": "0.4.5"
+    "libsodium": "0.4.6"
   },
   "keywords": [
     "crypto",

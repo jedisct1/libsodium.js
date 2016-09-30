@@ -13,7 +13,7 @@
             cb(root.sodium);
         }
     }
-}(this, function (exports, libsodium) {
+}(this, (function (exports, libsodium) {
     "use strict";
 
     var output_format = "uint8array";
@@ -3259,4 +3259,4 @@
 	}
 
     return exports;
-}));
+})));
