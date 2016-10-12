@@ -206,8 +206,8 @@ need to be installed on your system:
 * nodejs
 * libtool
 * make
-* zopfli (`npm install -g node-zopfli`)
-* uglifyjs (`npm install -g uglify-js`)
+* zopfli (`yarn global add node-zopfli`)
+* uglifyjs (`yarn global add uglify-js`)
 
 Running `make` will clone libsodium, build it, test it, build the
 wrapper, and create the modules and minified distribution files.
