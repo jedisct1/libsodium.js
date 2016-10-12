@@ -65,9 +65,13 @@ As an alternative, use a module loader or Browserify as described below.
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
 to your project and load the `libsodium-wrappers` module.
 
-Alternatively, use [npm](https://www.npmjs.com/). The npm package is
+Alternatively, use [yarn](https://yarnpkg.com/). The Yarn package is
 called `libsodium-wrappers` and includes a dependency on the raw
 `libsodium` module.
+
+```shell
+$ yarn add libsodium-wrappers
+```
 
 ```javascript
 var sodium = require('libsodium-wrappers');
