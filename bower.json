@@ -1,6 +1,5 @@
 {
   "name": "libsodium.js",
-  "version": "0.4.8",
   "homepage": "https://github.com/jedisct1/libsodium.js",
   "authors": [
     "Ahmad Ben Mrad (@BatikhSouri)",
