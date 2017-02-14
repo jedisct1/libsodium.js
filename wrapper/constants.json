@@ -62,5 +62,7 @@
         { "name": "crypto_sign_BYTES", "type": "uint" },
         { "name": "crypto_sign_PUBLICKEYBYTES", "type": "uint" },
         { "name": "crypto_sign_SECRETKEYBYTES", "type": "uint" },
-        { "name": "crypto_sign_SEEDBYTES", "type": "uint" }
+        { "name": "crypto_sign_SEEDBYTES", "type": "uint" },
+        { "name": "crypto_stream_chacha20_KEYBYTES", "type": "uint" },
+        { "name": "crypto_stream_chacha20_NONCEBYTES", "type": "uint" }
 ]
