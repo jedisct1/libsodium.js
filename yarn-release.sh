@@ -8,7 +8,7 @@ for f in \
 ; do
   rm -f package.json
   cp "$f" package.json
-  yarn publish
+  npm publish || yarn publish
 done
 rm -f package.json
 cp package-libsodium-wrappers.json package.json
