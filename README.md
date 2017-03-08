@@ -80,7 +80,7 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 
 ## List of wrapped algorithms and functions:
 
-* [`crypto_aead`](https://download.libsodium.org/doc/secret-key_cryptography/aead.html) (ChaCha20-Poly1305)
+* [`crypto_aead`](https://download.libsodium.org/doc/secret-key_cryptography/aead.html) (XChaCha20-Poly1305)
 * [`crypto_auth`](https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html) (HMAC-SHA-512-256)
 * [`crypto_box`](https://doc.libsodium.org/public-key_cryptography/authenticated_encryption.html)
 * [`crypto_box_seal`](https://download.libsodium.org/libsodium/content/public-key_cryptography/sealed_boxes.html)
