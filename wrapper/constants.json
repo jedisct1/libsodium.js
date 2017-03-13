@@ -10,6 +10,10 @@
         { "name": "crypto_aead_chacha20poly1305_ietf_KEYBYTES", "type": "uint" },
         { "name": "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "type": "uint" },
         { "name": "crypto_aead_chacha20poly1305_ietf_NSECBYTES", "type": "uint" },
+        { "name": "crypto_aead_xchacha20poly1305_ietf_ABYTES", "type": "uint" },
+        { "name": "crypto_aead_xchacha20poly1305_ietf_KEYBYTES", "type": "uint" },
+        { "name": "crypto_aead_xchacha20poly1305_ietf_NPUBBYTES", "type": "uint" },
+        { "name": "crypto_aead_xchacha20poly1305_ietf_NSECBYTES", "type": "uint" },
         { "name": "crypto_auth_BYTES", "type": "uint" },
         { "name": "crypto_auth_KEYBYTES", "type": "uint" },
         { "name": "crypto_auth_hmacsha256_BYTES", "type": "uint" },
@@ -65,4 +69,8 @@
         { "name": "crypto_sign_SEEDBYTES", "type": "uint" },
         { "name": "crypto_stream_chacha20_KEYBYTES", "type": "uint" },
         { "name": "crypto_stream_chacha20_NONCEBYTES", "type": "uint" }
+        { "name": "crypto_stream_chacha20_ietf_KEYBYTES", "type": "uint" },
+        { "name": "crypto_stream_chacha20_ietf_NONCEBYTES", "type": "uint" }
+        { "name": "crypto_stream_xchacha20_ietf_KEYBYTES", "type": "uint" },
+        { "name": "crypto_stream_xchacha20_ietf_NONCEBYTES", "type": "uint" }
 ]
