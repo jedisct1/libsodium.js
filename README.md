@@ -87,6 +87,7 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 * [`crypto_generichash`](https://download.libsodium.org/libsodium/content/hashing/generic_hashing.html) (BLAKE2b)
 * [`crypto_hash`](https://download.libsodium.org/libsodium/content/advanced/sha-2_hash_function.html) (SHA-512-256)
 * [`crypto_kdf`](https://download.libsodium.org/doc/key_derivation/)
+* [`crypto_kx`](https://download.libsodium.org/doc/key_exchange/)
 * [`crypto_onetimeauth`](https://download.libsodium.org/doc/advanced/poly1305.html) (Poly1305)
 * [`crypto_pwhash`](https://download.libsodium.org/libsodium/content/password_hashing/) (Argon2, Scrypt)
 * [`crypto_scalarmult`](https://download.libsodium.org/libsodium/content/advanced/scalar_multiplication.html) (X25519)
