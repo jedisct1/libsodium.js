@@ -1,0 +1,20 @@
+{
+        "name": "crypto_kx_keypair",
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+                {
+                        "type": "buf",
+                        "size": "libsodium._crypto_kx_publickeybytes()",
+                        "name": "publicKey"
+                },
+                {
+                        "type": "buf",
+                        "size": "libsodium._crypto_kx_secretkeybytes()",
+                        "name": "privateKey"
+                }
+        ],
+        "target": "libsodium._crypto_kx_keypair(publicKey_address, privateKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output({publicKey: publicKey, privateKey: privateKey}, outputFormat)"
+}
