@@ -188,7 +188,7 @@ function buildSymbol(symbolDescription) {
 function applyMacro(macroCode, symbols, substitutes) {
         if (typeof macroCode != 'string') throw new TypeError('macroCode must be a string, not ' + typeof macroCode);
         if (!(Array.isArray(symbols) && checkStrArray(symbols))) throw new TypeError('symbols must be an array of strings');
-        if (!(Array.isArray(substitutes) && checkStrArray(substitutes))) throw new TypeError('substitutes must be an array of strings');
+        if (!(Array.isArray(substitutes) && checkStrArray(substitutes))) throw new TypeError('substitutes must be an array of strings for [' + macroCode + '] [' + substitutes + ']');
         if (symbols.length > substitutes.length) throw new TypeError('invalid array length for substitutes');
 
         for (var i = 0; i < symbols.length; i++) {
