@@ -1,0 +1,25 @@
+{
+        "name": "randombytes_buf_deterministic.json",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "length",
+                        "type": "uint"
+                },
+                {
+                        "name": "seed",
+                        "type": "buf",
+                        "length": "libsodium._randombytes_seedbytes()"
+                }                
+        ],
+        "outputs": [
+                {
+                        "name": "output",
+                        "size": "length",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._randombytes_buf_deterministic.json(output_address, length, seed)",
+        "return": "_format_output(output, outputFormat)"
+}
