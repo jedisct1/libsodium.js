@@ -72,9 +72,9 @@
         { "name": "crypto_sign_SECRETKEYBYTES", "type": "uint" },
         { "name": "crypto_sign_SEEDBYTES", "type": "uint" },
         { "name": "crypto_stream_chacha20_KEYBYTES", "type": "uint" },
-        { "name": "crypto_stream_chacha20_NONCEBYTES", "type": "uint" }
+        { "name": "crypto_stream_chacha20_NONCEBYTES", "type": "uint" },
         { "name": "crypto_stream_chacha20_ietf_KEYBYTES", "type": "uint" },
-        { "name": "crypto_stream_chacha20_ietf_NONCEBYTES", "type": "uint" }
+        { "name": "crypto_stream_chacha20_ietf_NONCEBYTES", "type": "uint" },
         { "name": "crypto_stream_xchacha20_ietf_KEYBYTES", "type": "uint" },
         { "name": "crypto_stream_xchacha20_ietf_NONCEBYTES", "type": "uint" },
         { "name": "randombytes_SEEDBYTES", "type": "uint" }

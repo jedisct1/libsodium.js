@@ -10,7 +10,7 @@
                 {
                         "name": "seed",
                         "type": "buf",
-                        "length": "libsodium._randombytes_seedbytes()"
+                        "size": "libsodium._randombytes_seedbytes()"
                 }                
         ],
         "outputs": [
