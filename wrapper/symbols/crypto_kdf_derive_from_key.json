@@ -29,6 +29,6 @@
                         "type": "buf"
                 }
         ],
-        "target": "libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, 0, subkey_id, 0, ctx_address, key)",
+        "target": "libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, 0, subkey_id, 0, ctx_address, key_address)",
         "return": "_format_output(subkey, outputFormat)"
 }
