@@ -1,0 +1,26 @@
+{
+        "name": "crypto_shorthash_siphashx24",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "message",
+                        "type": "unsized_buf"
+                },
+                {
+                        "name": "key",
+                        "type": "buf",
+                        "size": "libsodium._crypto_shorthash_siphashx24_keybytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "hash",
+                        "type": "buf",
+                        "size": "libsodium._crypto_shorthash_siphashx24_bytes()"
+                }
+        ],
+        "target": "libsodium._crypto_shorthash_siphashx24(hash_address, message_address, message_length, 0, key_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output(hash, outputFormat)"
+}
