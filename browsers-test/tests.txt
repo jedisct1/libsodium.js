@@ -51,6 +51,7 @@ secretbox_easy.html
 secretbox_easy2.html
 shorthash.html
 sign.html
+siphashx24.html
 sodium_core.html
 sodium_utils.html
 sodium_version.html
@@ -59,3 +60,4 @@ stream2.html
 stream3.html
 stream4.html
 verify1.html
+xchacha20.html
