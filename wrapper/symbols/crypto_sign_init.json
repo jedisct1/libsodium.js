@@ -1,0 +1,15 @@
+{
+        "name": "crypto_sign_init",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+                {
+                        "name": "state",
+                        "type": "sign_state"
+                }
+        ],
+        "target": "libsodium._crypto_sign_init(state_address) | 0",
+        "expect": "=== 0",
+        "return": "state_address"
+}

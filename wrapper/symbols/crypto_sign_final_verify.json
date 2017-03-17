@@ -1,0 +1,24 @@
+{
+        "name": "crypto_sign_final_verify",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "state_address",
+                        "type": "sign_state_address"
+                },
+                {
+                        "name": "signature",
+                        "type": "buf",
+                        "size": "libsodium._crypto_sign_bytes()"
+                },
+                {
+                        "name": "publicKey",
+                        "type": "buf",
+                        "size": "libsodium._crypto_sign_publickeybytes()"
+                }
+        ],
+        "outputs": [],
+        "target": "var verificationResult = libsodium._crypto_sign_final_verify(state_address, signature_address, publicKey_address) | 0",
+        "return": "verificationResult === 0"
+}

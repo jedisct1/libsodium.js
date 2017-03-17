@@ -71,6 +71,8 @@
         { "name": "crypto_secretbox_NONCEBYTES", "type": "uint" },
         { "name": "crypto_shorthash_BYTES", "type": "uint" },
         { "name": "crypto_shorthash_KEYBYTES", "type": "uint" },
+        { "name": "crypto_shorthash_siphashx24_BYTES", "type": "uint" },
+        { "name": "crypto_shorthash_siphashx24_KEYBYTES", "type": "uint" },
         { "name": "crypto_sign_BYTES", "type": "uint" },
         { "name": "crypto_sign_PUBLICKEYBYTES", "type": "uint" },
         { "name": "crypto_sign_SECRETKEYBYTES", "type": "uint" },

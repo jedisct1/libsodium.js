@@ -6,8 +6,9 @@ docStr += '* `Buf`: An Uint8Array of a determined size. Used for keys, nonces, e
 docStr += '* `Unsized Buf`: An Uint8Array of an arbitrary size. Used for messages to sign, encrypt, hash, etc...' + newLine();
 docStr += '* `Optional unsized buf`' + newLine();
 docStr += '* `Unsigned Integer`' + newLine();
-docStr += '* `Generichash state address`' + newLine();
-docStr += '* `OneTimeAuth state address`' + newLine();
+docStr += '* `Generichash state`' + newLine();
+docStr += '* `OneTimeAuth state`' + newLine();
+docStr += '* `Signature state`' + newLine();
 docStr += '* `Randombytes implementation`' + newLine();
 docStr += '* `String`' + newLine();
 docStr += '* outputFormat: A string indicating in which output format you want the result to be returned. Supported values are "uint8array", "text", "hex", "base64". Optional parameter. Not available on all functions. Defaults to uint8array.' + newParagraph();
@@ -51,6 +52,8 @@ exports.buildDocForSymbol = function (s) {
                                 sDoc += 'Generichash state address';
                         } else if (paramType == 'onetimeauth_state_address') {
                                 sDoc += 'OneTimeAuth state address';
+                        } else if (paramType == 'sign_state_address') {
+                                sDoc += 'Signature state address';
                         } else if (paramType == 'randombytes_implementation') {
                                 sDoc += 'Randombytes implementation';
                         } else if (paramType == 'string') {
@@ -71,6 +74,8 @@ exports.buildDocForSymbol = function (s) {
                                         sDoc += 'Generichash state';
                                 } else if (outputType == 'onetimeauth_state') {
                                         sDoc += 'OneTimeAuth state';
+                                } else if (outputType == 'sign_state') {
+                                        sDoc += 'Signature state';
                                 } else throw new Error('Unknown output type: ' + outputType);
                                 sDoc += newLine();
                         }
