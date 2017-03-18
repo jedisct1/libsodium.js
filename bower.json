@@ -15,13 +15,16 @@
   ],
   "keywords": [
     "crypto",
+    "cryptography",
     "sodium",
     "libsodium",
     "nacl",
     "chacha20",
     "poly1305",
     "curve25519",
+    "x25519",
     "ed25519",
+    "eddsa",
     "blake2",
     "siphash"
   ],
