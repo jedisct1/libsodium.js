@@ -1,0 +1,15 @@
+{
+        "name": "crypto_onetimeauth_keygen",
+        "dependencies": [],
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+                {
+                        "name": "output",
+                        "size": "libsodium._crypto_onetimeauth_keybytes()",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._crypto_onetimeauth_keygen(output_address)",
+        "return": "_format_output(output, outputFormat)"
+}

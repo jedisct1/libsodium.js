@@ -1,6 +1,6 @@
 {
-        "name": "crypto_stream_xchacha20_ietf_xor_ic",
-        "dependencies": ["_crypto_stream_xchacha20_ietf_noncebytes", "_crypto_stream_xchacha20_ietf_keybytes"],
+        "name": "crypto_stream_xchacha20_xor",
+        "dependencies": ["_crypto_stream_xchacha20_noncebytes", "_crypto_stream_xchacha20_keybytes"],
         "type": "function",
         "inputs": [
                 {
@@ -10,16 +10,12 @@
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_xchacha20_ietf_noncebytes()"
-                },
-                {
-                        "name": "nonce_increment",
-                        "type": "uint"
+                        "size": "libsodium._crypto_stream_xchacha20_noncebytes()"
                 },
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_xchacha20_ietf_keybytes()"
+                        "size": "libsodium._crypto_stream_xchacha20_keybytes()"
                 }
         ],
         "outputs": [
@@ -29,7 +25,7 @@
                         "size": "input_message_length"
                 }
         ],
-        "target":"libsodium._crypto_stream_xchacha20_ietf_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
+        "target":"libsodium._crypto_stream_xchacha20_xor(output_message_address, input_message_address, input_message_length, 0, nonce_address, key_address)",
         "expect": "=== 0",
         "return": "_format_output(output_message, outputFormat)"
 }
