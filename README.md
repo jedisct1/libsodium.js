@@ -1,3 +1,5 @@
+[![Make a donation to support this project](https://img.shields.io/badge/donate-PayPal-green.svg?style=flat)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=paypalrecovery-a@pureftpd.org&lc=US&item_name=Donation+to+the+libsodium+project)
+
 # libsodium.js
 
 ## Overview
