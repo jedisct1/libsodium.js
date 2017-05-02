@@ -135,7 +135,7 @@ If the output is a unique binary buffer, it is returned as a
 
 However, an extra parameter can be given to all wrapped functions, in
 order to specify what format the output should be in. Valid options
-are `uint8array' (default), 'text' and 'hex'.
+are `uint8array' (default), 'text', 'hex', 'base64' and 'urlsafebase64'.
 
 Example (shorthash):
 
