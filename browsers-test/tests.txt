@@ -35,6 +35,7 @@ onetimeauth.html
 onetimeauth2.html
 onetimeauth7.html
 pwhash.html
+pwhash_argon2id.html
 pwhash_scrypt.html
 pwhash_scrypt_ll.html
 randombytes.html
