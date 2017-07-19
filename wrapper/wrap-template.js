@@ -484,6 +484,7 @@
     exports.memzero = memzero;
     exports.output_formats = output_formats;
     exports.symbols = symbols;
+    exports.to_base64 = to_base64;
     exports.to_urlsafebase64 = to_urlsafebase64;
     exports.to_hex = to_hex;
     exports.to_string = to_string;
