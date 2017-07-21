@@ -2470,7 +2470,7 @@ return{_crypto_onetimeauth_poly1305_init:dh,_crypto_hash_sha512_init:ue,_crypto_
 		
 		address_pool.push(subkey_address);
 		
-		libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, 0, subkey_id, 0, ctx_address, key_address);
+		libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, subkey_id, 0, ctx_address, key_address);
 		var ret = (_format_output(subkey, outputFormat));
 		_free_all(address_pool);
 		return ret;

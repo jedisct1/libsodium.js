@@ -2468,7 +2468,7 @@ return{_sodium_library_version_minor:Oe,_bitshift64Lshr:gd,_crypto_kx_publickeyb
 		
 		address_pool.push(subkey_address);
 		
-		libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, 0, subkey_id, 0, ctx_address, key_address);
+		libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, subkey_id, 0, ctx_address, key_address);
 		var ret = (_format_output(subkey, outputFormat));
 		_free_all(address_pool);
 		return ret;
