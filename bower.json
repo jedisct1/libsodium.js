@@ -38,16 +38,16 @@
     "Makefile",
     "README.md",
     "bower_components",
-    "dist/browsers/combined/sodium.js"
-    "dist/browsers/combined/sodium.min.js"
-    "dist/browsers-sumo/combined/sodium.js"
-    "dist/browsers-sumo/combined/sodium.min.js"
-    "dist/modules/libsodium-wrappers.js"
-    "dist/modules/libsodium.js"
-    "dist/modules-sumo/libsodium.js"
-    "dist/modules-sumo/libsodium-sumo.js"
-    "dist/modules-sumo/libsodium-wrappers.js"
-    "dist/modules-sumo/libsodium-wrappers-sumo.js"
+    "dist/browsers/combined/sodium.js",
+    "dist/browsers/combined/sodium.min.js",
+    "dist/browsers-sumo/combined/sodium.js",
+    "dist/browsers-sumo/combined/sodium.min.js",
+    "dist/modules/libsodium-wrappers.js",
+    "dist/modules/libsodium.js",
+    "dist/modules-sumo/libsodium.js",
+    "dist/modules-sumo/libsodium-sumo.js",
+    "dist/modules-sumo/libsodium-wrappers.js",
+    "dist/modules-sumo/libsodium-wrappers-sumo.js",
     "libsodium",
     "node_modules",
     "package-libsodium.json",
