@@ -213,7 +213,7 @@ need to be installed on your system:
 * libtool
 * make
 * zopfli (`yarn global add node-zopfli`)
-* uglifyjs (`yarn global add uglify-js`)
+* uglify-es (`yarn global add uglify-es`)
 
 Running `make` will clone libsodium, build it, test it, build the
 wrapper, and create the modules and minified distribution files.
