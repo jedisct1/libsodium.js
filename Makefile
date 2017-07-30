@@ -4,7 +4,7 @@ BROWSERS_TEST_DIR=./browsers-test
 MODULES_DIR=$(OUT_DIR)/modules
 MODULES_SUMO_DIR=$(OUT_DIR)/modules-sumo
 BROWSERS_DIR=$(OUT_DIR)/browsers
-BROWSERS_DIR=$(OUT_DIR)/browsers-sumo
+BROWSERS_SUMO_DIR=$(OUT_DIR)/browsers-sumo
 LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
@@ -32,9 +32,11 @@ $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)/js-sumo.d
 	@echo +++ Building standard/libsodium-sumo.js
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js.tmp
-	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_DIR)/libsodium.js.tmp > $(MODULES_DIR)/libsodium.js
+	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_DIR)/libsodium.js.tmp > $(MODULES_DIR)/libsodium.js
+	cat $(MODULES_DIR)/libsodium.js.tmp > $(MODULES_DIR)/libsodium.js
 	rm -f $(MODULES_DIR)/libsodium.js.tmp
-	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_DIR)/lib/libsodium.asm.js > $(MODULES_DIR)/libsodium.asm.js
+	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_DIR)/lib/libsodium.asm.js > $(MODULES_DIR)/libsodium.asm.js
+	cat $(LIBSODIUM_JS_DIR)/lib/libsodium.asm.js > $(MODULES_DIR)/libsodium.asm.js
 	ln $(LIBSODIUM_JS_DIR)/lib/libsodium.wasm $(MODULES_DIR)/
 
 	mkdir -p $(BROWSERS_DIR)
@@ -51,9 +53,11 @@ $(MODULES_SUMO_DIR)/libsodium-sumo.js: $(LIBSODIUM_DIR)/js.done $(LIBSODIUM_DIR)
 	@echo +++ Building sumo/libsodium-sumo.js
 	mkdir -p $(MODULES_SUMO_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp
-	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp > $(MODULES_SUMO_DIR)/libsodium-sumo.js
+	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp > $(MODULES_SUMO_DIR)/libsodium-sumo.js
+	cat $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp > $(MODULES_SUMO_DIR)/libsodium-sumo.js
 	rm -f $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp
-	uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.asm.js > $(MODULES_SUMO_DIR)/libsodium.asm.js
+	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.asm.js > $(MODULES_SUMO_DIR)/libsodium.asm.js
+	cat $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.asm.js > $(MODULES_SUMO_DIR)/libsodium.asm.js
 	ln $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.wasm $(MODULES_SUMO_DIR)/
 
 	mkdir -p $(BROWSERS_SUMO_DIR)
