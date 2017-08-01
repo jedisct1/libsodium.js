@@ -48,14 +48,11 @@ $(MODULES_DIR)/libsodium.js: $(LIBSODIUM_DIR)/js.done wrapper/libsodium-pre.js w
 	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_DIR)/libsodium.js.tmp > $(MODULES_DIR)/libsodium.js
 	cat $(MODULES_DIR)/libsodium.js.tmp > $(MODULES_DIR)/libsodium.js
 	rm -f $(MODULES_DIR)/libsodium.js.tmp
-	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_DIR)/lib/libsodium.asm.js > $(MODULES_DIR)/libsodium.asm.js
-	cat $(LIBSODIUM_JS_DIR)/lib/libsodium.asm.js > $(MODULES_DIR)/libsodium.asm.js
 	ln -f $(LIBSODIUM_JS_DIR)/lib/libsodium.wasm $(MODULES_DIR)/
 
 	mkdir -p $(BROWSERS_DIR)
 	cat wrapper/modinit.js $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/sodium.js
 	ln -f $(MODULES_DIR)/libsodium.wasm $(BROWSERS_DIR)/
-	ln -f $(MODULES_DIR)/libsodium.asm.js $(BROWSERS_DIR)/
 
 $(MODULES_SUMO_DIR)/libsodium-sumo.js: $(LIBSODIUM_DIR)/js-sumo.done wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js
 	@echo +++ Building sumo/libsodium-sumo.js
@@ -65,14 +62,11 @@ $(MODULES_SUMO_DIR)/libsodium-sumo.js: $(LIBSODIUM_DIR)/js-sumo.done wrapper/lib
 	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp > $(MODULES_SUMO_DIR)/libsodium-sumo.js
 	cat $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp > $(MODULES_SUMO_DIR)/libsodium-sumo.js
 	rm -f $(MODULES_SUMO_DIR)/libsodium-sumo.js.tmp
-	echo uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true -- $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.asm.js > $(MODULES_SUMO_DIR)/libsodium.asm.js
-	cat $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.asm.js > $(MODULES_SUMO_DIR)/libsodium.asm.js
 	ln -f $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.wasm $(MODULES_SUMO_DIR)/
 
 	mkdir -p $(BROWSERS_SUMO_DIR)
 	cat wrapper/modinit.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers-sumo.js > $(BROWSERS_SUMO_DIR)/sodium-sumo.js
 	ln -f $(MODULES_SUMO_DIR)/libsodium.wasm $(BROWSERS_SUMO_DIR)/
-	ln -f $(MODULES_SUMO_DIR)/libsodium.asm.js $(BROWSERS_SUMO_DIR)/
 
 $(LIBSODIUM_DIR)/browser-js.done: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/js-sumo.done
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten-wasm.sh --browser-tests
