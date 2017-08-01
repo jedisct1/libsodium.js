@@ -1,6 +1,7 @@
-function expose_wrappers(root, exports) {
+(function(root) {
+
+function expose_wrappers(exports, libsodium) {
     "use strict";
-    var libsodium = root.libsodium;
 
     var output_format = "uint8array";
 
@@ -339,3 +340,13 @@ function expose_wrappers(root, exports) {
     {{exports_here}}
     return exports;
 }
+
+if (typeof define === 'function' && define.amd) {
+  define(['exports', 'libsodium'], expose_libsodium_wrappers);
+} else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+  expose_wrappers(exports, require('libsodium'));
+} else {
+  root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
+}
+
+})(this);
