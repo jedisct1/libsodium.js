@@ -18,7 +18,7 @@ var Module;if(!Module)Module=(typeof Module!=="undefined"?Module:null)||{};
         wasmXHR.open('GET', 'libsodium.wasm', true);
         wasmXHR.responseType = 'arraybuffer';
         wasmXHR.onload = function() {
-            Module.wasmBinary = wasmXHR.response;
+            root.libsodium_mod = { wasmBinary: wasmXHR.response, commonJsStrict: {} };
             addScript('sodium-wasm.js');
         }
         wasmXHR.send();        

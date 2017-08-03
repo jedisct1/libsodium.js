@@ -7,7 +7,7 @@ if (typeof define === 'function' && define.amd) {
 } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
   expose_libsodium(exports);
 } else {
-  root.libsodium = expose_libsodium((root.commonJsStrict = {}));
+  root.libsodium = expose_libsodium(root.libsodium_mod || (root.commonJsStrict = {}));
 }
 
 })(this);

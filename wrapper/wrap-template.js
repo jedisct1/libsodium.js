@@ -345,7 +345,8 @@ var useWasm = false;
 try { new WebAssembly.Module(new Uint8Array(262144)) } catch (err) {
     if (err.name === 'CompileError') { useWasm = true }
 }
-var _libsodium = useWasm ? 'libsodium-wasm' : 'libsodium';
+var _libsodium = useWasm ? 'libsodium-wasm' : 'libsodium-asmjs',
+    _onload = (typeof root.sodium === 'object' && typeof root.sodium.onload === 'function') ? root.sodium.onload : null;
 if (typeof define === 'function' && define.amd) {
   define(['exports', _libsodium], expose_libsodium_wrappers);
 } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
@@ -353,5 +354,6 @@ if (typeof define === 'function' && define.amd) {
 } else {
   root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
 }
+_onload && _onload(root.sodium);
 
 })(this);
