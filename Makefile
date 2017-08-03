@@ -10,9 +10,9 @@ LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
+UGLIFY = uglifyjs --stats --mangle --compress sequences=true,dead_code=true,conditionals=true,booleans=true,unused=true,if_return=true,join_vars=true,drop_console=true --
 
-
-all: standard sumo
+all: pack
 	@echo
 	@echo Standard distribution
 	@echo =====================
@@ -36,6 +36,15 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 
 browsers-tests-wasm: $(LIBSODIUM_DIR)/test/default/browser-wasm/sodium_core.html
 	@echo + Building web browsers tests [webassembly]
+
+targets: standard sumo
+
+pack: targets
+	@echo + Packing
+	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
+	  echo "Packing [$$i]" ; \
+	  $(UGLIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
+	done
 
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
