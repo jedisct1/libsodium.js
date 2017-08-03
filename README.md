@@ -205,14 +205,11 @@ should be used only if you really need the extra symbols it provides.
 If you want to compile the files yourself, the following dependencies
 need to be installed on your system:
 
-* autoconf
-* automake
 * emscripten
+* binaryen
 * git
 * nodejs
-* libtool
 * make
-* zopfli (`yarn global add node-zopfli`)
 * uglify-es (`yarn global add uglify-es`)
 
 Running `make` will clone libsodium, build it, test it, build the
