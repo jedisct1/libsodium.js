@@ -84,11 +84,12 @@ $(MODULES_SUMO_DIR)/libsodium-wasm.js: wrapper/libsodium-pre.js wrapper/libsodiu
 
 $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --browser-tests
+	rm -f $(LIBSODIUM_DIR)/test/default/browser/*.asm.html $(LIBSODIUM_DIR)/test/default/browser/*.asm.js
 	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
 
 $(LIBSODIUM_DIR)/test/default/browser-wasm/sodium_core.html: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten-wasm.sh --browser-tests
-	rm -f $(BROWSERS_TEST_DIR)/*.asm.html
+	rm -f $(LIBSODIUM_DIR)/test/default/browser-wasm/*.asm.html $(LIBSODIUM_DIR)/test/default/browser-wasm/*.asm.js
 	rm -fr $(BROWSERS_WASM_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser-wasm $(BROWSERS_WASM_TEST_DIR)
 
 $(LIBSODIUM_JS_DIR)/lib/libsodium-wasm.js: $(LIBSODIUM_DIR)/configure

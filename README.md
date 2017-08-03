@@ -4,9 +4,10 @@
 
 ## Overview
 
-The [sodium](https://github.com/jedisct1/libsodium) crypto library compiled
-to pure JavaScript using [Emscripten](https://github.com/kripken/emscripten),
-with automatically generated wrappers to make it easy to use in web
+The [sodium](https://github.com/jedisct1/libsodium) crypto library
+compiled to pure JavaScript and WebAssembly using
+[Emscripten](https://github.com/kripken/emscripten), with
+automatically generated wrappers to make it easy to use in web
 applications.
 
 The complete library weights 115 Kb (minified, gzipped) and can run in
@@ -32,23 +33,14 @@ project.
 
 ### Usage with global definitions, for web browsers
 
-Use [Bower](http://bower.io/):
-```bash
-$ bower install libsodium.js
-```
-or directly include a copy of the
-[sodium.min.js](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/combined)
-file.
+1. Copy all the files from [this directory](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/) to your project.
 
-Alternatively, for better performance and to avoid including a local copy,
-[libsodium.js is available on cdnjs](https://cdnjs.com/libraries/libsodium-wrappers).
+2. Define a `sodium` object in the global namespace, along with a callback function in `sodium.onload`.
+This function will be called after the Sodium library is loaded and initialized.
 
-Including the `sodium.min.js` file will add a `sodium` object to the
-global namespace.
+3. Load `sodium.js`
 
-If a `sodium` object is already present in the global namespace, and
-the `sodium.onload` function is defined, this function will be called
-right after the library has been loaded and initialized.
+This script will check if the web browser supports WebAssembly or not, and load the appropriate version of the library.
 
 ```html
 <script>
@@ -57,28 +49,32 @@ window.sodium = { onload: function(sodium) {
 }};
 </script>
 ...
-<script src="sodium.js" async defer></script>
+<script src="sodium.js" async></script>
 ```
 
-As an alternative, use a module loader or Browserify as described below.
+Loading the library requires a modification of the DOM, which cannot happen in a web worker.
 
-### Usage with CommonJS/AMD/ES6 import
+It you are planning to use libsodium.js in a web worker, you need to
+preload the correct version and store it into the global `libsodium`
+object.
+
+In order to use the WebAssembly code, that code also needs to be
+preloaded and stored in `libsodium_mod.wasmBinary`.
+
+See the [modinit.js](https://github.com/jedisct1/libsodium.js/blob/master/wrapper/modinit.js)
+file for reference.
+
+### Usage with NodeJS
 
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
 to your project and load the `libsodium-wrappers` module.
-
-Alternatively, use [yarn](https://yarnpkg.com/). The Yarn package is
-called `libsodium-wrappers` and includes a dependency on the raw
-`libsodium` module.
-
-```shell
-$ yarn add libsodium-wrappers
-```
 
 ```javascript
 var sodium = require('libsodium-wrappers');
 console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 ```
+
+Recent versions of Node will automatically load and use the WebAssembly version.
 
 ## List of wrapped algorithms and functions:
 
@@ -199,6 +195,16 @@ being used.
 
 The sumo version is slightly larger than the standard version, and
 should be used only if you really need the extra symbols it provides.
+
+### Note on WebAssembly
+
+Support for WebAssembly was added recently. This required quite a lot of
+changes in the way the code is loaded.
+
+Maybe these changes don't play well with applications using
+libsodium.js < 0.6.0. Maybe they don't play well with Webpack.
+Probably this can be fixed and improved. Your help would be more than
+welcome!
 
 ### Compilation
 

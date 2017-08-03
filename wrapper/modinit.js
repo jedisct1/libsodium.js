@@ -2,6 +2,9 @@ var Module;if(!Module)Module=(typeof Module!=="undefined"?Module:null)||{};
 
 (function(root) {
     function addScript(url) {
+        if (typeof root.libsodium === 'object') {
+            return;
+        }
         var node = document.createElement('script');
         node.async = 'async';
         node.type = 'text/javascript';
@@ -14,14 +17,11 @@ var Module;if(!Module)Module=(typeof Module!=="undefined"?Module:null)||{};
         if (err.name === 'CompileError') { useWasm = true }
     }
     if (useWasm) {
-        var wasmXHR = new XMLHttpRequest();
-        wasmXHR.open('GET', 'libsodium.wasm', true);
-        wasmXHR.responseType = 'arraybuffer';
-        wasmXHR.onload = function() {
-            root.libsodium_mod = { wasmBinary: wasmXHR.response, commonJsStrict: {} };
-            addScript('sodium-wasm.js');
-        }
-        wasmXHR.send();        
+        fetch('libsodium.wasm').then(function(bytes) { return bytes.arrayBuffer() }).
+            then(function(bytes) {
+                root.libsodium_mod = { wasmBinary: bytes, commonJsStrict: {} };
+                addScript('sodium-wasm.js');                
+            });
     } else {
         addScript('sodium-asmjs.js');
     }
