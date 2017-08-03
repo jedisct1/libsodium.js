@@ -341,10 +341,15 @@ function expose_wrappers(exports, libsodium) {
     return exports;
 }
 
+var useWasm = false;
+try { new WebAssembly.Module(new Uint8Array(262144)) } catch (err) {
+    if (err.name === 'CompileError') { useWasm = true }
+}
+var _libsodium = useWasm ? 'libsodium-wasm' : 'libsodium';
 if (typeof define === 'function' && define.amd) {
-  define(['exports', 'libsodium'], expose_libsodium_wrappers);
+  define(['exports', _libsodium], expose_libsodium_wrappers);
 } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-  expose_wrappers(exports, require('libsodium'));
+  expose_wrappers(exports, require(_libsodium));
 } else {
   root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
 }
