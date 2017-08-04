@@ -62,6 +62,9 @@ preloaded and stored in `libsodium_mod.wasmBinary`.
 See the [modinit.js](https://github.com/jedisct1/libsodium.js/blob/master/wrapper/modinit.js)
 file for reference.
 
+Note that Chrome requires WebAssembly code larger than 4 Kb to be compiled in a
+web worker.
+
 ### Usage with NodeJS
 
 Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
