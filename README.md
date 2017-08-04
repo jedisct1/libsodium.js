@@ -1,5 +1,3 @@
-[![Make a donation to support this project](https://img.shields.io/badge/donate-PayPal-green.svg?style=flat)](https://www.libsodium.org/donate)
-
 # libsodium.js
 
 ## Overview
