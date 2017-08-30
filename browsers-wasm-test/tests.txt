@@ -51,6 +51,7 @@ secretbox7.html
 secretbox8.html
 secretbox_easy.html
 secretbox_easy2.html
+secretstream.html
 shorthash.html
 sign.html
 siphashx24.html
