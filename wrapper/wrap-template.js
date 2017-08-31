@@ -197,8 +197,8 @@ function expose_wrappers(exports, libsodium) {
         input = _any_to_Uint8Array(null, input, "input");
         var str = "", b, c, x;
         for (var i = 0; i < input.length; i++) {
-            c = bytes[i] & 0xf;
-            b = bytes[i] >>> 4;
+            c = input[i] & 0xf;
+            b = input[i] >>> 4;
             x = (87 + c + (((c - 10) >> 8) & ~38)) << 8 |
                 (87 + b + (((b - 10) >> 8) & ~38));
             str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
@@ -287,7 +287,7 @@ function expose_wrappers(exports, libsodium) {
             } else if (selectedOutputFormat === "hex") {
                 return to_hex(output.to_Uint8Array());
             } else if (selectedOutputFormat === "base64") {
-                return to_base64(output.to_Uint8Array());
+                return to_base64(output.to_Uint8Array(), base64_variants.URLSAFE_NO_PADDING);
             } else {
                 throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
             }

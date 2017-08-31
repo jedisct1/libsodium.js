@@ -159,13 +159,13 @@ function buildSymbol(symbolDescription) {
                         funcBody += '\t_free_all(address_pool);\n';
                         funcBody += '\treturn ret;\n';
                         funcBody += '}\n';
-                        funcBody += '_free_and_throw_error(address_pool);\n';
+                        funcBody += '_free_and_throw_error(address_pool, \'incorrect usage\');\n';
                 } else if (symbolDescription.expect !== undefined) {
                         funcBody += 'if ((' + symbolDescription.target + ') ' + symbolDescription.expect + ') {\n';
                         funcBody += '\t_free_all(address_pool);\n';
                         funcBody += '\treturn;\n';
                         funcBody += '}\n';
-                        funcBody += '_free_and_throw_error(address_pool);\n';
+                        funcBody += '_free_and_throw_error(address_pool, \'incorrect usage\');\n';
                 } else if (symbolDescription.return !== undefined) {
                         funcBody += sc(symbolDescription.target) + '\n';
                         funcBody += 'var ret = (' + symbolDescription.return+');\n';
