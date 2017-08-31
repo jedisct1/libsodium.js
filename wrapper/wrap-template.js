@@ -291,7 +291,7 @@ function expose_wrappers(exports, libsodium) {
             } else {
                 throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
             }
-        } else if (typeof output === "object") { //Composed output. Example : key pairs
+        } else if (typeof output === "object") { // Composed output. Example: key pairs
             var props = Object.keys(output);
             var formattedOutput = {};
             for (var i = 0; i < props.length; i++) {
