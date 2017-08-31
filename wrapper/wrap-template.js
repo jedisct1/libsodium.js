@@ -88,6 +88,31 @@ function expose_wrappers(exports, libsodium) {
         return (gt + gt + eq) - 1;
     }
 
+    function pad(buf, blocksize) {
+        if (!(buf instanceof Uint8Array)) {
+            throw new TypeError("buffer must be a Uint8Array");
+        }
+        blocksize |= 0;
+        if (blocksize <= 0) {
+            throw new Error("block size must be > 0");
+        }
+        var address_pool = [],
+            padded,
+            padded_buflen_p = _malloc(4),
+            bufx = new AllocatedBuf(buf.length + blocksize);
+        address_pool.push(padded_buflen_p);
+        address_pool.push(bufx.address);
+        libsodium.HEAPU8.set(buf, bufx.address);
+        if (libsodium._sodium_pad(padded_buflen_p, bufx.address, buf.length,
+                                  blocksize, bufx.length) !== 0) {
+            _free_and_throw_error(address_pool, "internal error");
+        }
+        bufx.length = libsodium.getValue(padded_buflen_p, 'i32');
+        padded = bufx.to_Uint8Array();
+        _free_all(address_pool);
+        return padded;
+    }
+
     //---------------------------------------------------------------------------
     // Codecs
     //
@@ -411,6 +436,7 @@ function expose_wrappers(exports, libsodium) {
     exports.memcmp = memcmp;
     exports.memzero = memzero;
     exports.output_formats = output_formats;
+    exports.pad = pad;
     exports.symbols = symbols;
     exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
