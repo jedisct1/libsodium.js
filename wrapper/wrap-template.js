@@ -170,21 +170,33 @@ function expose_wrappers(exports, libsodium) {
         return totalString;
     }
 
-    /* not constant-time */
-    function from_hex(str) {
-        if (!is_hex(str)) {
-            throw new TypeError("The provided string doesn't look like hex data");
+    function from_hex(input) {
+        var address_pool = [],
+            input = _any_to_Uint8Array(address_pool, input, "input"),
+            result = new AllocatedBuf(input.length / 2), result_str,
+            input_address = _to_allocated_buf_address(input),
+            hex_end_p = _malloc(4), hex_end;
+        address_pool.push(input_address);
+        address_pool.push(result.address);
+        address_pool.push(result.hex_end_p);
+        if (libsodium._sodium_hex2bin(result.address, result.length,
+                                      input_address, input.length,
+                                      0, 0, hex_end_p) !== 0) {
+            _free_and_throw_error(address_pool, "invalid input");
         }
-        var result = new Uint8Array(str.length / 2);
-        for (var i = 0; i < str.length; i += 2) {
-            result[i >>> 1] = parseInt(str.substr(i, 2), 16);
+        hex_end = libsodium.getValue(hex_end_p, 'i32');
+        if (hex_end - input_address !== input.length) {
+            _free_and_throw_error(address_pool, "incomplete input");
         }
-        return result;
+        result_str = result.to_Uint8Array();
+        _free_all(address_pool);
+        return result_str;
     }
 
-    function to_hex(bytes) {
+    function to_hex(input) {
+        input = _any_to_Uint8Array(null, input, "input");
         var str = "", b, c, x;
-        for (var i = 0; i < bytes.length; i++) {
+        for (var i = 0; i < input.length; i++) {
             c = bytes[i] & 0xf;
             b = bytes[i] >>> 4;
             x = (87 + c + (((c - 10) >> 8) & ~38)) << 8 |
@@ -194,12 +206,72 @@ function expose_wrappers(exports, libsodium) {
         return str;
     }
 
-    function is_hex(str) {
-        return (typeof str === "string" && /^[0-9a-f]+$/i.test(str) && str.length % 2 === 0);
+    var base64_variants = {
+        ORIGINAL: 1 | 0, ORIGINAL_NO_PADDING: 3 | 0, URLSAFE: 5 | 0, URLSAFE_NO_PADDING: 7 | 0
+    };
+
+    function check_base64_variant(variant) {
+        if (variant == undefined) {
+            return base64_variants.URLSAFE_NO_PADDING;
+        }
+        if (variant !== base64_variants.ORIGINAL && variant !== base64_variants.ORIGINAL_NO_PADDING &&
+            variant !== base64_variants.URLSAFE && variant != base64_variants.URLSAFE_NO_PADDING) {
+            throw new Error("unsupported base64 variant");
+        }
+        return variant;
+    }
+
+    function from_base64(input, variant) {
+        variant = check_base64_variant(variant);
+        var address_pool = [],
+            input = _any_to_Uint8Array(address_pool, input, "input"),
+            result = new AllocatedBuf(input.length * 3 / 4), result_bin,
+            input_address = _to_allocated_buf_address(input),
+            result_bin_len_p = _malloc(4), b64_end_p = _malloc(4), b64_end;
+        address_pool.push(input_address);
+        address_pool.push(result.address);
+        address_pool.push(result.result_bin_len_p);
+        address_pool.push(result.b64_end_p);
+        if (libsodium._sodium_base642bin(result.address, result.length,
+                                         input_address, input.length,
+                                         0, result_bin_len_p, b64_end_p, variant) !== 0) {
+            _free_and_throw_error(address_pool, "invalid input");
+        }
+        b64_end = libsodium.getValue(b64_end_p, 'i32');
+        if (b64_end - input_address !== input.length) {
+            _free_and_throw_error(address_pool, "incomplete input");
+        }
+        result.length = libsodium.getValue(result_bin_len_p, 'i32');
+        result_bin = result.to_Uint8Array();
+        _free_all(address_pool);
+        return result_bin;
+    }
+
+    function to_base64(input, variant) {
+        variant = check_base64_variant(variant);
+        input = _any_to_Uint8Array(address_pool, input, "input");
+        var address_pool = [],
+            nibbles = Math.floor(input.length / 3) | 0,
+            remainder = input.length - 3 * nibbles,
+            b64_len = nibbles * 4 + (remainder !== 0 ?
+                                     ((variant & 2) === 0 ? 4 : 2 + (remainder >>> 1)) : 0),
+            result = new AllocatedBuf(b64_len + 1), result_b64,
+            input_address = _to_allocated_buf_address(input);
+        address_pool.push(input_address);
+        address_pool.push(result.address);
+        if (libsodium._sodium_bin2base64(result.address, result.length,
+                                         input_address, input.length,
+                                         variant) === 0) {
+            _free_and_throw_error(address_pool, "conversion failed");
+        }
+        result.length = b64_len;
+        result_b64 = to_string(result.to_Uint8Array());
+        _free_all(address_pool);
+        return result_b64;
     }
 
     function output_formats() {
-        return ["uint8array", "text", "hex"];
+        return ["uint8array", "text", "hex", "base64"];
     }
 
     function _format_output(output, optionalOutputFormat) {
@@ -214,6 +286,8 @@ function expose_wrappers(exports, libsodium) {
                 return to_string(output.to_Uint8Array());
             } else if (selectedOutputFormat === "hex") {
                 return to_hex(output.to_Uint8Array());
+            } else if (selectedOutputFormat === "base64") {
+                return to_base64(output.to_Uint8Array());
             } else {
                 throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
             }
@@ -290,8 +364,10 @@ function expose_wrappers(exports, libsodium) {
     }
 
     function _free_all(addresses) {
-        for (var i = 0; i < addresses.length; i++) {
-            _free(addresses[i]);
+        if (addresses) {
+            for (var i = 0; i < addresses.length; i++) {
+                _free(addresses[i]);
+            }
         }
     }
 
@@ -324,7 +400,9 @@ function expose_wrappers(exports, libsodium) {
     {{wraps_here}}
 
     exports.add = add;
+    exports.base64_variants = base64_variants;
     exports.compare = compare;
+    exports.from_base64 = from_base64;
     exports.from_hex = from_hex;
     exports.from_string = from_string;
     exports.increment = increment;
@@ -334,6 +412,7 @@ function expose_wrappers(exports, libsodium) {
     exports.memzero = memzero;
     exports.output_formats = output_formats;
     exports.symbols = symbols;
+    exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
     exports.to_string = to_string;
 
