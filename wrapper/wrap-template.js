@@ -15,7 +15,7 @@ function expose_wrappers(exports, libsodium) {
     }
 
     function increment(bytes) {
-        if (! bytes instanceof Uint8Array) {
+        if (!(bytes instanceof Uint8Array)) {
             throw new TypeError("Only Uint8Array instances can be incremented");
         }
         var c = 1 << 8;
@@ -27,7 +27,7 @@ function expose_wrappers(exports, libsodium) {
     }
 
     function add(a, b) {
-        if (! a instanceof Uint8Array || ! b instanceof Uint8Array) {
+        if (!(a instanceof Uint8Array) || !(b instanceof Uint8Array)) {
             throw new TypeError("Only Uint8Array instances can added");
         }
         var j = a.length, c = 0 | 0, i = 0 | 0;
@@ -42,7 +42,7 @@ function expose_wrappers(exports, libsodium) {
     }
 
     function is_zero(bytes) {
-        if (! bytes instanceof Uint8Array) {
+        if (!(bytes instanceof Uint8Array)) {
             throw new TypeError("Only Uint8Array instances can be checked");
         }
         var d = 0 | 0;
@@ -53,7 +53,7 @@ function expose_wrappers(exports, libsodium) {
     }
 
     function memzero(bytes) {
-        if (! bytes instanceof Uint8Array) {
+        if (!(bytes instanceof Uint8Array)) {
             throw new TypeError("Only Uint8Array instances can be wiped");
         }
         for (var i = 0 | 0, j = bytes.length; i < j; i++) {
