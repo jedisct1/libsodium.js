@@ -104,6 +104,7 @@ whose value is one of: `base64_variants.ORIGINAL`, `base64_variants.ORIGINAL_NO_
 `base64_variants.URLSAFE` or `s.base64_variants.URLSAFE_NO_PADDING`. Default is `base64_variants.URLSAFE_NO_PADDING`.
 * `from_hex()`, `to_hex()`
 * `from_string()`, `to_string()`
+* `pad(<buffer>, <block size>)`, `unpad(<buffer>, <block size>)`
 * `memcmp()` (constant-time check for equality, returns `true` or `false`)
 * `compare() (constant-time comparison. Values must have the same
 size. Returns `-1`, `0` or `1`)

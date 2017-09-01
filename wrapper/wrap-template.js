@@ -99,10 +99,16 @@ function expose_wrappers(exports, libsodium) {
         var address_pool = [],
             padded,
             padded_buflen_p = _malloc(4),
-            bufx = new AllocatedBuf(buf.length + blocksize);
+            st = 1 | 0, i = 0 | 0, k = buf.length | 0,
+            bufx = new AllocatedBuf(k + blocksize);
         address_pool.push(padded_buflen_p);
         address_pool.push(bufx.address);
-        libsodium.HEAPU8.set(buf, bufx.address);
+        for (var j = bufx.address, jmax = bufx.address + k + blocksize; j < jmax; j++) {
+            libsodium.HEAPU8[j] = buf[i];
+            k -= st;
+            st = (~(((((k >>> 48) | (k >>> 32) | (k >>> 16) | k) & 0xffff) - 1) >> 16)) & 1;
+            i += st;
+        }
         if (libsodium._sodium_pad(padded_buflen_p, bufx.address, buf.length,
                                   blocksize, bufx.length) !== 0) {
             _free_and_throw_error(address_pool, "internal error");
@@ -111,6 +117,29 @@ function expose_wrappers(exports, libsodium) {
         padded = bufx.to_Uint8Array();
         _free_all(address_pool);
         return padded;
+    }
+
+    function unpad(buf, blocksize) {
+        if (!(buf instanceof Uint8Array)) {
+            throw new TypeError("buffer must be a Uint8Array");
+        }
+        blocksize |= 0;
+        if (blocksize <= 0) {
+            throw new Error("block size must be > 0");
+        }
+        var address_pool = [],
+            unpadded_address = _to_allocated_buf_address(buf),
+            unpadded_buflen_p = _malloc(4);
+        address_pool.push(unpadded_address);
+        address_pool.push(unpadded_buflen_p);
+        if (libsodium._sodium_unpad(unpadded_buflen_p, unpadded_address,
+                                    buf.length, blocksize) !== 0) {
+            _free_and_throw_error(address_pool, "unsupported/invalid padding");
+        }
+        buf = new Uint8Array(buf);
+        buf = buf.subarray(0, libsodium.getValue(unpadded_buflen_p, 'i32'));
+        _free_all(address_pool);
+        return buf;
     }
 
     //---------------------------------------------------------------------------
@@ -437,6 +466,7 @@ function expose_wrappers(exports, libsodium) {
     exports.memzero = memzero;
     exports.output_formats = output_formats;
     exports.pad = pad;
+    exports.unpad = unpad;
     exports.symbols = symbols;
     exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
