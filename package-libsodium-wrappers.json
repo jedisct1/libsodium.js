@@ -31,5 +31,6 @@
   "bugs": {
     "url": "https://github.com/jedisct1/libsodium.js/issues"
   },
-  "homepage": "https://github.com/jedisct1/libsodium.js"
+  "homepage": "https://github.com/jedisct1/libsodium.js",
+  "browser": { "fs": false }
 }
