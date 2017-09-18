@@ -64,6 +64,7 @@ keygen.asm.html
 keygen.html
 kx.asm.html
 kx.html
+metamorphic.html
 misuse.asm.html
 misuse.html
 onetimeauth.asm.html

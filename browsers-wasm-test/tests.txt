@@ -31,6 +31,7 @@ hash3.html
 kdf.html
 keygen.html
 kx.html
+metamorphic.html
 misuse.html
 onetimeauth.html
 onetimeauth2.html
