@@ -26,7 +26,7 @@ Supported browsers/JS engines:
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.13 can be directly copied to your
+Ready-to-use files based on libsodium 1.0.14 can be directly copied to your
 project.
 
 ### Usage with global definitions, for web browsers
@@ -56,7 +56,7 @@ It you are planning to use libsodium.js in a web worker, you need to
 preload the correct version and store it into the global `libsodium`
 object.
 
-In order to use the WebAssembly code, that code also needs to be
+In order to use the WebAssembly code, `libsodium.wasm` also needs to be
 preloaded and stored in `libsodium_mod.wasmBinary`.
 
 See the [modinit.js](https://github.com/jedisct1/libsodium.js/blob/master/wrapper/modinit.js)
