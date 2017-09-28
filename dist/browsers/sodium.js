@@ -1,1 +1,28 @@
-var Module;Module||(Module=(void 0!==Module?Module:null)||{}),function(e){function o(o){if("object"!=typeof e.libsodium){var t=document.createElement("script");t.async="async",t.type="text/javascript",t.src=o,document.head.appendChild(t)}}var t=!1;try{new WebAssembly.Module(new Uint8Array(262144))}catch(e){"CompileError"===e.name&&(t=!0)}t?fetch("libsodium.wasm").then(function(e){return e.arrayBuffer()}).then(function(t){e.libsodium_mod={wasmBinary:t,commonJsStrict:{}},o("sodium-wasm.js")}):o("sodium-asmjs.js")}(this);
+var Module;if(!Module)Module=(typeof Module!=="undefined"?Module:null)||{};
+
+(function(root) {
+    function addScript(url) {
+        if (typeof root.libsodium === 'object') {
+            return;
+        }
+        var node = document.createElement('script');
+        node.async = 'async';
+        node.type = 'text/javascript';
+        node.src = url;
+        document.head.appendChild(node);
+    }
+    
+    var useWasm = false;
+    try { new WebAssembly.Module(new Uint8Array(262144)) } catch (err) {
+        if (err.name === 'CompileError') { useWasm = true }
+    }
+    if (useWasm) {
+        fetch('libsodium.wasm').then(function(bytes) { return bytes.arrayBuffer() }).
+            then(function(bytes) {
+                root.libsodium_mod = { wasmBinary: bytes, commonJsStrict: {} };
+                addScript('sodium-wasm.js');                
+            });
+    } else {
+        addScript('sodium-asmjs.js');
+    }
+})(this);
