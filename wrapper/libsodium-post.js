@@ -1,4 +1,4 @@
-    ENVIRONMENT_IS_NODE && !process.removeAllListeners("uncaughtException");
+    typeof(process) === 'object' && !process.removeAllListeners("uncaughtException");
     return Module;
 }
 
