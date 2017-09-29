@@ -26,8 +26,7 @@ Supported browsers/JS engines:
 
 ## Installation
 
-Ready-to-use files based on libsodium 1.0.14 can be directly copied to your
-project.
+???
 
 ### Usage
 
