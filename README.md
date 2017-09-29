@@ -29,41 +29,9 @@ Supported browsers/JS engines:
 Ready-to-use files based on libsodium 1.0.14 can be directly copied to your
 project.
 
-### Usage with global definitions, for web browsers
+### Usage
 
-1. Copy the files from [this directory](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/) to your project.
-
-2. Define a `sodium` object in the global namespace, along with a callback function in `sodium.onload`.
-This function will be called after the Sodium library is loaded and initialized.
-
-3. Load `sodium.js`
-
-This script will check if the web browser supports WebAssembly or not, and load the appropriate version of the library.
-
-```html
-<script>
-window.sodium = { onload: function(sodium) {
-  alert(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
-}};
-</script>
-...
-<script src="sodium.js" async></script>
-```
-
-Note that Chrome requires WebAssembly code larger than 4 Kb to be compiled in a
-web worker.
-
-### Usage with NodeJS
-
-Copy the `.js` files for [libsodium and libsodium-wrappers](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
-to your project and load the `libsodium-wrappers` module.
-
-```javascript
-var sodium = require('libsodium-wrappers');
-console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
-```
-
-Recent versions of Node will automatically load and use the WebAssembly version.
+???
 
 ## List of wrapped APIs:
 
@@ -188,16 +156,6 @@ being used.
 
 The sumo version is slightly larger than the standard version, and
 should be used only if you really need the extra symbols it provides.
-
-### Note on WebAssembly
-
-Support for WebAssembly was added recently. This required quite a lot of
-changes in the way the code is loaded.
-
-Maybe these changes don't play well with applications using
-libsodium.js < 0.6.0. Maybe they don't play well with Webpack.
-Probably this can be fixed and improved. Your help would be more than
-welcome!
 
 ### Compilation
 
