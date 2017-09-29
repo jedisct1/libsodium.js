@@ -3,7 +3,3 @@
 *~
 API.md
 API_sumo.md
-dist/browsers-sumo/sodium.js
-dist/browsers/sodium.js
-dist/modules-sumo/libsodium.js
-dist/modules/libsodium.js
