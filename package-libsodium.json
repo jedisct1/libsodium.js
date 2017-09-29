@@ -3,9 +3,7 @@
   "version": "0.6.0",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers)",
   "main": "dist/modules/libsodium.js",
-  "files": ["dist-modules/libsodium-asmjs.js", "dist-modules/libsodium-wasm.js",
-            "dist-modules/libsodium-wrappers.js", "dist-modules/libsodium.js",
-            "dist-modules/libsodium.wasm", "package.json"],
+  "files": ["dist-modules/libsodium-wrappers.js", "dist-modules/libsodium.js", "package.json"],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"

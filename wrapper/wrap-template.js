@@ -1,13 +1,17 @@
 (function(root) {
 
-function expose_wrappers(exports, libsodium) {
+function expose_wrappers(exports, libsodiumModule) {
     "use strict";
 
     var output_format = "uint8array";
 
-    if (libsodium._sodium_init() !== 0) {
-        throw new Error("libsodium was not correctly initialized.");
-    }
+    var libsodium;
+    var ready = libsodiumModule.ready.then(function () {
+        libsodium = libsodiumModule;
+        if (libsodium._sodium_init() !== 0) {
+            throw new Error("libsodium was not correctly initialized.");
+        }
+    });
 
     // List of functions and constants defined in the wrapped libsodium
     function symbols() {
@@ -461,12 +465,13 @@ function expose_wrappers(exports, libsodium) {
     exports.from_string = from_string;
     exports.increment = increment;
     exports.is_zero = is_zero;
-    exports.libsodium = libsodium;
+    exports.libsodium = libsodiumModule;
     exports.memcmp = memcmp;
     exports.memzero = memzero;
     exports.output_formats = output_formats;
     exports.pad = pad;
     exports.unpad = unpad;
+    exports.ready = ready;
     exports.symbols = symbols;
     exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
@@ -476,16 +481,11 @@ function expose_wrappers(exports, libsodium) {
     return exports;
 }
 
-var useWasm = false;
-try { new WebAssembly.Module(new Uint8Array(262144)) } catch (err) {
-    if (err.name === 'CompileError') { useWasm = true }
-}
-var _libsodium = useWasm ? 'libsodium-wasm' : 'libsodium-asmjs',
-    _onload = (typeof root.sodium === 'object' && typeof root.sodium.onload === 'function') ? root.sodium.onload : null;
+var _onload = (typeof root.sodium === 'object' && typeof root.sodium.onload === 'function') ? root.sodium.onload : null;
 if (typeof define === 'function' && define.amd) {
-  define(['exports', _libsodium], expose_libsodium_wrappers);
+  define(['exports', 'libsodium'], expose_libsodium_wrappers);
 } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-  expose_wrappers(exports, require(_libsodium));
+  expose_wrappers(exports, require('libsodium'));
 } else {
   root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
 }
