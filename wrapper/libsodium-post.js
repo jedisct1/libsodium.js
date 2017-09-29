@@ -1,5 +1,5 @@
     ENVIRONMENT_IS_NODE && !process.removeAllListeners("uncaughtException");
-    return ModulePromise;
+    return Module;
 }
 
 if (typeof define === 'function' && define.amd) {
