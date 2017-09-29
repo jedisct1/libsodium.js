@@ -1,13 +1,21 @@
 (function(root) {
 
-function expose_wrappers(exports, libsodium) {
+function expose_wrappers(exports, libsodiumPromise) {
     "use strict";
 
     var output_format = "uint8array";
 
-    if (libsodium._sodium_init() !== 0) {
-        throw new Error("libsodium was not correctly initialized.");
-    }
+    var libsodium;
+
+    libsodiumPromise = libsodiumPromise.then(function (libsodiumModule) {
+        libsodium = libsodiumModule;
+        if (libsodium._sodium_init() !== 0) {
+            throw new Error("libsodium was not correctly initialized.");
+        }
+        return libsodium;
+    });
+
+    var ready = libsodiumPromise.then(function () {});
 
     // List of functions and constants defined in the wrapped libsodium
     function symbols() {
@@ -461,12 +469,13 @@ function expose_wrappers(exports, libsodium) {
     exports.from_string = from_string;
     exports.increment = increment;
     exports.is_zero = is_zero;
-    exports.libsodium = libsodium;
+    exports.libsodium = libsodiumPromise;
     exports.memcmp = memcmp;
     exports.memzero = memzero;
     exports.output_formats = output_formats;
     exports.pad = pad;
     exports.unpad = unpad;
+    exports.ready = ready;
     exports.symbols = symbols;
     exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
