@@ -22,10 +22,10 @@ all: pack
 	@ls -l $(MODULES_SUMO_DIR)/
 
 
-standard: $(MODULES_DIR)/libsodium-wrappers.js
+standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js
 	@echo + Building standard distribution
 
-sumo: $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+sumo: $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 	@echo + Building sumo distribution
 
 tests: browsers-tests
@@ -52,10 +52,32 @@ $(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/bui
 	mkdir -p $(MODULES_SUMO_DIR)
 	nodejs wrapper/build-wrappers.js libsodium-sumo API.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js 2>/dev/null || node wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
+$(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+	@echo +++ Building standard/libsodium
+	mkdir -p $(MODULES_DIR)
+	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
+
+	mkdir -p $(BROWSERS_DIR)
+	cat $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/sodium.js
+
+$(MODULES_SUMO_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
+	@echo +++ Building sumo/libsodium
+	mkdir -p $(MODULES_SUMO_DIR)
+	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium.js
+
+	mkdir -p $(BROWSERS_SUMO_DIR)
+	cat $(MODULES_SUMO_DIR)/libsodium.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js > $(BROWSERS_SUMO_DIR)/sodium.js
+
 $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --browser-tests
 	rm -f $(LIBSODIUM_DIR)/test/default/browser/*.asm.html $(LIBSODIUM_DIR)/test/default/browser/*.asm.js
 	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
+
+$(LIBSODIUM_JS_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
+	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --standard
+
+$(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
+	cd $(LIBSODIUM_DIR) && ./dist-build/emscripten.sh --sumo
 
 $(LIBSODIUM_DIR)/configure: $(LIBSODIUM_DIR)/configure.ac
 	cd $(LIBSODIUM_DIR) && ./autogen.sh
