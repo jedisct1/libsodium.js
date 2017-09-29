@@ -3,13 +3,13 @@
 ## Overview
 
 The [sodium](https://github.com/jedisct1/libsodium) crypto library
-compiled to pure JavaScript and WebAssembly using
+compiled to WebAssembly and pure Javascript using
 [Emscripten](https://github.com/kripken/emscripten), with
 automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weights 115 Kb (minified, gzipped) and can run in
-a web browser as well as server-side.
+The complete library weights 188 Kb (minified, gzipped, includes pure js +
+webassembly versions) and can run in a web browser as well as server-side.
 
 ### Compatibility
 
@@ -18,7 +18,7 @@ Supported browsers/JS engines:
 * Chrome >= 16
 * Edge >= 0.11
 * Firefox >= 21
-* Internet Explorer >= 11
+* Internet Explorer >= 11 (requires a Promise polyfill)
 * Mobile Safari on iOS >= 8.0 (older versions produce incorrect results)
 * NodeJS
 * Opera >= 15
@@ -31,7 +31,7 @@ project.
 
 ### Usage with global definitions, for web browsers
 
-1. Copy all the files from [this directory](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/) to your project.
+1. Copy the files from [this directory](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers/) to your project.
 
 2. Define a `sodium` object in the global namespace, along with a callback function in `sodium.onload`.
 This function will be called after the Sodium library is loaded and initialized.
@@ -50,18 +50,6 @@ window.sodium = { onload: function(sodium) {
 <script src="sodium.js" async></script>
 ```
 
-Loading the library requires a modification of the DOM, which cannot happen in a web worker.
-
-It you are planning to use libsodium.js in a web worker, you need to
-preload the correct version and store it into the global `libsodium`
-object.
-
-In order to use the WebAssembly code, `libsodium.wasm` also needs to be
-preloaded and stored in `libsodium_mod.wasmBinary`.
-
-See the [modinit.js](https://github.com/jedisct1/libsodium.js/blob/master/wrapper/modinit.js)
-file for reference.
-
 Note that Chrome requires WebAssembly code larger than 4 Kb to be compiled in a
 web worker.
 
@@ -77,23 +65,23 @@ console.log(sodium.to_hex(sodium.crypto_generichash(64, 'test')));
 
 Recent versions of Node will automatically load and use the WebAssembly version.
 
-## List of wrapped algorithms and functions:
+## List of wrapped APIs:
 
-* [`crypto_aead`](https://download.libsodium.org/doc/secret-key_cryptography/aead.html) (XChaCha20-Poly1305)
-* [`crypto_auth`](https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html) (HMAC-SHA-512-256)
-* [`crypto_box`](https://doc.libsodium.org/public-key_cryptography/authenticated_encryption.html) (X25519, XSalsa20)
-* [`crypto_box_seal`](https://download.libsodium.org/libsodium/content/public-key_cryptography/sealed_boxes.html) (X25519, XSalsa20)
-* [`crypto_generichash`](https://download.libsodium.org/libsodium/content/hashing/generic_hashing.html) (BLAKE2b)
-* [`crypto_hash`](https://download.libsodium.org/libsodium/content/advanced/sha-2_hash_function.html) (SHA-512-256)
-* [`crypto_kdf`](https://download.libsodium.org/doc/key_derivation/) (BLAKE2b)
-* [`crypto_kx`](https://download.libsodium.org/doc/key_exchange/) (X25519, BLAKE2b)
-* [`crypto_onetimeauth`](https://download.libsodium.org/doc/advanced/poly1305.html) (Poly1305)
-* [`crypto_pwhash`](https://download.libsodium.org/libsodium/content/password_hashing/) (Argon2, Scrypt)
-* [`crypto_scalarmult`](https://download.libsodium.org/libsodium/content/advanced/scalar_multiplication.html) (X25519)
-* [`crypto_secretbox`](https://download.libsodium.org/libsodium/content/secret-key_cryptography/authenticated_encryption.html) (Salsa20-Poly1305)
-* [`crypto_shorthash`](https://download.libsodium.org/libsodium/content/hashing/short-input_hashing.html) (SipHash, SipHash-128)
-* [`crypto_sign`](https://download.libsodium.org/libsodium/content/public-key_cryptography/public-key_signatures.html) (Ed25519, Ed25519ph)
-* [`crypto_stream`](https://download.libsodium.org/doc/advanced/stream_ciphers.html) (Salsa20, XSalsa20, ChaCha20, XChaCha20)
+* [`crypto_aead`](https://download.libsodium.org/doc/secret-key_cryptography/aead.html)
+* [`crypto_auth`](https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html)
+* [`crypto_box`](https://doc.libsodium.org/public-key_cryptography/authenticated_encryption.html)
+* [`crypto_box_seal`](https://download.libsodium.org/libsodium/content/public-key_cryptography/sealed_boxes.html)
+* [`crypto_generichash`](https://download.libsodium.org/libsodium/content/hashing/generic_hashing.html)
+* [`crypto_hash`](https://download.libsodium.org/libsodium/content/advanced/sha-2_hash_function.html)
+* [`crypto_kdf`](https://download.libsodium.org/doc/key_derivation/)
+* [`crypto_kx`](https://download.libsodium.org/doc/key_exchange/)
+* [`crypto_onetimeauth`](https://download.libsodium.org/doc/advanced/poly1305.html)
+* [`crypto_pwhash`](https://download.libsodium.org/libsodium/content/password_hashing/)
+* [`crypto_scalarmult`](https://download.libsodium.org/libsodium/content/advanced/scalar_multiplication.html)
+* [`crypto_secretbox`](https://download.libsodium.org/libsodium/content/secret-key_cryptography/authenticated_encryption.html)
+* [`crypto_shorthash`](https://download.libsodium.org/libsodium/content/hashing/short-input_hashing.html)
+* [`crypto_sign`](https://download.libsodium.org/libsodium/content/public-key_cryptography/public-key_signatures.html)
+* [`crypto_stream`](https://download.libsodium.org/doc/advanced/stream_ciphers.html)
 * [Ed25519->Curve25519 conversion](https://download.libsodium.org/libsodium/content/advanced/ed25519-curve25519.html)
 * [`randombytes`](https://download.libsodium.org/libsodium/content/generating_random_data/)
 
@@ -228,7 +216,7 @@ wrapper, and create the modules and minified distribution files.
 
 ## Authors
 
-Built by Ahmad Ben Mrad and Frank Denis.
+Built by Ahmad Ben Mrad, Frank Denis and Ryan Lester.
 
 ## License
 
