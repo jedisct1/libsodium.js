@@ -248,7 +248,7 @@ function applyMacro(macroCode, symbols, substitutes) {
     throw new TypeError("invalid array length for substitutes");
 
   for (var i = 0; i < symbols.length; i++) {
-    macroCode = macroCode.replace(new RegExp(symbols[i], "g"), substitutes[i]);
+    macroCode = macroCode.split(symbols[i]).join(substitutes[i]);
   }
   return macroCode;
 }
@@ -256,7 +256,7 @@ function applyMacro(macroCode, symbols, substitutes) {
 function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
-    ["{{wraps_here}}", "{{exports_here}}", "{{libsodium}}"],
+    ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
     [functionsCode, exportsCode, libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
