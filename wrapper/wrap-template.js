@@ -549,11 +549,7 @@
       );
     }
 
-    {
-      {
-        wraps_here;
-      }
-    }
+    /*{{wraps_here}}*/
 
     exports.add = add;
     exports.base64_variants = base64_variants;
@@ -575,11 +571,8 @@
     exports.to_hex = to_hex;
     exports.to_string = to_string;
 
-    {
-      {
-        exports_here;
-      }
-    }
+    /*{{exports_here}}*/
+
     return exports;
   }
 
