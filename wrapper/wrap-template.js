@@ -10,6 +10,8 @@
       if (libsodium._sodium_init() !== 0) {
         throw new Error("libsodium was not correctly initialized.");
       }
+
+      /*{{exports_here}}*/
     });
 
     // List of functions and constants defined in the wrapped libsodium
@@ -570,8 +572,6 @@
     exports.to_base64 = to_base64;
     exports.to_hex = to_hex;
     exports.to_string = to_string;
-
-    /*{{exports_here}}*/
 
     return exports;
   }
