@@ -562,7 +562,6 @@
       exports.output_formats = output_formats;
       exports.pad = pad;
       exports.unpad = unpad;
-      exports.ready = ready;
       exports.symbols = symbols;
       exports.to_base64 = to_base64;
       exports.to_hex = to_hex;
