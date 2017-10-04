@@ -590,5 +590,5 @@
   } else {
     root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
   }
-  _onload && _onload(root.sodium);
+  _onload && root.sodium.ready.then(_onload.bind(root.sodium));
 })(this);
