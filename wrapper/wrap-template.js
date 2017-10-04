@@ -13,7 +13,7 @@
 
       /*{{exports_here}}*/
 
-      return root;
+      return exports;
     });
 
     // List of functions and constants defined in the wrapped libsodium
