@@ -37,7 +37,6 @@ misuse.html
 onetimeauth.html
 onetimeauth2.html
 onetimeauth7.html
-pwhash.html
 pwhash_argon2i.html
 pwhash_argon2id.html
 pwhash_scrypt.html
