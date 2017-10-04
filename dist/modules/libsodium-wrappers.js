@@ -30,6 +30,8 @@
 		if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());
 	}
 
+
+      return exports;
     });
 
     // List of functions and constants defined in the wrapped libsodium
@@ -4721,5 +4723,5 @@
   } else {
     root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
   }
-  _onload && _onload(root.sodium);
+  _onload && root.sodium.ready.then(_onload.bind(root.sodium));
 })(this);

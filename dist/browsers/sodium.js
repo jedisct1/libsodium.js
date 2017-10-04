@@ -10,7 +10,7 @@ function expose_libsodium(exports) {
     Module.ready = new Promise(function (resolve, reject) {
       var Module = _Module;
       Module.onAbort = reject;
-      Module.onRuntimeInitialized = resolve;
+      Module.onRuntimeInitialized = resolve.bind(Module);
       // The Module object: Our interface to the outside world. We import
 // and export values on it, and do the work to get that through
 // closure compiler if necessary. There are various ways Module can be used:
@@ -32166,6 +32166,8 @@ if (typeof define === 'function' && define.amd) {
 		if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());
 	}
 
+
+      return root;
     });
 
     // List of functions and constants defined in the wrapped libsodium
@@ -36857,5 +36859,5 @@ if (typeof define === 'function' && define.amd) {
   } else {
     root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
   }
-  _onload && _onload(root.sodium);
+  _onload && root.sodium.ready.then(_onload.bind(root.sodium));
 })(this);
