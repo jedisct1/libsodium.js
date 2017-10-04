@@ -1,386 +1,492 @@
 (function(root) {
-
-function expose_wrappers(exports, libsodiumModule) {
+  function expose_wrappers(exports, libsodiumModule) {
     "use strict";
 
     var output_format = "uint8array";
 
     var libsodium;
-    var ready = libsodiumModule.ready.then(function () {
-        libsodium = libsodiumModule;
-        if (libsodium._sodium_init() !== 0) {
-            throw new Error("libsodium was not correctly initialized.");
-        }
+    var ready = libsodiumModule.ready.then(function() {
+      libsodium = libsodiumModule;
+      if (libsodium._sodium_init() !== 0) {
+        throw new Error("libsodium was not correctly initialized.");
+      }
+
+      
+	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_decrypt_detached", "crypto_aead_chacha20poly1305_encrypt", "crypto_aead_chacha20poly1305_encrypt_detached", "crypto_aead_chacha20poly1305_ietf_decrypt", "crypto_aead_chacha20poly1305_ietf_decrypt_detached", "crypto_aead_chacha20poly1305_ietf_encrypt", "crypto_aead_chacha20poly1305_ietf_encrypt_detached", "crypto_aead_chacha20poly1305_ietf_keygen", "crypto_aead_chacha20poly1305_keygen", "crypto_aead_xchacha20poly1305_ietf_decrypt", "crypto_aead_xchacha20poly1305_ietf_decrypt_detached", "crypto_aead_xchacha20poly1305_ietf_encrypt", "crypto_aead_xchacha20poly1305_ietf_encrypt_detached", "crypto_aead_xchacha20poly1305_ietf_keygen", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha256_keygen", "crypto_auth_hmacsha256_verify", "crypto_auth_hmacsha512", "crypto_auth_hmacsha512_keygen", "crypto_auth_hmacsha512_verify", "crypto_auth_keygen", "crypto_auth_verify", "crypto_box_beforenm", "crypto_box_detached", "crypto_box_easy", "crypto_box_easy_afternm", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_open_easy_afternm", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_keygen", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_kdf_derive_from_key", "crypto_kdf_keygen", "crypto_kx_client_session_keys", "crypto_kx_keypair", "crypto_kx_seed_keypair", "crypto_kx_server_session_keys", "crypto_onetimeauth", "crypto_onetimeauth_final", "crypto_onetimeauth_init", "crypto_onetimeauth_keygen", "crypto_onetimeauth_update", "crypto_onetimeauth_verify", "crypto_pwhash", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_pwhash_str", "crypto_pwhash_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_keygen", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_shorthash_keygen", "crypto_shorthash_siphashx24", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_final_create", "crypto_sign_final_verify", "crypto_sign_init", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_update", "crypto_sign_verify_detached", "crypto_stream_chacha20_ietf_xor", "crypto_stream_chacha20_ietf_xor_ic", "crypto_stream_chacha20_keygen", "crypto_stream_chacha20_xor", "crypto_stream_chacha20_xor_ic", "crypto_stream_keygen", "crypto_stream_xchacha20_keygen", "crypto_stream_xchacha20_xor", "crypto_stream_xchacha20_xor_ic", "randombytes_buf", "randombytes_buf_deterministic", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],
+	      functions = [crypto_aead_chacha20poly1305_decrypt, crypto_aead_chacha20poly1305_decrypt_detached, crypto_aead_chacha20poly1305_encrypt, crypto_aead_chacha20poly1305_encrypt_detached, crypto_aead_chacha20poly1305_ietf_decrypt, crypto_aead_chacha20poly1305_ietf_decrypt_detached, crypto_aead_chacha20poly1305_ietf_encrypt, crypto_aead_chacha20poly1305_ietf_encrypt_detached, crypto_aead_chacha20poly1305_ietf_keygen, crypto_aead_chacha20poly1305_keygen, crypto_aead_xchacha20poly1305_ietf_decrypt, crypto_aead_xchacha20poly1305_ietf_decrypt_detached, crypto_aead_xchacha20poly1305_ietf_encrypt, crypto_aead_xchacha20poly1305_ietf_encrypt_detached, crypto_aead_xchacha20poly1305_ietf_keygen, crypto_auth, crypto_auth_hmacsha256, crypto_auth_hmacsha256_keygen, crypto_auth_hmacsha256_verify, crypto_auth_hmacsha512, crypto_auth_hmacsha512_keygen, crypto_auth_hmacsha512_verify, crypto_auth_keygen, crypto_auth_verify, crypto_box_beforenm, crypto_box_detached, crypto_box_easy, crypto_box_easy_afternm, crypto_box_keypair, crypto_box_open_detached, crypto_box_open_easy, crypto_box_open_easy_afternm, crypto_box_seal, crypto_box_seal_open, crypto_box_seed_keypair, crypto_generichash, crypto_generichash_final, crypto_generichash_init, crypto_generichash_keygen, crypto_generichash_update, crypto_hash, crypto_hash_sha256, crypto_hash_sha512, crypto_kdf_derive_from_key, crypto_kdf_keygen, crypto_kx_client_session_keys, crypto_kx_keypair, crypto_kx_seed_keypair, crypto_kx_server_session_keys, crypto_onetimeauth, crypto_onetimeauth_final, crypto_onetimeauth_init, crypto_onetimeauth_keygen, crypto_onetimeauth_update, crypto_onetimeauth_verify, crypto_pwhash, crypto_pwhash_scryptsalsa208sha256, crypto_pwhash_scryptsalsa208sha256_ll, crypto_pwhash_scryptsalsa208sha256_str, crypto_pwhash_scryptsalsa208sha256_str_verify, crypto_pwhash_str, crypto_pwhash_str_verify, crypto_scalarmult, crypto_scalarmult_base, crypto_secretbox_detached, crypto_secretbox_easy, crypto_secretbox_keygen, crypto_secretbox_open_detached, crypto_secretbox_open_easy, crypto_shorthash, crypto_shorthash_keygen, crypto_shorthash_siphashx24, crypto_sign, crypto_sign_detached, crypto_sign_ed25519_pk_to_curve25519, crypto_sign_ed25519_sk_to_curve25519, crypto_sign_ed25519_sk_to_pk, crypto_sign_ed25519_sk_to_seed, crypto_sign_final_create, crypto_sign_final_verify, crypto_sign_init, crypto_sign_keypair, crypto_sign_open, crypto_sign_seed_keypair, crypto_sign_update, crypto_sign_verify_detached, crypto_stream_chacha20_ietf_xor, crypto_stream_chacha20_ietf_xor_ic, crypto_stream_chacha20_keygen, crypto_stream_chacha20_xor, crypto_stream_chacha20_xor_ic, crypto_stream_keygen, crypto_stream_xchacha20_keygen, crypto_stream_xchacha20_xor, crypto_stream_xchacha20_xor_ic, randombytes_buf, randombytes_buf_deterministic, randombytes_close, randombytes_random, randombytes_set_implementation, randombytes_stir, randombytes_uniform, sodium_version_string];
+	for (var i = 0; i < functions.length; i++) {
+		if (typeof libsodium["_" + exported_functions[i]] === "function") {
+			exports[exported_functions[i]] = functions[i];
+		}
+	}
+	var constants = ["SODIUM_LIBRARY_VERSION_MAJOR", "SODIUM_LIBRARY_VERSION_MINOR", "crypto_aead_chacha20poly1305_ABYTES", "crypto_aead_chacha20poly1305_KEYBYTES", "crypto_aead_chacha20poly1305_NPUBBYTES", "crypto_aead_chacha20poly1305_NSECBYTES", "crypto_aead_chacha20poly1305_ietf_ABYTES", "crypto_aead_chacha20poly1305_ietf_KEYBYTES", "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "crypto_aead_chacha20poly1305_ietf_NSECBYTES", "crypto_aead_xchacha20poly1305_ietf_ABYTES", "crypto_aead_xchacha20poly1305_ietf_KEYBYTES", "crypto_aead_xchacha20poly1305_ietf_NPUBBYTES", "crypto_aead_xchacha20poly1305_ietf_NSECBYTES", "crypto_auth_BYTES", "crypto_auth_KEYBYTES", "crypto_auth_hmacsha256_BYTES", "crypto_auth_hmacsha256_KEYBYTES", "crypto_auth_hmacsha512_BYTES", "crypto_auth_hmacsha512_KEYBYTES", "crypto_box_BEFORENMBYTES", "crypto_box_MACBYTES", "crypto_box_NONCEBYTES", "crypto_box_PUBLICKEYBYTES", "crypto_box_SEALBYTES", "crypto_box_SECRETKEYBYTES", "crypto_box_SEEDBYTES", "crypto_generichash_BYTES", "crypto_generichash_BYTES_MAX", "crypto_generichash_BYTES_MIN", "crypto_generichash_KEYBYTES", "crypto_generichash_KEYBYTES_MAX", "crypto_generichash_KEYBYTES_MIN", "crypto_hash_BYTES", "crypto_kdf_BYTES_MAX", "crypto_kdf_BYTES_MIN", "crypto_kdf_CONTEXTBYTES", "crypto_kdf_KEYBYTES", "crypto_kx_PUBLICKEYBYTES", "crypto_kx_SECRETKEYBYTES", "crypto_kx_SEEDBYTES", "crypto_kx_SESSSIONKEYBYTES", "crypto_onetimeauth_BYTES", "crypto_onetimeauth_KEYBYTES", "crypto_pwhash_ALG_ARGON2I13", "crypto_pwhash_ALG_DEFAULT", "crypto_pwhash_BYTES_MAX", "crypto_pwhash_BYTES_MIN", "crypto_pwhash_MEMLIMIT_INTERACTIVE", "crypto_pwhash_MEMLIMIT_MAX", "crypto_pwhash_MEMLIMIT_MIN", "crypto_pwhash_MEMLIMIT_MODERATE", "crypto_pwhash_MEMLIMIT_SENSITIVE", "crypto_pwhash_OPSLIMIT_INTERACTIVE", "crypto_pwhash_OPSLIMIT_MAX", "crypto_pwhash_OPSLIMIT_MIN", "crypto_pwhash_OPSLIMIT_MODERATE", "crypto_pwhash_OPSLIMIT_SENSITIVE", "crypto_pwhash_PASSWD_MAX", "crypto_pwhash_PASSWD_MIN", "crypto_pwhash_SALTBYTES", "crypto_pwhash_STRBYTES", "crypto_pwhash_STR_VERIFY", "crypto_pwhash_scryptsalsa208sha256_BYTES_MAX", "crypto_pwhash_scryptsalsa208sha256_BYTES_MIN", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MIN", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MAX", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MIN", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_SALTBYTES", "crypto_pwhash_scryptsalsa208sha256_STRBYTES", "crypto_pwhash_scryptsalsa208sha256_STR_VERIFY", "crypto_scalarmult_BYTES", "crypto_scalarmult_SCALARBYTES", "crypto_secretbox_KEYBYTES", "crypto_secretbox_MACBYTES", "crypto_secretbox_NONCEBYTES", "crypto_secretstream_xchacha20poly1305_ABYTES", "crypto_secretstream_xchacha20poly1305_HEADERBYTES", "crypto_secretstream_xchacha20poly1305_KEYBYTES", "crypto_secretstream_xchacha20poly1305_MESSAGEBYTES_MAX", "crypto_secretstream_xchacha20poly1305_NPUBBYTES", "crypto_secretstream_xchacha20poly1305_TAG_FINAL", "crypto_secretstream_xchacha20poly1305_TAG_MESSAGE", "crypto_secretstream_xchacha20poly1305_TAG_PUSH", "crypto_secretstream_xchacha20poly1305_TAG_REKEY", "crypto_shorthash_BYTES", "crypto_shorthash_KEYBYTES", "crypto_shorthash_siphashx24_BYTES", "crypto_shorthash_siphashx24_KEYBYTES", "crypto_sign_BYTES", "crypto_sign_PUBLICKEYBYTES", "crypto_sign_SECRETKEYBYTES", "crypto_sign_SEEDBYTES", "crypto_stream_chacha20_KEYBYTES", "crypto_stream_chacha20_NONCEBYTES", "crypto_stream_chacha20_ietf_KEYBYTES", "crypto_stream_chacha20_ietf_NONCEBYTES", "crypto_stream_xchacha20_ietf_KEYBYTES", "crypto_stream_xchacha20_ietf_NONCEBYTES", "randombytes_SEEDBYTES"];
+	for (var i = 0; i < constants.length; i++) {
+		var raw = libsodium["_" + constants[i].toLowerCase()];
+		if (typeof raw === "function") exports[constants[i]] = raw()|0;
+	}
+	var constants_str = ["SODIUM_VERSION_STRING", "crypto_pwhash_STRPREFIX", "crypto_pwhash_scryptsalsa208sha256_STRPREFIX"];
+	for (var i = 0; i < constants_str.length; i++) {
+		var raw = libsodium["_" + constants_str[i].toLowerCase()];
+		if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());
+	}
+
     });
 
     // List of functions and constants defined in the wrapped libsodium
     function symbols() {
-        return Object.keys(exports).sort();
+      return Object.keys(exports).sort();
     }
 
     function increment(bytes) {
-        if (!(bytes instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can be incremented");
-        }
-        var c = 1 << 8;
-        for (var i = 0 | 0, j = bytes.length; i < j; i++) {
-            c >>= 8;
-            c += bytes[i];
-            bytes[i] = c & 0xff;
-        }
+      if (!(bytes instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can be incremented");
+      }
+      var c = 1 << 8;
+      for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+        c >>= 8;
+        c += bytes[i];
+        bytes[i] = c & 0xff;
+      }
     }
 
     function add(a, b) {
-        if (!(a instanceof Uint8Array) || !(b instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can added");
-        }
-        var j = a.length, c = 0 | 0, i = 0 | 0;
-        if (b.length != a.length) {
-            throw new TypeError("Arguments must have the same length");
-        }
-        for (i = 0; i < j; i++) {
-            c >>= 8;
-            c += (a[i] + b[j]);
-            a[i] = c & 0xff;
-        }
+      if (!(a instanceof Uint8Array) || !(b instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can added");
+      }
+      var j = a.length,
+        c = 0 | 0,
+        i = 0 | 0;
+      if (b.length != a.length) {
+        throw new TypeError("Arguments must have the same length");
+      }
+      for (i = 0; i < j; i++) {
+        c >>= 8;
+        c += a[i] + b[j];
+        a[i] = c & 0xff;
+      }
     }
 
     function is_zero(bytes) {
-        if (!(bytes instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can be checked");
-        }
-        var d = 0 | 0;
-        for (var i = 0 | 0, j = bytes.length; i < j; i++) {
-            d |= bytes[i];
-        }
-        return d === 0;
+      if (!(bytes instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can be checked");
+      }
+      var d = 0 | 0;
+      for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+        d |= bytes[i];
+      }
+      return d === 0;
     }
 
     function memzero(bytes) {
-        if (!(bytes instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can be wiped");
-        }
-        for (var i = 0 | 0, j = bytes.length; i < j; i++) {
-            bytes[i] = 0;
-        }
+      if (!(bytes instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can be wiped");
+      }
+      for (var i = 0 | 0, j = bytes.length; i < j; i++) {
+        bytes[i] = 0;
+      }
     }
 
     function memcmp(b1, b2) {
-        if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can be compared");
-        }
-        if (b1.length !== b2.length) {
-            throw new TypeError("Only instances of identical length can be compared");
-        }
-        for (var d = 0 | 0, i = 0 | 0, j = b1.length; i < j; i++) {
-            d |= b1[i] ^ b2[i];
-        }
-        return d === 0;
+      if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can be compared");
+      }
+      if (b1.length !== b2.length) {
+        throw new TypeError(
+          "Only instances of identical length can be compared"
+        );
+      }
+      for (var d = 0 | 0, i = 0 | 0, j = b1.length; i < j; i++) {
+        d |= b1[i] ^ b2[i];
+      }
+      return d === 0;
     }
 
     function compare(b1, b2) {
-        if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
-            throw new TypeError("Only Uint8Array instances can be compared");
-        }
-        if (b1.length !== b2.length) {
-            throw new TypeError("Only instances of identical length can be compared");
-        }
-        for (var gt = 0 | 0, eq = 1 | 1, i = b1.length; i-- > 0;) {
-            gt |= ((b2[i] - b1[i]) >> 8) & eq;
-            eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
-        }
-        return (gt + gt + eq) - 1;
+      if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
+        throw new TypeError("Only Uint8Array instances can be compared");
+      }
+      if (b1.length !== b2.length) {
+        throw new TypeError(
+          "Only instances of identical length can be compared"
+        );
+      }
+      for (var gt = 0 | 0, eq = 1 | 1, i = b1.length; i-- > 0; ) {
+        gt |= ((b2[i] - b1[i]) >> 8) & eq;
+        eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
+      }
+      return gt + gt + eq - 1;
     }
 
     function pad(buf, blocksize) {
-        if (!(buf instanceof Uint8Array)) {
-            throw new TypeError("buffer must be a Uint8Array");
-        }
-        blocksize |= 0;
-        if (blocksize <= 0) {
-            throw new Error("block size must be > 0");
-        }
-        var address_pool = [],
-            padded,
-            padded_buflen_p = _malloc(4),
-            st = 1 | 0, i = 0 | 0, k = buf.length | 0,
-            bufx = new AllocatedBuf(k + blocksize);
-        address_pool.push(padded_buflen_p);
-        address_pool.push(bufx.address);
-        for (var j = bufx.address, jmax = bufx.address + k + blocksize; j < jmax; j++) {
-            libsodium.HEAPU8[j] = buf[i];
-            k -= st;
-            st = (~(((((k >>> 48) | (k >>> 32) | (k >>> 16) | k) & 0xffff) - 1) >> 16)) & 1;
-            i += st;
-        }
-        if (libsodium._sodium_pad(padded_buflen_p, bufx.address, buf.length,
-                                  blocksize, bufx.length) !== 0) {
-            _free_and_throw_error(address_pool, "internal error");
-        }
-        bufx.length = libsodium.getValue(padded_buflen_p, 'i32');
-        padded = bufx.to_Uint8Array();
-        _free_all(address_pool);
-        return padded;
+      if (!(buf instanceof Uint8Array)) {
+        throw new TypeError("buffer must be a Uint8Array");
+      }
+      blocksize |= 0;
+      if (blocksize <= 0) {
+        throw new Error("block size must be > 0");
+      }
+      var address_pool = [],
+        padded,
+        padded_buflen_p = _malloc(4),
+        st = 1 | 0,
+        i = 0 | 0,
+        k = buf.length | 0,
+        bufx = new AllocatedBuf(k + blocksize);
+      address_pool.push(padded_buflen_p);
+      address_pool.push(bufx.address);
+      for (
+        var j = bufx.address, jmax = bufx.address + k + blocksize;
+        j < jmax;
+        j++
+      ) {
+        libsodium.HEAPU8[j] = buf[i];
+        k -= st;
+        st =
+          ~(((((k >>> 48) | (k >>> 32) | (k >>> 16) | k) & 0xffff) - 1) >> 16) &
+          1;
+        i += st;
+      }
+      if (
+        libsodium._sodium_pad(
+          padded_buflen_p,
+          bufx.address,
+          buf.length,
+          blocksize,
+          bufx.length
+        ) !== 0
+      ) {
+        _free_and_throw_error(address_pool, "internal error");
+      }
+      bufx.length = libsodium.getValue(padded_buflen_p, "i32");
+      padded = bufx.to_Uint8Array();
+      _free_all(address_pool);
+      return padded;
     }
 
     function unpad(buf, blocksize) {
-        if (!(buf instanceof Uint8Array)) {
-            throw new TypeError("buffer must be a Uint8Array");
-        }
-        blocksize |= 0;
-        if (blocksize <= 0) {
-            throw new Error("block size must be > 0");
-        }
-        var address_pool = [],
-            unpadded_address = _to_allocated_buf_address(buf),
-            unpadded_buflen_p = _malloc(4);
-        address_pool.push(unpadded_address);
-        address_pool.push(unpadded_buflen_p);
-        if (libsodium._sodium_unpad(unpadded_buflen_p, unpadded_address,
-                                    buf.length, blocksize) !== 0) {
-            _free_and_throw_error(address_pool, "unsupported/invalid padding");
-        }
-        buf = new Uint8Array(buf);
-        buf = buf.subarray(0, libsodium.getValue(unpadded_buflen_p, 'i32'));
-        _free_all(address_pool);
-        return buf;
+      if (!(buf instanceof Uint8Array)) {
+        throw new TypeError("buffer must be a Uint8Array");
+      }
+      blocksize |= 0;
+      if (blocksize <= 0) {
+        throw new Error("block size must be > 0");
+      }
+      var address_pool = [],
+        unpadded_address = _to_allocated_buf_address(buf),
+        unpadded_buflen_p = _malloc(4);
+      address_pool.push(unpadded_address);
+      address_pool.push(unpadded_buflen_p);
+      if (
+        libsodium._sodium_unpad(
+          unpadded_buflen_p,
+          unpadded_address,
+          buf.length,
+          blocksize
+        ) !== 0
+      ) {
+        _free_and_throw_error(address_pool, "unsupported/invalid padding");
+      }
+      buf = new Uint8Array(buf);
+      buf = buf.subarray(0, libsodium.getValue(unpadded_buflen_p, "i32"));
+      _free_all(address_pool);
+      return buf;
     }
 
     //---------------------------------------------------------------------------
     // Codecs
     //
     function from_string(str) {
-        if (typeof TextEncoder === "function") {
-            return new TextEncoder("utf-8").encode(str);
-        }
-        str = unescape(encodeURIComponent(str));
-        var bytes = new Uint8Array(str.length);
-        for (var i = 0; i < str.length; i++) {
-            bytes[i] = str.charCodeAt(i);
-        }
-        return bytes;
+      if (typeof TextEncoder === "function") {
+        return new TextEncoder("utf-8").encode(str);
+      }
+      str = unescape(encodeURIComponent(str));
+      var bytes = new Uint8Array(str.length);
+      for (var i = 0; i < str.length; i++) {
+        bytes[i] = str.charCodeAt(i);
+      }
+      return bytes;
     }
 
     function to_string(bytes) {
-        if (typeof TextDecoder === "function") {
-            return new TextDecoder("utf-8", {fatal: true}).decode(bytes);
+      if (typeof TextDecoder === "function") {
+        return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+      }
+
+      var toStringChunkSize = 8192,
+        numChunks = Math.ceil(bytes.length / toStringChunkSize);
+      if (numChunks <= 1) {
+        try {
+          return decodeURIComponent(
+            escape(String.fromCharCode.apply(null, bytes))
+          );
+        } catch (_) {
+          throw new TypeError("The encoded data was not valid.");
+        }
+      }
+      var totalString = "";
+      var sequenceReadOffset = 0;
+      for (var i = 0; i < numChunks; i++) {
+        var currentChunk = Array.prototype.slice.call(
+          bytes,
+          i * toStringChunkSize + sequenceReadOffset,
+          (i + 1) * toStringChunkSize + sequenceReadOffset
+        );
+        //Depending on how much we have shifted
+        if (currentChunk.length == 0) {
+          continue;
         }
 
-        var toStringChunkSize = 8192,
-            numChunks = Math.ceil(bytes.length / toStringChunkSize);
-        if (numChunks <= 1) {
-            try {
-                return decodeURIComponent(escape(String.fromCharCode.apply(null, bytes)));
-            }
-            catch (_) {
-                throw new TypeError("The encoded data was not valid.");
-            }
+        //Checking that we didn't cut the buffer in the middle of a UTF8 sequence.
+        //If we did, remove the bytes of the "cut" sequence and
+        //decrement sequenceReadOffset for each removed byte
+        var sequenceDetectionComplete,
+          sequenceIndex = currentChunk.length,
+          sequenceLength = 0;
+
+        //This loop will read the chunk from its end, looking for sequence start bytes
+        do {
+          sequenceIndex--;
+          var currentByte = currentChunk[sequenceIndex];
+
+          if (currentByte >= 240) {
+            //Beginning of a 4-byte UTF-8 sequence
+            sequenceLength = 4;
+            sequenceDetectionComplete = true;
+          } else if (currentByte >= 224) {
+            //Beginning of a 3-byte UTF-8 sequence
+            sequenceLength = 3;
+            sequenceDetectionComplete = true;
+          } else if (currentByte >= 192) {
+            //Beginning of a 2-byte UTF-8 sequence
+            sequenceLength = 2;
+            sequenceDetectionComplete = true;
+          } else if (currentByte < 128) {
+            //A one byte UTF-8 char
+            sequenceLength = 1;
+            sequenceDetectionComplete = true;
+          }
+          //The values between [128, 192[ are part of a UTF-8 sequence.
+          //The loop will not exit in that case, and will iterate one byte backwards instead
+        } while (!sequenceDetectionComplete);
+
+        var extraBytes = sequenceLength - (currentChunk.length - sequenceIndex);
+        for (var j = 0; j < extraBytes; j++) {
+          sequenceReadOffset--;
+          currentChunk.pop();
         }
-        var totalString = '';
-        var sequenceReadOffset = 0;
-        for (var i = 0; i < numChunks; i++) {
-            var currentChunk =
-                Array.prototype.slice.call(bytes,
-                                           i * toStringChunkSize + sequenceReadOffset,
-                                           (i + 1) * toStringChunkSize + sequenceReadOffset);
-            //Depending on how much we have shifted
-            if (currentChunk.length == 0) {
-                continue;
-            }
 
-            //Checking that we didn't cut the buffer in the middle of a UTF8 sequence.
-            //If we did, remove the bytes of the "cut" sequence and
-            //decrement sequenceReadOffset for each removed byte
-            var sequenceDetectionComplete,
-                sequenceIndex = currentChunk.length,
-                sequenceLength = 0;
-
-            //This loop will read the chunk from its end, looking for sequence start bytes
-            do {
-                sequenceIndex--;
-                var currentByte = currentChunk[sequenceIndex];
-
-                if (currentByte >= 240) { //Beginning of a 4-byte UTF-8 sequence
-                    sequenceLength = 4;
-                    sequenceDetectionComplete = true;
-                } else if (currentByte >= 224) { //Beginning of a 3-byte UTF-8 sequence
-                    sequenceLength = 3;
-                    sequenceDetectionComplete = true;
-                } else if (currentByte >= 192) { //Beginning of a 2-byte UTF-8 sequence
-                    sequenceLength = 2;
-                    sequenceDetectionComplete = true;
-                } else if (currentByte < 128) { //A one byte UTF-8 char
-                    sequenceLength = 1;
-                    sequenceDetectionComplete = true;
-                }
-                //The values between [128, 192[ are part of a UTF-8 sequence.
-                //The loop will not exit in that case, and will iterate one byte backwards instead
-            } while (!sequenceDetectionComplete);
-
-            var extraBytes = sequenceLength - (currentChunk.length - sequenceIndex);
-            for (var j = 0; j < extraBytes; j++) {
-                sequenceReadOffset--;
-                currentChunk.pop();
-            }
-
-            totalString += to_string(currentChunk);
-        }
-        return totalString;
+        totalString += to_string(currentChunk);
+      }
+      return totalString;
     }
 
     function from_hex(input) {
-        var address_pool = [],
-            input = _any_to_Uint8Array(address_pool, input, "input"),
-            result = new AllocatedBuf(input.length / 2), result_str,
-            input_address = _to_allocated_buf_address(input),
-            hex_end_p = _malloc(4), hex_end;
-        address_pool.push(input_address);
-        address_pool.push(result.address);
-        address_pool.push(result.hex_end_p);
-        if (libsodium._sodium_hex2bin(result.address, result.length,
-                                      input_address, input.length,
-                                      0, 0, hex_end_p) !== 0) {
-            _free_and_throw_error(address_pool, "invalid input");
-        }
-        hex_end = libsodium.getValue(hex_end_p, 'i32');
-        if (hex_end - input_address !== input.length) {
-            _free_and_throw_error(address_pool, "incomplete input");
-        }
-        result_str = result.to_Uint8Array();
-        _free_all(address_pool);
-        return result_str;
+      var address_pool = [],
+        input = _any_to_Uint8Array(address_pool, input, "input"),
+        result = new AllocatedBuf(input.length / 2),
+        result_str,
+        input_address = _to_allocated_buf_address(input),
+        hex_end_p = _malloc(4),
+        hex_end;
+      address_pool.push(input_address);
+      address_pool.push(result.address);
+      address_pool.push(result.hex_end_p);
+      if (
+        libsodium._sodium_hex2bin(
+          result.address,
+          result.length,
+          input_address,
+          input.length,
+          0,
+          0,
+          hex_end_p
+        ) !== 0
+      ) {
+        _free_and_throw_error(address_pool, "invalid input");
+      }
+      hex_end = libsodium.getValue(hex_end_p, "i32");
+      if (hex_end - input_address !== input.length) {
+        _free_and_throw_error(address_pool, "incomplete input");
+      }
+      result_str = result.to_Uint8Array();
+      _free_all(address_pool);
+      return result_str;
     }
 
     function to_hex(input) {
-        input = _any_to_Uint8Array(null, input, "input");
-        var str = "", b, c, x;
-        for (var i = 0; i < input.length; i++) {
-            c = input[i] & 0xf;
-            b = input[i] >>> 4;
-            x = (87 + c + (((c - 10) >> 8) & ~38)) << 8 |
-                (87 + b + (((b - 10) >> 8) & ~38));
-            str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
-        }
-        return str;
+      input = _any_to_Uint8Array(null, input, "input");
+      var str = "",
+        b,
+        c,
+        x;
+      for (var i = 0; i < input.length; i++) {
+        c = input[i] & 0xf;
+        b = input[i] >>> 4;
+        x =
+          ((87 + c + (((c - 10) >> 8) & ~38)) << 8) |
+          (87 + b + (((b - 10) >> 8) & ~38));
+        str += String.fromCharCode(x & 0xff) + String.fromCharCode(x >>> 8);
+      }
+      return str;
     }
 
     var base64_variants = {
-        ORIGINAL: 1 | 0, ORIGINAL_NO_PADDING: 3 | 0, URLSAFE: 5 | 0, URLSAFE_NO_PADDING: 7 | 0
+      ORIGINAL: 1 | 0,
+      ORIGINAL_NO_PADDING: 3 | 0,
+      URLSAFE: 5 | 0,
+      URLSAFE_NO_PADDING: 7 | 0
     };
 
     function check_base64_variant(variant) {
-        if (variant == undefined) {
-            return base64_variants.URLSAFE_NO_PADDING;
-        }
-        if (variant !== base64_variants.ORIGINAL && variant !== base64_variants.ORIGINAL_NO_PADDING &&
-            variant !== base64_variants.URLSAFE && variant != base64_variants.URLSAFE_NO_PADDING) {
-            throw new Error("unsupported base64 variant");
-        }
-        return variant;
+      if (variant == undefined) {
+        return base64_variants.URLSAFE_NO_PADDING;
+      }
+      if (
+        variant !== base64_variants.ORIGINAL &&
+        variant !== base64_variants.ORIGINAL_NO_PADDING &&
+        variant !== base64_variants.URLSAFE &&
+        variant != base64_variants.URLSAFE_NO_PADDING
+      ) {
+        throw new Error("unsupported base64 variant");
+      }
+      return variant;
     }
 
     function from_base64(input, variant) {
-        variant = check_base64_variant(variant);
-        var address_pool = [],
-            input = _any_to_Uint8Array(address_pool, input, "input"),
-            result = new AllocatedBuf(input.length * 3 / 4), result_bin,
-            input_address = _to_allocated_buf_address(input),
-            result_bin_len_p = _malloc(4), b64_end_p = _malloc(4), b64_end;
-        address_pool.push(input_address);
-        address_pool.push(result.address);
-        address_pool.push(result.result_bin_len_p);
-        address_pool.push(result.b64_end_p);
-        if (libsodium._sodium_base642bin(result.address, result.length,
-                                         input_address, input.length,
-                                         0, result_bin_len_p, b64_end_p, variant) !== 0) {
-            _free_and_throw_error(address_pool, "invalid input");
-        }
-        b64_end = libsodium.getValue(b64_end_p, 'i32');
-        if (b64_end - input_address !== input.length) {
-            _free_and_throw_error(address_pool, "incomplete input");
-        }
-        result.length = libsodium.getValue(result_bin_len_p, 'i32');
-        result_bin = result.to_Uint8Array();
-        _free_all(address_pool);
-        return result_bin;
+      variant = check_base64_variant(variant);
+      var address_pool = [],
+        input = _any_to_Uint8Array(address_pool, input, "input"),
+        result = new AllocatedBuf(input.length * 3 / 4),
+        result_bin,
+        input_address = _to_allocated_buf_address(input),
+        result_bin_len_p = _malloc(4),
+        b64_end_p = _malloc(4),
+        b64_end;
+      address_pool.push(input_address);
+      address_pool.push(result.address);
+      address_pool.push(result.result_bin_len_p);
+      address_pool.push(result.b64_end_p);
+      if (
+        libsodium._sodium_base642bin(
+          result.address,
+          result.length,
+          input_address,
+          input.length,
+          0,
+          result_bin_len_p,
+          b64_end_p,
+          variant
+        ) !== 0
+      ) {
+        _free_and_throw_error(address_pool, "invalid input");
+      }
+      b64_end = libsodium.getValue(b64_end_p, "i32");
+      if (b64_end - input_address !== input.length) {
+        _free_and_throw_error(address_pool, "incomplete input");
+      }
+      result.length = libsodium.getValue(result_bin_len_p, "i32");
+      result_bin = result.to_Uint8Array();
+      _free_all(address_pool);
+      return result_bin;
     }
 
     function to_base64(input, variant) {
-        variant = check_base64_variant(variant);
-        input = _any_to_Uint8Array(address_pool, input, "input");
-        var address_pool = [],
-            nibbles = Math.floor(input.length / 3) | 0,
-            remainder = input.length - 3 * nibbles,
-            b64_len = nibbles * 4 + (remainder !== 0 ?
-                                     ((variant & 2) === 0 ? 4 : 2 + (remainder >>> 1)) : 0),
-            result = new AllocatedBuf(b64_len + 1), result_b64,
-            input_address = _to_allocated_buf_address(input);
-        address_pool.push(input_address);
-        address_pool.push(result.address);
-        if (libsodium._sodium_bin2base64(result.address, result.length,
-                                         input_address, input.length,
-                                         variant) === 0) {
-            _free_and_throw_error(address_pool, "conversion failed");
-        }
-        result.length = b64_len;
-        result_b64 = to_string(result.to_Uint8Array());
-        _free_all(address_pool);
-        return result_b64;
+      variant = check_base64_variant(variant);
+      input = _any_to_Uint8Array(address_pool, input, "input");
+      var address_pool = [],
+        nibbles = Math.floor(input.length / 3) | 0,
+        remainder = input.length - 3 * nibbles,
+        b64_len =
+          nibbles * 4 +
+          (remainder !== 0
+            ? (variant & 2) === 0 ? 4 : 2 + (remainder >>> 1)
+            : 0),
+        result = new AllocatedBuf(b64_len + 1),
+        result_b64,
+        input_address = _to_allocated_buf_address(input);
+      address_pool.push(input_address);
+      address_pool.push(result.address);
+      if (
+        libsodium._sodium_bin2base64(
+          result.address,
+          result.length,
+          input_address,
+          input.length,
+          variant
+        ) === 0
+      ) {
+        _free_and_throw_error(address_pool, "conversion failed");
+      }
+      result.length = b64_len;
+      result_b64 = to_string(result.to_Uint8Array());
+      _free_all(address_pool);
+      return result_b64;
     }
 
     function output_formats() {
-        return ["uint8array", "text", "hex", "base64"];
+      return ["uint8array", "text", "hex", "base64"];
     }
 
     function _format_output(output, optionalOutputFormat) {
-        var selectedOutputFormat = optionalOutputFormat || output_format;
-        if (!_is_output_format(selectedOutputFormat)) {
-            throw new Error(selectedOutputFormat + " output format is not available");
-        }
-        if (output instanceof AllocatedBuf) {
-            if (selectedOutputFormat === "uint8array") {
-                return output.to_Uint8Array();
-            } else if (selectedOutputFormat === "text") {
-                return to_string(output.to_Uint8Array());
-            } else if (selectedOutputFormat === "hex") {
-                return to_hex(output.to_Uint8Array());
-            } else if (selectedOutputFormat === "base64") {
-                return to_base64(output.to_Uint8Array(), base64_variants.URLSAFE_NO_PADDING);
-            } else {
-                throw new Error("What is output format \"" + selectedOutputFormat + "\"?");
-            }
-        } else if (typeof output === "object") { // Composed output. Example: key pairs
-            var props = Object.keys(output);
-            var formattedOutput = {};
-            for (var i = 0; i < props.length; i++) {
-                formattedOutput[props[i]] = _format_output(output[props[i]], selectedOutputFormat);
-            }
-            return formattedOutput;
-        } else if (typeof output === "string") {
-            return output;
+      var selectedOutputFormat = optionalOutputFormat || output_format;
+      if (!_is_output_format(selectedOutputFormat)) {
+        throw new Error(
+          selectedOutputFormat + " output format is not available"
+        );
+      }
+      if (output instanceof AllocatedBuf) {
+        if (selectedOutputFormat === "uint8array") {
+          return output.to_Uint8Array();
+        } else if (selectedOutputFormat === "text") {
+          return to_string(output.to_Uint8Array());
+        } else if (selectedOutputFormat === "hex") {
+          return to_hex(output.to_Uint8Array());
+        } else if (selectedOutputFormat === "base64") {
+          return to_base64(
+            output.to_Uint8Array(),
+            base64_variants.URLSAFE_NO_PADDING
+          );
         } else {
-            throw new TypeError("Cannot format output");
+          throw new Error(
+            'What is output format "' + selectedOutputFormat + '"?'
+          );
         }
+      } else if (typeof output === "object") {
+        // Composed output. Example: key pairs
+        var props = Object.keys(output);
+        var formattedOutput = {};
+        for (var i = 0; i < props.length; i++) {
+          formattedOutput[props[i]] = _format_output(
+            output[props[i]],
+            selectedOutputFormat
+          );
+        }
+        return formattedOutput;
+      } else if (typeof output === "string") {
+        return output;
+      } else {
+        throw new TypeError("Cannot format output");
+      }
     }
 
     function _is_output_format(format) {
-        var formats = output_formats();
-        for (var i = 0; i < formats.length; i++) {
-            if (formats[i] === format) {
-                return true;
-            }
+      var formats = output_formats();
+      for (var i = 0; i < formats.length; i++) {
+        if (formats[i] === format) {
+          return true;
         }
-        return false;
+      }
+      return false;
     }
 
     function _check_output_format(format) {
-        if (!format) {
-            return;
-        } else if (typeof format !== "string") {
-            throw new TypeError("When defined, the output format must be a string");
-        } else if (!_is_output_format(format)) {
-            throw new Error(format + " is not a supported output format");
-        }
+      if (!format) {
+        return;
+      } else if (typeof format !== "string") {
+        throw new TypeError("When defined, the output format must be a string");
+      } else if (!_is_output_format(format)) {
+        throw new Error(format + " is not a supported output format");
+      }
     }
 
     //---------------------------------------------------------------------------
@@ -388,71 +494,79 @@ function expose_wrappers(exports, libsodiumModule) {
     //
     // AllocatedBuf: address allocated using _malloc() + length
     function AllocatedBuf(length) {
-        this.length = length;
-        this.address = _malloc(length);
+      this.length = length;
+      this.address = _malloc(length);
     }
 
     // Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
-    AllocatedBuf.prototype.to_Uint8Array = function () {
-        var result = new Uint8Array(this.length);
-        result.set(libsodium.HEAPU8.subarray(this.address, this.address + this.length));
-        return result;
+    AllocatedBuf.prototype.to_Uint8Array = function() {
+      var result = new Uint8Array(this.length);
+      result.set(
+        libsodium.HEAPU8.subarray(this.address, this.address + this.length)
+      );
+      return result;
     };
 
     // _malloc() a region and initialize it with the content of a Uint8Array
     function _to_allocated_buf_address(bytes) {
-        var address = _malloc(bytes.length);
-        libsodium.HEAPU8.set(bytes, address);
-        return address;
+      var address = _malloc(bytes.length);
+      libsodium.HEAPU8.set(bytes, address);
+      return address;
     }
 
     function _malloc(length) {
-        var result = libsodium._malloc(length);
-        if (result === 0) {
-            throw {
-                message: "_malloc() failed",
-                length: length
-            };
-        }
-        return result;
+      var result = libsodium._malloc(length);
+      if (result === 0) {
+        throw {
+          message: "_malloc() failed",
+          length: length
+        };
+      }
+      return result;
     }
 
     function _free(address) {
-        libsodium._free(address);
+      libsodium._free(address);
     }
 
     function _free_all(addresses) {
-        if (addresses) {
-            for (var i = 0; i < addresses.length; i++) {
-                _free(addresses[i]);
-            }
+      if (addresses) {
+        for (var i = 0; i < addresses.length; i++) {
+          _free(addresses[i]);
         }
+      }
     }
 
     function _free_and_throw_error(address_pool, err) {
-        _free_all(address_pool);
-        throw new Error(err);
+      _free_all(address_pool);
+      throw new Error(err);
     }
 
     function _free_and_throw_type_error(address_pool, err) {
-        _free_all(address_pool);
-        throw new TypeError(err);
+      _free_all(address_pool);
+      throw new TypeError(err);
     }
 
     function _require_defined(address_pool, varValue, varName) {
-        if (varValue == undefined) {
-            _free_and_throw_type_error(address_pool, varName + " cannot be null or undefined");
-        }
+      if (varValue == undefined) {
+        _free_and_throw_type_error(
+          address_pool,
+          varName + " cannot be null or undefined"
+        );
+      }
     }
 
     function _any_to_Uint8Array(address_pool, varValue, varName) {
-        _require_defined(address_pool, varValue, varName);
-        if (varValue instanceof Uint8Array) {
-            return varValue;
-        } else if (typeof varValue === "string") {
-            return from_string(varValue);
-        }
-        _free_and_throw_type_error(address_pool, "unsupported input type for " + varName);
+      _require_defined(address_pool, varValue, varName);
+      if (varValue instanceof Uint8Array) {
+        return varValue;
+      } else if (typeof varValue === "string") {
+        return from_string(varValue);
+      }
+      _free_and_throw_type_error(
+        address_pool,
+        "unsupported input type for " + varName
+      );
     }
 
     
@@ -2258,7 +2372,7 @@ function expose_wrappers(exports, libsodiumModule) {
 
 		// ---------- input: state_address (generichash_state_address)
 		
-		_require_defined(address_pool, state_address, "state_address");
+		_require_defined(address_pool, { var_name }, "state_address");
 		
 		// ---------- input: hash_length (uint)
 		
@@ -2345,7 +2459,7 @@ function expose_wrappers(exports, libsodiumModule) {
 
 		// ---------- input: state_address (generichash_state_address)
 		
-		_require_defined(address_pool, state_address, "state_address");
+		_require_defined(address_pool, { var_name }, "state_address");
 		
 		// ---------- input: message_chunk (unsized_buf)
 		
@@ -4590,36 +4704,22 @@ function expose_wrappers(exports, libsodiumModule) {
     exports.to_hex = to_hex;
     exports.to_string = to_string;
 
-    
-	var exported_functions = ["crypto_aead_chacha20poly1305_decrypt", "crypto_aead_chacha20poly1305_decrypt_detached", "crypto_aead_chacha20poly1305_encrypt", "crypto_aead_chacha20poly1305_encrypt_detached", "crypto_aead_chacha20poly1305_ietf_decrypt", "crypto_aead_chacha20poly1305_ietf_decrypt_detached", "crypto_aead_chacha20poly1305_ietf_encrypt", "crypto_aead_chacha20poly1305_ietf_encrypt_detached", "crypto_aead_chacha20poly1305_ietf_keygen", "crypto_aead_chacha20poly1305_keygen", "crypto_aead_xchacha20poly1305_ietf_decrypt", "crypto_aead_xchacha20poly1305_ietf_decrypt_detached", "crypto_aead_xchacha20poly1305_ietf_encrypt", "crypto_aead_xchacha20poly1305_ietf_encrypt_detached", "crypto_aead_xchacha20poly1305_ietf_keygen", "crypto_auth", "crypto_auth_hmacsha256", "crypto_auth_hmacsha256_keygen", "crypto_auth_hmacsha256_verify", "crypto_auth_hmacsha512", "crypto_auth_hmacsha512_keygen", "crypto_auth_hmacsha512_verify", "crypto_auth_keygen", "crypto_auth_verify", "crypto_box_beforenm", "crypto_box_detached", "crypto_box_easy", "crypto_box_easy_afternm", "crypto_box_keypair", "crypto_box_open_detached", "crypto_box_open_easy", "crypto_box_open_easy_afternm", "crypto_box_seal", "crypto_box_seal_open", "crypto_box_seed_keypair", "crypto_generichash", "crypto_generichash_final", "crypto_generichash_init", "crypto_generichash_keygen", "crypto_generichash_update", "crypto_hash", "crypto_hash_sha256", "crypto_hash_sha512", "crypto_kdf_derive_from_key", "crypto_kdf_keygen", "crypto_kx_client_session_keys", "crypto_kx_keypair", "crypto_kx_seed_keypair", "crypto_kx_server_session_keys", "crypto_onetimeauth", "crypto_onetimeauth_final", "crypto_onetimeauth_init", "crypto_onetimeauth_keygen", "crypto_onetimeauth_update", "crypto_onetimeauth_verify", "crypto_pwhash", "crypto_pwhash_scryptsalsa208sha256", "crypto_pwhash_scryptsalsa208sha256_ll", "crypto_pwhash_scryptsalsa208sha256_str", "crypto_pwhash_scryptsalsa208sha256_str_verify", "crypto_pwhash_str", "crypto_pwhash_str_verify", "crypto_scalarmult", "crypto_scalarmult_base", "crypto_secretbox_detached", "crypto_secretbox_easy", "crypto_secretbox_keygen", "crypto_secretbox_open_detached", "crypto_secretbox_open_easy", "crypto_shorthash", "crypto_shorthash_keygen", "crypto_shorthash_siphashx24", "crypto_sign", "crypto_sign_detached", "crypto_sign_ed25519_pk_to_curve25519", "crypto_sign_ed25519_sk_to_curve25519", "crypto_sign_ed25519_sk_to_pk", "crypto_sign_ed25519_sk_to_seed", "crypto_sign_final_create", "crypto_sign_final_verify", "crypto_sign_init", "crypto_sign_keypair", "crypto_sign_open", "crypto_sign_seed_keypair", "crypto_sign_update", "crypto_sign_verify_detached", "crypto_stream_chacha20_ietf_xor", "crypto_stream_chacha20_ietf_xor_ic", "crypto_stream_chacha20_keygen", "crypto_stream_chacha20_xor", "crypto_stream_chacha20_xor_ic", "crypto_stream_keygen", "crypto_stream_xchacha20_keygen", "crypto_stream_xchacha20_xor", "crypto_stream_xchacha20_xor_ic", "randombytes_buf", "randombytes_buf_deterministic", "randombytes_close", "randombytes_random", "randombytes_set_implementation", "randombytes_stir", "randombytes_uniform", "sodium_version_string"],
-	      functions = [crypto_aead_chacha20poly1305_decrypt, crypto_aead_chacha20poly1305_decrypt_detached, crypto_aead_chacha20poly1305_encrypt, crypto_aead_chacha20poly1305_encrypt_detached, crypto_aead_chacha20poly1305_ietf_decrypt, crypto_aead_chacha20poly1305_ietf_decrypt_detached, crypto_aead_chacha20poly1305_ietf_encrypt, crypto_aead_chacha20poly1305_ietf_encrypt_detached, crypto_aead_chacha20poly1305_ietf_keygen, crypto_aead_chacha20poly1305_keygen, crypto_aead_xchacha20poly1305_ietf_decrypt, crypto_aead_xchacha20poly1305_ietf_decrypt_detached, crypto_aead_xchacha20poly1305_ietf_encrypt, crypto_aead_xchacha20poly1305_ietf_encrypt_detached, crypto_aead_xchacha20poly1305_ietf_keygen, crypto_auth, crypto_auth_hmacsha256, crypto_auth_hmacsha256_keygen, crypto_auth_hmacsha256_verify, crypto_auth_hmacsha512, crypto_auth_hmacsha512_keygen, crypto_auth_hmacsha512_verify, crypto_auth_keygen, crypto_auth_verify, crypto_box_beforenm, crypto_box_detached, crypto_box_easy, crypto_box_easy_afternm, crypto_box_keypair, crypto_box_open_detached, crypto_box_open_easy, crypto_box_open_easy_afternm, crypto_box_seal, crypto_box_seal_open, crypto_box_seed_keypair, crypto_generichash, crypto_generichash_final, crypto_generichash_init, crypto_generichash_keygen, crypto_generichash_update, crypto_hash, crypto_hash_sha256, crypto_hash_sha512, crypto_kdf_derive_from_key, crypto_kdf_keygen, crypto_kx_client_session_keys, crypto_kx_keypair, crypto_kx_seed_keypair, crypto_kx_server_session_keys, crypto_onetimeauth, crypto_onetimeauth_final, crypto_onetimeauth_init, crypto_onetimeauth_keygen, crypto_onetimeauth_update, crypto_onetimeauth_verify, crypto_pwhash, crypto_pwhash_scryptsalsa208sha256, crypto_pwhash_scryptsalsa208sha256_ll, crypto_pwhash_scryptsalsa208sha256_str, crypto_pwhash_scryptsalsa208sha256_str_verify, crypto_pwhash_str, crypto_pwhash_str_verify, crypto_scalarmult, crypto_scalarmult_base, crypto_secretbox_detached, crypto_secretbox_easy, crypto_secretbox_keygen, crypto_secretbox_open_detached, crypto_secretbox_open_easy, crypto_shorthash, crypto_shorthash_keygen, crypto_shorthash_siphashx24, crypto_sign, crypto_sign_detached, crypto_sign_ed25519_pk_to_curve25519, crypto_sign_ed25519_sk_to_curve25519, crypto_sign_ed25519_sk_to_pk, crypto_sign_ed25519_sk_to_seed, crypto_sign_final_create, crypto_sign_final_verify, crypto_sign_init, crypto_sign_keypair, crypto_sign_open, crypto_sign_seed_keypair, crypto_sign_update, crypto_sign_verify_detached, crypto_stream_chacha20_ietf_xor, crypto_stream_chacha20_ietf_xor_ic, crypto_stream_chacha20_keygen, crypto_stream_chacha20_xor, crypto_stream_chacha20_xor_ic, crypto_stream_keygen, crypto_stream_xchacha20_keygen, crypto_stream_xchacha20_xor, crypto_stream_xchacha20_xor_ic, randombytes_buf, randombytes_buf_deterministic, randombytes_close, randombytes_random, randombytes_set_implementation, randombytes_stir, randombytes_uniform, sodium_version_string];
-	for (var i = 0; i < functions.length; i++) {
-		if (typeof libsodium["_" + exported_functions[i]] === "function") {
-			exports[exported_functions[i]] = functions[i];
-		}
-	}
-	var constants = ["SODIUM_LIBRARY_VERSION_MAJOR", "SODIUM_LIBRARY_VERSION_MINOR", "crypto_aead_chacha20poly1305_ABYTES", "crypto_aead_chacha20poly1305_KEYBYTES", "crypto_aead_chacha20poly1305_NPUBBYTES", "crypto_aead_chacha20poly1305_NSECBYTES", "crypto_aead_chacha20poly1305_ietf_ABYTES", "crypto_aead_chacha20poly1305_ietf_KEYBYTES", "crypto_aead_chacha20poly1305_ietf_NPUBBYTES", "crypto_aead_chacha20poly1305_ietf_NSECBYTES", "crypto_aead_xchacha20poly1305_ietf_ABYTES", "crypto_aead_xchacha20poly1305_ietf_KEYBYTES", "crypto_aead_xchacha20poly1305_ietf_NPUBBYTES", "crypto_aead_xchacha20poly1305_ietf_NSECBYTES", "crypto_auth_BYTES", "crypto_auth_KEYBYTES", "crypto_auth_hmacsha256_BYTES", "crypto_auth_hmacsha256_KEYBYTES", "crypto_auth_hmacsha512_BYTES", "crypto_auth_hmacsha512_KEYBYTES", "crypto_box_BEFORENMBYTES", "crypto_box_MACBYTES", "crypto_box_NONCEBYTES", "crypto_box_PUBLICKEYBYTES", "crypto_box_SEALBYTES", "crypto_box_SECRETKEYBYTES", "crypto_box_SEEDBYTES", "crypto_generichash_BYTES", "crypto_generichash_BYTES_MAX", "crypto_generichash_BYTES_MIN", "crypto_generichash_KEYBYTES", "crypto_generichash_KEYBYTES_MAX", "crypto_generichash_KEYBYTES_MIN", "crypto_hash_BYTES", "crypto_kdf_BYTES_MAX", "crypto_kdf_BYTES_MIN", "crypto_kdf_CONTEXTBYTES", "crypto_kdf_KEYBYTES", "crypto_kx_PUBLICKEYBYTES", "crypto_kx_SECRETKEYBYTES", "crypto_kx_SEEDBYTES", "crypto_kx_SESSSIONKEYBYTES", "crypto_onetimeauth_BYTES", "crypto_onetimeauth_KEYBYTES", "crypto_pwhash_ALG_ARGON2I13", "crypto_pwhash_ALG_DEFAULT", "crypto_pwhash_BYTES_MAX", "crypto_pwhash_BYTES_MIN", "crypto_pwhash_MEMLIMIT_INTERACTIVE", "crypto_pwhash_MEMLIMIT_MAX", "crypto_pwhash_MEMLIMIT_MIN", "crypto_pwhash_MEMLIMIT_MODERATE", "crypto_pwhash_MEMLIMIT_SENSITIVE", "crypto_pwhash_OPSLIMIT_INTERACTIVE", "crypto_pwhash_OPSLIMIT_MAX", "crypto_pwhash_OPSLIMIT_MIN", "crypto_pwhash_OPSLIMIT_MODERATE", "crypto_pwhash_OPSLIMIT_SENSITIVE", "crypto_pwhash_PASSWD_MAX", "crypto_pwhash_PASSWD_MIN", "crypto_pwhash_SALTBYTES", "crypto_pwhash_STRBYTES", "crypto_pwhash_STR_VERIFY", "crypto_pwhash_scryptsalsa208sha256_BYTES_MAX", "crypto_pwhash_scryptsalsa208sha256_BYTES_MIN", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MAX", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_MIN", "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_INTERACTIVE", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MAX", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_MIN", "crypto_pwhash_scryptsalsa208sha256_OPSLIMIT_SENSITIVE", "crypto_pwhash_scryptsalsa208sha256_SALTBYTES", "crypto_pwhash_scryptsalsa208sha256_STRBYTES", "crypto_pwhash_scryptsalsa208sha256_STR_VERIFY", "crypto_scalarmult_BYTES", "crypto_scalarmult_SCALARBYTES", "crypto_secretbox_KEYBYTES", "crypto_secretbox_MACBYTES", "crypto_secretbox_NONCEBYTES", "crypto_shorthash_BYTES", "crypto_shorthash_KEYBYTES", "crypto_shorthash_siphashx24_BYTES", "crypto_shorthash_siphashx24_KEYBYTES", "crypto_sign_BYTES", "crypto_sign_PUBLICKEYBYTES", "crypto_sign_SECRETKEYBYTES", "crypto_sign_SEEDBYTES", "crypto_stream_chacha20_KEYBYTES", "crypto_stream_chacha20_NONCEBYTES", "crypto_stream_chacha20_ietf_KEYBYTES", "crypto_stream_chacha20_ietf_NONCEBYTES", "crypto_stream_xchacha20_ietf_KEYBYTES", "crypto_stream_xchacha20_ietf_NONCEBYTES", "randombytes_SEEDBYTES"];
-	for (var i = 0; i < constants.length; i++) {
-		var raw = libsodium["_" + constants[i].toLowerCase()];
-		if (typeof raw === "function") exports[constants[i]] = raw()|0;
-	}
-	var constants_str = ["SODIUM_VERSION_STRING", "crypto_pwhash_STRPREFIX", "crypto_pwhash_scryptsalsa208sha256_STRPREFIX"];
-	for (var i = 0; i < constants_str.length; i++) {
-		var raw = libsodium["_" + constants_str[i].toLowerCase()];
-		if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());
-	}
-
     return exports;
-}
+  }
 
-var _onload = (typeof root.sodium === 'object' && typeof root.sodium.onload === 'function') ? root.sodium.onload : null;
-if (typeof define === 'function' && define.amd) {
-  define(['exports', 'libsodium'], expose_libsodium_wrappers);
-} else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-  expose_wrappers(exports, require('libsodium'));
-} else {
-  root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
-}
-_onload && _onload(root.sodium);
-
+  var _onload =
+    typeof root.sodium === "object" && typeof root.sodium.onload === "function"
+      ? root.sodium.onload
+      : null;
+  if (typeof define === "function" && define.amd) {
+    define(["exports", "libsodium"], expose_libsodium_wrappers);
+  } else if (
+    typeof exports === "object" &&
+    typeof exports.nodeName !== "string"
+  ) {
+    expose_wrappers(exports, require("libsodium"));
+  } else {
+    root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
+  }
+  _onload && _onload(root.sodium);
 })(this);
