@@ -556,7 +556,7 @@
       exports.from_string = from_string;
       exports.increment = increment;
       exports.is_zero = is_zero;
-      exports.libsodium = libsodiumModule;
+      exports.libsodium = libsodium;
       exports.memcmp = memcmp;
       exports.memzero = memzero;
       exports.output_formats = output_formats;
