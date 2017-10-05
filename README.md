@@ -18,7 +18,6 @@ Supported browsers/JS engines:
 * Chrome >= 16
 * Edge >= 0.11
 * Firefox >= 21
-* Internet Explorer >= 11 (requires a Promise polyfill)
 * Mobile Safari on iOS >= 8.0 (older versions produce incorrect results)
 * NodeJS
 * Opera >= 15
@@ -46,6 +45,7 @@ Supported browsers/JS engines:
 * [`crypto_pwhash`](https://download.libsodium.org/libsodium/content/password_hashing/)
 * [`crypto_scalarmult`](https://download.libsodium.org/libsodium/content/advanced/scalar_multiplication.html)
 * [`crypto_secretbox`](https://download.libsodium.org/libsodium/content/secret-key_cryptography/authenticated_encryption.html)
+* [`crypto_secretstream`](https://download.libsodium.org/doc/secret-key_cryptography/secretstream.html)
 * [`crypto_shorthash`](https://download.libsodium.org/libsodium/content/hashing/short-input_hashing.html)
 * [`crypto_sign`](https://download.libsodium.org/libsodium/content/public-key_cryptography/public-key_signatures.html)
 * [`crypto_stream`](https://download.libsodium.org/doc/advanced/stream_ciphers.html)
