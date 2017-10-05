@@ -1,10 +1,11 @@
 (function(root) {
-  function expose_wrappers(exports, libsodium) {
+  function expose_wrappers(exportsPromise, libsodium) {
     "use strict";
 
-    var output_format = "uint8array";
+    exportsPromise = libsodium.ready.then(function() {
+      var exports = {};
+      var output_format = "uint8array";
 
-    return libsodium.ready.then(function() {
       if (libsodium._sodium_init() !== 0) {
         throw new Error("libsodium was not correctly initialized.");
       }
@@ -571,6 +572,8 @@
 
       return exports;
     });
+
+    return exportsPromise;
   }
 
   var _onload =
