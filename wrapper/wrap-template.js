@@ -583,7 +583,7 @@
       ? root.sodium.onload
       : null;
   if (typeof define === "function" && define.amd) {
-    define(["exports", "libsodium"], expose_libsodium_wrappers);
+    define(["exports", "libsodium"], expose_wrappers);
   } else if (
     typeof exports === "object" &&
     typeof exports.nodeName !== "string"
