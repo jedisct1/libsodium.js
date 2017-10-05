@@ -1,9 +1,8 @@
 (function(root) {
-  function expose_wrappers(exportsPromise, libsodium) {
+  function expose_wrappers(sodiumExports, libsodium) {
     "use strict";
 
-    exportsPromise = libsodium.ready.then(function() {
-      var exports = {};
+    return libsodium.ready.then(function() {
       var output_format = "uint8array";
 
       if (libsodium._sodium_init() !== 0) {
@@ -12,7 +11,7 @@
 
       // List of functions and constants defined in the wrapped libsodium
       function symbols() {
-        return Object.keys(exports).sort();
+        return Object.keys(sodiumExports).sort();
       }
 
       function increment(bytes) {
@@ -549,31 +548,29 @@
 
       /*{{wraps_here}}*/
 
-      exports.add = add;
-      exports.base64_variants = base64_variants;
-      exports.compare = compare;
-      exports.from_base64 = from_base64;
-      exports.from_hex = from_hex;
-      exports.from_string = from_string;
-      exports.increment = increment;
-      exports.is_zero = is_zero;
-      exports.libsodium = libsodium;
-      exports.memcmp = memcmp;
-      exports.memzero = memzero;
-      exports.output_formats = output_formats;
-      exports.pad = pad;
-      exports.unpad = unpad;
-      exports.symbols = symbols;
-      exports.to_base64 = to_base64;
-      exports.to_hex = to_hex;
-      exports.to_string = to_string;
+      sodiumExports.add = add;
+      sodiumExports.base64_variants = base64_variants;
+      sodiumExports.compare = compare;
+      sodiumExports.from_base64 = from_base64;
+      sodiumExports.from_hex = from_hex;
+      sodiumExports.from_string = from_string;
+      sodiumExports.increment = increment;
+      sodiumExports.is_zero = is_zero;
+      sodiumExports.libsodium = libsodium;
+      sodiumExports.memcmp = memcmp;
+      sodiumExports.memzero = memzero;
+      sodiumExports.output_formats = output_formats;
+      sodiumExports.pad = pad;
+      sodiumExports.unpad = unpad;
+      sodiumExports.symbols = symbols;
+      sodiumExports.to_base64 = to_base64;
+      sodiumExports.to_hex = to_hex;
+      sodiumExports.to_string = to_string;
 
       /*{{exports_here}}*/
 
-      return exports;
+      return sodiumExports;
     });
-
-    return exportsPromise;
   }
 
   var _onload =
@@ -586,7 +583,7 @@
     typeof exports === "object" &&
     typeof exports.nodeName !== "string"
   ) {
-    expose_wrappers(exports, require("libsodium"));
+    exports = expose_wrappers(exports, require("libsodium"));
   } else {
     root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
   }
