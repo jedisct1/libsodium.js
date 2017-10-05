@@ -16,5 +16,5 @@
         ],
         "target": "libsodium._crypto_box_keypair(publicKey_address, secretKey_address) | 0",
         "expect": "=== 0",
-        "return": "_format_output({publicKey: publicKey, privateKey: secretKey, keyType: \"curve25519\"}, outputFormat)"
+	"return": "{publicKey: _format_output(publicKey, outputFormat), privateKey: _format_output(privateKey, outputFormat), keyType: 'x25519'}"
 }
