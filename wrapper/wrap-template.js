@@ -5,8 +5,7 @@
     var output_format = "uint8array";
 
     var libsodium;
-    var ready = new Promise(function(resolve, _reject) {
-      libsodiumModule.ready.then(function() {
+    var ready = libsodiumModule.ready.then(function() {
         libsodium = libsodiumModule;
         if (libsodium._sodium_init() !== 0) {
           throw new Error("libsodium was not correctly initialized.");
@@ -14,8 +13,6 @@
 
 /*{{exports_here}}*/
 
-        resolve(exports);
-      });
     });
 
     // List of functions and constants defined in the wrapped libsodium
