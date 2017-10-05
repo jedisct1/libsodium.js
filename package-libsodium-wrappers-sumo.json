@@ -1,15 +1,16 @@
 {
   "name": "libsodium-wrappers-sumo",
-  "version": "0.6.0",
-  "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers, sumo variant)",
-  "main": "dist/modules-sumo/libsodium-wrappers-sumo.js",
-  "files": ["dist-modules-sumo/libsodium-wrappers.js", "dist-modules-sumo/libsodium.js", "package.json"],
+  "version": "0.7.0",
+  "description":
+    "The Sodium cryptographic library compiled to pure JavaScript (wrappers, sumo variant)",
+  "main": "dist/modules-sumo/libsodium-wrappers.js",
+  "files": ["dist-modules-sumo/libsodium-wrappers.js", "package.json"],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium-sumo": "0.6.0"
+    "libsodium-sumo": "0.7.0"
   },
   "keywords": [
     "crypto",
@@ -26,7 +27,7 @@
     "ecc"
   ],
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
-  "contributors": [ "Frank Denis (@jedisct1)" ],
+  "contributors": ["Frank Denis (@jedisct1)", "Ryan Lester (@buu700)"],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jedisct1/libsodium.js/issues"
