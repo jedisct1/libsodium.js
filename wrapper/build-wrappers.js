@@ -82,7 +82,7 @@ function exportFunctions(symbols) {
   exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
   exportsCode +=
     '\t\tif (typeof libsodium["_" + exported_functions[i]] === "function") {\n';
-  exportsCode += "\t\t\tsodiumExports[exported_functions[i]] = functions[i];\n";
+  exportsCode += "\t\t\texports[exported_functions[i]] = functions[i];\n";
   exportsCode += "\t\t}\n";
   exportsCode += "\t}\n";
 }
@@ -98,7 +98,7 @@ function exportConstants(constSymbols) {
   exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
   exportsCode += '\t\tvar raw = libsodium["_" + constants[i].toLowerCase()];\n';
   exportsCode +=
-    '\t\tif (typeof raw === "function") sodiumExports[constants[i]] = raw()|0;\n';
+    '\t\tif (typeof raw === "function") exports[constants[i]] = raw()|0;\n';
   exportsCode += "\t}\n";
 
   keys = [];
@@ -112,7 +112,7 @@ function exportConstants(constSymbols) {
   exportsCode +=
     '\t\tvar raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
   exportsCode +=
-    '\t\tif (typeof raw === "function") sodiumExports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
+    '\t\tif (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
   exportsCode += "\t}\n";
 }
 
