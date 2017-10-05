@@ -1,8 +1,9 @@
 (function(root) {
-  function expose_wrappers(sodiumExports, libsodium) {
+  function expose_wrappers(libsodium) {
     "use strict";
 
     return libsodium.ready.then(function() {
+      var sodiumExports = {};
       var output_format = "uint8array";
 
       if (libsodium._sodium_init() !== 0) {
@@ -578,14 +579,15 @@
       ? root.sodium.onload
       : null;
   if (typeof define === "function" && define.amd) {
-    define(["exports", "libsodium"], expose_libsodium_wrappers);
+    define(["libsodium"], expose_wrappers);
   } else if (
     typeof exports === "object" &&
     typeof exports.nodeName !== "string"
   ) {
-    exports = expose_wrappers(exports, require("libsodium"));
+    exports = expose_wrappers(require("libsodium"));
   } else {
-    root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
+    root.sodium = expose_wrappers(root.libsodium);
+    root.commonJsStrict = root.sodium;
   }
   _onload && root.sodium.then(function (sodium) { _onload(sodium); });
 })(this);
