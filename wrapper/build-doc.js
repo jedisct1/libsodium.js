@@ -16,6 +16,7 @@ docStr += "* `Optional unsized buf`" + newLine();
 docStr += "* `Unsigned Integer`" + newLine();
 docStr += "* `Generichash state`" + newLine();
 docStr += "* `OneTimeAuth state`" + newLine();
+docStr += "* `Secretstream XChaCha20Poly1305 state`" + newLine();
 docStr += "* `Signature state`" + newLine();
 docStr += "* `Randombytes implementation`" + newLine();
 docStr += "* `String`" + newLine();
@@ -99,7 +100,7 @@ exports.buildDocForSymbol = function(s) {
         sDoc += "OneTimeAuth state address";
       } else if (paramType == "sign_state_address") {
         sDoc += "Signature state address";
-      } else if (paramType == "secretstream_xchacha20poly1305_address") {
+      } else if (paramType == "secretstream_xchacha20poly1305_state_address") {
         sDoc += "Secretstream XChaCha20Poly1305 state address";
       } else if (paramType == "randombytes_implementation") {
         sDoc += "Randombytes implementation";
@@ -123,7 +124,7 @@ exports.buildDocForSymbol = function(s) {
           sDoc += "OneTimeAuth state";
         } else if (outputType == "sign_state") {
           sDoc += "Signature state";
-        } else if (outputType == "secretstream_xchacha20poly1305") {
+        } else if (outputType == "secretstream_xchacha20poly1305_state") {
           sDoc += "Secretstream XChaCha20Poly1305 state";
         } else throw new Error("Unknown output type: " + outputType);
         sDoc += newLine();
