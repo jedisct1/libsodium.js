@@ -27,9 +27,69 @@ Supported browsers/JS engines:
 
 ???
 
-### Usage
+### Usage (as a module)
 
-???
+Load the `sodium-wrappers` module. The returned object contains a `.ready`
+property: a promise that must be resolve before the sodium functions
+can be used.
+
+Example:
+
+```js
+const _sodium = require('libsodium-wrappers');
+(async() => {
+  await _sodium.ready;
+  const sodium = _sodium;
+
+  let key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
+
+  let res = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
+  let [state_out, header] = [res.state, res.header];
+  let c1 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
+    sodium.from_string('message 1'), null,
+    sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE);
+  let c2 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
+    sodium.from_string('message 2'), null,
+    sodium.crypto_secretstream_xchacha20poly1305_TAG_FINAL);
+
+  let state_in = sodium.crypto_secretstream_xchacha20poly1305_init_pull(header, key);
+  let r1 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c1);
+  let [m1, tag1] = [sodium.to_string(r1.message), r1.tag];
+  let r2 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c2);
+  let [m2, tag2] = [sodium.to_string(r2.message), r2.tag];
+
+  console.log(m1);
+  console.log(m2);
+})();
+```
+
+### Usage (in a web browser, via a callback)
+
+The `sodium.js` file includes both the core libsodium functions, as
+well as the higher-level Javascript wrappers. It can be loaded
+asynchronusly.
+
+A `sodium` object should be defined in the global namespace, with the
+following properties:
+
+- `onload`: the function to call after the wrapper is initialized.
+- `totalMemory` (optional): the maximum amount of memory that sodium can use.
+The default value should be fine for most applications, unless you
+need to use password hashing functions with a large amount of memory.
+
+Example:
+
+```html
+<script>
+    window.sodium = {
+        onload: function (sodium) {
+            let h = sodium.crypto_generichash(64, sodium.from_string('test'));
+            console.log(sodium.to_hex(h));
+        }
+    };
+</script>
+<script src="sodium.js" async></script>
+```
 
 ## List of wrapped APIs:
 
