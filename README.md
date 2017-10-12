@@ -25,7 +25,22 @@ Supported browsers/JS engines:
 
 ## Installation
 
-???
+The [dist](https://github.com/jedisct1/libsodium.js/tree/master/dist)
+directory contains pre-built scripts. Copy the files from one of its
+subdirectories to your application:
+
+- [browsers](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers)
+includes a single-file script that can be included in web pages.
+It contains code for commonly used functions.
+- [browsers-sumo](https://github.com/jedisct1/libsodium.js/tree/master/dist/browsers-sumo)
+is a superset of the previous script, that contains all functions,
+including rarely used ones and undocumented ones.
+- [modules](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
+includes commonly used functions, and is designed to be loaded as a module.
+`libsodium-wrappers` is the module your application should load, which
+will in turn automatically load `libsodium` as a dependency.
+- [modules-sumo](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules-sumo)
+contains sumo variants of the previous modules.
 
 ### Usage (as a module)
 
