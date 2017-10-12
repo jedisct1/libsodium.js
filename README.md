@@ -46,6 +46,12 @@ The modules are also available on npm:
 - [libsodium-wrappers](https://www.npmjs.com/package/libsodium-wrappers)
 - [libsodium-wrappers-sumo](https://www.npmjs.com/package/libsodium-wrappers-sumo)
 
+If you prefer Bower:
+
+```sh
+bower install libsodium.js
+```
+
 ### Usage (as a module)
 
 Load the `sodium-wrappers` module. The returned object contains a `.ready`
