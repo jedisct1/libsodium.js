@@ -17,7 +17,7 @@
                         "size": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
-                        "name": "secretKey",
+                        "name": "privateKey",
                         "type": "buf",
                         "size": "libsodium._crypto_box_secretkeybytes()"
                 }
@@ -29,7 +29,7 @@
                         "size": "message_length + libsodium._crypto_box_macbytes()"
                 }
         ],
-        "target": "libsodium._crypto_box_easy(ciphertext_address, message_address, message_length, 0, nonce_address, publicKey_address, secretKey_address) | 0",
+        "target": "libsodium._crypto_box_easy(ciphertext_address, message_address, message_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
         "expect": "=== 0",
         "return": "_format_output(ciphertext, outputFormat)"
 }

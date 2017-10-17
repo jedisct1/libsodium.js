@@ -12,7 +12,7 @@
                         "size": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
-                        "name": "secretKey",
+                        "name": "privateKey",
                         "type": "buf",
                         "size": "libsodium._crypto_box_secretkeybytes()"
                 }
@@ -24,7 +24,7 @@
                         "size": "ciphertext_length - libsodium._crypto_box_sealbytes()"
                 }
         ],
-        "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, secretKey_address) | 0",
+        "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, privateKey_address) | 0",
         "expect": "=== 0",
         "return": "_format_output(plaintext, outputFormat)"
 }
