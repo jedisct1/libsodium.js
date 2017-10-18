@@ -116,27 +116,6 @@ Example:
 <script src="sodium.js" async></script>
 ```
 
-## List of wrapped APIs:
-
-* [`crypto_aead`](https://download.libsodium.org/doc/secret-key_cryptography/aead.html)
-* [`crypto_auth`](https://download.libsodium.org/doc/secret-key_cryptography/secret-key_authentication.html)
-* [`crypto_box`](https://doc.libsodium.org/public-key_cryptography/authenticated_encryption.html)
-* [`crypto_box_seal`](https://download.libsodium.org/libsodium/content/public-key_cryptography/sealed_boxes.html)
-* [`crypto_generichash`](https://download.libsodium.org/libsodium/content/hashing/generic_hashing.html)
-* [`crypto_hash`](https://download.libsodium.org/libsodium/content/advanced/sha-2_hash_function.html)
-* [`crypto_kdf`](https://download.libsodium.org/doc/key_derivation/)
-* [`crypto_kx`](https://download.libsodium.org/doc/key_exchange/)
-* [`crypto_onetimeauth`](https://download.libsodium.org/doc/advanced/poly1305.html)
-* [`crypto_pwhash`](https://download.libsodium.org/libsodium/content/password_hashing/)
-* [`crypto_scalarmult`](https://download.libsodium.org/libsodium/content/advanced/scalar_multiplication.html)
-* [`crypto_secretbox`](https://download.libsodium.org/libsodium/content/secret-key_cryptography/authenticated_encryption.html)
-* [`crypto_secretstream`](https://download.libsodium.org/doc/secret-key_cryptography/secretstream.html)
-* [`crypto_shorthash`](https://download.libsodium.org/libsodium/content/hashing/short-input_hashing.html)
-* [`crypto_sign`](https://download.libsodium.org/libsodium/content/public-key_cryptography/public-key_signatures.html)
-* [`crypto_stream`](https://download.libsodium.org/doc/advanced/stream_ciphers.html)
-* [Ed25519->Curve25519 conversion](https://download.libsodium.org/libsodium/content/advanced/ed25519-curve25519.html)
-* [`randombytes`](https://download.libsodium.org/libsodium/content/generating_random_data/)
-
 ## Additional helpers
 
 * `from_base64()`, `to_base64()` with an optional second parameter
