@@ -3,8 +3,8 @@
   "version": "0.7.1",
   "description":
     "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers, sumo variant)",
-  "main": "dist/modules-sumo/libsodium.js",
-  "files": ["dist/modules-sumo/libsodium.js", "package.json"],
+  "main": "dist/modules-sumo/libsodium-sumo.js",
+  "files": ["dist/modules-sumo/libsodium-sumo.js", "package.json"],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"
