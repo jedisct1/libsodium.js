@@ -153,17 +153,6 @@ var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
 If the output is a unique binary buffer, it is returned as a
 `Uint8Array` object.
 
-However, an extra parameter can be given to all wrapped functions, in
-order to specify what format the output should be in. Valid options
-are `uint8array' (default), 'text', 'base64' and 'hex'.
-
-Example (shorthash):
-
-```javascript
-var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
-    hash_hex = sodium.crypto_shorthash('test', key, 'hex');
-```
-
 Example (secretbox):
 
 ```javascript
