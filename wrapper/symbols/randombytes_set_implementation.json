@@ -9,5 +9,5 @@
                 }
         ],
         "target": "libsodium._randombytes_set_implementation(implementation_address) | 0",
-        "expect": "=== 0"
+        "assert": "=== 0"
 }

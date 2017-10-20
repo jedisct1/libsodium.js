@@ -21,6 +21,6 @@
                 }
         ],
         "target": "libsodium._crypto_sign_final_create(state_address, signature_address, null, privateKey_address) | 0",
-        "expect": "=== 0",
+        "assert": "=== 0",
         "return": "(libsodium._free(state_address), _format_output(signature, outputFormat))"
 }

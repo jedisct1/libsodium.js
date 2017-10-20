@@ -16,6 +16,6 @@
                 }
         ],
         "target": "libsodium._crypto_hash(hash_address, message_address, message_length, 0) | 0",
-        "expect": "=== 0",
+        "assert": "=== 0",
         "return": "_format_output(hash, outputFormat)"
 }

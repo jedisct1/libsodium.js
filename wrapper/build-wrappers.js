@@ -187,26 +187,26 @@ function buildSymbol(symbolDescription) {
     }
     //Writing the target call
     if (
-      symbolDescription.expect !== undefined &&
+      symbolDescription.assert !== undefined &&
       symbolDescription.return !== undefined
     ) {
       funcBody +=
         "if ((" +
         symbolDescription.target +
         ") " +
-        symbolDescription.expect +
+        symbolDescription.assert +
         ") {\n";
       funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
       funcBody += "\t_free_all(address_pool);\n";
       funcBody += "\treturn ret;\n";
       funcBody += "}\n";
       funcBody += "_free_and_throw_error(address_pool, 'incorrect usage');\n";
-    } else if (symbolDescription.expect !== undefined) {
+    } else if (symbolDescription.assert !== undefined) {
       funcBody +=
         "if ((" +
         symbolDescription.target +
         ") " +
-        symbolDescription.expect +
+        symbolDescription.assert +
         ") {\n";
       funcBody += "\t_free_all(address_pool);\n";
       funcBody += "\treturn;\n";

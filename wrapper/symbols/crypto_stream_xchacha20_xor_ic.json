@@ -30,6 +30,6 @@
                 }
         ],
         "target":"libsodium._crypto_stream_xchacha20_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
-        "expect": "=== 0",
+        "assert": "=== 0",
         "return": "_format_output(output_message, outputFormat)"
 }

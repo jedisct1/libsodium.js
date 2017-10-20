@@ -13,5 +13,5 @@
                 }
         ],
         "target": "libsodium._crypto_onetimeauth_update(state_address, message_chunk_address, message_chunk_length) | 0",
-        "expect": "=== 0"
+        "assert": "=== 0"
 }
