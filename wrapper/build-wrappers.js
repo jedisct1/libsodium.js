@@ -186,34 +186,34 @@ function buildSymbol(symbolDescription) {
       funcBody += currentOutputCode + "\n";
     }
     //Writing the target call
-    if (
-      symbolDescription.assert_after !== undefined &&
-      symbolDescription.return !== undefined
-    ) {
-      symbolDescription.assert_after.forEach(function(assert) {
-        funcBody +=
-          "if ((" + symbolDescription.target + ") " +
-          assert.condition + ") {\n";
-        funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
-        funcBody += "\t_free_all(address_pool);\n";
-        funcBody += "\treturn ret;\n";
-        funcBody += "}\n";
-        funcBody +=
-          "_free_and_throw_error(address_pool, " +
-          assert.or_else_throw + ");\n";
-      });
-    } else if (symbolDescription.assert_after !== undefined) {
-      symbolDescription.assert_after.forEach(function(assert) {
-        funcBody +=
-          "if ((" +
-          symbolDescription.target + ") " + assert + ") {\n";
-        funcBody += "\t_free_all(address_pool);\n";
-        funcBody += "\treturn;\n";
-        funcBody += "}\n";
-        funcBody +=
-          "_free_and_throw_error(address_pool, " +
-          assert.or_else_throw + ");\n";
-      });
+    if (symbolDescription.assert_after !== undefined) {
+      var target = symbolDescription.target;
+      if (symbolDescription.assert_after.length > 1) {
+        funcBody += "var _ret = " + target + ";\n";
+	target = "_ret";
+      }
+
+      if (symbolDescription.return !== undefined) {
+        symbolDescription.assert_after.forEach(function(assert) {
+          funcBody += "if ((" + target + ") " + assert.condition + ") {\n";       
+          funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
+          funcBody += "\t_free_all(address_pool);\n";
+          funcBody += "\treturn ret;\n";
+          funcBody += "}\n";
+          funcBody +=
+            "_free_and_throw_error(address_pool, " +
+            assert.or_else_throw + ");\n";
+        });	    
+      } else {
+        symbolDescription.assert_after.forEach(function(assert) {
+          funcBody += "if (!((" + target + ") " + assert.condition + ")) {\n";
+          funcBody +=
+            "\t_free_and_throw_error(address_pool, " +
+            assert.or_else_throw + ");\n";
+          funcBody += "}\n";
+          funcBody += "_free_all(address_pool);\n";	  
+	});
+      }
     } else if (symbolDescription.return !== undefined) {
       funcBody += sc(symbolDescription.target) + "\n";
       funcBody += "var ret = (" + symbolDescription.return + ");\n";
