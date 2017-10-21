@@ -194,13 +194,16 @@ function buildSymbol(symbolDescription) {
         "if ((" +
         symbolDescription.target +
         ") " +
-        symbolDescription.assert +
+        symbolDescription.assert.condition +
         ") {\n";
       funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
       funcBody += "\t_free_all(address_pool);\n";
       funcBody += "\treturn ret;\n";
       funcBody += "}\n";
-      funcBody += "_free_and_throw_error(address_pool, 'incorrect usage');\n";
+      funcBody +=
+        "_free_and_throw_error(address_pool, " +
+        symbolDescription.assert.or_else_throw +
+        ");\n";
     } else if (symbolDescription.assert !== undefined) {
       funcBody +=
         "if ((" +
@@ -211,7 +214,10 @@ function buildSymbol(symbolDescription) {
       funcBody += "\t_free_all(address_pool);\n";
       funcBody += "\treturn;\n";
       funcBody += "}\n";
-      funcBody += "_free_and_throw_error(address_pool, 'incorrect usage');\n";
+      funcBody +=
+        "_free_and_throw_error(address_pool, " +
+        symbolDescription.assert.or_else_throw +
+        ");\n";
     } else if (symbolDescription.return !== undefined) {
       funcBody += sc(symbolDescription.target) + "\n";
       funcBody += "var ret = (" + symbolDescription.return + ");\n";
@@ -225,7 +231,7 @@ function buildSymbol(symbolDescription) {
 
     functionsCode += funcCode;
   } else {
-    console.error("What is the symbol type " + symbolDescription.type + "?");
+    console.error("Unknown symbol type " + symbolDescription.type);
     process.exit(1);
   }
   docBuilder.buildDocForSymbol(symbolDescription);

@@ -21,6 +21,6 @@
                 }
         ],
         "target": "libsodium._crypto_box_beforenm(sharedKey_address, publicKey_address, privateKey_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "_format_output(sharedKey, outputFormat)"
 }

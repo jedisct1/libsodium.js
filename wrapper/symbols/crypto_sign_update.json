@@ -13,5 +13,5 @@
                 }
         ],
         "target": "libsodium._crypto_sign_update(state_address, message_chunk_address, message_chunk_length) | 0",
-        "assert": "=== 0"
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}]
 }

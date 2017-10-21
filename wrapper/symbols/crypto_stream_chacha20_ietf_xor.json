@@ -26,6 +26,6 @@
                 }
         ],
         "target":"libsodium._crypto_stream_chacha20_ietf_xor(output_message_address, input_message_address, input_message_length, 0, nonce_address, key_address)",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "_format_output(output_message, outputFormat)"
 }

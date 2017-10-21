@@ -21,6 +21,6 @@
                 }
         ],
         "target": "libsodium._crypto_onetimeauth(hash_address, message_address, message_length, 0, key_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "_format_output(hash, outputFormat)"
 }

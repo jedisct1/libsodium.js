@@ -10,6 +10,6 @@
                 }
         ],
         "target": "libsodium._crypto_sign_init(state_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "internal error"}],
         "return": "state_address"
 }

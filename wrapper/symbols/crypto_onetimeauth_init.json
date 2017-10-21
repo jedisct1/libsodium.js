@@ -15,6 +15,6 @@
                 }
         ],
         "target": "libsodium._crypto_onetimeauth_init(state_address, key_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "state_address"
 }

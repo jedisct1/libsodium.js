@@ -17,6 +17,6 @@
                 }
         ],
         "target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_address, privateKey_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid key"}],
         "return": "_format_output(seed, outputFormat)"
 }

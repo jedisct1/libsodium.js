@@ -21,6 +21,6 @@
                 }
         ],
         "target": "libsodium._crypto_box_seed_keypair(publicKey_address, privateKey_address, seed_address) | 0",
-        "assert": "=== 0",
+        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "{publicKey: _format_output(publicKey, outputFormat), privateKey: _format_output(privateKey, outputFormat), keyType: 'x25519'}"
 }
