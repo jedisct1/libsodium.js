@@ -187,37 +187,33 @@ function buildSymbol(symbolDescription) {
     }
     //Writing the target call
     if (
-      symbolDescription.assert !== undefined &&
+      symbolDescription.assert_after !== undefined &&
       symbolDescription.return !== undefined
     ) {
-      funcBody +=
-        "if ((" +
-        symbolDescription.target +
-        ") " +
-        symbolDescription.assert.condition +
-        ") {\n";
-      funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
-      funcBody += "\t_free_all(address_pool);\n";
-      funcBody += "\treturn ret;\n";
-      funcBody += "}\n";
-      funcBody +=
-        "_free_and_throw_error(address_pool, " +
-        symbolDescription.assert.or_else_throw +
-        ");\n";
-    } else if (symbolDescription.assert !== undefined) {
-      funcBody +=
-        "if ((" +
-        symbolDescription.target +
-        ") " +
-        symbolDescription.assert +
-        ") {\n";
-      funcBody += "\t_free_all(address_pool);\n";
-      funcBody += "\treturn;\n";
-      funcBody += "}\n";
-      funcBody +=
-        "_free_and_throw_error(address_pool, " +
-        symbolDescription.assert.or_else_throw +
-        ");\n";
+      symbolDescription.assert_after.forEach(function(assert) {
+        funcBody +=
+          "if ((" + symbolDescription.target + ") " +
+          assert.condition + ") {\n";
+        funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
+        funcBody += "\t_free_all(address_pool);\n";
+        funcBody += "\treturn ret;\n";
+        funcBody += "}\n";
+        funcBody +=
+          "_free_and_throw_error(address_pool, " +
+          assert.or_else_throw + ");\n";
+      });
+    } else if (symbolDescription.assert_after !== undefined) {
+      symbolDescription.assert_after.forEach(function(assert) {
+        funcBody +=
+          "if ((" +
+          symbolDescription.target + ") " + assert + ") {\n";
+        funcBody += "\t_free_all(address_pool);\n";
+        funcBody += "\treturn;\n";
+        funcBody += "}\n";
+        funcBody +=
+          "_free_and_throw_error(address_pool, " +
+          assert.or_else_throw + ");\n";
+      });
     } else if (symbolDescription.return !== undefined) {
       funcBody += sc(symbolDescription.target) + "\n";
       funcBody += "var ret = (" + symbolDescription.return + ");\n";
