@@ -202,14 +202,14 @@ function buildSymbol(symbolDescription) {
           funcBody += "}\n";
           funcBody +=
             "_free_and_throw_error(address_pool, " +
-            assert.or_else_throw + ");\n";
+            '"' + assert.or_else_throw + '"' + ");\n";
         });	    
       } else {
         symbolDescription.assert_after.forEach(function(assert) {
           funcBody += "if (!((" + target + ") " + assert.condition + ")) {\n";
           funcBody +=
             "\t_free_and_throw_error(address_pool, " +
-            assert.or_else_throw + ");\n";
+            '"' + assert.or_else_throw + '"' + ");\n";
           funcBody += "}\n";
           funcBody += "_free_all(address_pool);\n";	  
 	});
