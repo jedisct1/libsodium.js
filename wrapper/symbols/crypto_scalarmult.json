@@ -22,6 +22,6 @@
                 }
         ],
         "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
-        "assert_after": [{"condition": "=== 0", "or_else_throw": "weak public key"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "weak public key"}],
         "return": "_format_output(sharedSecret, outputFormat)"
 }

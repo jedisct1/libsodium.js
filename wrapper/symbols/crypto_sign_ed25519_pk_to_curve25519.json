@@ -16,6 +16,6 @@
                 }
         ],
         "target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",
-        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid key"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid key"}],
         "return": "_format_output(cPk, outputFormat)"
 }

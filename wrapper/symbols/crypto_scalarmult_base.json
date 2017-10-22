@@ -17,6 +17,6 @@
                 }
         ],
         "target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
-        "assert_after": [{"condition": "=== 0", "or_else_throw": "insecure scalar"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "insecure scalar"}],
         "return": "_format_output(publicKey, outputFormat)"
 }

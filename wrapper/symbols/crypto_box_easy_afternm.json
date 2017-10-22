@@ -25,6 +25,6 @@
                 }
         ],
         "target": "libsodium._crypto_box_easy_afternm(ciphertext_address, message_address, message_length, 0, nonce_address, sharedKey_address) | 0",
-        "assert_after": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
         "return": "_format_output(ciphertext, outputFormat)"
 }

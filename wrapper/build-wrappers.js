@@ -186,15 +186,15 @@ function buildSymbol(symbolDescription) {
       funcBody += currentOutputCode + "\n";
     }
     //Writing the target call
-    if (symbolDescription.assert_after !== undefined) {
+    if (symbolDescription.assert_retval !== undefined) {
       var target = symbolDescription.target;
-      if (symbolDescription.assert_after.length > 1) {
+      if (symbolDescription.assert_retval.length > 1) {
         funcBody += "var _ret = " + target + ";\n";
 	target = "_ret";
       }
 
       if (symbolDescription.return !== undefined) {
-        symbolDescription.assert_after.forEach(function(assert) {
+        symbolDescription.assert_retval.forEach(function(assert) {
           funcBody += "if ((" + target + ") " + assert.condition + ") {\n";       
           funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
           funcBody += "\t_free_all(address_pool);\n";
@@ -205,7 +205,7 @@ function buildSymbol(symbolDescription) {
             '"' + assert.or_else_throw + '"' + ");\n";
         });	    
       } else {
-        symbolDescription.assert_after.forEach(function(assert) {
+        symbolDescription.assert_retval.forEach(function(assert) {
           funcBody += "if (!((" + target + ") " + assert.condition + ")) {\n";
           funcBody +=
             "\t_free_and_throw_error(address_pool, " +

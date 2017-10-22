@@ -25,6 +25,6 @@
                 }
         ],
         "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, privateKey_address) | 0",
-        "assert_after": [{"condition": "=== 0", "or_else_throw": "incorrect key pair for the given ciphertext"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "incorrect key pair for the given ciphertext"}],
         "return": "_format_output(plaintext, outputFormat)"
 }
