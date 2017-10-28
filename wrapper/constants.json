@@ -45,6 +45,7 @@
         { "name": "crypto_onetimeauth_BYTES", "type": "uint" },
         { "name": "crypto_onetimeauth_KEYBYTES", "type": "uint" },
         { "name": "crypto_pwhash_ALG_ARGON2I13", "type": "uint" },
+        { "name": "crypto_pwhash_ALG_ARGON2ID13", "type": "uint" },
         { "name": "crypto_pwhash_ALG_DEFAULT", "type": "uint" },
         { "name": "crypto_pwhash_BYTES_MIN", "type": "uint" },
         { "name": "crypto_pwhash_BYTES_MAX", "type": "uint" },
