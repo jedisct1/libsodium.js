@@ -144,6 +144,7 @@ is given instead, the wrappers will automatically convert the string
 to an array containing a UTF-8 representation of the string.
 
 Example:
+
 ```javascript
 var key = sodium.randombytes_buf(sodium.crypto_shorthash_KEYBYTES),
     hash1 = sodium.crypto_shorthash(new Uint8Array([1, 2, 3, 4]), key),
@@ -156,26 +157,20 @@ If the output is a unique binary buffer, it is returned as a
 Example (secretbox):
 
 ```javascript
-// Load your secret key from a safe place and reuse it across multiple
-// secretbox calls. (Obviously don't use this example key for anything
-// real.)
-//
-var secret = Buffer.from('724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed', 'hex');
+let key = sodium.from_hex('724b092810ec86d7e35c9d067702b31ef90bc43a7b598626749914d6a3e033ed');
 
-// Given a message as a string, return a Buffer containing the
-// nonce (in the first 24 bytes) and the encrypted content.
-var encrypt = function(message) {
-    // You must use a different nonce for each message you encrypt.
-    var nonce = Buffer.from(sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES));
-    var buf = Buffer.from(message);
-    return Buffer.concat([nonce, Buffer.from(sodium.crypto_secretbox_easy(buf, nonce, secret))]);
-},
+function encrypt_and_prepend_nonce(message) {
+    let nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+    return nonce.concat(sodium.crypto_secretbox_easy(message, nonce, key));
+}
 
-// Decrypt takes a Buffer and returns the decrypted message as plain text.
-var decrypt = function(encryptedBuffer) {
-    var nonce = encryptedBuffer.slice(0, sodium.crypto_box_NONCEBYTES);
-    var encryptedMessage = encryptedBuffer.slice(sodium.crypto_box_NONCEBYTES);
-    return sodium.crypto_secretbox_open_easy(encryptedMessage, nonce, secret, 'text');
+function decrypt_after_extracting_nonce(nonce_and_ciphertext) {
+    if (nonce_and_ciphertext.length < sodium.crypto_secretbox_NONCEBYTES + sodium.crypto_secretbox_MACBYTES) {
+        throw "Short message";
+    }
+    let nonce = nonce_and_ciphertext.slice(0, sodium.crypto_secretbox_NONCEBYTES),
+        ciphertext = nonce_and_ciphertext.slice(sodium.crypto_secretbox_NONCEBYTES);
+    return sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
 }
 ```
 
