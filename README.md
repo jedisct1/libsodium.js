@@ -95,12 +95,9 @@ well as the higher-level Javascript wrappers. It can be loaded
 asynchronusly.
 
 A `sodium` object should be defined in the global namespace, with the
-following properties:
+following property:
 
 - `onload`: the function to call after the wrapper is initialized.
-- `totalMemory` (optional): the maximum amount of memory that sodium can use.
-The default value should be fine for most applications, unless you
-need to use password hashing functions with a large amount of memory.
 
 Example:
 
