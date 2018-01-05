@@ -27,7 +27,7 @@ docStr +=
   "Please note that a function that returns more than one variable will in fact return an object, which will contain the outputs in question and whose attributes will be named after the outputs' names" +
   newParagraph();
 docStr +=
-  'Please also note that these are the function available "in general" in the wrapper. The actual number of availble functions in given build may be inferior to that, depending on what functions you choose to build to JS.' +
+  'Please also note that these are the function available "in general" in the wrapper. The actual number of available functions in given build may be inferior to that, depending on what functions you choose to build to JS.' +
   newParagraph();
 docStr +=
   "In addition to the main functions listed below, the library comes with a short list of helper methods. And here they are:" +
