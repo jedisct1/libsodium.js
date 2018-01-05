@@ -33,10 +33,10 @@ docStr +=
   "In addition to the main functions listed below, the library comes with a short list of helper methods. And here they are:" +
   newLine();
 docStr +=
-  "* `uint8array_to_String(buf)`: converts an Uint8Array into a UTF8 standard string" +
+  "* `from_string(string)`: converts a standard string into a Uint8Array" +
   newLine();
 docStr +=
-  "* `from_string(string)`: converts a standard string into a Uint8Array" +
+  "* `to_string(buf)`: converts a Uint8Array to a standard string" +
   newLine();
 docStr +=
   "* `to_hex(buf)`: returns the hexadecimal representation of the provided buf" +
@@ -45,26 +45,17 @@ docStr +=
   "* `from_hex(string)`: converts the provided hex-string into a Uint8Array and returns it" +
   newLine();
 docStr +=
-  "* `to_base64(buf)`: returns the base64 representation of the provided buf" +
+  "* `to_base64(buf, variant)`: returns the base64 representation of the provided buf" +
   newLine();
 docStr +=
-  "* `from_base64(string)`: tries to convert the supposedly base64 string into a Uint8Array" +
-  newLine();
-docStr +=
-  "* `available_encodings()`: returns a list of the available encodings" +
-  newLine();
-docStr +=
-  "* `set_encoding(encodingName)`: reset the default result encoding to the encoding named `encodingName`" +
-  newLine();
-docStr +=
-  "* `get_encoding()`: get the name of the encoding currently set as default" +
+  "* `from_base64(string, variant)`: tries to convert the supposedly base64 string into a Uint8Array" +
   newLine();
 docStr +=
   "* `symbols()`: returns a list of the currently methods and constants" +
   newLine();
 docStr +=
   "* `raw`: attribute referencing the raw emscripten-built libsodium library that we are wrapping" +
-  newLine();
+  newParagraph();
 
 exports.buildDocForSymbol = function(s) {
   if (typeof s != "object") throw new TypeError("s must be a object");
