@@ -1,0 +1,20 @@
+{
+        "name": "crypto_box_curve25519xchacha20poly1305_keypair",
+        "type": "function",
+        "inputs": [],
+        "outputs": [
+                {
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()",
+                        "name": "publicKey"
+                },
+                {
+                        "type": "buf",
+                        "size": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()",
+                        "name": "secretKey"
+                }
+        ],
+        "target": "libsodium._crypto_box_curve25519xchacha20poly1305_keypair(publicKey_address, secretKey_address) | 0",
+        "expect": "=== 0",
+        "return": "_format_output({publicKey: publicKey, privateKey: secretKey, keyType: \"curve25519\"}, outputFormat)"
+}
