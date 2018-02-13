@@ -193,10 +193,11 @@ Alternatively, the "sumo" version, available in the
 the symbols from the original library. This includes undocumented,
 untested, deprecated, low-level and easy to misuse functions.
 
-The `crypto_pwhash_*` function set is also only included in the Sumo
-version. The high amount of heap memory (allocated after loading)
-required by these functions may not be desirable when they are not
-being used.
+The `crypto_pwhash_*` function set is included in both versions.
+Since there is a cap to the amount of heap memory that can be used
+both by the Javascript and the Webassembly versions, it is recommended
+to keep the memory parameter low, and increase the number of
+operations instead.
 
 The sumo version is slightly larger than the standard version, and
 should be used only if you really need the extra symbols it provides.
