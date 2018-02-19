@@ -9,7 +9,7 @@ LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
-UGLIFY = uglifyjs --mangle --compress drop_console=true,passes=3 --
+UGLIFY = npx uglifyjs --mangle --compress drop_console=true,passes=3 --
 
 all: pack
 	@echo
@@ -36,6 +36,7 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 targets: standard sumo
 
 pack: targets
+	@npm install
 	@echo + Packing
 	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
 	  echo "Packing [$$i]" ; \
