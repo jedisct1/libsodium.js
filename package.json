@@ -1,16 +1,21 @@
 {
   "name": "libsodium-wrappers",
   "version": "0.7.3",
-  "description":
-    "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
+  "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
   "main": "dist/modules/libsodium-wrappers.js",
-  "files": ["dist/modules/libsodium-wrappers.js", "package.json"],
+  "files": [
+    "dist/modules/libsodium-wrappers.js",
+    "package.json"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
     "libsodium": "0.7.3"
+  },
+  "devDependencies": {
+    "uglify-es": "3.3.9"
   },
   "keywords": [
     "crypto",
@@ -27,11 +32,16 @@
     "ecc"
   ],
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
-  "contributors": ["Frank Denis (@jedisct1)", "Ryan Lester (@buu700)"],
+  "contributors": [
+    "Frank Denis (@jedisct1)",
+    "Ryan Lester (@buu700)"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jedisct1/libsodium.js/issues"
   },
   "homepage": "https://github.com/jedisct1/libsodium.js",
-  "browser": { "fs": false }
+  "browser": {
+    "fs": false
+  }
 }

@@ -3,13 +3,13 @@
 ## Overview
 
 The [sodium](https://github.com/jedisct1/libsodium) crypto library
-compiled to WebAssembly and pure Javascript using
+compiled to WebAssembly and pure JavaScript using
 [Emscripten](https://github.com/kripken/emscripten), with
 automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weights 188 Kb (minified, gzipped, includes pure js +
-webassembly versions) and can run in a web browser as well as server-side.
+The complete library weights 188 KB (minified, gzipped, includes pure JS +
+WebAssembly versions) and can run in a web browser as well as server-side.
 
 ### Compatibility
 
@@ -91,7 +91,7 @@ const _sodium = require('libsodium-wrappers');
 ### Usage (in a web browser, via a callback)
 
 The `sodium.js` file includes both the core libsodium functions, as
-well as the higher-level Javascript wrappers. It can be loaded
+well as the higher-level JavaScript wrappers. It can be loaded
 asynchronusly.
 
 A `sodium` object should be defined in the global namespace, with the
@@ -122,7 +122,7 @@ whose value is one of: `base64_variants.ORIGINAL`, `base64_variants.ORIGINAL_NO_
 * `from_string()`, `to_string()`
 * `pad(<buffer>, <block size>)`, `unpad(<buffer>, <block size>)`
 * `memcmp()` (constant-time check for equality, returns `true` or `false`)
-* `compare() (constant-time comparison. Values must have the same
+* `compare()` (constant-time comparison. Values must have the same
 size. Returns `-1`, `0` or `1`)
 * `memzero()` (applies to `Uint8Array` objects)
 * `increment()` (increments an arbitrary-long number stored as a
@@ -195,7 +195,7 @@ untested, deprecated, low-level and easy to misuse functions.
 
 The `crypto_pwhash_*` function set is included in both versions.
 Since there is a cap to the amount of heap memory that can be used
-both by the Javascript and the Webassembly versions, it is recommended
+both by the JavaScript and the WebAssembly versions, it is recommended
 to keep the memory parameter low, and increase the number of
 operations instead.
 
@@ -207,15 +207,15 @@ should be used only if you really need the extra symbols it provides.
 If you want to compile the files yourself, the following dependencies
 need to be installed on your system:
 
-* emscripten
+* Emscripten
 * binaryen
 * git
-* nodejs
+* NodeJS
 * make
-* uglify-es (`yarn global add uglify-es`)
 
-Running `make` will clone libsodium, build it, test it, build the
-wrapper, and create the modules and minified distribution files.
+Running `make` will install the dev dependencies, clone libsodium,
+build it, test it, build the wrapper, and create the modules and
+minified distribution files.
 
 ## Authors
 
