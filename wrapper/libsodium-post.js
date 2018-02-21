@@ -1,4 +1,4 @@
-    if typeof(process) === 'object' { process.removeAllListeners("uncaughtException"); process.removeAllListeners("unhandledRejection"); }
+    if (typeof(process) === 'object') { process.removeAllListeners("uncaughtException"); process.removeAllListeners("unhandledRejection"); }
     return Module;
 }
 
