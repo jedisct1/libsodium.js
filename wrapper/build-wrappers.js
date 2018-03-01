@@ -254,7 +254,7 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [injectTabs(functionsCode), injectTabs(exportsCode, 3), libsodiumModuleName]
+    [injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
