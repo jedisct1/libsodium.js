@@ -217,7 +217,7 @@ function buildSymbol(symbolDescription) {
     } else {
       funcBody += sc(symbolDescription.target) + "\n";
     }
-    funcCode += injectTabs(funcBody, 1);
+    funcCode += injectTabs(funcBody);
     funcCode += "}\n";
 
     functionsCode += funcCode;
@@ -255,14 +255,14 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [injectTabs(functionsCode, 1), injectTabs(exportsCode, 3), libsodiumModuleName]
+    [injectTabs(functionsCode), injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
 }
 
 function injectTabs(code, count) {
-  if (count == undefined) count = 2;
+  if (count == undefined) count = 1;
 
   var out = "";
   var lines = code.split(/\r?\n/g);
