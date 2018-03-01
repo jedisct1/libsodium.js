@@ -116,7 +116,7 @@ function buildSymbol(symbolDescription) {
     throw new TypeError("symbolDescription must be a function");
   if (symbolDescription.type == "function") {
     var targetName = "libsodium._" + symbolDescription.name;
-    var funcCode = "\n\tfunction " + symbolDescription.name + "(";
+    var funcCode = "function " + symbolDescription.name + "(";
     var funcBody = "";
     //Adding parameters array in function's interface, their conversions in the function's body
     var paramsArray = [];
@@ -151,9 +151,9 @@ function buildSymbol(symbolDescription) {
       paramsArray.push("outputFormat");
     }
     funcCode += paramsArray.join(", ") + ") {\n";
-    funcCode += "\t\tvar address_pool = [];\n";
+    funcCode += "  var address_pool = [];\n";
     if (!symbolDescription.noOutputFormat) {
-      funcCode += "\t\t_check_output_format(outputFormat);\n";
+      funcCode += "  _check_output_format(outputFormat);\n";
     }
     //Writing the outputs declaration code
     symbolDescription.outputs = symbolDescription.outputs || [];
@@ -217,10 +217,11 @@ function buildSymbol(symbolDescription) {
     } else {
       funcBody += sc(symbolDescription.target) + "\n";
     }
-    funcBody = injectTabs(funcBody);
-    funcCode += funcBody + "\n\t}\n";
+    funcCode += injectTabs(funcBody, 1);
+    funcCode += "}\n";
 
     functionsCode += funcCode;
+    functionsCode += "\n";
   } else {
     console.error("Unknown symbol type " + symbolDescription.type);
     process.exit(1);
@@ -254,7 +255,7 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [functionsCode, injectTabs(exportsCode, 3), libsodiumModuleName]
+    [injectTabs(functionsCode, 1), injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
