@@ -6,10 +6,10 @@
 
     var libsodium;
     var ready = libsodiumModule.ready.then(function() {
-        libsodium = libsodiumModule;
-        if (libsodium._sodium_init() !== 0) {
-          throw new Error("libsodium was not correctly initialized.");
-        }
+      libsodium = libsodiumModule;
+      if (libsodium._sodium_init() !== 0) {
+        throw new Error("libsodium was not correctly initialized.");
+      }
 
 /*{{exports_here}}*/
 
