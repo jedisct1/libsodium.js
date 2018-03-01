@@ -264,7 +264,7 @@ function injectTabs(code, count) {
   if (count == undefined) count = 1;
 
   var out = "";
-  code = code.replace(/\r?\n$/, "") // remove trailing line break avoiud split result past the code end
+  code = code.replace(/\r?\n$/, "") // remove trailing line break to avoid split result past the code end
   var lines = code.split(/\r?\n/g);
   for (var i = 0; i < lines.length; ++i) {
     if (lines[i] !== "") {
