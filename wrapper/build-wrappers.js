@@ -64,7 +64,6 @@ for (var i = 0; i < symbolsFiles.length; i++) {
 for (var i = 0; i < symbols.length; i++) {
   buildSymbol(symbols[i]);
 }
-exportsCode += "\n";
 exportFunctions(symbols);
 exportConstants(loadConstants());
 finalizeWrapper();

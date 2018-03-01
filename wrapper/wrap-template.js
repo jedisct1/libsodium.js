@@ -12,7 +12,6 @@
       }
 
 /*{{exports_here}}*/
-
     });
 
     // List of functions and constants defined in the wrapped libsodium
