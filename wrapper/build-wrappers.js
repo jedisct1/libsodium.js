@@ -76,15 +76,13 @@ function exportFunctions(symbols) {
     keys.push('"' + symbols[i].name + '"');
     functions.push(symbols[i].name);
   }
-  exportsCode +=
-    "\tvar exported_functions = [" + keys.sort().join(", ") + "],\n";
-  exportsCode += "\t      functions = [" + functions.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
-  exportsCode +=
-    '\t\tif (typeof libsodium["_" + exported_functions[i]] === "function") {\n';
-  exportsCode += "\t\t\texports[exported_functions[i]] = functions[i];\n";
-  exportsCode += "\t\t}\n";
-  exportsCode += "\t}\n";
+  exportsCode += "var exported_functions = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "var functions = [" + functions.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < functions.length; i++) {\n";
+  exportsCode += '  if (typeof libsodium["_" + exported_functions[i]] === "function") {\n';
+  exportsCode += "    exports[exported_functions[i]] = functions[i];\n";
+  exportsCode += "  }\n";
+  exportsCode += "}\n";
 }
 
 function exportConstants(constSymbols) {
@@ -94,12 +92,11 @@ function exportConstants(constSymbols) {
       keys.push('"' + constSymbols[i].name + '"');
     }
   }
-  exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
-  exportsCode += '\t\tvar raw = libsodium["_" + constants[i].toLowerCase()];\n';
-  exportsCode +=
-    '\t\tif (typeof raw === "function") exports[constants[i]] = raw();\n';
-  exportsCode += "\t}\n";
+  exportsCode += "var constants = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < constants.length; i++) {\n";
+  exportsCode += '  var raw = libsodium["_" + constants[i].toLowerCase()];\n';
+  exportsCode += '  if (typeof raw === "function") exports[constants[i]] = raw();\n';
+  exportsCode += "}\n";
 
   keys = [];
   for (i = 0; i < constSymbols.length; i++) {
@@ -107,13 +104,11 @@ function exportConstants(constSymbols) {
       keys.push('"' + constSymbols[i].name + '"');
     }
   }
-  exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
-  exportsCode +=
-    '\t\tvar raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
-  exportsCode +=
-    '\t\tif (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
-  exportsCode += "\t}\n";
+  exportsCode += "var constants_str = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < constants_str.length; i++) {\n";
+  exportsCode += '  var raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
+  exportsCode += '  if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
+  exportsCode += "}\n";
 }
 
 function buildSymbol(symbolDescription) {
@@ -259,7 +254,7 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [functionsCode, exportsCode, libsodiumModuleName]
+    [functionsCode, injectTabs(exportsCode), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
