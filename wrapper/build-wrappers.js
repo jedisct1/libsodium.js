@@ -64,7 +64,6 @@ for (var i = 0; i < symbolsFiles.length; i++) {
 for (var i = 0; i < symbols.length; i++) {
   buildSymbol(symbols[i]);
 }
-exportsCode += "\n";
 exportFunctions(symbols);
 exportConstants(loadConstants());
 finalizeWrapper();
@@ -76,15 +75,13 @@ function exportFunctions(symbols) {
     keys.push('"' + symbols[i].name + '"');
     functions.push(symbols[i].name);
   }
-  exportsCode +=
-    "\tvar exported_functions = [" + keys.sort().join(", ") + "],\n";
-  exportsCode += "\t      functions = [" + functions.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < functions.length; i++) {\n";
-  exportsCode +=
-    '\t\tif (typeof libsodium["_" + exported_functions[i]] === "function") {\n';
-  exportsCode += "\t\t\texports[exported_functions[i]] = functions[i];\n";
-  exportsCode += "\t\t}\n";
-  exportsCode += "\t}\n";
+  exportsCode += "var exported_functions = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "var functions = [" + functions.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < functions.length; i++) {\n";
+  exportsCode += '  if (typeof libsodium["_" + exported_functions[i]] === "function") {\n';
+  exportsCode += "    exports[exported_functions[i]] = functions[i];\n";
+  exportsCode += "  }\n";
+  exportsCode += "}\n";
 }
 
 function exportConstants(constSymbols) {
@@ -94,12 +91,11 @@ function exportConstants(constSymbols) {
       keys.push('"' + constSymbols[i].name + '"');
     }
   }
-  exportsCode += "\tvar constants = [" + keys.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < constants.length; i++) {\n";
-  exportsCode += '\t\tvar raw = libsodium["_" + constants[i].toLowerCase()];\n';
-  exportsCode +=
-    '\t\tif (typeof raw === "function") exports[constants[i]] = raw();\n';
-  exportsCode += "\t}\n";
+  exportsCode += "var constants = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < constants.length; i++) {\n";
+  exportsCode += '  var raw = libsodium["_" + constants[i].toLowerCase()];\n';
+  exportsCode += '  if (typeof raw === "function") exports[constants[i]] = raw();\n';
+  exportsCode += "}\n";
 
   keys = [];
   for (i = 0; i < constSymbols.length; i++) {
@@ -107,13 +103,11 @@ function exportConstants(constSymbols) {
       keys.push('"' + constSymbols[i].name + '"');
     }
   }
-  exportsCode += "\tvar constants_str = [" + keys.sort().join(", ") + "];\n";
-  exportsCode += "\tfor (var i = 0; i < constants_str.length; i++) {\n";
-  exportsCode +=
-    '\t\tvar raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
-  exportsCode +=
-    '\t\tif (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
-  exportsCode += "\t}\n";
+  exportsCode += "var constants_str = [" + keys.sort().join(", ") + "];\n";
+  exportsCode += "for (var i = 0; i < constants_str.length; i++) {\n";
+  exportsCode += '  var raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
+  exportsCode += '  if (typeof raw === "function") exports[constants_str[i]] = libsodium.Pointer_stringify(raw());\n';
+  exportsCode += "}\n";
 }
 
 function buildSymbol(symbolDescription) {
@@ -121,7 +115,7 @@ function buildSymbol(symbolDescription) {
     throw new TypeError("symbolDescription must be a function");
   if (symbolDescription.type == "function") {
     var targetName = "libsodium._" + symbolDescription.name;
-    var funcCode = "\n\tfunction " + symbolDescription.name + "(";
+    var funcCode = "function " + symbolDescription.name + "(";
     var funcBody = "";
     //Adding parameters array in function's interface, their conversions in the function's body
     var paramsArray = [];
@@ -156,9 +150,9 @@ function buildSymbol(symbolDescription) {
       paramsArray.push("outputFormat");
     }
     funcCode += paramsArray.join(", ") + ") {\n";
-    funcCode += "\t\tvar address_pool = [];\n";
+    funcCode += "  var address_pool = [];\n";
     if (!symbolDescription.noOutputFormat) {
-      funcCode += "\t\t_check_output_format(outputFormat);\n";
+      funcCode += "  _check_output_format(outputFormat);\n";
     }
     //Writing the outputs declaration code
     symbolDescription.outputs = symbolDescription.outputs || [];
@@ -222,10 +216,11 @@ function buildSymbol(symbolDescription) {
     } else {
       funcBody += sc(symbolDescription.target) + "\n";
     }
-    funcBody = injectTabs(funcBody);
-    funcCode += funcBody + "\n\t}\n";
+    funcCode += injectTabs(funcBody);
+    funcCode += "}\n";
 
     functionsCode += funcCode;
+    functionsCode += "\n";
   } else {
     console.error("Unknown symbol type " + symbolDescription.type);
     process.exit(1);
@@ -259,14 +254,25 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [functionsCode, exportsCode, libsodiumModuleName]
+    [injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
 }
 
-function injectTabs(code) {
-  return ("\n" + code).replace(/\n/g, "\n\t\t");
+function injectTabs(code, count) {
+  if (count == undefined) count = 1;
+
+  var out = "";
+  code = code.replace(/\r?\n$/, "") // remove trailing line break avoiud split result past the code end
+  var lines = code.split(/\r?\n/g);
+  for (var i = 0; i < lines.length; ++i) {
+    if (lines[i] !== "") {
+      out += "  ".repeat(count) + lines[i];
+    }
+    out += "\n";
+  }
+  return out;
 }
 
 function loadConstants() {

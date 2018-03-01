@@ -6,13 +6,12 @@
 
     var libsodium;
     var ready = libsodiumModule.ready.then(function() {
-        libsodium = libsodiumModule;
-        if (libsodium._sodium_init() !== 0) {
-          throw new Error("libsodium was not correctly initialized.");
-        }
+      libsodium = libsodiumModule;
+      if (libsodium._sodium_init() !== 0) {
+        throw new Error("libsodium was not correctly initialized.");
+      }
 
 /*{{exports_here}}*/
-
     });
 
     // List of functions and constants defined in the wrapped libsodium
@@ -552,7 +551,7 @@
       );
     }
 
-    /*{{wraps_here}}*/
+/*{{wraps_here}}*/
 
     exports.add = add;
     exports.base64_variants = base64_variants;
