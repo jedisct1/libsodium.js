@@ -266,7 +266,7 @@ function injectTabs(code, count) {
   var out = "";
   var lines = code.split(/\r?\n/g);
   for (var i = 0; i < lines.length; ++i) {
-    out += "\t".repeat(count) + lines[i] + "\n";
+    out += "  ".repeat(count) + lines[i] + "\n";
   }
   return out;
 }
