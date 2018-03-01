@@ -254,14 +254,21 @@ function finalizeWrapper() {
   scriptBuf = applyMacro(
     scriptBuf,
     ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [functionsCode, injectTabs(exportsCode), libsodiumModuleName]
+    [functionsCode, injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
 }
 
-function injectTabs(code) {
-  return ("\n" + code).replace(/\n/g, "\n\t\t");
+function injectTabs(code, count) {
+  if (count == undefined) count = 2;
+
+  var out = "";
+  var lines = code.split(/\r?\n/g);
+  for (var i = 0; i < lines.length; ++i) {
+    out += "\t".repeat(count) + lines[i] + "\n";
+  }
+  return out;
 }
 
 function loadConstants() {
