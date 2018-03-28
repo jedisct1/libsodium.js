@@ -15,7 +15,7 @@
     "libsodium": "0.7.3"
   },
   "devDependencies": {
-    "uglify-es": "3.3.9"
+    "uglify-es": "^3"
   },
   "keywords": [
     "crypto",
