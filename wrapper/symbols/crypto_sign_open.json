@@ -5,7 +5,8 @@
         "inputs": [
                 {
                         "name": "signedMessage",
-                        "type": "unsized_buf"
+                        "type": "minsized_buf",
+                        "size": "libsodium._crypto_sign_bytes()"
                 },
                 {
                         "name": "publicKey",

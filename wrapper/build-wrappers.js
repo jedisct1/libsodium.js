@@ -23,8 +23,7 @@ for (var i = 0; i < macrosFiles.length; i++) {
     continue;
   }
   var macroCode = fs.readFileSync(
-    path.join(__dirname, "macros", macrosFiles[i]),
-    {
+    path.join(__dirname, "macros", macrosFiles[i]), {
       encoding: "utf8"
     }
   );
@@ -47,8 +46,7 @@ for (var i = 0; i < symbolsFiles.length; i++) {
     continue;
   }
   var currentSymbol = fs.readFileSync(
-    path.join(__dirname, "symbols", symbolsFiles[i]),
-    {
+    path.join(__dirname, "symbols", symbolsFiles[i]), {
       encoding: "utf8"
     }
   );
@@ -129,16 +127,12 @@ function buildSymbol(symbolDescription) {
       if (currentParameter.type == "buf") {
         currentParameterCode = macros.input_buf;
         currentParameterCode = applyMacro(
-          currentParameterCode,
-          ["{var_name}", "{var_size}"],
-          [currentParameter.name, currentParameter.size]
+          currentParameterCode, ["{var_name}", "{var_size}"], [currentParameter.name, currentParameter.size]
         );
       } else if (macros["input_" + currentParameter.type]) {
         currentParameterCode = macros["input_" + currentParameter.type];
         currentParameterCode = applyMacro(
-          currentParameterCode,
-          ["{var_name}"],
-          [currentParameter.name]
+          currentParameterCode, ["{var_name}"], [currentParameter.name]
         );
       } else {
         console.error("Unsupported input type " + currentParameter.type + "?");
@@ -162,16 +156,12 @@ function buildSymbol(symbolDescription) {
       if (currentOutput.type === "buf") {
         currentOutputCode = macros.output_buf;
         currentOutputCode = applyMacro(
-          currentOutputCode,
-          ["{var_name}", "{var_size}"],
-          [currentOutput.name, currentOutput.size]
+          currentOutputCode, ["{var_name}", "{var_size}"], [currentOutput.name, currentOutput.size]
         );
       } else if (macros["output_" + currentOutput.type]) {
         currentOutputCode = macros["output_" + currentOutput.type];
         currentOutputCode = applyMacro(
-          currentOutputCode,
-          ["{var_name}"],
-          [currentOutput.name]
+          currentOutputCode, ["{var_name}"], [currentOutput.name]
         );
       } else {
         console.error("What is the output type " + currentOutput.type + "?");
@@ -184,33 +174,33 @@ function buildSymbol(symbolDescription) {
       var target = symbolDescription.target;
       if (symbolDescription.assert_retval.length > 1) {
         funcBody += "var _ret = " + target + ";\n";
-	target = "_ret";
+        target = "_ret";
       }
 
       if (symbolDescription.return !== undefined) {
-        symbolDescription.assert_retval.forEach(function(assert) {
-          funcBody += "if ((" + target + ") " + assert.condition + ") {\n";       
-          funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
+        symbolDescription.assert_retval.forEach(function (assert) {
+          funcBody += "if ((" + target + ") " + assert.condition + ") {\n";
+          funcBody += "\tvar ret = " + symbolDescription.return+";\n";
           funcBody += "\t_free_all(address_pool);\n";
           funcBody += "\treturn ret;\n";
           funcBody += "}\n";
           funcBody +=
             "_free_and_throw_error(address_pool, " +
             '"' + assert.or_else_throw + '"' + ");\n";
-        });	    
+        });
       } else {
-        symbolDescription.assert_retval.forEach(function(assert) {
+        symbolDescription.assert_retval.forEach(function (assert) {
           funcBody += "if (!((" + target + ") " + assert.condition + ")) {\n";
           funcBody +=
             "\t_free_and_throw_error(address_pool, " +
             '"' + assert.or_else_throw + '"' + ");\n";
           funcBody += "}\n";
-          funcBody += "_free_all(address_pool);\n";	  
-	});
+          funcBody += "_free_all(address_pool);\n";
+        });
       }
     } else if (symbolDescription.return !== undefined) {
       funcBody += sc(symbolDescription.target) + "\n";
-      funcBody += "var ret = (" + symbolDescription.return + ");\n";
+      funcBody += "var ret = (" + symbolDescription.return+");\n";
       funcBody += "_free_all(address_pool);\n";
       funcBody += "return ret;\n";
     } else {
@@ -236,10 +226,10 @@ function applyMacro(macroCode, symbols, substitutes) {
   if (!(Array.isArray(substitutes) && checkStrArray(substitutes)))
     throw new TypeError(
       "substitutes must be an array of strings for [" +
-        macroCode +
-        "] [" +
-        substitutes +
-        "]"
+      macroCode +
+      "] [" +
+      substitutes +
+      "]"
     );
   if (symbols.length > substitutes.length)
     throw new TypeError("invalid array length for substitutes");
@@ -252,9 +242,7 @@ function applyMacro(macroCode, symbols, substitutes) {
 
 function finalizeWrapper() {
   scriptBuf = applyMacro(
-    scriptBuf,
-    ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"],
-    [injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
+    scriptBuf, ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], [injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
@@ -301,12 +289,14 @@ function loadConstants() {
 }
 
 function checkStrArray(a) {
-  for (var i = 0; i < a.length; i++) if (typeof a[i] !== "string") return false;
+  for (var i = 0; i < a.length; i++)
+    if (typeof a[i] !== "string") return false;
   return true;
 }
 
 function checkObjectArray(a) {
-  for (var i = 0; i < a.length; i++) if (typeof a[i] !== "object") return false;
+  for (var i = 0; i < a.length; i++)
+    if (typeof a[i] !== "object") return false;
   return true;
 }
 

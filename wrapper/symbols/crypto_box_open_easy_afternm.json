@@ -4,7 +4,8 @@
         "inputs": [
                 {
                         "name": "ciphertext",
-                        "type": "unsized_buf"
+                        "type": "unsized_buf",
+                        "size": "libsodium._crypto_box_macbytes()"
                 },
                 {
                         "name": "nonce",

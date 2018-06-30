@@ -57,7 +57,7 @@ docStr +=
   "* `raw`: attribute referencing the raw emscripten-built libsodium library that we are wrapping" +
   newParagraph();
 
-exports.buildDocForSymbol = function(s) {
+exports.buildDocForSymbol = function (s) {
   if (typeof s != "object") throw new TypeError("s must be a object");
   if (!(s.type && (s.type == "function" || s.type == "uint")))
     throw new Error("Invalid symbol type");
@@ -81,6 +81,8 @@ exports.buildDocForSymbol = function(s) {
         sDoc += "Buf (size: " + s.inputs[i].size + ")";
       } else if (paramType == "unsized_buf") {
         sDoc += "Unsized buf";
+      } else if (paramType == "minsized_buf") {
+        sDoc += "Minsized buf";
       } else if (paramType == "unsized_buf_optional") {
         sDoc += "Optional unsized buf";
       } else if (paramType == "uint") {
@@ -134,7 +136,7 @@ exports.buildDocForSymbol = function(s) {
   docStr += sDoc;
 };
 
-exports.getResultDoc = function() {
+exports.getResultDoc = function () {
   return docStr;
 };
 

@@ -1,17 +1,17 @@
-(function(root) {
+(function (root) {
   function expose_wrappers(exports, libsodiumModule) {
     "use strict";
 
     var output_format = "uint8array";
 
     var libsodium;
-    var ready = libsodiumModule.ready.then(function() {
+    var ready = libsodiumModule.ready.then(function () {
       libsodium = libsodiumModule;
       if (libsodium._sodium_init() !== 0) {
         throw new Error("libsodium was not correctly initialized.");
       }
 
-/*{{exports_here}}*/
+      /*{{exports_here}}*/
     });
 
     // List of functions and constants defined in the wrapped libsodium
@@ -92,7 +92,7 @@
           "Only instances of identical length can be compared"
         );
       }
-      for (var gt = 0 | 0, eq = 1 | 1, i = b1.length; i-- > 0; ) {
+      for (var gt = 0 | 0, eq = 1 | 1, i = b1.length; i-- > 0;) {
         gt |= ((b2[i] - b1[i]) >> 8) & eq;
         eq &= ((b2[i] ^ b1[i]) - 1) >> 8;
       }
@@ -117,14 +117,11 @@
       address_pool.push(padded_buflen_p);
       address_pool.push(bufx.address);
       for (
-        var j = bufx.address, jmax = bufx.address + k + blocksize;
-        j < jmax;
-        j++
+        var j = bufx.address, jmax = bufx.address + k + blocksize; j < jmax; j++
       ) {
         libsodium.HEAPU8[j] = buf[i];
         k -= st;
-        st =
-          ~(((((k >>> 48) | (k >>> 32) | (k >>> 16) | k) & 0xffff) - 1) >> 16) &
+        st = ~(((((k >>> 48) | (k >>> 32) | (k >>> 16) | k) & 0xffff) - 1) >> 16) &
           1;
         i += st;
       }
@@ -191,7 +188,9 @@
 
     function to_string(bytes) {
       if (typeof TextDecoder === "function") {
-        return new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+        return new TextDecoder("utf-8", {
+          fatal: true
+        }).decode(bytes);
       }
 
       var toStringChunkSize = 8192,
@@ -379,10 +378,10 @@
         nibbles = Math.floor(input.length / 3) | 0,
         remainder = input.length - 3 * nibbles,
         b64_len =
-          nibbles * 4 +
-          (remainder !== 0
-            ? (variant & 2) === 0 ? 4 : 2 + (remainder >>> 1)
-            : 0),
+        nibbles * 4 +
+        (remainder !== 0 ?
+          (variant & 2) === 0 ? 4 : 2 + (remainder >>> 1) :
+          0),
         result = new AllocatedBuf(b64_len + 1),
         result_b64,
         input_address = _to_allocated_buf_address(input);
@@ -481,7 +480,7 @@
     }
 
     // Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
-    AllocatedBuf.prototype.to_Uint8Array = function() {
+    AllocatedBuf.prototype.to_Uint8Array = function () {
       var result = new Uint8Array(this.length);
       result.set(
         libsodium.HEAPU8.subarray(this.address, this.address + this.length)
@@ -551,7 +550,7 @@
       );
     }
 
-/*{{wraps_here}}*/
+    /*{{wraps_here}}*/
 
     exports.add = add;
     exports.base64_variants = base64_variants;
@@ -577,9 +576,9 @@
   }
 
   var _onload =
-    typeof root.sodium === "object" && typeof root.sodium.onload === "function"
-      ? root.sodium.onload
-      : null;
+    typeof root.sodium === "object" && typeof root.sodium.onload === "function" ?
+    root.sodium.onload :
+    null;
   if (typeof define === "function" && define.amd) {
     define(["exports", "/*{{libsodium}}*/"], expose_wrappers);
   } else if (
@@ -590,5 +589,7 @@
   } else {
     root.sodium = expose_wrappers((root.commonJsStrict = {}), root.libsodium);
   }
-  _onload && root.sodium.ready.then(function() { _onload(root.sodium) });
+  _onload && root.sodium.ready.then(function () {
+    _onload(root.sodium)
+  });
 })(this);
