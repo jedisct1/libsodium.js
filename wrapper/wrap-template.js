@@ -12,6 +12,36 @@
       }
 
       /*{{exports_here}}*/
+
+      /* Test to make sure everything works. If not, switch to asm.js fallback. */
+
+      var c, m, nonce, key;
+      try {
+        var mData = new Uint8Array([98, 97, 108, 108, 115]);
+        c = libsodium._malloc(mData.length + libsodium._crypto_secretbox_macbytes());
+        m = libsodium._malloc(mData.length);
+        nonce = libsodium._malloc(libsodium._crypto_secretbox_noncebytes());
+        key = libsodium._malloc(libsodium._crypto_secretbox_keybytes());
+        libsodium.writeArrayToMemory(mData, m);
+        libsodium._crypto_secretbox_easy(c, m, mData.length, nonce, key);
+      }
+      catch (_) {
+        libsodium.useBackupModule();
+      }
+      finally {
+        if (c !== undefined) {
+          libsodium._free(c);
+        }
+        if (m !== undefined) {
+          libsodium._free(m);
+        }
+        if (nonce !== undefined) {
+          libsodium._free(nonce);
+        }
+        if (key !== undefined) {
+          libsodium._free(key);
+        }
+      }
     });
 
     // List of functions and constants defined in the wrapped libsodium
