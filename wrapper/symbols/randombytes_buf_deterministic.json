@@ -20,6 +20,6 @@
                         "type": "buf"
                 }
         ],
-        "target": "libsodium._randombytes_buf_deterministic(output_address, length, seed)",
+        "target": "libsodium._randombytes_buf_deterministic(output_address, length, seed_address)",
         "return": "_format_output(output, outputFormat)"
 }
