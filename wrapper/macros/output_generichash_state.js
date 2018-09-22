@@ -1,3 +1,3 @@
-// ---------- output {var_name} (generichash_state)
+// ---------- output VAR_NAME (generichash_state)
 
-var {var_name}_address = new AllocatedBuf(357).address;
+var VAR_NAME_address = new AllocatedBuf(357).address;

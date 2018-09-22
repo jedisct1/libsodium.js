@@ -1,3 +1,3 @@
-// ---------- output {var_name} (onetimeauth_state)
+// ---------- output VAR_NAME (onetimeauth_state)
 
-var {var_name}_address = new AllocatedBuf(144).address;
+var VAR_NAME_address = new AllocatedBuf(144).address;

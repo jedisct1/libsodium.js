@@ -1,3 +1,3 @@
-// ---------- output {var_name} (secretstream_xchacha20poly1305_state)
+// ---------- output VAR_NAME (secretstream_xchacha20poly1305_state)
 
-var {var_name}_address = new AllocatedBuf(52).address;
+var VAR_NAME_address = new AllocatedBuf(52).address;

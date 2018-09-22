@@ -1,7 +1,7 @@
-// ---------- input: {var_name} (uint)
+// ---------- input: VAR_NAME (uint)
 
-_require_defined(address_pool, {var_name}, "{var_name}");
+_require_defined(address_pool, VAR_NAME, "VAR_NAME");
 
-if (!(typeof {var_name} === "number" && ({var_name} | 0) === {var_name}) || {var_name} < 0) {
-        _free_and_throw_type_error(address_pool, "{var_name} must be an unsigned integer");
+if (!(typeof VAR_NAME === "number" && (VAR_NAME | 0) === VAR_NAME) || VAR_NAME < 0) {
+        _free_and_throw_type_error(address_pool, "VAR_NAME must be an unsigned integer");
 }

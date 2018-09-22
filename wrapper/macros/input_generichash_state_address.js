@@ -1,3 +1,3 @@
-// ---------- input: {var_name} (generichash_state_address)
+// ---------- input: VAR_NAME (generichash_state_address)
 
-_require_defined(address_pool, {var_name}, "{var_name}");
+_require_defined(address_pool, VAR_NAME, "VAR_NAME");
