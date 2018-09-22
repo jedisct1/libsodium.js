@@ -1,7 +1,7 @@
-// ---------- output {var_name} (buf)
+// ---------- output VAR_NAME (buf)
 
-var {var_name}_length = ({var_size}) | 0,
-    {var_name} = new AllocatedBuf({var_name}_length),
-    {var_name}_address = {var_name}.address;
+var VAR_NAME_length = (VAR_SIZE) | 0,
+    VAR_NAME = new AllocatedBuf(VAR_NAME_length),
+    VAR_NAME_address = VAR_NAME.address;
 
-address_pool.push({var_name}_address);
+address_pool.push(VAR_NAME_address);

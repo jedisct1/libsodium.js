@@ -1,3 +1,3 @@
-// ---------- output {var_name} (sign_state)
+// ---------- output VAR_NAME (sign_state)
 
-var {var_name}_address = new AllocatedBuf(208).address;
+var VAR_NAME_address = new AllocatedBuf(208).address;

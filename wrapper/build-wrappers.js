@@ -127,12 +127,12 @@ function buildSymbol(symbolDescription) {
       if (currentParameter.type == "buf") {
         currentParameterCode = macros.input_buf;
         currentParameterCode = applyMacro(
-          currentParameterCode, ["{var_name}", "{var_size}"], [currentParameter.name, currentParameter.size]
+          currentParameterCode, ["VAR_NAME", "VAR_SIZE"], [currentParameter.name, currentParameter.size]
         );
       } else if (macros["input_" + currentParameter.type]) {
         currentParameterCode = macros["input_" + currentParameter.type];
         currentParameterCode = applyMacro(
-          currentParameterCode, ["{var_name}"], [currentParameter.name]
+          currentParameterCode, ["VAR_NAME"], [currentParameter.name]
         );
       } else {
         console.error("Unsupported input type " + currentParameter.type + "?");
@@ -156,12 +156,12 @@ function buildSymbol(symbolDescription) {
       if (currentOutput.type === "buf") {
         currentOutputCode = macros.output_buf;
         currentOutputCode = applyMacro(
-          currentOutputCode, ["{var_name}", "{var_size}"], [currentOutput.name, currentOutput.size]
+          currentOutputCode, ["VAR_NAME", "VAR_SIZE"], [currentOutput.name, currentOutput.size]
         );
       } else if (macros["output_" + currentOutput.type]) {
         currentOutputCode = macros["output_" + currentOutput.type];
         currentOutputCode = applyMacro(
-          currentOutputCode, ["{var_name}"], [currentOutput.name]
+          currentOutputCode, ["VAR_NAME"], [currentOutput.name]
         );
       } else {
         console.error("What is the output type " + currentOutput.type + "?");
