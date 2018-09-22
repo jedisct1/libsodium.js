@@ -124,7 +124,7 @@ function buildSymbol(symbolDescription) {
       var currentParameterCode;
       paramsArray.push(currentParameter.name);
       //Adding the correspondant parameter handling macro, into the function body
-      if (currentParameter.type == "buf") {
+      if (currentParameter.type === "buf" || currentParameter.type === "minsized_buf") {
         currentParameterCode = macros.input_buf;
         currentParameterCode = applyMacro(
           currentParameterCode, ["{var_name}", "{var_size}"], [currentParameter.name, currentParameter.size]
@@ -153,7 +153,7 @@ function buildSymbol(symbolDescription) {
     for (i = 0; i < symbolDescription.outputs.length; i++) {
       var currentOutput = symbolDescription.outputs[i];
       var currentOutputCode;
-      if (currentOutput.type === "buf") {
+      if (currentOutput.type === "buf" || currentOutput.type === "minsized_buf") {
         currentOutputCode = macros.output_buf;
         currentOutputCode = applyMacro(
           currentOutputCode, ["{var_name}", "{var_size}"], [currentOutput.name, currentOutput.size]
