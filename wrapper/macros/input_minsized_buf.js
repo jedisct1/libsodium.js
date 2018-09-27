@@ -1,4 +1,4 @@
-// ---------- input: {var_name} (minsize_buf)
+// ---------- input: {var_name} (minsized_buf)
 
 {var_name} = _any_to_Uint8Array(address_pool, {var_name}, "{var_name}");
 var {var_name}_address, {var_name}_length = ({var_size}) | 0;
