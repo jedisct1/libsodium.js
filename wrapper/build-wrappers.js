@@ -121,23 +121,20 @@ function buildSymbol(symbolDescription) {
     for (var i = 0; i < symbolDescription.inputs.length; i++) {
       //Adding parameter in function's parameter list
       var currentParameter = symbolDescription.inputs[i];
-      var currentParameterCode;
       paramsArray.push(currentParameter.name);
       //Adding the correspondant parameter handling macro, into the function body
-      if (currentParameter.type === "buf" || currentParameter.type === "minsized_buf") {
-        currentParameterCode = macros.input_buf;
-        currentParameterCode = applyMacro(
-          currentParameterCode, ["{var_name}", "{var_size}"], [currentParameter.name, currentParameter.size]
-        );
-      } else if (macros["input_" + currentParameter.type]) {
-        currentParameterCode = macros["input_" + currentParameter.type];
-        currentParameterCode = applyMacro(
-          currentParameterCode, ["{var_name}"], [currentParameter.name]
-        );
-      } else {
+      var currentParameterCode = macros["input_" + currentParameter.type];
+      if (!currentParameterCode) {
         console.error("Unsupported input type " + currentParameter.type + "?");
         process.exit(1);
       }
+      var substitutions = [{ from: "{var_name}", to: currentParameter.name }];
+      if (currentParameter.size !== undefined) {
+        substitutions.push({ from: "{var_size}", to: currentParameter.size });
+      }
+      currentParameterCode = applyMacro(
+        currentParameterCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
+      );
       funcBody += currentParameterCode + "\n";
     }
     if (!symbolDescription.noOutputFormat) {
@@ -145,6 +142,7 @@ function buildSymbol(symbolDescription) {
     }
     funcCode += paramsArray.join(", ") + ") {\n";
     funcCode += "  var address_pool = [];\n";
+    funcCode += "\n";    
     if (!symbolDescription.noOutputFormat) {
       funcCode += "  _check_output_format(outputFormat);\n";
     }
@@ -152,21 +150,18 @@ function buildSymbol(symbolDescription) {
     symbolDescription.outputs = symbolDescription.outputs || [];
     for (i = 0; i < symbolDescription.outputs.length; i++) {
       var currentOutput = symbolDescription.outputs[i];
-      var currentOutputCode;
-      if (currentOutput.type === "buf" || currentOutput.type === "minsized_buf") {
-        currentOutputCode = macros.output_buf;
-        currentOutputCode = applyMacro(
-          currentOutputCode, ["{var_name}", "{var_size}"], [currentOutput.name, currentOutput.size]
-        );
-      } else if (macros["output_" + currentOutput.type]) {
-        currentOutputCode = macros["output_" + currentOutput.type];
-        currentOutputCode = applyMacro(
-          currentOutputCode, ["{var_name}"], [currentOutput.name]
-        );
-      } else {
+      var currentOutputCode = currentOutputCode = macros["output_" + currentOutput.type];
+      if (!currentOutputCode) {
         console.error("What is the output type " + currentOutput.type + "?");
         process.exit(1);
       }
+      var substitutions = [{ from: "{var_name}", to: currentOutput.name }];
+      if (currentOutput.size !== undefined) {
+        substitutions.push({ from: "{var_size}", to: currentOutput.size });
+      }
+      currentOutputCode = applyMacro(
+        currentOutputCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
+      );
       funcBody += currentOutputCode + "\n";
     }
     //Writing the target call
@@ -222,14 +217,14 @@ function applyMacro(macroCode, symbols, substitutes) {
   if (typeof macroCode != "string")
     throw new TypeError("macroCode must be a string, not " + typeof macroCode);
   if (!(Array.isArray(symbols) && checkStrArray(symbols)))
-    throw new TypeError("symbols must be an array of strings");
+    throw new TypeError("symbols must be an array of strings (found: " + typeof(symbols) + ")");
   if (!(Array.isArray(substitutes) && checkStrArray(substitutes)))
     throw new TypeError(
       "substitutes must be an array of strings for [" +
       macroCode +
       "] [" +
       substitutes +
-      "]"
+      "] (found: " + typeof(substitutes) + ")"
     );
   if (symbols.length > substitutes.length)
     throw new TypeError("invalid array length for substitutes");
