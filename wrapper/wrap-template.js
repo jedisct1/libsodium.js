@@ -13,7 +13,7 @@
           throw new Error("libsodium was not correctly initialized.");
         }
 
-        /*{{exports_here}}*/
+/*{{exports_here}}*/
       }
 
       /* Test to make sure everything works. If not, switch to asm.js fallback. */
@@ -572,7 +572,7 @@
       );
     }
 
-    /*{{wraps_here}}*/
+/*{{wraps_here}}*/
 
     exports.add = add;
     exports.base64_variants = base64_variants;
