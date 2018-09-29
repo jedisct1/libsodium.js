@@ -5,7 +5,7 @@
                 {
                         "name": "ciphertext",
                         "type": "minsized_buf",
-                        "size": "libsodium._crypto_box_macbytes()"
+                        "min_size": "libsodium._crypto_box_macbytes()"
                 },
                 {
                         "name": "nonce",

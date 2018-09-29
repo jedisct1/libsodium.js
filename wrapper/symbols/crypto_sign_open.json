@@ -6,7 +6,7 @@
                 {
                         "name": "signedMessage",
                         "type": "minsized_buf",
-                        "size": "libsodium._crypto_sign_bytes()"
+                        "min_size": "libsodium._crypto_sign_bytes()"
                 },
                 {
                         "name": "publicKey",

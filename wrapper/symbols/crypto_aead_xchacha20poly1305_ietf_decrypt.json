@@ -10,7 +10,7 @@
                 {
                         "name": "ciphertext",
                         "type": "minsized_buf",
-                        "size": "libsodium._crypto_aead_xchacha20poly1305_ietf_abytes()"
+                        "min_size": "libsodium._crypto_aead_xchacha20poly1305_ietf_abytes()"
                 },
                 {
                         "name": "additional_data",

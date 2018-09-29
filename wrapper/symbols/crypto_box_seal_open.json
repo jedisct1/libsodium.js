@@ -5,7 +5,7 @@
                 {
                         "name": "ciphertext",
                         "type": "minsized_buf",
-                        "size": "libsodium._crypto_box_sealbytes()"
+                        "min_size": "libsodium._crypto_box_sealbytes()"
                 },
                 {
                         "name": "publicKey",

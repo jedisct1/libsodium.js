@@ -132,6 +132,9 @@ function buildSymbol(symbolDescription) {
       if (currentParameter.size !== undefined) {
         substitutions.push({ from: "{var_size}", to: currentParameter.size });
       }
+      if (currentParameter.min_size !== undefined) {
+        substitutions.push({ from: "{var_min_size}", to: currentParameter.min_size });
+      }
       currentParameterCode = applyMacro(
         currentParameterCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
       );
@@ -158,6 +161,9 @@ function buildSymbol(symbolDescription) {
       var substitutions = [{ from: "{var_name}", to: currentOutput.name }];
       if (currentOutput.size !== undefined) {
         substitutions.push({ from: "{var_size}", to: currentOutput.size });
+      }
+      if (currentOutput.min_size !== undefined) {
+        substitutions.push({ from: "{var_min_size}", to: currentOutput.min_size });
       }
       currentOutputCode = applyMacro(
         currentOutputCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
