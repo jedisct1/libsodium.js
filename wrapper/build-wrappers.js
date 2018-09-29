@@ -129,11 +129,11 @@ function buildSymbol(symbolDescription) {
         process.exit(1);
       }
       var substitutions = [{ from: "{var_name}", to: currentParameter.name }];
-      if (currentParameter.size !== undefined) {
-        substitutions.push({ from: "{var_size}", to: currentParameter.size });
+      if (currentParameter.length !== undefined) {
+        substitutions.push({ from: "{var_length}", to: currentParameter.length });
       }
-      if (currentParameter.min_size !== undefined) {
-        substitutions.push({ from: "{var_min_size}", to: currentParameter.min_size });
+      if (currentParameter.min_length !== undefined) {
+        substitutions.push({ from: "{var_min_length}", to: currentParameter.min_length });
       }
       currentParameterCode = applyMacro(
         currentParameterCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
@@ -159,11 +159,11 @@ function buildSymbol(symbolDescription) {
         process.exit(1);
       }
       var substitutions = [{ from: "{var_name}", to: currentOutput.name }];
-      if (currentOutput.size !== undefined) {
-        substitutions.push({ from: "{var_size}", to: currentOutput.size });
+      if (currentOutput.length !== undefined) {
+        substitutions.push({ from: "{var_length}", to: currentOutput.length });
       }
-      if (currentOutput.min_size !== undefined) {
-        substitutions.push({ from: "{var_min_size}", to: currentOutput.min_size });
+      if (currentOutput.min_length !== undefined) {
+        substitutions.push({ from: "{var_min_length}", to: currentOutput.min_length });
       }
       currentOutputCode = applyMacro(
         currentOutputCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)

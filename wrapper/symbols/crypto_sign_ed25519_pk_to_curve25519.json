@@ -5,14 +5,14 @@
                 {
                         "name": "edPk",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "cPk",
                         "type": "buf",
-                        "size": "libsodium._crypto_scalarmult_scalarbytes()"
+                        "length": "libsodium._crypto_scalarmult_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",

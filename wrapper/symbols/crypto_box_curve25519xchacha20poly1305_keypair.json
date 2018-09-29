@@ -5,12 +5,12 @@
         "outputs": [
                 {
                         "type": "buf",
-                        "size": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()",
+                        "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()",
                         "name": "publicKey"
                 },
                 {
                         "type": "buf",
-                        "size": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()",
+                        "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()",
                         "name": "secretKey"
                 }
         ],

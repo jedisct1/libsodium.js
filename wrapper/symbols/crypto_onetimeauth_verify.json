@@ -7,7 +7,7 @@
                 {
                         "name": "hash",
                         "type": "buf",
-                        "size": "libsodium._crypto_onetimeauth_bytes()"
+                        "length": "libsodium._crypto_onetimeauth_bytes()"
                 },
                 {
                         "name": "message",
@@ -16,7 +16,7 @@
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_onetimeauth_keybytes()"
+                        "length": "libsodium._crypto_onetimeauth_keybytes()"
                 }
         ],
         "outputs": [],

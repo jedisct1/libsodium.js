@@ -14,18 +14,18 @@
                 {
                         "name": "ctx",
                         "type": "string",
-                        "size": "libsodium._crypto_kdf_contextbytes()"
+                        "length": "libsodium._crypto_kdf_contextbytes()"
                 },
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_kdf_keybytes()"
+                        "length": "libsodium._crypto_kdf_keybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "subkey",
-                        "size": "subkey_len",
+                        "length": "subkey_len",
                         "type": "buf"
                 }
         ],

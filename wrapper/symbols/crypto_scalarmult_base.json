@@ -5,7 +5,7 @@
         "inputs": [
                 {
                         "name": "privateKey",
-                        "size": "libsodium._crypto_scalarmult_scalarbytes()",
+                        "length": "libsodium._crypto_scalarmult_scalarbytes()",
                         "type": "buf"
                 }
         ],
@@ -13,7 +13,7 @@
                 {
                         "type": "buf",
                         "name": "publicKey",
-                        "size": "libsodium._crypto_scalarmult_scalarbytes()"
+                        "length": "libsodium._crypto_scalarmult_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",

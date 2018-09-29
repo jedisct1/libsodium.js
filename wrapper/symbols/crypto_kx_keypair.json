@@ -5,12 +5,12 @@
         "outputs": [
                 {
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_publickeybytes()",
+                        "length": "libsodium._crypto_kx_publickeybytes()",
                         "name": "publicKey"
                 },
                 {
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_secretkeybytes()",
+                        "length": "libsodium._crypto_kx_secretkeybytes()",
                         "name": "privateKey"
                 }
         ],

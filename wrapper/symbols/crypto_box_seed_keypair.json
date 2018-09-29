@@ -5,19 +5,19 @@
                 {
                         "name": "seed",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_seedbytes()"
+                        "length": "libsodium._crypto_box_seedbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "publicKey",
-                        "size": "libsodium._crypto_box_publickeybytes()",
+                        "length": "libsodium._crypto_box_publickeybytes()",
                         "type": "buf"
                 },
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_secretkeybytes()"
+                        "length": "libsodium._crypto_box_secretkeybytes()"
                 }
         ],
         "target": "libsodium._crypto_box_seed_keypair(publicKey_address, privateKey_address, seed_address) | 0",

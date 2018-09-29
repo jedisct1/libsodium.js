@@ -5,19 +5,19 @@
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_publickeybytes()"
+                        "length": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_secretkeybytes()"
+                        "length": "libsodium._crypto_box_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "sharedKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_beforenmbytes()"
+                        "length": "libsodium._crypto_box_beforenmbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_beforenm(sharedKey_address, publicKey_address, privateKey_address) | 0",

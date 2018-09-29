@@ -9,19 +9,19 @@
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_noncebytes()"
+                        "length": "libsodium._crypto_box_noncebytes()"
                 },
                 {
                         "name": "sharedKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_beforenmbytes()"
+                        "length": "libsodium._crypto_box_beforenmbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "ciphertext",
                         "type": "buf",
-                        "size": "message_length + libsodium._crypto_box_macbytes()"
+                        "length": "message_length + libsodium._crypto_box_macbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_easy_afternm(ciphertext_address, message_address, message_length, 0, nonce_address, sharedKey_address) | 0",

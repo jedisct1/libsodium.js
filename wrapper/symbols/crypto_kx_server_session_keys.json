@@ -5,29 +5,29 @@
                 {
                         "name": "serverPublicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_publickeybytes()"
+                        "length": "libsodium._crypto_kx_publickeybytes()"
                 },
                 {
                         "name": "serverSecretKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_secretkeybytes()"
+                        "length": "libsodium._crypto_kx_secretkeybytes()"
                 },
                 {
                         "name": "clientPublicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_publickeybytes()"
+                        "length": "libsodium._crypto_kx_publickeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "sharedRx",
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_sessionkeybytes()"
+                        "length": "libsodium._crypto_kx_sessionkeybytes()"
                 },
                 {
                         "name": "sharedTx",
                         "type": "buf",
-                        "size": "libsodium._crypto_kx_sessionkeybytes()"
+                        "length": "libsodium._crypto_kx_sessionkeybytes()"
                 }
         ],
         "target": "libsodium._crypto_kx_server_session_keys(sharedRx_address, sharedTx_address, serverPublicKey_address, serverSecretKey_address, clientPublicKey_address) | 0",

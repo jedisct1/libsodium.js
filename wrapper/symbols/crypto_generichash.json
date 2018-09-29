@@ -19,7 +19,7 @@
         "outputs": [
                 {
                         "name": "hash",
-                        "size": "hash_length",
+                        "length": "hash_length",
                         "type": "buf"
                 }
         ],

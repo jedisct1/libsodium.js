@@ -12,7 +12,7 @@
                 {
                         "name": "hash",
                         "type": "buf",
-                        "size": "libsodium._crypto_hash_sha512_bytes()"
+                        "length": "libsodium._crypto_hash_sha512_bytes()"
                 }
         ],
         "target": "libsodium._crypto_hash_sha512(hash_address, message_address, message_length, 0) | 0",

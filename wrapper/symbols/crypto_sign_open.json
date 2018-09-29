@@ -6,19 +6,19 @@
                 {
                         "name": "signedMessage",
                         "type": "minsized_buf",
-                        "min_size": "libsodium._crypto_sign_bytes()"
+                        "min_length": "libsodium._crypto_sign_bytes()"
                 },
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "type": "buf",
                         "name": "message",
-                        "size": "signedMessage_length - libsodium._crypto_sign_bytes()"
+                        "length": "signedMessage_length - libsodium._crypto_sign_bytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",

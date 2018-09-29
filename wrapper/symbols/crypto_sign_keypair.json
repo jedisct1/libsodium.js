@@ -7,12 +7,12 @@
                 {
                         "type": "buf",
                         "name": "publicKey",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 },
                 {
                         "type": "buf",
                         "name": "privateKey",
-                        "size": "libsodium._crypto_sign_secretkeybytes()"
+                        "length": "libsodium._crypto_sign_secretkeybytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_keypair(publicKey_address, privateKey_address) | 0",

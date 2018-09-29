@@ -10,14 +10,14 @@
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_secretkeybytes()"
+                        "length": "libsodium._crypto_sign_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "type": "buf",
                         "name": "signature",
-                        "size": "libsodium._crypto_sign_bytes()"
+                        "length": "libsodium._crypto_sign_bytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_detached(signature_address, null, message_address, message_length, 0, privateKey_address) | 0",

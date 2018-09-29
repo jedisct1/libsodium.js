@@ -9,24 +9,24 @@
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_noncebytes()"
+                        "length": "libsodium._crypto_box_noncebytes()"
                 },
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_publickeybytes()"
+                        "length": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_secretkeybytes()"
+                        "length": "libsodium._crypto_box_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "ciphertext",
                         "type": "buf",
-                        "size": "message_length + libsodium._crypto_box_macbytes()"
+                        "length": "message_length + libsodium._crypto_box_macbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_easy(ciphertext_address, message_address, message_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",

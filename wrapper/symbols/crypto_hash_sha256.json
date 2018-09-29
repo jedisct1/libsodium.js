@@ -11,7 +11,7 @@
         "outputs": [
                 {
                         "name": "hash",
-                        "size": "libsodium._crypto_hash_sha256_bytes()",
+                        "length": "libsodium._crypto_hash_sha256_bytes()",
                         "type": "buf"
                 }
         ],

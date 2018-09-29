@@ -6,7 +6,7 @@
         "outputs": [
                 {
                         "name": "output",
-                        "size": "libsodium._crypto_onetimeauth_keybytes()",
+                        "length": "libsodium._crypto_onetimeauth_keybytes()",
                         "type": "buf"
                 }
         ],

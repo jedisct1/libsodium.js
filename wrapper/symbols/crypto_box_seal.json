@@ -9,14 +9,14 @@
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_publickeybytes()"
+                        "length": "libsodium._crypto_box_publickeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "ciphertext",
                         "type": "buf",
-                        "size": "message_length + libsodium._crypto_box_sealbytes()"
+                        "length": "message_length + libsodium._crypto_box_sealbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_seal(ciphertext_address, message_address, message_length, 0, publicKey_address) | 0",

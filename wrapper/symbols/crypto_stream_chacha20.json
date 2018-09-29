@@ -9,19 +9,19 @@
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_chacha20_keybytes()"
+                        "length": "libsodium._crypto_stream_chacha20_keybytes()"
                 },
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_chacha20_noncebytes()"
+                        "length": "libsodium._crypto_stream_chacha20_noncebytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "out",
                         "type": "buf",
-                        "size": "outLength"
+                        "length": "outLength"
                 }
         ],
         "target": "libsodium._crypto_stream_chacha20(out_address, outLength, 0, nonce_address, key_address) | 0",

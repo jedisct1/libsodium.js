@@ -10,19 +10,19 @@
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_xchacha20_noncebytes()"
+                        "length": "libsodium._crypto_stream_xchacha20_noncebytes()"
                 },
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_xchacha20_keybytes()"
+                        "length": "libsodium._crypto_stream_xchacha20_keybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "output_message",
                         "type": "buf",
-                        "size": "input_message_length"
+                        "length": "input_message_length"
                 }
         ],
         "target":"libsodium._crypto_stream_xchacha20_xor(output_message_address, input_message_address, input_message_length, 0, nonce_address, key_address)",

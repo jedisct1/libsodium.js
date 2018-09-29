@@ -5,24 +5,24 @@
                 {
                         "name": "ciphertext",
                         "type": "unsized_buf",
-                        "size": "libsodium._crypto_box_macbytes()"
+                        "length": "libsodium._crypto_box_macbytes()"
                 },
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_noncebytes()"
+                        "length": "libsodium._crypto_box_noncebytes()"
                 },
                 {
                         "name": "sharedKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_beforenmbytes()"
+                        "length": "libsodium._crypto_box_beforenmbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "plaintext",
                         "type": "buf",
-                        "size": "ciphertext_length - libsodium._crypto_box_macbytes()"
+                        "length": "ciphertext_length - libsodium._crypto_box_macbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_open_easy_afternm(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, sharedKey_address) | 0",

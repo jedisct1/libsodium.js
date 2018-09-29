@@ -10,12 +10,12 @@
                 {
                         "name": "signature",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_bytes()"
+                        "length": "libsodium._crypto_sign_bytes()"
                 },
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 }
         ],
         "outputs": [],

@@ -30,7 +30,7 @@
         "outputs": [
                 {
                         "name": "derivedKey",
-                        "size": "keyLength",
+                        "length": "keyLength",
                         "type": "buf"
                 }
         ],

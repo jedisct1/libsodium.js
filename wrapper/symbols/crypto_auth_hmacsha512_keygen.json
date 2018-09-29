@@ -6,7 +6,7 @@
         "outputs": [
                 {
                         "name": "output",
-                        "size": "libsodium._crypto_auth_hmacsha512_keybytes()",
+                        "length": "libsodium._crypto_auth_hmacsha512_keybytes()",
                         "type": "buf"
                 }
         ],

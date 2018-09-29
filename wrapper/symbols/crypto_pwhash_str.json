@@ -19,7 +19,7 @@
                 {
                         "name": "hashed_password",
                         "type": "buf",
-                        "size": "libsodium._crypto_pwhash_strbytes()"
+                        "length": "libsodium._crypto_pwhash_strbytes()"
                 }
         ],
         "target": "libsodium._crypto_pwhash_str(hashed_password_address, password_address, password_length, 0, opsLimit, 0, memLimit) | 0",

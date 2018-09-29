@@ -6,14 +6,14 @@
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_secretkeybytes()"
+                        "length": "libsodium._crypto_sign_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "seed",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_seedbytes()"
+                        "length": "libsodium._crypto_sign_seedbytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_address, privateKey_address) | 0",

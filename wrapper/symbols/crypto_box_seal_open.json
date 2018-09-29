@@ -5,24 +5,24 @@
                 {
                         "name": "ciphertext",
                         "type": "minsized_buf",
-                        "min_size": "libsodium._crypto_box_sealbytes()"
+                        "min_length": "libsodium._crypto_box_sealbytes()"
                 },
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_publickeybytes()"
+                        "length": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_secretkeybytes()"
+                        "length": "libsodium._crypto_box_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "plaintext",
                         "type": "buf",
-                        "size": "ciphertext_length - libsodium._crypto_box_sealbytes()"
+                        "length": "ciphertext_length - libsodium._crypto_box_sealbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, privateKey_address) | 0",

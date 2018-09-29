@@ -12,7 +12,7 @@
                 {
                         "name": "hash",
                         "type": "buf",
-                        "size": "libsodium._crypto_onetimeauth_bytes()"
+                        "length": "libsodium._crypto_onetimeauth_bytes()"
                 }
         ],
         "target": "libsodium._crypto_onetimeauth_final(state_address, hash_address) | 0",

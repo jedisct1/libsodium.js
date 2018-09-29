@@ -5,7 +5,7 @@
         "inputs": [
                 {
                         "name": "seed",
-                        "size": "libsodium._crypto_sign_seedbytes()",
+                        "length": "libsodium._crypto_sign_seedbytes()",
                         "type": "buf"
                 }
         ],
@@ -13,12 +13,12 @@
                 {
                         "type": "buf",
                         "name": "publicKey",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 },
                 {
                         "type": "buf",
                         "name": "privateKey",
-                        "size": "libsodium._crypto_sign_secretkeybytes()"
+                        "length": "libsodium._crypto_sign_secretkeybytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_seed_keypair(publicKey_address, privateKey_address, seed_address) | 0",

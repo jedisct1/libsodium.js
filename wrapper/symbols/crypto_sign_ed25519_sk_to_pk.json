@@ -6,14 +6,14 @@
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_secretkeybytes()"
+                        "length": "libsodium._crypto_sign_secretkeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_sign_publickeybytes()"
+                        "length": "libsodium._crypto_sign_publickeybytes()"
                 }
         ],
         "target": "libsodium._crypto_sign_ed25519_sk_to_pk(publicKey_address, privateKey_address) | 0",

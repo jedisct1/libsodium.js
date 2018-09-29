@@ -10,7 +10,7 @@
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_chacha20_ietf_noncebytes()"
+                        "length": "libsodium._crypto_stream_chacha20_ietf_noncebytes()"
                 },
                 {
                         "name": "nonce_increment",
@@ -19,14 +19,14 @@
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_stream_chacha20_ietf_keybytes()"
+                        "length": "libsodium._crypto_stream_chacha20_ietf_keybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "output_message",
                         "type": "buf",
-                        "size": "input_message_length"
+                        "length": "input_message_length"
                 }
         ],
         "target":"libsodium._crypto_stream_chacha20_ietf_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",

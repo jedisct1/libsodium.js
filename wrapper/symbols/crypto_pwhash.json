@@ -13,7 +13,7 @@
                 {
                         "name": "salt",
                         "type": "buf",
-                        "size": "libsodium._crypto_pwhash_saltbytes()"
+                        "length": "libsodium._crypto_pwhash_saltbytes()"
                 },
                 {
                         "name": "opsLimit",
@@ -32,7 +32,7 @@
                 {
                         "name": "derivedKey",
                         "type": "buf",
-                        "size": "keyLength"
+                        "length": "keyLength"
                 }
         ],
         "target": "libsodium._crypto_pwhash(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit, algorithm) | 0",

@@ -7,7 +7,7 @@
                 {
                         "name": "tag",
                         "type": "buf",
-                        "size": "libsodium._crypto_auth_hmacsha256_bytes()"
+                        "length": "libsodium._crypto_auth_hmacsha256_bytes()"
                 },
                 {
                         "name": "message",
@@ -16,7 +16,7 @@
                 {
                         "name": "key",
                         "type": "buf",
-                        "size": "libsodium._crypto_auth_hmacsha256_keybytes()"
+                        "length": "libsodium._crypto_auth_hmacsha256_keybytes()"
                 }
         ],
         "outputs": [],

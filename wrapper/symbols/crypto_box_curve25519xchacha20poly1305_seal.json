@@ -9,14 +9,14 @@
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
+                        "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "ciphertext",
                         "type": "buf",
-                        "size": "message_length + libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
+                        "length": "message_length + libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
                 }
         ],
         "target": "libsodium._crypto_box_curve25519xchacha20poly1305_seal(ciphertext_address, message_address, message_length, 0, publicKey_address) | 0",

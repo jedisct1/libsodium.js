@@ -10,29 +10,29 @@
                 {
                         "name": "mac",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_macbytes()"
+                        "length": "libsodium._crypto_box_macbytes()"
                 },
                 {
                         "name": "nonce",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_noncebytes()"
+                        "length": "libsodium._crypto_box_noncebytes()"
                 },
                 {
                         "name": "publicKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_publickeybytes()"
+                        "length": "libsodium._crypto_box_publickeybytes()"
                 },
                 {
                         "name": "privateKey",
                         "type": "buf",
-                        "size": "libsodium._crypto_box_secretkeybytes()"
+                        "length": "libsodium._crypto_box_secretkeybytes()"
                 }
         ],
         "outputs" : [
                 {
                         "name": "plaintext",
                         "type": "buf",
-                        "size": "ciphertext_length"
+                        "length": "ciphertext_length"
                 }
         ],
         "target": "libsodium._crypto_box_open_detached(plaintext_address, ciphertext_address, mac_address, ciphertext_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
