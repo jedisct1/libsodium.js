@@ -1,9 +1,6 @@
 var docStr = "# Libsodium.js wrapper - API usage" + newParagraph();
 docStr +=
-  "Once you've included libsodium.js and libsodium-wrapper.js, all the available wrapped functions and constants can be accessed in the `sodium` object." +
-  newParagraph();
-docStr +=
-  "To learn about the role of each method, please refer to the original [documentation](http://doc.libsodium.org) of libsodium" +
+  "To learn about the role of each method, please refer to the original [documentation](https://doc.libsodium.org) of libsodium" +
   newParagraph();
 docStr += "List of existing types:" + newLine();
 docStr +=
@@ -11,6 +8,9 @@ docStr +=
   newLine();
 docStr +=
   "* `Unsized Buf`: An Uint8Array of an arbitrary size. Used for messages to sign, encrypt, hash, etc..." +
+  newLine();
+docStr +=
+  "* `Minsized Buf`: An Uint8Array of a minimum size. Used for ciphertexts" +
   newLine();
 docStr += "* `Optional unsized buf`" + newLine();
 docStr += "* `Unsigned Integer`" + newLine();
