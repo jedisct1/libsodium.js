@@ -1,0 +1,5 @@
+version: "1"
+rules:
+  - base: master
+    autoMerge: true
+    autoMergeHardReset: false
