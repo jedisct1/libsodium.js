@@ -1,6 +1,10 @@
 version: "1"
 rules:
   - base: master
-    upstream:  jedisct1:master        # change wei to the owner of upstream repo
+    upstream:  jedisct1:master
     autoMerge: true
     autoMergeHardReset: false
+    reviewers:
+      - NullVoxPopuli
+
+# label: ":arrow_heading_down: pull"       # Optional
