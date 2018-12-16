@@ -3,4 +3,4 @@ services:
 
 script:
   - docker build . -t builder
-  - docker run builder
+  - docker run -e GH_TOKEN="$GH_TOKEN" builder
