@@ -35,6 +35,6 @@
                 }
         ],
         "target":"libsodium._crypto_aead_chacha20poly1305_ietf_decrypt(message_address, null, secret_nonce_address, ciphertext_address, ciphertext_length, 0, additional_data_address, additional_data_length, 0, public_nonce_address, key_address)",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "ciphertext cannot be decrypted using that key"}],
         "return": "_format_output(message, outputFormat)"
 }
