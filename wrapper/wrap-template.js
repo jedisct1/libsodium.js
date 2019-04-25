@@ -198,11 +198,11 @@
     //
     function from_string(str) {
       if (typeof TextEncoder === "function") {
-        return new TextEncoder("utf-8").encode(str);
+        return new TextEncoder().encode(str);
       }
       str = unescape(encodeURIComponent(str));
       var bytes = new Uint8Array(str.length);
-      for (var i = 0; i < str.length; i++) {
+      for (var i = 0, j = str.length; i < j; i++) {
         bytes[i] = str.charCodeAt(i);
       }
       return bytes;
