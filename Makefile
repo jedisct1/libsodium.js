@@ -10,7 +10,7 @@ LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
 UGLIFY = npx uglifyjs --mangle --compress drop_console=true,passes=3 --
-NODE := $(shell if which nodejs 2>&1 >/dev/null ; then echo nodejs; else echo node ; fi)
+NODE := $(shell if which nodejs >/dev/null 2>&1 ; then echo nodejs; else echo node ; fi)
 
 all: pack
 	@echo
