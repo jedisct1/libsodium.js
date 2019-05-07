@@ -104,7 +104,7 @@ function exportConstants(constSymbols) {
   exportsCode += "var constants_str = [" + keys.sort().join(", ") + "];\n";
   exportsCode += "for (var i = 0; i < constants_str.length; i++) {\n";
   exportsCode += '  var raw = libsodium["_" + constants_str[i].toLowerCase()];\n';
-  exportsCode += '  if (typeof raw === "function") exports[constants_str[i]] = libsodium.UTF8ToString(raw(),raw.length);\n';
+  exportsCode += '  if (typeof raw === "function") exports[constants_str[i]] = libsodium.UTF8ToString(raw(),raw().length);\n';
   exportsCode += "}\n";
 }
 
