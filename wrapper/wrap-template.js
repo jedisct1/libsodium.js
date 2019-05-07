@@ -30,7 +30,11 @@
           return;
         }
       }
-      catch (_) {}
+      catch (err) { 
+        if (libsodium.useBackupModule == null) {
+          throw new Error("Both wasm and asm failed to load" + err)
+        }
+      }
 
       libsodium.useBackupModule();
       libsodiumInit();
