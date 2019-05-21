@@ -24,5 +24,5 @@
         ],
         "target": "libsodium._crypto_pwhash_scryptsalsa208sha256_str(hashed_password_address, password_address, password_length, 0, opsLimit, 0, memLimit) | 0",
         "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
-        "return": "libsodium.Pointer_stringify(hashed_password_address)"
+        "return": "libsodium.UTF8ToString(hashed_password_address)"
 }

@@ -6,5 +6,5 @@
         "inputs": [],
         "outputs": [],
         "target": "var version = libsodium._sodium_version_string()",
-        "return": "libsodium.Pointer_stringify(version)"
+        "return": "libsodium.UTF8ToString(version)"
 }
