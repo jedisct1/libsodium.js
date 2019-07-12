@@ -1,10 +1,12 @@
 {
   "name": "libsodium-sumo",
-  "version": "0.7.4",
-  "description":
-    "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers, sumo variant)",
+  "version": "0.7.5",
+  "description": "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers, sumo variant)",
   "main": "dist/modules-sumo/libsodium-sumo.js",
-  "files": ["dist/modules-sumo/libsodium-sumo.js", "package.json"],
+  "files": [
+    "dist/modules-sumo/libsodium-sumo.js",
+    "package.json"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"
@@ -24,11 +26,16 @@
     "ecc"
   ],
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
-  "contributors": ["Frank Denis (@jedisct1)", "Ryan Lester (@buu700)"],
+  "contributors": [
+    "Frank Denis (@jedisct1)",
+    "Ryan Lester (@buu700)"
+  ],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jedisct1/libsodium.js/issues"
   },
   "homepage": "https://github.com/jedisct1/libsodium.js",
-  "browser": { "fs": false }
+  "browser": {
+    "fs": false
+  }
 }
