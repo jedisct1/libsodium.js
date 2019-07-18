@@ -129,5 +129,7 @@
         { "name": "crypto_stream_xchacha20_MESSAGEBYTES_MAX", "type": "uint" },
         { "name": "crypto_stream_xchacha20_NONCEBYTES", "type": "uint" },
         { "name": "randombytes_SEEDBYTES", "type": "uint" },
-        { "name": "crypto_core_ristretto255_BYTES", "type": "uint" }
+        { "name": "crypto_core_ristretto255_BYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_SCALARBYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_NONREDUCEDSCALARBYTES", "type": "uint" }
 ]
