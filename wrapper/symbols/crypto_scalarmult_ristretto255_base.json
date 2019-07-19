@@ -1,0 +1,22 @@
+{
+  "name": "crypto_scalarmult_ristretto255_base",
+  "dependencies": ["_crypto_core_ristretto255_scalarbytes", "_crypto_core_ristretto255_bytes"],
+  "type": "function",
+  "inputs": [
+    {
+      "name": "scalar",
+      "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
+      "type": "unsized_buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "element",
+      "length": "libsodium._crypto_core_ristretto255_bytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_scalarmult_ristretto255_base(element_address, scalar_address) | 0",
+  "assert_retval": [{ "condition": "=== 0", "or_else_throw": "scalar is 0" }],
+  "return": "_format_output(element, outputFormat)"
+}
