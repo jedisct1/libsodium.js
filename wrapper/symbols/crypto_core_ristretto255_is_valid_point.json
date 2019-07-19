@@ -1,0 +1,12 @@
+{
+  "name": "crypto_core_ristretto255_is_valid_point",
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "point",
+                  "type": "unsized_buf"
+          }
+  ],
+  "target": "var result = libsodium._crypto_core_ristretto255_is_valid_point(point_address) | 0",
+  "return": "result === 1"
+}
