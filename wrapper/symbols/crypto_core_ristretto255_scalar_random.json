@@ -1,0 +1,15 @@
+{
+  "name": "crypto_core_ristretto255_scalar_random",
+  "dependencies": ["_crypto_core_ristretto255_scalarbytes"],
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+          {
+                  "name": "r",
+                  "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_random(r_address)",
+  "return": "_format_output(r, outputFormat)"
+}
