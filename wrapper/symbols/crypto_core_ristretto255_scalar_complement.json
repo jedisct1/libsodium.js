@@ -1,0 +1,20 @@
+{
+  "name": "crypto_core_ristretto255_scalar_complement",
+  "dependencies": ["_crypto_core_ristretto255_scalarbytes"],
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "s",
+                  "type": "unsized_buf"
+          }
+  ],
+  "outputs": [
+          {
+                  "name": "comp",
+                  "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_scalar_complement(comp_address, s_address)",
+  "return": "_format_output(comp, outputFormat)"
+}

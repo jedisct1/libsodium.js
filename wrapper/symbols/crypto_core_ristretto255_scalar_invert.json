@@ -1,0 +1,21 @@
+{
+  "name": "crypto_core_ristretto255_scalar_invert",
+  "dependencies": ["_crypto_core_ristretto255_scalarbytes"],
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "s",
+                  "type": "unsized_buf"
+          }
+  ],
+  "outputs": [
+          {
+                  "name": "recip",
+                  "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_scalar_invert(recip_address, s_address) | 0",
+  "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid reciprocate"}],
+  "return": "_format_output(recip, outputFormat)"
+}

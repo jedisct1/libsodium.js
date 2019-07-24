@@ -1,0 +1,20 @@
+{
+  "name": "crypto_core_ristretto255_scalar_reduce",
+  "dependencies": ["_crypto_core_ristretto255_scalarbytes"],
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "sample",
+                  "type": "unsized_buf"
+          }
+  ],
+  "outputs": [
+          {
+                  "name": "result",
+                  "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_scalar_reduce(result_address, sample_address)",
+  "return": "_format_output(result, outputFormat)"
+}

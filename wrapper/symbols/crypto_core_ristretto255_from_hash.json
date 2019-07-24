@@ -1,0 +1,21 @@
+{
+  "name": "crypto_core_ristretto255_from_hash",
+  "dependencies": ["_crypto_core_ristretto255_bytes"],
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "r",
+                  "type": "unsized_buf"
+          }
+  ],
+  "outputs": [
+          {
+                  "name": "point",
+                  "length": "libsodium._crypto_core_ristretto255_bytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_from_hash(point_address, r_address) | 0",
+  "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+  "return": "_format_output(point, outputFormat)"
+}

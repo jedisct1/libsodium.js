@@ -1,0 +1,15 @@
+{
+  "name": "crypto_core_ristretto255_random",
+  "dependencies": ["_crypto_core_ristretto255_bytes"],
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+          {
+                  "name": "p",
+                  "length": "libsodium._crypto_core_ristretto255_bytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_random(p_address)",
+  "return": "_format_output(p, outputFormat)"
+}
