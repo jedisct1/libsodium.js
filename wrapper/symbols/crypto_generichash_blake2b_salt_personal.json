@@ -1,0 +1,35 @@
+{
+        "name": "crypto_generichash_blake2b_salt_personal",
+        "dependencies": ["_crypto_generichash_blake2b_saltbytes", "_crypto_generichash_blake2b_personalbytes"],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "subkey_len",
+                        "type": "uint"
+                },
+                {
+                        "name": "key",
+                        "type": "unsized_buf_optional"
+                },
+                {
+                        "name": "id",
+                        "type": "buf",
+                        "length": "libsodium._crypto_generichash_blake2b_saltbytes()"
+                },
+                {
+                        "name": "ctx",
+                        "type": "buf",
+                        "length": "libsodium._crypto_generichash_blake2b_personalbytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "subkey",
+                        "length": "subkey_len",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._crypto_generichash_blake2b_salt_personal(subkey_address, subkey_len, null, 0, 0, key_address, key_length, id_address, ctx_address) | 0",
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "return": "_format_output(subkey, outputFormat)"
+}
