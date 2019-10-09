@@ -23,6 +23,9 @@ describe('sodium_utils', () => {
         let subkey = sodium.crypto_kdf_derive_from_key(32, 1, 'NaClTest', key);
         expect(Buffer.from(subkey).toString('hex'))
             .to.be.equals('bce6fcf118cac2691bb23975a63dfac02282c1cd5de6ab9febcbb0ec4348181b');
+        subkey = sodium.crypto_kdf_derive_from_key(32, 8589934592, 'NaClTest', key);
+        expect(Buffer.from(subkey).toString('hex'))
+            .to.be.equals('414cd51631f72c49271bfa2c5cb77a7d96d8709f2e9116c5ef473959162691da');
     });
 });
 
