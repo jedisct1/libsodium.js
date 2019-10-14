@@ -15,6 +15,9 @@
     "libsodium": "^0.7.5"
   },
   "devDependencies": {
+    "assert": "^2.0.0",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.1",
     "uglify-es": "^3.3.10"
   },
   "keywords": [
@@ -36,6 +39,9 @@
     "Frank Denis (@jedisct1)",
     "Ryan Lester (@buu700)"
   ],
+  "scripts": {
+    "test": "mocha"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/jedisct1/libsodium.js/issues"
