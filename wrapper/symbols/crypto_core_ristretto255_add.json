@@ -1,0 +1,27 @@
+{
+  "name": "crypto_core_ristretto255_add",
+  "dependencies": ["_crypto_core_ristretto255_bytes"],
+  "type": "function",
+  "inputs": [
+          {
+                  "name": "p",
+                  "length": "libsodium._crypto_core_ristretto255_bytes()",
+                  "type": "buf"
+          },
+          {
+                  "name": "q",
+                  "length": "libsodium._crypto_core_ristretto255_bytes()",
+                  "type": "buf"
+          }
+  ],
+  "outputs": [
+          {
+                  "name": "r",
+                  "length": "libsodium._crypto_core_ristretto255_bytes()",
+                  "type": "buf"
+          }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_add(r_address, p_address, q_address) | 0",
+  "assert_retval": [{"condition": "=== 0", "or_else_throw": "inputs is invalid element"}],
+  "return": "_format_output(r, outputFormat)"
+}

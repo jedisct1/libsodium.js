@@ -34,6 +34,9 @@
     "argon2",
     "ecc"
   ],
+  "scripts": {
+    "test": "mocha"
+  },
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
   "contributors": [
     "Frank Denis (@jedisct1)",

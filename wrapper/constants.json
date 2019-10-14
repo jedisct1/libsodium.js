@@ -44,6 +44,14 @@
         { "name": "crypto_generichash_KEYBYTES", "type": "uint" },
         { "name": "crypto_generichash_KEYBYTES_MAX", "type": "uint" },
         { "name": "crypto_generichash_KEYBYTES_MIN", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_BYTES", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_BYTES_MAX", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_BYTES_MIN", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_KEYBYTES", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_KEYBYTES_MAX", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_KEYBYTES_MIN", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_SALTBYTES", "type": "uint" },
+        { "name": "crypto_generichash_blake2b_PERSONALBYTES", "type": "uint" },
         { "name": "crypto_hash_BYTES", "type": "uint" },
         { "name": "crypto_hash_sha256_BYTES", "type": "uint" },
         { "name": "crypto_hash_sha512_BYTES", "type": "uint" },
@@ -128,5 +136,11 @@
         { "name": "crypto_stream_xchacha20_KEYBYTES", "type": "uint" },
         { "name": "crypto_stream_xchacha20_MESSAGEBYTES_MAX", "type": "uint" },
         { "name": "crypto_stream_xchacha20_NONCEBYTES", "type": "uint" },
-        { "name": "randombytes_SEEDBYTES", "type": "uint" }
+        { "name": "randombytes_SEEDBYTES", "type": "uint" },
+        { "name": "crypto_scalarmult_ristretto255_BYTES", "type": "uint" },
+        { "name": "crypto_scalarmult_ristretto255_SCALARBYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_BYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_HASHBYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_SCALARBYTES", "type": "uint" },
+        { "name": "crypto_core_ristretto255_NONREDUCEDSCALARBYTES", "type": "uint" }
 ]
