@@ -202,6 +202,8 @@ describe('libsodium compatibility', () => {
         assert(hashed);
         assert(sodium.crypto_pwhash_str_verify(hashed, password));
         assert(sodium.crypto_pwhash_str_verify(hashed, 'incorrect password') === false);
+        assert(sodium.crypto_pwhash_str_needs_rehash(hashed, 2, 65536 << 10) === false);
+        assert(sodium.crypto_pwhash_str_needs_rehash(hashed, 3, 65536 << 10) === true);
     });
 
     it('crypto_scalarmult', async() => {
