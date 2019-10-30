@@ -85,7 +85,6 @@
   { "name": "crypto_pwhash_SALTBYTES", "type": "uint" },
   { "name": "crypto_pwhash_STRBYTES", "type": "uint" },
   { "name": "crypto_pwhash_STRPREFIX", "type": "string" },
-  { "name": "crypto_pwhash_STR_VERIFY", "type": "uint" },
   { "name": "crypto_pwhash_scryptsalsa208sha256_BYTES_MAX", "type": "uint" },
   { "name": "crypto_pwhash_scryptsalsa208sha256_BYTES_MIN", "type": "uint" },
   { "name": "crypto_pwhash_scryptsalsa208sha256_MEMLIMIT_INTERACTIVE", "type": "uint" },
