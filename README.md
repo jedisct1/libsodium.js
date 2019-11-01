@@ -213,6 +213,9 @@ Running `make` will install the dev dependencies, clone libsodium,
 build it, test it, build the wrapper, and create the modules and
 minified distribution files.
 
+Alternatively, if you have `docker` installed, you can run the 
+`docker-make.sh` which will do all of the above in a container.
+
 ## Authors
 
 Built by Ahmad Ben Mrad, Frank Denis and Ryan Lester.
