@@ -24,8 +24,8 @@ for (var i = 0; i < macrosFiles.length; i++) {
   }
   var macroCode = fs.readFileSync(
     path.join(__dirname, "macros", macrosFiles[i]), {
-      encoding: "utf8"
-    }
+    encoding: "utf8"
+  }
   );
   macros[macroName] = macroCode;
 }
@@ -47,8 +47,8 @@ for (var i = 0; i < symbolsFiles.length; i++) {
   }
   var currentSymbol = fs.readFileSync(
     path.join(__dirname, "symbols", symbolsFiles[i]), {
-      encoding: "utf8"
-    }
+    encoding: "utf8"
+  }
   );
   try {
     currentSymbol = JSON.parse(currentSymbol);
@@ -136,7 +136,7 @@ function buildSymbol(symbolDescription) {
         substitutions.push({ from: "{var_min_length}", to: currentParameter.min_length });
       }
       currentParameterCode = applyMacro(
-        currentParameterCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
+        currentParameterCode, substitutions.map((s) => s.from), substitutions.map((s) => s.to)
       );
       funcBody += currentParameterCode + "\n";
     }
@@ -145,7 +145,7 @@ function buildSymbol(symbolDescription) {
     }
     funcCode += paramsArray.join(", ") + ") {\n";
     funcCode += "  var address_pool = [];\n";
-    funcCode += "\n";    
+    funcCode += "\n";
     if (!symbolDescription.noOutputFormat) {
       funcCode += "  _check_output_format(outputFormat);\n";
     }
@@ -166,7 +166,7 @@ function buildSymbol(symbolDescription) {
         substitutions.push({ from: "{var_min_length}", to: currentOutput.min_length });
       }
       currentOutputCode = applyMacro(
-        currentOutputCode, substitutions.map((s)=>s.from), substitutions.map((s)=>s.to)
+        currentOutputCode, substitutions.map((s) => s.from), substitutions.map((s) => s.to)
       );
       funcBody += currentOutputCode + "\n";
     }
@@ -181,7 +181,7 @@ function buildSymbol(symbolDescription) {
       if (symbolDescription.return !== undefined) {
         symbolDescription.assert_retval.forEach(function (assert) {
           funcBody += "if ((" + target + ") " + assert.condition + ") {\n";
-          funcBody += "\tvar ret = " + symbolDescription.return+";\n";
+          funcBody += "\tvar ret = " + symbolDescription.return + ";\n";
           funcBody += "\t_free_all(address_pool);\n";
           funcBody += "\treturn ret;\n";
           funcBody += "}\n";
@@ -201,7 +201,7 @@ function buildSymbol(symbolDescription) {
       }
     } else if (symbolDescription.return !== undefined) {
       funcBody += sc(symbolDescription.target) + "\n";
-      funcBody += "var ret = (" + symbolDescription.return+");\n";
+      funcBody += "var ret = (" + symbolDescription.return + ");\n";
       funcBody += "_free_all(address_pool);\n";
       funcBody += "return ret;\n";
     } else {
@@ -223,14 +223,14 @@ function applyMacro(macroCode, symbols, substitutes) {
   if (typeof macroCode != "string")
     throw new TypeError("macroCode must be a string, not " + typeof macroCode);
   if (!(Array.isArray(symbols) && checkStrArray(symbols)))
-    throw new TypeError("symbols must be an array of strings (found: " + typeof(symbols) + ")");
+    throw new TypeError("symbols must be an array of strings (found: " + typeof (symbols) + ")");
   if (!(Array.isArray(substitutes) && checkStrArray(substitutes)))
     throw new TypeError(
       "substitutes must be an array of strings for [" +
       macroCode +
       "] [" +
       substitutes +
-      "] (found: " + typeof(substitutes) + ")"
+      "] (found: " + typeof (substitutes) + ")"
     );
   if (symbols.length > substitutes.length)
     throw new TypeError("invalid array length for substitutes");
