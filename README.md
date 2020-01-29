@@ -23,6 +23,12 @@ Supported browsers/JS engines:
 * Opera >= 15
 * Safari >= 6 (older versions produce incorrect results)
 
+This is comparable to the WebCrypto API, which is compatible with a
+similar number of browsers.
+
+Signatures and other Edwards25519-based operations are compatible with
+[WasmCrypto](https://github.com/jedisct1/wasm-crypto).
+
 ## Installation
 
 The [dist](https://github.com/jedisct1/libsodium.js/tree/master/dist)
