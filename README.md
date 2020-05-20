@@ -123,7 +123,7 @@ Example:
 
 * `from_base64()`, `to_base64()` with an optional second parameter
 whose value is one of: `base64_variants.ORIGINAL`, `base64_variants.ORIGINAL_NO_PADDING`,
-`base64_variants.URLSAFE` or `s.base64_variants.URLSAFE_NO_PADDING`. Default is `base64_variants.URLSAFE_NO_PADDING`.
+`base64_variants.URLSAFE` or `base64_variants.URLSAFE_NO_PADDING`. Default is `base64_variants.URLSAFE_NO_PADDING`.
 * `from_hex()`, `to_hex()`
 * `from_string()`, `to_string()`
 * `pad(<buffer>, <block size>)`, `unpad(<buffer>, <block size>)`
