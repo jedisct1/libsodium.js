@@ -9,7 +9,7 @@ LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
-UGLIFY = npx terser --mangle --compress drop_console=true,passes=3 --
+TERSIFY = npx terser --mangle --compress drop_console=true,passes=3 --
 NODE := $(shell if which nodejs >/dev/null 2>&1 ; then echo nodejs; else echo node ; fi)
 
 all: pack
@@ -41,7 +41,7 @@ pack: targets
 	@echo + Packing
 	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
 	  echo "Packing [$$i]" ; \
-	  $(UGLIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
+	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
