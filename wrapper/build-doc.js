@@ -89,6 +89,10 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Unsigned Integer";
       } else if (paramType == "generichash_state_address") {
         sDoc += "Generichash state address";
+      } else if (paramType == "hash_sha256_state_address") {
+        sDoc += "Sha256 state address";
+      } else if (paramType == "hash_sha512_state_address") {
+        sDoc += "Sha512 state address";
       } else if (paramType == "onetimeauth_state_address") {
         sDoc += "OneTimeAuth state address";
       } else if (paramType == "sign_state_address") {
@@ -113,6 +117,10 @@ exports.buildDocForSymbol = function (s) {
           sDoc += "Unsigned Integer";
         } else if (outputType == "generichash_state") {
           sDoc += "Generichash state";
+        } else if (outputType == "hash_sha256_state") {
+          sDoc += "Sha256 state";
+        } else if (outputType == "hash_sha512_state") {
+          sDoc += "Sha512 state";
         } else if (outputType == "onetimeauth_state") {
           sDoc += "OneTimeAuth state";
         } else if (outputType == "sign_state") {
