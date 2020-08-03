@@ -18,7 +18,7 @@
     "assert": "^2.0.0",
     "chai": "^4.2.0",
     "mocha": "^8.0.1",
-    "terser": "^4.7.0"
+    "terser": "^5.0.0"
   },
   "keywords": [
     "crypto",
