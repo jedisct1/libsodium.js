@@ -1,7 +1,11 @@
-    if (typeof(process) === 'object' && typeof(process.removeAllListeners) === 'function') {
-      process.removeAllListeners('uncaughtException');
-      process.removeAllListeners('unhandledRejection');
-    }
+    })(process instanceof Object ? {
+        on (event, listener) {
+            if (event === 'uncaughtException' || event === 'unhandledRejection') return;
+            return process.on(event, listener);
+        },
+        versions: process.versions,
+        argv: process.argv
+    } : undefined);
     return Module;
 }
 
