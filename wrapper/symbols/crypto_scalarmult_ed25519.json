@@ -1,0 +1,27 @@
+{
+        "name": "crypto_scalarmult_ed25519",
+        "dependencies": ["_crypto_scalarmult_ed25519", "_crypto_scalarmult_ed25519_scalarbytes", "_crypto_scalarmult_ed25519_bytes"],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "n",
+                        "length": "libsodium._crypto_scalarmult_ed25519_scalarbytes()",
+                        "type": "buf"
+                },
+                {
+                        "name": "p",
+                        "length": "libsodium._crypto_scalarmult_ed25519_bytes()",
+                        "type": "buf"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "q",
+                        "length": "libsodium._crypto_scalarmult_ed25519_bytes()",
+                        "type": "buf"
+                }
+        ],
+        "target": "libsodium._crypto_scalarmult_ed25519(q_address, n_address, p_address) | 0",
+        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid point or scalar is 0"}],
+        "return": "_format_output(q, outputFormat)"
+}
