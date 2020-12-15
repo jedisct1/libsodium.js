@@ -1,12 +1,12 @@
 {
   "name": "crypto_scalarmult_ristretto255_base",
-  "dependencies": ["_crypto_core_ristretto255_scalarbytes", "_crypto_core_ristretto255_bytes"],
+  "dependencies": ["_crypto_scalarmult_ristretto255_base", "_crypto_core_ristretto255_scalarbytes", "_crypto_core_ristretto255_bytes"],
   "type": "function",
   "inputs": [
     {
       "name": "scalar",
       "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-      "type": "unsized_buf"
+      "type": "buf"
     }
   ],
   "outputs": [

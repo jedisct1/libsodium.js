@@ -10,15 +10,15 @@
                 },
                 {
                         "name": "publicKey",
-                        "length": "libsodium._crypto_scalarmult_scalarbytes()",
+                        "length": "libsodium._crypto_scalarmult_bytes()",
                         "type": "buf"
                 }
         ],
         "outputs": [
                 {
-                        "type": "buf",
                         "name": "sharedSecret",
-                        "length": "libsodium._crypto_scalarmult_bytes()"
+                        "length": "libsodium._crypto_scalarmult_bytes()",
+                        "type": "buf"
                 }
         ],
         "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",

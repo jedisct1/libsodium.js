@@ -1,6 +1,6 @@
 {
         "name": "crypto_scalarmult_ristretto255",
-        "dependencies": ["_crypto_scalarmult_ristretto255_bytes", "_crypto_scalarmult_ristretto255_scalarbytes"],
+        "dependencies": ["_crypto_scalarmult_ristretto255", "_crypto_scalarmult_ristretto255_bytes", "_crypto_scalarmult_ristretto255_scalarbytes"],
         "type": "function",
         "inputs": [
                 {
@@ -9,19 +9,19 @@
                         "type": "buf"
                 },
                 {
-                        "name": "privateKey",
+                        "name": "element",
                         "length": "libsodium._crypto_scalarmult_ristretto255_bytes()",
                         "type": "buf"
                 }
         ],
         "outputs": [
                 {
-                        "type": "buf",
-                        "name": "q",
-                        "length": "libsodium._crypto_scalarmult_ristretto255_bytes()"
+                        "name": "result",
+                        "length": "libsodium._crypto_scalarmult_ristretto255_bytes()",
+                        "type": "buf"
                 }
         ],
-        "target": "libsodium._crypto_scalarmult_ristretto255(q_address, scalar_address, privateKey_address) | 0",
-        "assert_retval": [{ "condition": "=== 0", "or_else_throw": "input is zero element" }],
-        "return": "_format_output(q, outputFormat)"
+        "target": "libsodium._crypto_scalarmult_ristretto255(result_address, scalar_address, element_address) | 0",
+        "assert_retval": [{ "condition": "=== 0", "or_else_throw": "result is identity element" }],
+        "return": "_format_output(result, outputFormat)"
 }
