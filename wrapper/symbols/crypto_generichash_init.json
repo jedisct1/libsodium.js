@@ -19,6 +19,11 @@
                 }
         ],
         "target": "libsodium._crypto_generichash_init(state_address, key_address, key_length, hash_length) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "state_address"
 }

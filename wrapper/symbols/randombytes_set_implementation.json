@@ -9,5 +9,10 @@
                 }
         ],
         "target": "libsodium._randombytes_set_implementation(implementation_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "unsupported implementation"}]
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "unsupported implementation"
+                }
+        ]
 }

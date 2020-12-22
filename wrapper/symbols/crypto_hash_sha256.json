@@ -16,6 +16,11 @@
                 }
         ],
         "target": "libsodium._crypto_hash_sha256(hash_address, message_address, message_length, 0) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "_format_output(hash, outputFormat)"
 }

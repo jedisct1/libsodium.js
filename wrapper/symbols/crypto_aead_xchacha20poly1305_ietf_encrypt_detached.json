@@ -39,6 +39,11 @@
                 }
         ],
         "target": "libsodium._crypto_aead_xchacha20poly1305_ietf_encrypt_detached(ciphertext_address, mac_address, null, message_address, message_length, 0, additional_data_address, additional_data_length, 0, secret_nonce_address, public_nonce_address, key_address)",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "_format_output({ciphertext: ciphertext, mac: mac}, outputFormat)"
 }

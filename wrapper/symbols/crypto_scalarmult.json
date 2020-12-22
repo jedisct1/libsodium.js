@@ -1,6 +1,10 @@
 {
         "name": "crypto_scalarmult",
-        "dependencies": ["_crypto_scalarmult", "_crypto_scalarmult_scalarbytes", "_crypto_scalarmult_bytes"],
+        "dependencies": [
+                "_crypto_scalarmult",
+                "_crypto_scalarmult_scalarbytes",
+                "_crypto_scalarmult_bytes"
+        ],
         "type": "function",
         "inputs": [
                 {
@@ -22,6 +26,11 @@
                 }
         ],
         "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "weak public key"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "weak public key"
+                }
+        ],
         "return": "_format_output(sharedSecret, outputFormat)"
 }

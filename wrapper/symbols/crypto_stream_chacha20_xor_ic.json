@@ -1,6 +1,9 @@
 {
         "name": "crypto_stream_chacha20_xor_ic",
-        "dependencies": ["_crypto_stream_chacha20_noncebytes", "_crypto_stream_chacha20_keybytes"],
+        "dependencies": [
+                "_crypto_stream_chacha20_noncebytes",
+                "_crypto_stream_chacha20_keybytes"
+        ],
         "type": "function",
         "inputs": [
                 {
@@ -29,7 +32,12 @@
                         "length": "input_message_length"
                 }
         ],
-        "target":"libsodium._crypto_stream_chacha20_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "target": "libsodium._crypto_stream_chacha20_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "_format_output(output_message, outputFormat)"
 }

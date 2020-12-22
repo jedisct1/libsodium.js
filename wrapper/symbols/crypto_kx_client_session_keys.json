@@ -31,6 +31,11 @@
                 }
         ],
         "target": "libsodium._crypto_kx_client_session_keys(sharedRx_address, sharedTx_address, clientPublicKey_address, clientSecretKey_address, serverPublicKey_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "_format_output({sharedRx: sharedRx, sharedTx: sharedTx}, outputFormat)"
 }

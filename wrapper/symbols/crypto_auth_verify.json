@@ -1,6 +1,9 @@
 {
         "name": "crypto_auth_verify",
-        "dependencies": ["_crypto_auth_keybytes", "_crypto_auth_bytes"],
+        "dependencies": [
+                "_crypto_auth_keybytes",
+                "_crypto_auth_bytes"
+        ],
         "type": "function",
         "noOutputFormat": true,
         "inputs": [

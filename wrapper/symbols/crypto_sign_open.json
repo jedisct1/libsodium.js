@@ -1,6 +1,9 @@
 {
         "name": "crypto_sign_open",
-        "dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+        "dependencies": [
+                "_crypto_sign_publickeybytes",
+                "_crypto_sign_bytes"
+        ],
         "type": "function",
         "inputs": [
                 {
@@ -22,6 +25,11 @@
                 }
         ],
         "target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "incorrect signature for the given public key"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "incorrect signature for the given public key"
+                }
+        ],
         "return": "_format_output(message, outputFormat)"
 }

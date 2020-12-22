@@ -1,6 +1,8 @@
 {
         "name": "crypto_sign",
-        "dependencies": ["_crypto_sign"],
+        "dependencies": [
+                "_crypto_sign"
+        ],
         "type": "function",
         "inputs": [
                 {
@@ -21,6 +23,11 @@
                 }
         ],
         "target": "libsodium._crypto_sign(signature_address, null, message_address, message_length, 0, privateKey_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid usage"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid usage"
+                }
+        ],
         "return": "_format_output(signature, outputFormat)"
 }

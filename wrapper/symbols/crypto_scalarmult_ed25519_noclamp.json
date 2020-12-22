@@ -1,6 +1,10 @@
 {
         "name": "crypto_scalarmult_ed25519_noclamp",
-        "dependencies": ["_crypto_scalarmult_ed25519_noclamp", "_crypto_scalarmult_ed25519_scalarbytes", "_crypto_scalarmult_ed25519_bytes"],
+        "dependencies": [
+                "_crypto_scalarmult_ed25519_noclamp",
+                "_crypto_scalarmult_ed25519_scalarbytes",
+                "_crypto_scalarmult_ed25519_bytes"
+        ],
         "type": "function",
         "inputs": [
                 {
@@ -22,6 +26,11 @@
                 }
         ],
         "target": "libsodium._crypto_scalarmult_ed25519_noclamp(q_address, n_address, p_address) | 0",
-        "assert_retval": [{"condition": "=== 0", "or_else_throw": "invalid point or scalar is 0"}],
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid point or scalar is 0"
+                }
+        ],
         "return": "_format_output(q, outputFormat)"
 }

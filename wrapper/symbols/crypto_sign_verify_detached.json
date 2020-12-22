@@ -1,6 +1,9 @@
 {
         "name": "crypto_sign_verify_detached",
-        "dependencies": ["_crypto_sign_publickeybytes", "_crypto_sign_bytes"],
+        "dependencies": [
+                "_crypto_sign_publickeybytes",
+                "_crypto_sign_bytes"
+        ],
         "type": "function",
         "noOutputFormat": true,
         "inputs": [
