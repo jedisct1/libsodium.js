@@ -7,14 +7,15 @@
         "inputs": [
                 {
                         "name": "sample",
-                        "type": "unsized_buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_nonreducedscalarbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "result",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_scalar_reduce(result_address, sample_address)",

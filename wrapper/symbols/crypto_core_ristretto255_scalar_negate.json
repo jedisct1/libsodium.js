@@ -7,14 +7,15 @@
         "inputs": [
                 {
                         "name": "s",
-                        "type": "unsized_buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "neg",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_scalar_negate(neg_address, s_address)",

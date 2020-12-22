@@ -8,8 +8,8 @@
         "outputs": [
                 {
                         "name": "r",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_random(r_address)",

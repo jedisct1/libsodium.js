@@ -3,10 +3,11 @@
         "type": "function",
         "inputs": [
                 {
-                        "name": "point",
-                        "type": "unsized_buf"
+                        "name": "repr",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_bytes()"
                 }
         ],
-        "target": "var result = libsodium._crypto_core_ristretto255_is_valid_point(point_address) | 0",
+        "target": "var result = libsodium._crypto_core_ristretto255_is_valid_point(repr_address) | 0",
         "return": "result === 1"
 }

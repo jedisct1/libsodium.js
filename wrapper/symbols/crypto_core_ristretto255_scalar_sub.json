@@ -7,20 +7,20 @@
         "inputs": [
                 {
                         "name": "x",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 },
                 {
                         "name": "y",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "z",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_scalar_sub(z_address, x_address, y_address)",

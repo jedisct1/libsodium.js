@@ -7,27 +7,27 @@
         "inputs": [
                 {
                         "name": "p",
-                        "length": "libsodium._crypto_core_ristretto255_bytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_bytes()"
                 },
                 {
                         "name": "q",
-                        "length": "libsodium._crypto_core_ristretto255_bytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_bytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "r",
-                        "length": "libsodium._crypto_core_ristretto255_bytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_bytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_add(r_address, p_address, q_address) | 0",
         "assert_retval": [
                 {
                         "condition": "=== 0",
-                        "or_else_throw": "inputs is invalid element"
+                        "or_else_throw": "input is an invalid element"
                 }
         ],
         "return": "_format_output(r, outputFormat)"

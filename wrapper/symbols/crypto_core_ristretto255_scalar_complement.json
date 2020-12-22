@@ -7,14 +7,15 @@
         "inputs": [
                 {
                         "name": "s",
-                        "type": "unsized_buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "outputs": [
                 {
                         "name": "comp",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()",
-                        "type": "buf"
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
                 }
         ],
         "target": "libsodium._crypto_core_ristretto255_scalar_complement(comp_address, s_address)",
