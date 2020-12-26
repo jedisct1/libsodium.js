@@ -1,0 +1,35 @@
+{
+        "name": "crypto_core_ed25519_add",
+        "dependencies": [
+                "_crypto_core_ed25519_add",
+                "_crypto_core_ed25519_bytes"
+        ],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "p",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ed25519_bytes()"
+                },
+                {
+                        "name": "q",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ed25519_bytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "r",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ed25519_bytes()"
+                }
+        ],
+        "target": "libsodium._crypto_core_ed25519_add(r_address, p_address, q_address) | 0",
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "input is an invalid element"
+                }
+        ],
+        "return": "_format_output(r, outputFormat)"
+}

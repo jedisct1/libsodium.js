@@ -1,0 +1,30 @@
+{
+        "name": "crypto_core_ed25519_scalar_invert",
+        "dependencies": [
+                "_crypto_core_ed25519_scalar_invert",
+                "_crypto_core_ed25519_scalarbytes"
+        ],
+        "type": "function",
+        "inputs": [
+                {
+                        "name": "s",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+                }
+        ],
+        "outputs": [
+                {
+                        "name": "recip",
+                        "type": "buf",
+                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+                }
+        ],
+        "target": "libsodium._crypto_core_ed25519_scalar_invert(recip_address, s_address) | 0",
+        "assert_retval": [
+                {
+                        "condition": "=== 0",
+                        "or_else_throw": "invalid reciprocate"
+                }
+        ],
+        "return": "_format_output(recip, outputFormat)"
+}
