@@ -1,6 +1,5 @@
 {
-        "name": "randombytes_stir",
-        "dependencies": [],
-        "type": "function",
-        "target": "libsodium._randombytes_stir()"
+  "name": "randombytes_stir",
+  "type": "function",
+  "target": "libsodium._randombytes_stir()"
 }

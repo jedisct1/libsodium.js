@@ -1,42 +1,42 @@
 {
-        "name": "crypto_pwhash_scryptsalsa208sha256",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "keyLength",
-                        "type": "uint"
-                },
-                {
-                        "name": "password",
-                        "type": "unsized_buf"
-                },
-                {
-                        "name": "salt",
-                        "type": "buf",
-                        "length": "libsodium._crypto_pwhash_scryptsalsa208sha256_saltbytes()"
-                },
-                {
-                        "name": "opsLimit",
-                        "type": "uint"
-                },
-                {
-                        "name": "memLimit",
-                        "type": "uint"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "derivedKey",
-                        "type": "buf",
-                        "length": "keyLength"
-                }
-        ],
-        "target": "libsodium._crypto_pwhash_scryptsalsa208sha256(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output(derivedKey, outputFormat)"
+  "name": "crypto_pwhash_scryptsalsa208sha256",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "keyLength",
+      "type": "uint"
+    },
+    {
+      "name": "password",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "salt",
+      "type": "buf",
+      "length": "libsodium._crypto_pwhash_scryptsalsa208sha256_saltbytes()"
+    },
+    {
+      "name": "opsLimit",
+      "type": "uint"
+    },
+    {
+      "name": "memLimit",
+      "type": "uint"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "derivedKey",
+      "type": "buf",
+      "length": "keyLength"
+    }
+  ],
+  "target": "libsodium._crypto_pwhash_scryptsalsa208sha256(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(derivedKey, outputFormat)"
 }

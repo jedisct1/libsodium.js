@@ -1,31 +1,26 @@
 {
-        "name": "crypto_scalarmult_base",
-        "dependencies": [
-                "_crypto_scalarmult_base",
-                "_crypto_scalarmult_scalarbytes",
-                "_crypto_scalarmult_bytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "privateKey",
-                        "length": "libsodium._crypto_scalarmult_scalarbytes()",
-                        "type": "buf"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "publicKey",
-                        "length": "libsodium._crypto_scalarmult_bytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "unknown error"
-                }
-        ],
-        "return": "_format_output(publicKey, outputFormat)"
+  "name": "crypto_scalarmult_base",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "privateKey",
+      "length": "libsodium._crypto_scalarmult_scalarbytes()",
+      "type": "buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "publicKey",
+      "length": "libsodium._crypto_scalarmult_bytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_scalarmult_base(publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "unknown error"
+    }
+  ],
+  "return": "_format_output(publicKey, outputFormat)"
 }

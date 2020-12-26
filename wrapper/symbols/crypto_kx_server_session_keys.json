@@ -1,41 +1,41 @@
 {
-        "name": "crypto_kx_server_session_keys",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "serverPublicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kx_publickeybytes()"
-                },
-                {
-                        "name": "serverSecretKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kx_secretkeybytes()"
-                },
-                {
-                        "name": "clientPublicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kx_publickeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "sharedRx",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kx_sessionkeybytes()"
-                },
-                {
-                        "name": "sharedTx",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kx_sessionkeybytes()"
-                }
-        ],
-        "target": "libsodium._crypto_kx_server_session_keys(sharedRx_address, sharedTx_address, serverPublicKey_address, serverSecretKey_address, clientPublicKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output({sharedRx: sharedRx, sharedTx: sharedTx}, outputFormat)"
+  "name": "crypto_kx_server_session_keys",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "serverPublicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_kx_publickeybytes()"
+    },
+    {
+      "name": "serverSecretKey",
+      "type": "buf",
+      "length": "libsodium._crypto_kx_secretkeybytes()"
+    },
+    {
+      "name": "clientPublicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_kx_publickeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sharedRx",
+      "type": "buf",
+      "length": "libsodium._crypto_kx_sessionkeybytes()"
+    },
+    {
+      "name": "sharedTx",
+      "type": "buf",
+      "length": "libsodium._crypto_kx_sessionkeybytes()"
+    }
+  ],
+  "target": "libsodium._crypto_kx_server_session_keys(sharedRx_address, sharedTx_address, serverPublicKey_address, serverSecretKey_address, clientPublicKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output({sharedRx: sharedRx, sharedTx: sharedTx}, outputFormat)"
 }

@@ -1,17 +1,14 @@
 {
-        "name": "crypto_core_ristretto255_random",
-        "dependencies": [
-                "_crypto_core_ristretto255_bytes"
-        ],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "p",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ristretto255_bytes()"
-                }
-        ],
-        "target": "libsodium._crypto_core_ristretto255_random(p_address)",
-        "return": "_format_output(p, outputFormat)"
+  "name": "crypto_core_ristretto255_random",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "p",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ristretto255_bytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_random(p_address)",
+  "return": "_format_output(p, outputFormat)"
 }

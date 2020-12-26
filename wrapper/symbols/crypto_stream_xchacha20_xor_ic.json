@@ -1,43 +1,39 @@
 {
-        "name": "crypto_stream_xchacha20_xor_ic",
-        "dependencies": [
-                "_crypto_stream_xchacha20_noncebytes",
-                "_crypto_stream_xchacha20_keybytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "input_message",
-                        "type": "unsized_buf"
-                },
-                {
-                        "name": "nonce",
-                        "type": "buf",
-                        "length": "libsodium._crypto_stream_xchacha20_noncebytes()"
-                },
-                {
-                        "name": "nonce_increment",
-                        "type": "uint"
-                },
-                {
-                        "name": "key",
-                        "type": "buf",
-                        "length": "libsodium._crypto_stream_xchacha20_keybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "output_message",
-                        "type": "buf",
-                        "length": "input_message_length"
-                }
-        ],
-        "target": "libsodium._crypto_stream_xchacha20_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output(output_message, outputFormat)"
+  "name": "crypto_stream_xchacha20_xor_ic",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "input_message",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "nonce",
+      "type": "buf",
+      "length": "libsodium._crypto_stream_xchacha20_noncebytes()"
+    },
+    {
+      "name": "nonce_increment",
+      "type": "uint"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_stream_xchacha20_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output_message",
+      "type": "buf",
+      "length": "input_message_length"
+    }
+  ],
+  "target": "libsodium._crypto_stream_xchacha20_xor_ic(output_message_address, input_message_address, input_message_length, 0, nonce_address, nonce_increment, 0, key_address)",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(output_message, outputFormat)"
 }

@@ -1,25 +1,25 @@
 {
-        "name": "crypto_box_keypair",
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_publickeybytes()",
-                        "name": "publicKey"
-                },
-                {
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_secretkeybytes()",
-                        "name": "privateKey"
-                }
-        ],
-        "target": "libsodium._crypto_box_keypair(publicKey_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "internal error"
-                }
-        ],
-        "return": "{publicKey: _format_output(publicKey, outputFormat), privateKey: _format_output(privateKey, outputFormat), keyType: 'x25519'}"
+  "name": "crypto_box_keypair",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "type": "buf",
+      "length": "libsodium._crypto_box_publickeybytes()",
+      "name": "publicKey"
+    },
+    {
+      "type": "buf",
+      "length": "libsodium._crypto_box_secretkeybytes()",
+      "name": "privateKey"
+    }
+  ],
+  "target": "libsodium._crypto_box_keypair(publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "internal error"
+    }
+  ],
+  "return": "{publicKey: _format_output(publicKey, outputFormat), privateKey: _format_output(privateKey, outputFormat), keyType: 'x25519'}"
 }

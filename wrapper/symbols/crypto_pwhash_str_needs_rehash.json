@@ -1,20 +1,20 @@
 {
-        "name": "crypto_pwhash_str_needs_rehash",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "hashed_password",
-                        "type": "string"
-                },
-                {
-                        "name": "opsLimit",
-                        "type": "uint"
-                },
-                {
-                        "name": "memLimit",
-                        "type": "uint"
-                }
-        ],
-        "target": "var result = libsodium._crypto_pwhash_str_needs_rehash(hashed_password_address, opsLimit, 0, memLimit) | 0",
-        "return": "result !== 0"
+  "name": "crypto_pwhash_str_needs_rehash",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "hashed_password",
+      "type": "string"
+    },
+    {
+      "name": "opsLimit",
+      "type": "uint"
+    },
+    {
+      "name": "memLimit",
+      "type": "uint"
+    }
+  ],
+  "target": "var result = libsodium._crypto_pwhash_str_needs_rehash(hashed_password_address, opsLimit, 0, memLimit) | 0",
+  "return": "result !== 0"
 }

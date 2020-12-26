@@ -1,28 +1,24 @@
 {
-        "name": "crypto_auth_hmacsha256_verify",
-        "dependencies": [
-                "_crypto_auth_hmacsha256_keybytes",
-                "_crypto_auth_hmacsha256_bytes"
-        ],
-        "type": "function",
-        "noOutputFormat": true,
-        "inputs": [
-                {
-                        "name": "tag",
-                        "type": "buf",
-                        "length": "libsodium._crypto_auth_hmacsha256_bytes()"
-                },
-                {
-                        "name": "message",
-                        "type": "unsized_buf"
-                },
-                {
-                        "name": "key",
-                        "type": "buf",
-                        "length": "libsodium._crypto_auth_hmacsha256_keybytes()"
-                }
-        ],
-        "outputs": [],
-        "target": "var result = libsodium._crypto_auth_hmacsha256_verify(tag_address, message_address, message_length, 0, key_address) | 0",
-        "return": "result === 0"
+  "name": "crypto_auth_hmacsha256_verify",
+  "type": "function",
+  "noOutputFormat": true,
+  "inputs": [
+    {
+      "name": "tag",
+      "type": "buf",
+      "length": "libsodium._crypto_auth_hmacsha256_bytes()"
+    },
+    {
+      "name": "message",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_auth_hmacsha256_keybytes()"
+    }
+  ],
+  "outputs": [],
+  "target": "var result = libsodium._crypto_auth_hmacsha256_verify(tag_address, message_address, message_length, 0, key_address) | 0",
+  "return": "result === 0"
 }

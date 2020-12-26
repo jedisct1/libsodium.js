@@ -1,31 +1,30 @@
 {
-        "name": "crypto_sign_final_create",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "state_address",
-                        "type": "sign_state_address"
-                },
-                {
-                        "name": "privateKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "type": "buf",
-                        "name": "signature",
-                        "length": "libsodium._crypto_sign_bytes()"
-                }
-        ],
-        "target": "libsodium._crypto_sign_final_create(state_address, signature_address, null, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "(libsodium._free(state_address), _format_output(signature, outputFormat))"
+  "name": "crypto_sign_final_create",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "sign_state_address"
+    },
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "type": "buf",
+      "name": "signature",
+      "length": "libsodium._crypto_sign_bytes()"
+    }
+  ],
+  "target": "libsodium._crypto_sign_final_create(state_address, signature_address, null, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "(libsodium._free(state_address), _format_output(signature, outputFormat))"
 }

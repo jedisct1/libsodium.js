@@ -1,41 +1,41 @@
 {
-        "name": "crypto_box_open_easy",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "ciphertext",
-                        "type": "minsized_buf",
-                        "min_length": "libsodium._crypto_box_macbytes()"
-                },
-                {
-                        "name": "nonce",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_noncebytes()"
-                },
-                {
-                        "name": "publicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_publickeybytes()"
-                },
-                {
-                        "name": "privateKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "plaintext",
-                        "type": "buf",
-                        "length": "ciphertext_length - libsodium._crypto_box_macbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "incorrect key pair for the given ciphertext"
-                }
-        ],
-        "return": "_format_output(plaintext, outputFormat)"
+  "name": "crypto_box_open_easy",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "ciphertext",
+      "type": "minsized_buf",
+      "min_length": "libsodium._crypto_box_macbytes()"
+    },
+    {
+      "name": "nonce",
+      "type": "buf",
+      "length": "libsodium._crypto_box_noncebytes()"
+    },
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_publickeybytes()"
+    },
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "plaintext",
+      "type": "buf",
+      "length": "ciphertext_length - libsodium._crypto_box_macbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "incorrect key pair for the given ciphertext"
+    }
+  ],
+  "return": "_format_output(plaintext, outputFormat)"
 }

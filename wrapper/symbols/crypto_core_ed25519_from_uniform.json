@@ -1,29 +1,25 @@
 {
-        "name": "crypto_core_ed25519_from_uniform",
-        "dependencies": [
-                "_crypto_core_ed25519_from_uniform",
-                "_crypto_core_ed25519_bytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "r",
-                        "type": "unsized_buf"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "point",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ed25519_bytes()"
-                }
-        ],
-        "target": "libsodium._crypto_core_ed25519_from_uniform(point_address, r_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output(point, outputFormat)"
+  "name": "crypto_core_ed25519_from_uniform",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "r",
+      "type": "unsized_buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "point",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ed25519_bytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_ed25519_from_uniform(point_address, r_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(point, outputFormat)"
 }

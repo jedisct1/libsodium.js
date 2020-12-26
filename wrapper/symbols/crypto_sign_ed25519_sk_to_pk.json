@@ -1,30 +1,26 @@
 {
-        "name": "crypto_sign_ed25519_sk_to_pk",
-        "dependencies": [
-                "_crypto_sign_secretkeybytes",
-                "_crypto_sign_publickeybytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "privateKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "publicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_publickeybytes()"
-                }
-        ],
-        "target": "libsodium._crypto_sign_ed25519_sk_to_pk(publicKey_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid key"
-                }
-        ],
-        "return": "_format_output(publicKey, outputFormat)"
+  "name": "crypto_sign_ed25519_sk_to_pk",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_publickeybytes()"
+    }
+  ],
+  "target": "libsodium._crypto_sign_ed25519_sk_to_pk(publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid key"
+    }
+  ],
+  "return": "_format_output(publicKey, outputFormat)"
 }

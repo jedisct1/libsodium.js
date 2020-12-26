@@ -1,35 +1,31 @@
 {
-        "name": "crypto_sign_open",
-        "dependencies": [
-                "_crypto_sign_publickeybytes",
-                "_crypto_sign_bytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "signedMessage",
-                        "type": "minsized_buf",
-                        "min_length": "libsodium._crypto_sign_bytes()"
-                },
-                {
-                        "name": "publicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_publickeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "type": "buf",
-                        "name": "message",
-                        "length": "signedMessage_length - libsodium._crypto_sign_bytes()"
-                }
-        ],
-        "target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "incorrect signature for the given public key"
-                }
-        ],
-        "return": "_format_output(message, outputFormat)"
+  "name": "crypto_sign_open",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "signedMessage",
+      "type": "minsized_buf",
+      "min_length": "libsodium._crypto_sign_bytes()"
+    },
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_publickeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "type": "buf",
+      "name": "message",
+      "length": "signedMessage_length - libsodium._crypto_sign_bytes()"
+    }
+  ],
+  "target": "libsodium._crypto_sign_open(message_address, null, signedMessage_address, signedMessage_length, 0, publicKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "incorrect signature for the given public key"
+    }
+  ],
+  "return": "_format_output(message, outputFormat)"
 }

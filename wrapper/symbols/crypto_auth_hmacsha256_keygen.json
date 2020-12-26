@@ -1,15 +1,14 @@
 {
-        "name": "crypto_auth_hmacsha256_keygen",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "output",
-                        "length": "libsodium._crypto_auth_hmacsha256_keybytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_auth_hmacsha256_keygen(output_address)",
-        "return": "_format_output(output, outputFormat)"
+  "name": "crypto_auth_hmacsha256_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_auth_hmacsha256_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_auth_hmacsha256_keygen(output_address)",
+  "return": "_format_output(output, outputFormat)"
 }

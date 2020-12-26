@@ -1,15 +1,14 @@
 {
-        "name": "crypto_aead_chacha20poly1305_ietf_keygen",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "output",
-                        "length": "libsodium._crypto_aead_chacha20poly1305_ietf_keybytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_aead_chacha20poly1305_ietf_keygen(output_address)",
-        "return": "_format_output(output, outputFormat)"
+  "name": "crypto_aead_chacha20poly1305_ietf_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_aead_chacha20poly1305_ietf_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_aead_chacha20poly1305_ietf_keygen(output_address)",
+  "return": "_format_output(output, outputFormat)"
 }

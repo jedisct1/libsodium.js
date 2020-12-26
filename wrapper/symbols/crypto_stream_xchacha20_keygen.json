@@ -1,15 +1,14 @@
 {
-        "name": "crypto_stream_xchacha20_keygen",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "output",
-                        "length": "libsodium._crypto_stream_xchacha20_keybytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_stream_xchacha20_keygen(output_address)",
-        "return": "_format_output(output, outputFormat)"
+  "name": "crypto_stream_xchacha20_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_stream_xchacha20_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_stream_xchacha20_keygen(output_address)",
+  "return": "_format_output(output, outputFormat)"
 }

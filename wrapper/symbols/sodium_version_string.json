@@ -1,10 +1,9 @@
 {
-        "name": "sodium_version_string",
-        "dependencies": [],
-        "type": "function",
-        "noOutputFormat": true,
-        "inputs": [],
-        "outputs": [],
-        "target": "var version = libsodium._sodium_version_string()",
-        "return": "libsodium.UTF8ToString(version)"
+  "name": "sodium_version_string",
+  "type": "function",
+  "noOutputFormat": true,
+  "inputs": [],
+  "outputs": [],
+  "target": "var version = libsodium._sodium_version_string()",
+  "return": "libsodium.UTF8ToString(version)"
 }

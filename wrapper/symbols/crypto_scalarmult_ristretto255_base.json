@@ -1,10 +1,5 @@
 {
   "name": "crypto_scalarmult_ristretto255_base",
-  "dependencies": [
-    "_crypto_scalarmult_ristretto255_base",
-    "_crypto_core_ristretto255_scalarbytes",
-    "_crypto_core_ristretto255_bytes"
-  ],
   "type": "function",
   "inputs": [
     {

@@ -1,22 +1,21 @@
 {
-        "name": "crypto_sign_update",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "state_address",
-                        "type": "sign_state_address"
-                },
-                {
-                        "name": "message_chunk",
-                        "type": "unsized_buf"
-                }
-        ],
-        "target": "libsodium._crypto_sign_update(state_address, message_chunk_address, message_chunk_length) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ]
+  "name": "crypto_sign_update",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "sign_state_address"
+    },
+    {
+      "name": "message_chunk",
+      "type": "unsized_buf"
+    }
+  ],
+  "target": "libsodium._crypto_sign_update(state_address, message_chunk_address, message_chunk_length) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ]
 }

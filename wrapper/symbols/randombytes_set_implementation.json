@@ -1,18 +1,17 @@
 {
-        "name": "randombytes_set_implementation",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "implementation",
-                        "type": "randombytes_implementation"
-                }
-        ],
-        "target": "libsodium._randombytes_set_implementation(implementation_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "unsupported implementation"
-                }
-        ]
+  "name": "randombytes_set_implementation",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "implementation",
+      "type": "randombytes_implementation"
+    }
+  ],
+  "target": "libsodium._randombytes_set_implementation(implementation_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "unsupported implementation"
+    }
+  ]
 }

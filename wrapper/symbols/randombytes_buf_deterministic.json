@@ -1,25 +1,24 @@
 {
-        "name": "randombytes_buf_deterministic",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "length",
-                        "type": "uint"
-                },
-                {
-                        "name": "seed",
-                        "type": "buf",
-                        "length": "libsodium._randombytes_seedbytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "output",
-                        "length": "length",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._randombytes_buf_deterministic(output_address, length, seed_address)",
-        "return": "_format_output(output, outputFormat)"
+  "name": "randombytes_buf_deterministic",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "length",
+      "type": "uint"
+    },
+    {
+      "name": "seed",
+      "type": "buf",
+      "length": "libsodium._randombytes_seedbytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "length",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._randombytes_buf_deterministic(output_address, length, seed_address)",
+  "return": "_format_output(output, outputFormat)"
 }

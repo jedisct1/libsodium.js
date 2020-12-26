@@ -1,31 +1,31 @@
 {
-        "name": "crypto_box_curve25519xchacha20poly1305_seal_open",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "ciphertext",
-                        "type": "minsized_buf",
-                        "min_length": "libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
-                },
-                {
-                        "name": "publicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
-                },
-                {
-                        "name": "secretKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "plaintext",
-                        "type": "buf",
-                        "length": "ciphertext_length - libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_box_curve25519xchacha20poly1305_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, secretKey_address) | 0",
-        "expect": "=== 0",
-        "return": "_format_output(plaintext, outputFormat)"
+  "name": "crypto_box_curve25519xchacha20poly1305_seal_open",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "ciphertext",
+      "type": "minsized_buf",
+      "min_length": "libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
+    },
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
+    },
+    {
+      "name": "secretKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "plaintext",
+      "type": "buf",
+      "length": "ciphertext_length - libsodium._crypto_box_curve25519xchacha20poly1305_sealbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_box_curve25519xchacha20poly1305_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, secretKey_address) | 0",
+  "expect": "=== 0",
+  "return": "_format_output(plaintext, outputFormat)"
 }

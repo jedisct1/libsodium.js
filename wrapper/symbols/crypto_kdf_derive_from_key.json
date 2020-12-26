@@ -1,34 +1,33 @@
 {
-        "name": "crypto_kdf_derive_from_key",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "subkey_len",
-                        "type": "uint"
-                },
-                {
-                        "name": "subkey_id",
-                        "type": "uint"
-                },
-                {
-                        "name": "ctx",
-                        "type": "string",
-                        "length": "libsodium._crypto_kdf_contextbytes()"
-                },
-                {
-                        "name": "key",
-                        "type": "buf",
-                        "length": "libsodium._crypto_kdf_keybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "subkey",
-                        "length": "subkey_len",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, subkey_id, (subkey_id >>> 24) >>> 8, ctx_address, key_address)",
-        "return": "_format_output(subkey, outputFormat)"
+  "name": "crypto_kdf_derive_from_key",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "subkey_len",
+      "type": "uint"
+    },
+    {
+      "name": "subkey_id",
+      "type": "uint"
+    },
+    {
+      "name": "ctx",
+      "type": "string",
+      "length": "libsodium._crypto_kdf_contextbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_kdf_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "subkey",
+      "length": "subkey_len",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_derive_from_key(subkey_address, subkey_len, subkey_id, (subkey_id >>> 24) >>> 8, ctx_address, key_address)",
+  "return": "_format_output(subkey, outputFormat)"
 }

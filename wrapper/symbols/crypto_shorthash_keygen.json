@@ -1,15 +1,14 @@
 {
-        "name": "crypto_shorthash_keygen",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "output",
-                        "length": "libsodium._crypto_shorthash_keybytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_shorthash_keygen(output_address)",
-        "return": "_format_output(output, outputFormat)"
+  "name": "crypto_shorthash_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_shorthash_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_shorthash_keygen(output_address)",
+  "return": "_format_output(output, outputFormat)"
 }

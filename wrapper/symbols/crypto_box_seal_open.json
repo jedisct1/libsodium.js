@@ -1,36 +1,36 @@
 {
-        "name": "crypto_box_seal_open",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "ciphertext",
-                        "type": "minsized_buf",
-                        "min_length": "libsodium._crypto_box_sealbytes()"
-                },
-                {
-                        "name": "publicKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_publickeybytes()"
-                },
-                {
-                        "name": "privateKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_box_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "plaintext",
-                        "type": "buf",
-                        "length": "ciphertext_length - libsodium._crypto_box_sealbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "incorrect key pair for the given ciphertext"
-                }
-        ],
-        "return": "_format_output(plaintext, outputFormat)"
+  "name": "crypto_box_seal_open",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "ciphertext",
+      "type": "minsized_buf",
+      "min_length": "libsodium._crypto_box_sealbytes()"
+    },
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_publickeybytes()"
+    },
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "plaintext",
+      "type": "buf",
+      "length": "ciphertext_length - libsodium._crypto_box_sealbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_box_seal_open(plaintext_address, ciphertext_address, ciphertext_length, 0, publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "incorrect key pair for the given ciphertext"
+    }
+  ],
+  "return": "_format_output(plaintext, outputFormat)"
 }

@@ -1,36 +1,31 @@
 {
-        "name": "crypto_scalarmult",
-        "dependencies": [
-                "_crypto_scalarmult",
-                "_crypto_scalarmult_scalarbytes",
-                "_crypto_scalarmult_bytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "privateKey",
-                        "length": "libsodium._crypto_scalarmult_scalarbytes()",
-                        "type": "buf"
-                },
-                {
-                        "name": "publicKey",
-                        "length": "libsodium._crypto_scalarmult_bytes()",
-                        "type": "buf"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "sharedSecret",
-                        "length": "libsodium._crypto_scalarmult_bytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "weak public key"
-                }
-        ],
-        "return": "_format_output(sharedSecret, outputFormat)"
+  "name": "crypto_scalarmult",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "privateKey",
+      "length": "libsodium._crypto_scalarmult_scalarbytes()",
+      "type": "buf"
+    },
+    {
+      "name": "publicKey",
+      "length": "libsodium._crypto_scalarmult_bytes()",
+      "type": "buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sharedSecret",
+      "length": "libsodium._crypto_scalarmult_bytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_scalarmult(sharedSecret_address, privateKey_address, publicKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "weak public key"
+    }
+  ],
+  "return": "_format_output(sharedSecret, outputFormat)"
 }

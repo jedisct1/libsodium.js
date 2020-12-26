@@ -1,30 +1,26 @@
 {
-        "name": "crypto_sign_ed25519_sk_to_seed",
-        "dependencies": [
-                "_crypto_sign_secretkeybytes",
-                "_crypto_sign_seedbytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "privateKey",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_secretkeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "seed",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_seedbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_address, privateKey_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid key"
-                }
-        ],
-        "return": "_format_output(seed, outputFormat)"
+  "name": "crypto_sign_ed25519_sk_to_seed",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "seed",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_seedbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_sign_ed25519_sk_to_seed(seed_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid key"
+    }
+  ],
+  "return": "_format_output(seed, outputFormat)"
 }

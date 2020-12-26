@@ -1,26 +1,25 @@
 {
-        "name": "crypto_hash_sha256_final",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "state_address",
-                        "type": "hash_sha256_state_address"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "hash",
-                        "length": "libsodium._crypto_hash_sha256_bytes()",
-                        "type": "buf"
-                }
-        ],
-        "target": "libsodium._crypto_hash_sha256_final(state_address, hash_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
+  "name": "crypto_hash_sha256_final",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "hash_sha256_state_address"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "hash",
+      "length": "libsodium._crypto_hash_sha256_bytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_hash_sha256_final(state_address, hash_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "(libsodium._free(state_address), _format_output(hash, outputFormat))"
 }

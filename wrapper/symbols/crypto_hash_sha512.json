@@ -1,26 +1,25 @@
 {
-        "name": "crypto_hash_sha512",
-        "dependencies": [],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "message",
-                        "type": "unsized_buf"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "hash",
-                        "type": "buf",
-                        "length": "libsodium._crypto_hash_sha512_bytes()"
-                }
-        ],
-        "target": "libsodium._crypto_hash_sha512(hash_address, message_address, message_length, 0) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output(hash, outputFormat)"
+  "name": "crypto_hash_sha512",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "message",
+      "type": "unsized_buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "hash",
+      "type": "buf",
+      "length": "libsodium._crypto_hash_sha512_bytes()"
+    }
+  ],
+  "target": "libsodium._crypto_hash_sha512(hash_address, message_address, message_length, 0) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(hash, outputFormat)"
 }

@@ -1,39 +1,35 @@
 {
-        "name": "crypto_stream_chacha20_ietf_xor",
-        "dependencies": [
-                "_crypto_stream_chacha20_ietf_noncebytes",
-                "_crypto_stream_chacha20_ietf_keybytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "input_message",
-                        "type": "unsized_buf"
-                },
-                {
-                        "name": "nonce",
-                        "type": "buf",
-                        "length": "libsodium._crypto_stream_chacha20_ietf_noncebytes()"
-                },
-                {
-                        "name": "key",
-                        "type": "buf",
-                        "length": "libsodium._crypto_stream_chacha20_ietf_keybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "output_message",
-                        "type": "buf",
-                        "length": "input_message_length"
-                }
-        ],
-        "target": "libsodium._crypto_stream_chacha20_ietf_xor(output_message_address, input_message_address, input_message_length, 0, nonce_address, key_address)",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "_format_output(output_message, outputFormat)"
+  "name": "crypto_stream_chacha20_ietf_xor",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "input_message",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "nonce",
+      "type": "buf",
+      "length": "libsodium._crypto_stream_chacha20_ietf_noncebytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_stream_chacha20_ietf_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output_message",
+      "type": "buf",
+      "length": "input_message_length"
+    }
+  ],
+  "target": "libsodium._crypto_stream_chacha20_ietf_xor(output_message_address, input_message_address, input_message_length, 0, nonce_address, key_address)",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(output_message, outputFormat)"
 }

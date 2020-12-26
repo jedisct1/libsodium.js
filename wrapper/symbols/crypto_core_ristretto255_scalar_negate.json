@@ -1,23 +1,20 @@
 {
-        "name": "crypto_core_ristretto255_scalar_negate",
-        "dependencies": [
-                "_crypto_core_ristretto255_scalarbytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "s",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "neg",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_core_ristretto255_scalar_negate(neg_address, s_address)",
-        "return": "_format_output(neg, outputFormat)"
+  "name": "crypto_core_ristretto255_scalar_negate",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "s",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "neg",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ristretto255_scalarbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_ristretto255_scalar_negate(neg_address, s_address)",
+  "return": "_format_output(neg, outputFormat)"
 }

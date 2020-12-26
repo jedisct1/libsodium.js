@@ -1,19 +1,18 @@
 {
-        "name": "crypto_hash_sha512_init",
-        "dependencies": [],
-        "type": "function",
-        "outputs": [
-                {
-                        "name": "state",
-                        "type": "hash_sha512_state"
-                }
-        ],
-        "target": "libsodium._crypto_hash_sha512_init(state_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid usage"
-                }
-        ],
-        "return": "state_address"
+  "name": "crypto_hash_sha512_init",
+  "type": "function",
+  "outputs": [
+    {
+      "name": "state",
+      "type": "hash_sha512_state"
+    }
+  ],
+  "target": "libsodium._crypto_hash_sha512_init(state_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "state_address"
 }

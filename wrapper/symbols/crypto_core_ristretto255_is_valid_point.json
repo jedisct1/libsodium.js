@@ -1,13 +1,13 @@
 {
-        "name": "crypto_core_ristretto255_is_valid_point",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "repr",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ristretto255_bytes()"
-                }
-        ],
-        "target": "var result = libsodium._crypto_core_ristretto255_is_valid_point(repr_address) | 0",
-        "return": "result === 1"
+  "name": "crypto_core_ristretto255_is_valid_point",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "repr",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ristretto255_bytes()"
+    }
+  ],
+  "target": "var result = libsodium._crypto_core_ristretto255_is_valid_point(repr_address) | 0",
+  "return": "result === 1"
 }

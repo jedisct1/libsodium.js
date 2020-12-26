@@ -1,26 +1,26 @@
 {
-        "name": "crypto_sign_ed25519_pk_to_curve25519",
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "edPk",
-                        "type": "buf",
-                        "length": "libsodium._crypto_sign_publickeybytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "cPk",
-                        "type": "buf",
-                        "length": "libsodium._crypto_scalarmult_scalarbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",
-        "assert_retval": [
-                {
-                        "condition": "=== 0",
-                        "or_else_throw": "invalid key"
-                }
-        ],
-        "return": "_format_output(cPk, outputFormat)"
+  "name": "crypto_sign_ed25519_pk_to_curve25519",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "edPk",
+      "type": "buf",
+      "length": "libsodium._crypto_sign_publickeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "cPk",
+      "type": "buf",
+      "length": "libsodium._crypto_scalarmult_scalarbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid key"
+    }
+  ],
+  "return": "_format_output(cPk, outputFormat)"
 }

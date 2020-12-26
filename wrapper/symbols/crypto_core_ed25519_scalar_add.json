@@ -1,29 +1,25 @@
 {
-        "name": "crypto_core_ed25519_scalar_add",
-        "dependencies": [
-                "_crypto_core_ed25519_scalar_add",
-                "_crypto_core_ed25519_scalarbytes"
-        ],
-        "type": "function",
-        "inputs": [
-                {
-                        "name": "x",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
-                },
-                {
-                        "name": "y",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
-                }
-        ],
-        "outputs": [
-                {
-                        "name": "z",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_core_ed25519_scalar_add(z_address, x_address, y_address)",
-        "return": "_format_output(z, outputFormat)"
+  "name": "crypto_core_ed25519_scalar_add",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "x",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+    },
+    {
+      "name": "y",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "z",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_ed25519_scalar_add(z_address, x_address, y_address)",
+  "return": "_format_output(z, outputFormat)"
 }

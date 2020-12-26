@@ -1,18 +1,14 @@
 {
-        "name": "crypto_core_ed25519_scalar_random",
-        "dependencies": [
-                "_crypto_core_ed25519_scalar_random",
-                "_crypto_core_ed25519_scalarbytes"
-        ],
-        "type": "function",
-        "inputs": [],
-        "outputs": [
-                {
-                        "name": "r",
-                        "type": "buf",
-                        "length": "libsodium._crypto_core_ed25519_scalarbytes()"
-                }
-        ],
-        "target": "libsodium._crypto_core_ed25519_scalar_random(r_address)",
-        "return": "_format_output(r, outputFormat)"
+  "name": "crypto_core_ed25519_scalar_random",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "r",
+      "type": "buf",
+      "length": "libsodium._crypto_core_ed25519_scalarbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_ed25519_scalar_random(r_address)",
+  "return": "_format_output(r, outputFormat)"
 }
