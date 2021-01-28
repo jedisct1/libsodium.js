@@ -1,11 +1,3 @@
-    })(process instanceof Object ? {
-        on (event, listener) {
-            if (event === 'uncaughtException' || event === 'unhandledRejection') return;
-            return process.on(event, listener);
-        },
-        versions: process.versions,
-        argv: process.argv
-    } : undefined);
     return Module;
 }
 
