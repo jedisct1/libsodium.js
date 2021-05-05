@@ -93,6 +93,8 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Sha256 state address";
       } else if (paramType == "hash_sha512_state_address") {
         sDoc += "Sha512 state address";
+      } else if (paramType == "auth_hmacsha256_state_address") {
+	sDoc += "Hmac Sha256 state address";
       } else if (paramType == "onetimeauth_state_address") {
         sDoc += "OneTimeAuth state address";
       } else if (paramType == "sign_state_address") {
@@ -121,7 +123,9 @@ exports.buildDocForSymbol = function (s) {
           sDoc += "Sha256 state";
         } else if (outputType == "hash_sha512_state") {
           sDoc += "Sha512 state";
-        } else if (outputType == "onetimeauth_state") {
+        } else if (outputType == "auth_hmacsha256_state") {
+	  sDoc += "Hmac Sha256 state";
+	} else if (outputType == "onetimeauth_state") {
           sDoc += "OneTimeAuth state";
         } else if (outputType == "sign_state") {
           sDoc += "Signature state";
