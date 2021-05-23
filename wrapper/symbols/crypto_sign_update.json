@@ -11,7 +11,7 @@
       "type": "unsized_buf"
     }
   ],
-  "target": "libsodium._crypto_sign_update(state_address, message_chunk_address, message_chunk_length) | 0",
+  "target": "libsodium._crypto_sign_update(state_address, message_chunk_address, message_chunk_length, 0) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",
