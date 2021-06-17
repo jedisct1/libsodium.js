@@ -60,7 +60,7 @@ bower install libsodium.js
 
 ### Usage (as a module)
 
-Load the `sodium-wrappers` module. The returned object contains a `.ready`
+Load the `libsodium-wrappers` module. The returned object contains a `.ready`
 property: a promise that must be resolve before the sodium functions
 can be used.
 
