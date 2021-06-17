@@ -16,10 +16,10 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "libsodium": "^0.7.0",
-    "mocha": "^8.2.1",
-    "terser": "^5.5.1"
+    "mocha": "^8.4.0",
+    "terser": "^5.7.0"
   },
   "keywords": [
     "crypto",
