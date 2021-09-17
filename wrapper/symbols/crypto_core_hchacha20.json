@@ -1,0 +1,36 @@
+{
+  "name": "crypto_core_hchacha20",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "input",
+      "type": "buf",
+      "length": "libsodium._crypto_core_hchacha20_inputbytes()"
+    },
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_core_hchacha20_keybytes()"
+    },
+    {
+      "name": "constant",
+      "type": "unsized_buf_optional",
+      "length": "libsodium._crypto_core_hchacha20_constbytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "hash",
+      "type": "buf",
+      "length": "libsodium._crypto_core_hchacha20_outputbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_core_hchacha20(hash_address, input_address, privateKey_address, constant_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(hash, outputFormat)"
+}
