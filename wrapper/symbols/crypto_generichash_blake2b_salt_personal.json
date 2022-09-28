@@ -12,12 +12,12 @@
     },
     {
       "name": "id",
-      "type": "buf",
+      "type": "buf_optional",
       "length": "libsodium._crypto_generichash_blake2b_saltbytes()"
     },
     {
       "name": "ctx",
-      "type": "buf",
+      "type": "buf_optional",
       "length": "libsodium._crypto_generichash_blake2b_personalbytes()"
     }
   ],
