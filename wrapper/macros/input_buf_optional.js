@@ -1,4 +1,4 @@
-// ---------- input: {var_name} (buf+optional)
+// ---------- input: {var_name} (buf_optional)
 
 var {var_name}_address = null, {var_name}_length = 0;
 if ({var_name} != undefined) {

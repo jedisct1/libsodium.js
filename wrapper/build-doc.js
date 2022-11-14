@@ -85,6 +85,8 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Minsized buf";
       } else if (paramType == "unsized_buf_optional") {
         sDoc += "Optional unsized buf";
+      } else if (paramType == "buf_optional") {
+        sDoc += "Optional buf";
       } else if (paramType == "uint") {
         sDoc += "Unsigned Integer";
       } else if (paramType == "generichash_state_address") {
