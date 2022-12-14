@@ -49,6 +49,8 @@
   },
   "homepage": "https://github.com/jedisct1/libsodium.js",
   "browser": {
-    "fs": false
+    "fs": false,
+    "path": false,
+    "stream": false
   }
 }
