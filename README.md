@@ -67,8 +67,8 @@ can be used.
 Example:
 
 ```js
-const _sodium = require('libsodium-wrappers');
-(async() => {
+import _sodium from 'libsodium-wrappers';
+await (async() => {
   await _sodium.ready;
   const sodium = _sodium;
 
