@@ -12,14 +12,14 @@
     "url": "https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium-sumo": "^0.7.0"
+    "libsodium-sumo": "^0.7.10"
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "chai": "^4.3.6",
-    "libsodium": "^0.7.0",
-    "mocha": "^9.2.2",
-    "terser": "^5.12.1"
+    "chai": "^4.3.7",
+    "libsodium": "^0.7.10",
+    "mocha": "^10.2.0",
+    "terser": "^5.16.1"
   },
   "keywords": [
     "crypto",
