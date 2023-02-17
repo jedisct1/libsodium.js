@@ -199,10 +199,11 @@ Alternatively, the "sumo" version, available in the
 the symbols from the original library. This includes undocumented,
 untested, deprecated, low-level and easy to misuse functions.
 
-The `crypto_pwhash_*` function set is included in both versions.
+The `crypto_pwhash_*` function set is only included in the sumo version.
 
-The sumo version is slightly larger than the standard version, and
-should be used only if you really need the extra symbols it provides.
+The sumo version is slightly larger than the standard version, reserves
+more memory, and should be used only if you really need the extra symbols
+it provides.
 
 ### Compilation
 
