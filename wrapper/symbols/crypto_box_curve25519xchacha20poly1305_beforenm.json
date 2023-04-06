@@ -1,0 +1,31 @@
+{
+  "name": "crypto_box_curve25519xchacha20poly1305_beforenm",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
+    },
+    {
+      "name": "privateKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "sharedKey",
+      "type": "buf",
+      "length": "libsodium._crypto_box_curve25519xchacha20poly1305_beforenmbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_box_curve25519xchacha20poly1305_beforenm(sharedKey_address, publicKey_address, privateKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(sharedKey, outputFormat)"
+}
