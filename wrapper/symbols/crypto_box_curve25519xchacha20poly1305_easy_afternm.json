@@ -1,0 +1,35 @@
+{
+    "name": "crypto_box_curve25519xchacha20poly1305_easy_afternm",
+    "type": "function",
+    "inputs": [
+        {
+            "name": "message",
+            "type": "unsized_buf"
+        },
+        {
+            "name": "nonce",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_noncebytes()"
+        },
+        {
+            "name": "sharedKey",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_beforenmbytes()"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "ciphertext",
+            "type": "buf",
+            "length": "message_length + libsodium._crypto_box_curve25519xchacha20poly1305_macbytes()"
+        }
+    ],
+    "target": "libsodium._crypto_box_curve25519xchacha20poly1305_easy_afternm(ciphertext_address, message_address, message_length, 0, nonce_address, sharedKey_address) | 0",
+    "assert_retval": [
+        {
+            "condition": "=== 0",
+            "or_else_throw": "invalid usage"
+        }
+    ],
+    "return": "_format_output(ciphertext, outputFormat)"
+}

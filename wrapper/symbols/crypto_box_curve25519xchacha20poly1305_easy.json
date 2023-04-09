@@ -1,0 +1,40 @@
+{
+    "name": "crypto_box_curve25519xchacha20poly1305_easy",
+    "type": "function",
+    "inputs": [
+        {
+            "name": "message",
+            "type": "unsized_buf"
+        },
+        {
+            "name": "nonce",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_noncebytes()"
+        },
+        {
+            "name": "publicKey",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()"
+        },
+        {
+            "name": "privateKey",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "ciphertext",
+            "type": "buf",
+            "length": "message_length + libsodium._crypto_box_curve25519xchacha20poly1305_macbytes()"
+        }
+    ],
+    "target": "libsodium._crypto_box_curve25519xchacha20poly1305_easy(ciphertext_address, message_address, message_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
+    "assert_retval": [
+        {
+            "condition": "=== 0",
+            "or_else_throw": "invalid usage"
+        }
+    ],
+    "return": "_format_output(ciphertext, outputFormat)"
+}

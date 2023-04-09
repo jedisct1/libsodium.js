@@ -1,0 +1,31 @@
+{
+    "name": "crypto_box_curve25519xchacha20poly1305_seed_keypair",
+    "type": "function",
+    "inputs": [
+        {
+            "name": "seed",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_seedbytes()"
+        }
+    ],
+    "outputs": [
+        {
+            "name": "publicKey",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_publickeybytes()",
+            "type": "buf"
+        },
+        {
+            "name": "privateKey",
+            "type": "buf",
+            "length": "libsodium._crypto_box_curve25519xchacha20poly1305_secretkeybytes()"
+        }
+    ],
+    "target": "libsodium._crypto_box_curve25519xchacha20poly1305_seed_keypair(publicKey_address, privateKey_address, seed_address) | 0",
+    "assert_retval": [
+        {
+            "condition": "=== 0",
+            "or_else_throw": "invalid usage"
+        }
+    ],
+    "return": "{publicKey: _format_output(publicKey, outputFormat), privateKey: _format_output(privateKey, outputFormat), keyType: 'x25519'}"
+}
