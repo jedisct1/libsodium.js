@@ -20,6 +20,7 @@ Supported browsers/JS engines:
 * Firefox >= 21
 * Mobile Safari on iOS >= 8.0 (older versions produce incorrect results)
 * NodeJS
+* Bun
 * Opera >= 15
 * Safari >= 6 (older versions produce incorrect results)
 
@@ -219,6 +220,10 @@ need to be installed on your system:
 Running `make` will install the dev dependencies, clone libsodium,
 build it, test it, build the wrapper, and create the modules and
 minified distribution files.
+
+## Related projects
+
+* [react-native-libsodium](https://github.com/serenity-kit/react-native-libsodium): React Native bindings to Libsodium matching the libsodium-wrappers package API
 
 ## Authors
 
