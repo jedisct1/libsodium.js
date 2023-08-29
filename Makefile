@@ -37,7 +37,7 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 targets: standard sumo
 
 pack: targets
-	@npm install --only=dev
+	@-npm install
 	@echo + Packing
 	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
 	  echo "Packing [$$i]" ; \
