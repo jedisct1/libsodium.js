@@ -1,0 +1,44 @@
+{
+  "name": "crypto_aead_aegis128l_encrypt",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "message",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "additional_data",
+      "type": "unsized_buf_optional"
+    },
+    {
+      "name": "secret_nonce",
+      "type": "unsized_buf_optional",
+      "length": "libsodium._crypto_aead_aegis128l_nsecbytes()"
+    },
+    {
+      "name": "public_nonce",
+      "type": "buf",
+      "length": "libsodium._crypto_aead_aegis128l_npubbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_aead_aegis128l_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ciphertext",
+      "type": "buf",
+      "length": "message_length + libsodium._crypto_aead_aegis128l_abytes()"
+    }
+  ],
+  "target": "libsodium._crypto_aead_aegis128l_encrypt(ciphertext_address, null, message_address, message_length, 0, additional_data_address, additional_data_length, 0, secret_nonce_address, public_nonce_address, key_address)",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(ciphertext, outputFormat)"
+}

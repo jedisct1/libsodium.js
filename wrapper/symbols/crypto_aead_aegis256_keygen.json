@@ -1,0 +1,14 @@
+{
+  "name": "crypto_aead_aegis256_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_aead_aegis256_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_aead_aegis256_keygen(output_address)",
+  "return": "_format_output(output, outputFormat)"
+}

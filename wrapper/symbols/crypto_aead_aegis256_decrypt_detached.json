@@ -1,0 +1,49 @@
+{
+  "name": "crypto_aead_aegis256_decrypt_detached",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "secret_nonce",
+      "type": "unsized_buf_optional",
+      "length": "libsodium._crypto_aead_aegis256_nsecbytes()"
+    },
+    {
+      "name": "ciphertext",
+      "type": "unsized_buf"
+    },
+    {
+      "name": "mac",
+      "type": "buf",
+      "length": "libsodium._crypto_box_macbytes()"
+    },
+    {
+      "name": "additional_data",
+      "type": "unsized_buf_optional"
+    },
+    {
+      "name": "public_nonce",
+      "type": "buf",
+      "length": "libsodium._crypto_aead_aegis256_npubbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_aead_aegis256_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "message",
+      "type": "buf",
+      "length": "ciphertext_length"
+    }
+  ],
+  "target": "libsodium._crypto_aead_aegis256_decrypt_detached(message_address, secret_nonce_address, ciphertext_address, ciphertext_length, 0, mac_address, additional_data_address, additional_data_length, 0, public_nonce_address, key_address)",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "ciphertext cannot be decrypted using that key"
+    }
+  ],
+  "return": "_format_output(message, outputFormat)"
+}
