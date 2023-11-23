@@ -109,6 +109,8 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Randombytes implementation";
       } else if (paramType == "string") {
         sDoc += "A string";
+      } else if (paramType == "u64") {
+        sDoc += "An unsigned int or 64-bit BigInt";
       } else throw new Error("Unknown parameter type: " + paramType);
       sDoc += newLine();
     }
