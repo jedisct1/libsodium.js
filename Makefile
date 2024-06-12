@@ -22,6 +22,8 @@ all: pack
 	@echo =================
 	@ls -l $(MODULES_SUMO_DIR)/
 
+esm: $(MODULES_DIR)/libsodium.esm.js $(MODULES_DIR)/libsodium-esm-wrappers.js
+	@echo + Building standard ESM distribution
 
 standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js
 	@echo + Building standard distribution
@@ -47,12 +49,22 @@ pack: targets
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
 	mkdir -p $(MODULES_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
+	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js wrap-template.js
+
+$(MODULES_DIR)/libsodium-esm-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-esm-template.js
+	@echo +++ Building standard/libsodium-wrappers.js
+	mkdir -p $(MODULES_DIR)
+	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-esm-wrappers.js wrap-esm-template.js
 
 $(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrap-template.js
+
+$(MODULES_DIR)/libsodium.esm.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+	@echo +++ Building standard/libsodium ESM
+	mkdir -p $(MODULES_DIR)
+	cp $(LIBSODIUM_JS_DIR)/lib/libsodium.esm.js $(MODULES_DIR)/libsodium.esm.js
 
 $(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium
@@ -76,6 +88,9 @@ $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configu
 	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
 
 $(LIBSODIUM_JS_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
+	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --standard
+
+$(LIBSODIUM_JS_DIR)/lib/libsodium.esm.js: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --standard
 
 $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
