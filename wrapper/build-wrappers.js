@@ -4,16 +4,16 @@ var docBuilder = require("./build-doc");
 
 //Parse arguments
 const argv = process.argv;
-if (argv.length !== 6) {
+if (argv.length < 5) {
   console.error(
-    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path> <template path>"
+    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path> [--esm]"
   );
   process.exit(1);
 }
 const libsodiumModuleName = argv[2],
   apiPath = argv[3],
   wrappersPath = argv[4],
-  templatePath = argv[5];
+  esm = argv[5] === '--esm';
 
 //Loading preset macros
 var macros = {};
@@ -34,8 +34,11 @@ for (var i = 0; i < macrosFiles.length; i++) {
 var utilsCode = fs.readFileSync(path.join(__dirname, "wrap-utils.js"), {
   encoding: "utf8"
 });
+if (esm) {
+  utilsCode = utilsCode.replace(/\nfunction/g, "\nexport function");
+}
 
-var templateCode = fs.readFileSync(path.join(__dirname, templatePath), {
+var templateCode = fs.readFileSync(path.join(__dirname, esm ? "wrap-esm-template.js" : "wrap-template.js"), {
   encoding: "utf8"
 });
 
@@ -67,7 +70,9 @@ for (var i = 0; i < symbolsFiles.length; i++) {
 for (var i = 0; i < symbols.length; i++) {
   buildSymbol(symbols[i]);
 }
-exportFunctions(symbols);
+if (!esm) {
+  exportFunctions(symbols);
+}
 exportConstants(loadConstants());
 finalizeWrapper();
 
@@ -119,6 +124,9 @@ function buildSymbol(symbolDescription) {
   if (symbolDescription.type == "function") {
     var targetName = "libsodium._" + symbolDescription.name;
     var funcCode = "function " + symbolDescription.name + "(";
+    if (esm) {
+      funcCode = "export " + funcCode;
+    }
     var funcBody = "";
     //Adding parameters array in function's interface, their conversions in the function's body
     var paramsArray = [];
@@ -247,8 +255,11 @@ function applyMacro(macroCode, symbols, substitutes) {
 }
 
 function finalizeWrapper() {
+  var subs = esm
+    ? [utilsCode, functionsCode, injectTabs(exportsCode, 3), libsodiumModuleName]
+    : [injectTabs(utilsCode, 2), injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName];
   scriptBuf = applyMacro(
-    scriptBuf, ["/*{{utils_here}}*/", "/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], [injectTabs(utilsCode, 2), injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
+    scriptBuf, ["/*{{utils_here}}*/", "/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], subs
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());

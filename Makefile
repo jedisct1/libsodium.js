@@ -46,22 +46,22 @@ pack: targets
 	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
-$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
 	@echo +++ Building standard/libsodium-wrappers.js
 	mkdir -p $(MODULES_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js wrap-template.js
+	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
-$(MODULES_DIR)/libsodium-esm-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-esm-template.js
-	@echo +++ Building standard/libsodium-wrappers.js
+$(MODULES_DIR)/libsodium-esm-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
+	@echo +++ Building standard/libsodium-esm-wrappers.js
 	mkdir -p $(MODULES_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-esm-wrappers.js wrap-esm-template.js
+	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-esm-wrappers.js --esm
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrap-template.js
+	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
-$(MODULES_DIR)/libsodium.esm.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+$(MODULES_DIR)/libsodium.esm.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-esm-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium ESM
 	mkdir -p $(MODULES_DIR)
 	cp $(LIBSODIUM_JS_DIR)/lib/libsodium.esm.js $(MODULES_DIR)/libsodium.esm.js
