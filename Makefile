@@ -46,17 +46,17 @@ pack: targets
 	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
-$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
+$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
 	mkdir -p $(MODULES_DIR)
 	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
-$(MODULES_DIR)/libsodium-esm-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
+$(MODULES_DIR)/libsodium-esm-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-esm-template.js
 	@echo +++ Building standard/libsodium-esm-wrappers.js
 	mkdir -p $(MODULES_DIR)
 	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-esm-wrappers.js --esm
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
 	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
