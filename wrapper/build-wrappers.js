@@ -73,7 +73,11 @@ for (var i = 0; i < symbols.length; i++) {
 if (!esm) {
   exportFunctions(symbols);
 }
-exportConstants(loadConstants());
+if (esm) {
+  exportConstantsESM(loadConstants());
+} else {
+  exportConstants(loadConstants());
+}
 finalizeWrapper();
 
 function exportFunctions(symbols) {
@@ -90,6 +94,30 @@ function exportFunctions(symbols) {
   exportsCode += "    exports[exported_functions[i]] = functions[i];\n";
   exportsCode += "  }\n";
   exportsCode += "}\n";
+}
+
+function exportConstantsESM(constSymbols) {
+  var keys = [];
+  for (var i = 0; i < constSymbols.length; i++) {
+    if (constSymbols[i].type === "uint") {
+      keys.push(constSymbols[i].name);
+    }
+  }
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    exportsCode += `export const ${key} = libsodium._${key.toLowerCase()}?.();\n`;
+  }
+
+  keys = [];
+  for (i = 0; i < constSymbols.length; i++) {
+    if (constSymbols[i].type === "string") {
+      keys.push(constSymbols[i].name);
+    }
+  }
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    exportsCode += `export const ${key} = libsodium.UTF8ToString(libsodium._${key.toLowerCase()}?.());\n`;
+  }
 }
 
 function exportConstants(constSymbols) {
@@ -256,7 +284,7 @@ function applyMacro(macroCode, symbols, substitutes) {
 
 function finalizeWrapper() {
   var subs = esm
-    ? [utilsCode, functionsCode, injectTabs(exportsCode, 3), libsodiumModuleName]
+    ? [utilsCode, functionsCode, exportsCode, libsodiumModuleName]
     : [injectTabs(utilsCode, 2), injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName];
   scriptBuf = applyMacro(
     scriptBuf, ["/*{{utils_here}}*/", "/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], subs
