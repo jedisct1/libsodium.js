@@ -3,10 +3,11 @@ const expect = require('chai').expect;
 const test_helper = require('./test_helper');
 
 let sodium;
+let sumo = parseInt(process.env.SUMO);
 
 describe('libsodium compatibility', () => {
     it('crypto_aead_xchacha20poly1305_ietf_*', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let plaintext = Buffer.from(
             '4c616469657320616e642047656e746c656d656e206f662074686520636c6173' +
             '73206f66202739393a204966204920636f756c64206f6666657220796f75206f' +
@@ -54,7 +55,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_auth', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let key = Buffer.from(sodium.crypto_auth_keygen());
         let message = 'Science, math, technology, engineering, and compassion for others.';
         let mac = Buffer.from(sodium.crypto_auth(message, key));
@@ -62,7 +63,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_box', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let plaintext = 'Science, math, technology, engineering, and compassion for others.';
 
         let aliceKeypair = sodium.crypto_box_keypair();
@@ -94,7 +95,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_box_seal', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let plaintext = 'Science, math, technology, engineering, and compassion for others.';
 
         let aliceKeypair = sodium.crypto_box_keypair();
@@ -134,7 +135,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_kdf', async function() {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let subkey, expected;
         let key = Buffer.from('808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f', 'hex');
         let context = 'NaClTest';
@@ -153,7 +154,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_kx', async function() {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let clientKeys = sodium.crypto_kx_keypair();
         let clientSecret = Buffer.from(clientKeys.privateKey);
         let clientPublic = Buffer.from(clientKeys.publicKey);
@@ -179,9 +180,9 @@ describe('libsodium compatibility', () => {
         expect(clientTx.toString('hex')).to.be.equals(serverRx.toString('hex'));
     });
 
-    it('crypto_pwhash', async function() {
+    it('sumo crypto_pwhash', async function() {
         this.timeout(0);
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let password = 'correct horse battery staple';
         let salt = Buffer.from('808182838485868788898a8b8c8d8e8f', 'hex');
         let hashed =  Buffer.from(
@@ -190,9 +191,9 @@ describe('libsodium compatibility', () => {
         expect(hashed.toString('hex')).to.be.equals('720f95400220748a811bca9b8cff5d6e');
     });
 
-    it('crypto_pwhash_str', async function() {
+    it('sumo crypto_pwhash_str', async function() {
         this.timeout(0);
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let password = 'correct horse battery staple';
         let hashed = sodium.crypto_pwhash_str(
             password,
@@ -230,7 +231,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_secretbox', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let plaintext = 'Science, math, technology, engineering, and compassion for others.';
 
         let key = Buffer.from(sodium.crypto_secretbox_keygen());
@@ -242,7 +243,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_shorthash', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let key = Buffer.from('808182838485868788898a8b8c8d8e8f', 'hex');
         let message;
         let hash;
@@ -257,7 +258,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_sign', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let aliceKeypair = sodium.crypto_sign_keypair();
         let aliceSecret = Buffer.from(aliceKeypair.privateKey);
         let alicePublic = Buffer.from(aliceKeypair.publicKey);
@@ -277,7 +278,7 @@ describe('libsodium compatibility', () => {
 
     it('crypto_sign_ed25519_to_curve25519', async function () {
         this.timeout(0);
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
 
         let aliceKeypair = Buffer.from(
             '411a2c2227d2a799ebae0ed94417d8e8ed1ca9b0a9d5f4cd743cc52d961e94e2' +
@@ -295,7 +296,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('randombytes_buf', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let a, b;
         for (let i = 0; i < 100; i++) {
             a = sodium.randombytes_buf(64);
@@ -305,7 +306,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('randombytes_uniform', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let a, b;
         for (let i = 0; i < 100; i++) {
             a = sodium.randombytes_uniform(0x3fffffff);
@@ -315,7 +316,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_compare', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let a = Buffer.from('80808080', 'hex');
         let b = Buffer.from('81808080', 'hex');
         let c = Buffer.from('80808081', 'hex');
@@ -332,7 +333,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_increment', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let a = Buffer.from('80808080', 'hex');
         let b = Buffer.from('81808080', 'hex');
         sodium.increment(a);
@@ -344,7 +345,7 @@ describe('libsodium compatibility', () => {
         expect(sodium.compare(b, a)).to.be.equals(0);
     });
     it('sodium_is_zero', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let buf;
         buf = Buffer.from('00', 'hex');
         expect(sodium.is_zero(buf, 1)).to.be.equals(true);
@@ -353,7 +354,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_memcmp', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let a, b, c;
         a = Buffer.from(sodium.randombytes_buf(32));
         b = Buffer.from(sodium.randombytes_buf(32));
@@ -367,7 +368,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_memzero', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let buf = Buffer.from(sodium.randombytes_buf(16));
         expect(buf.toString('hex')).to.not.equals('00000000000000000000000000000000');
         sodium.memzero(buf);
@@ -375,7 +376,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_pad', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let buf, size, padded, unpadded;
         for (let i = 0; i < 100; i++) {
             buf = Buffer.from(sodium.randombytes_buf(
@@ -389,7 +390,7 @@ describe('libsodium compatibility', () => {
     });
 
     it('sodium_add()', async () => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
 
         let one = Buffer.from('01000000', 'hex');
         let big = Buffer.from('fe000000', 'hex');
@@ -402,10 +403,54 @@ describe('libsodium compatibility', () => {
     });
 
     it('crypto_kdf_derive_from_key', async() => {
-        if (!sodium) sodium = await test_helper.init();
+        if (!sodium) sodium = await test_helper.init(sumo);
         let key = Buffer.from('808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f', 'hex');
         let subkey = sodium.crypto_kdf_derive_from_key(32, 1, 'NaClTest', key);
         expect(Buffer.from(subkey).toString('hex'))
             .to.be.equals('bce6fcf118cac2691bb23975a63dfac02282c1cd5de6ab9febcbb0ec4348181b');
+    });
+
+    it('crypto_generichash', async() => {
+        if (!sodium) sodium = await test_helper.init(sumo);
+        let key = Buffer.from('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8', 'hex');
+        let plaintext = "This is just - something to sign...";
+        let sig1 = sodium.crypto_generichash(32, plaintext, key);
+        expect(Buffer.from(sig1).toString('hex'))
+            .to.be.equals('e3b3d191d0fb112740d6bd66f798b9c86c75378ff543374c8591a9ae31bc8007');
+
+        let parts = plaintext.split('-');
+        let state = sodium.crypto_generichash_init(key, 32);
+        sodium.crypto_generichash_update(state, parts[0]);
+        sodium.crypto_generichash_update(state, '-');
+        sodium.crypto_generichash_update(state, parts[1]);
+        let sig2 = sodium.crypto_generichash_final(state, 32);
+        let match = sodium.memcmp(sig1, sig2);
+        expect(match).to.be.equal(true);
+
+        let sig3 = sodium.crypto_generichash(32, plaintext + "extra", key);
+        match = sodium.memcmp(sig1, sig3);
+        expect(match).to.be.equal(false);
+    });
+
+    it('sumo crypto_auth_hmacsha512256', async() => {
+        if (!sodium) sodium = await test_helper.init(sumo);
+        let key = Buffer.from('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8', 'hex');
+        let plaintext = "This is just - something to sign...";
+        let sig1 = sodium.crypto_auth_hmacsha512256(plaintext, key);
+        expect(Buffer.from(sig1).toString('hex'))
+            .to.be.equals('487bda31911e398cfef28ff22e824a4723b325e01093ab41963f8b6a2b63cc3e');
+
+        let parts = plaintext.split('-');
+        let state = sodium.crypto_auth_hmacsha512256_init(key);
+        sodium.crypto_auth_hmacsha512256_update(state, parts[0]);
+        sodium.crypto_auth_hmacsha512256_update(state, '-');
+        sodium.crypto_auth_hmacsha512256_update(state, parts[1]);
+        let sig2 = sodium.crypto_auth_hmacsha512256_final(state);
+        let match = sodium.crypto_auth_hmacsha512256_verify(sig2, plaintext, key);
+        expect(match).to.be.equal(true);
+
+        let sig3 = sodium.crypto_auth_hmacsha512256(plaintext + "extra", key);
+        match = sodium.crypto_auth_hmacsha512256_verify(sig3, plaintext, key);
+        expect(match).to.be.equal(false);
     });
 });
