@@ -179,7 +179,7 @@ describe('libsodium compatibility', () => {
         expect(clientTx.toString('hex')).to.be.equals(serverRx.toString('hex'));
     });
 
-    it('crypto_pwhash', async function () {
+    it('sumo crypto_pwhash', async function () {
         this.timeout(0);
         if (!sodium) sodium = await test_helper.init();
         let password = 'correct horse battery staple';
@@ -190,7 +190,7 @@ describe('libsodium compatibility', () => {
         expect(hashed.toString('hex')).to.be.equals('720f95400220748a811bca9b8cff5d6e');
     });
 
-    it('crypto_pwhash_str', async function () {
+    it('sumo crypto_pwhash_str', async function () {
         this.timeout(0);
         if (!sodium) sodium = await test_helper.init();
         let password = 'correct horse battery staple';
@@ -431,7 +431,7 @@ describe('libsodium compatibility', () => {
         expect(match).to.be.equal(false);
     });
 
-    it('crypto_auth_hmacsha512256', async () => {
+    it('sumo crypto_auth_hmacsha512256', async () => {
         if (!sodium) sodium = await test_helper.init();
         let key = Buffer.from('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8', 'hex');
         let plaintext = "This is just - something to authenticate";
