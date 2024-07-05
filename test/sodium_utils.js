@@ -179,7 +179,7 @@ describe('libsodium compatibility', () => {
         expect(clientTx.toString('hex')).to.be.equals(serverRx.toString('hex'));
     });
 
-    it('crypto_pwhash', async function() {
+    it('sumo crypto_pwhash', async function() {
         this.timeout(0);
         if (!sodium) sodium = await test_helper.init();
         let password = 'correct horse battery staple';
@@ -190,7 +190,7 @@ describe('libsodium compatibility', () => {
         expect(hashed.toString('hex')).to.be.equals('720f95400220748a811bca9b8cff5d6e');
     });
 
-    it('crypto_pwhash_str', async function() {
+    it('sumo crypto_pwhash_str', async function() {
         this.timeout(0);
         if (!sodium) sodium = await test_helper.init();
         let password = 'correct horse battery staple';
@@ -407,5 +407,49 @@ describe('libsodium compatibility', () => {
         let subkey = sodium.crypto_kdf_derive_from_key(32, 1, 'NaClTest', key);
         expect(Buffer.from(subkey).toString('hex'))
             .to.be.equals('bce6fcf118cac2691bb23975a63dfac02282c1cd5de6ab9febcbb0ec4348181b');
+    });
+
+    it('crypto_generichash', async() => {
+        if (!sodium) sodium = await test_helper.init();
+        let key = Buffer.from('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8', 'hex');
+        let plaintext = "This is just - something to sign...";
+        let sig1 = sodium.crypto_generichash(32, plaintext, key);
+        expect(Buffer.from(sig1).toString('hex'))
+            .to.be.equals('e3b3d191d0fb112740d6bd66f798b9c86c75378ff543374c8591a9ae31bc8007');
+
+        let parts = plaintext.split('-');
+        let state = sodium.crypto_generichash_init(key, 32);
+        sodium.crypto_generichash_update(state, parts[0]);
+        sodium.crypto_generichash_update(state, '-');
+        sodium.crypto_generichash_update(state, parts[1]);
+        let sig2 = sodium.crypto_generichash_final(state, 32);
+        let match = sodium.memcmp(sig1, sig2);
+        expect(match).to.be.equal(true);
+
+        let sig3 = sodium.crypto_generichash(32, plaintext + "extra", key);
+        match = sodium.memcmp(sig1, sig3);
+        expect(match).to.be.equal(false);
+    });
+
+    it('sumo crypto_auth_hmacsha512256', async() => {
+        if (!sodium) sodium = await test_helper.init();
+        let key = Buffer.from('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8', 'hex');
+        let plaintext = "This is just - something to sign...";
+        let sig1 = sodium.crypto_auth_hmacsha512256(plaintext, key);
+        expect(Buffer.from(sig1).toString('hex'))
+            .to.be.equals('487bda31911e398cfef28ff22e824a4723b325e01093ab41963f8b6a2b63cc3e');
+
+        let parts = plaintext.split('-');
+        let state = sodium.crypto_auth_hmacsha512256_init(key);
+        sodium.crypto_auth_hmacsha512256_update(state, parts[0]);
+        sodium.crypto_auth_hmacsha512256_update(state, '-');
+        sodium.crypto_auth_hmacsha512256_update(state, parts[1]);
+        let sig2 = sodium.crypto_auth_hmacsha512256_final(state);
+        let match = sodium.crypto_auth_hmacsha512256_verify(sig2, plaintext, key);
+        expect(match).to.be.equal(true);
+
+        let sig3 = sodium.crypto_auth_hmacsha512256(plaintext + "extra", key);
+        match = sodium.crypto_auth_hmacsha512256_verify(sig3, plaintext, key);
+        expect(match).to.be.equal(false);
     });
 });

@@ -1,4 +1,5 @@
-const _sodium = require('../dist/modules/libsodium-wrappers');
+const path = `../${process.env.NODE_PATH}libsodium-wrappers`;
+const _sodium = require(path);
 
 module.exports = class SodiumHelper {
     static async init() {
