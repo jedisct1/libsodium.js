@@ -15,11 +15,10 @@
     "libsodium": "^0.7.13"
   },
   "devDependencies": {
-    "assert": "^2.0.0",
-    "chai": "^4.3.7",
-    "libsodium": "^0.7.13",
-    "mocha": "^10.2.0",
-    "terser": "^5.16.3"
+    "assert": "^2.1.0",
+    "chai": "^4.4.1",
+    "mocha": "^10.6.0",
+    "terser": "^5.31.1"
   },
   "keywords": [
     "crypto",
