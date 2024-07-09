@@ -12,7 +12,7 @@
     "url": "https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium": "^0.7.13"
+    "libsodium": "^0.7.14"
   },
   "devDependencies": {
     "terser": "^5.31.1"
