@@ -121,3 +121,21 @@ test("crypto_kdf", async () => {
     const subkey3 = sodium.crypto_kdf_derive_from_key(32, 1, context, key2);
     expect(subkey3).not.toEqual(subkey);
 });
+
+test("crypto_kx", async () => {
+    const clientKeyypair = sodium.crypto_kx_keypair();
+    const clientSecret = clientKeyypair.privateKey;
+    const clientPublic = clientKeyypair.publicKey;
+
+    const seed = sodium.crypto_generichash(sodium.crypto_kx_SEEDBYTES,
+        sodium.from_string('Unit test static key seed goes here. Nothing too complicated. No randomness needed, really.'));
+    const serverKeyypair = sodium.crypto_kx_seed_keypair(seed);
+    const serverSecret = serverKeyypair.privateKey;
+    const serverPublic = serverKeyypair.publicKey;
+
+    const clientKeys = sodium.crypto_kx_client_session_keys(clientPublic, clientSecret, serverPublic);
+    const serverKeys = sodium.crypto_kx_server_session_keys(serverPublic, serverSecret, clientPublic);
+
+    expect(clientKeys.rx).toEqual(serverKeys.tx);
+    expect(clientKeys.tx).toEqual(serverKeys.rx);
+});
