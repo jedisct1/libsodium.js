@@ -3,7 +3,7 @@ const test_helper = require('./test_helper');
 
 let sodium = await test_helper.init();
 
-test("crypto_aead_aegis128l", async () => {
+test("crypto_aead_aegis128l", () => {
     const message = sodium.randombytes_buf(128);
     const ad = sodium.randombytes_buf(128);
     const key = sodium.crypto_aead_aegis128l_keygen();
@@ -13,7 +13,7 @@ test("crypto_aead_aegis128l", async () => {
     expect(decrypted).toEqual(message);
 });
 
-test("crypto_aead_aegis256", async () => {
+test("crypto_aead_aegis256", () => {
     const message = sodium.randombytes_buf(128);
     const ad = sodium.randombytes_buf(128);
     const key = sodium.crypto_aead_aegis256_keygen();
@@ -23,7 +23,7 @@ test("crypto_aead_aegis256", async () => {
     expect(decrypted).toEqual(message);
 });
 
-test("crypto_aead_xchacha20poly1305_ietf", async () => {
+test("crypto_aead_xchacha20poly1305_ietf", () => {
     const message_hex =
         '4c616469657320616e642047656e746c656d656e206f662074686520636c6173' +
         '73206f66202739393a204966204920636f756c64206f6666657220796f75206f' +
@@ -53,14 +53,14 @@ test("crypto_aead_xchacha20poly1305_ietf", async () => {
     expect(decrypted2).toEqual(message);
 });
 
-test("crypto_auth", async () => {
+test("crypto_auth", () => {
     const key = sodium.crypto_auth_keygen();
     const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
     const mac = sodium.crypto_auth(message, key);
     expect(sodium.crypto_auth_verify(mac, message, key)).toBe(true);
 });
 
-test("crypto_box", async () => {
+test("crypto_box", () => {
     const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
     const aliceKeypair = sodium.crypto_box_keypair();
     const aliceSecret = aliceKeypair.privateKey;
@@ -75,7 +75,7 @@ test("crypto_box", async () => {
     expect(unboxed).toEqual(message);
 });
 
-test("crypto_box_seal", async () => {
+test("crypto_box_seal", () => {
     const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
     const aliceKeypair = sodium.crypto_box_keypair();
     const aliceSecret = aliceKeypair.privateKey;
@@ -86,7 +86,7 @@ test("crypto_box_seal", async () => {
     expect(unboxed).toEqual(message);
 });
 
-test("crypto_generichash", async () => {
+test("crypto_generichash", () => {
     const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
     const piece1 = message.slice(0, 16);
     const piece2 = message.slice(16);
@@ -105,7 +105,7 @@ test("crypto_generichash", async () => {
     expect(h3).not.toEqual(h);
 });
 
-test("crypto_kdf", async () => {
+test("crypto_kdf", () => {
     const key = sodium.from_hex('808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f');
     const context = 'NaClTest';
 
@@ -122,7 +122,7 @@ test("crypto_kdf", async () => {
     expect(subkey3).not.toEqual(subkey);
 });
 
-test("crypto_kx", async () => {
+test("crypto_kx", () => {
     const clientKeyypair = sodium.crypto_kx_keypair();
     const clientSecret = clientKeyypair.privateKey;
     const clientPublic = clientKeyypair.publicKey;
