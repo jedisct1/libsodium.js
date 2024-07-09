@@ -149,3 +149,14 @@ test("crypto_secretbox", () => {
     let decrypted = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
     expect(decrypted).toEqual(message);
 });
+
+test("crypto_shorthash", () => {
+    let key = sodium.from_hex('808182838485868788898a8b8c8d8e8f');
+    const message0 = sodium.from_string('This is short input0');
+    const mac0 = sodium.crypto_shorthash(message0, key);
+    expect(sodium.to_hex(mac0)).toBe('ef589fb9ef4196b3');
+
+    const message1 = sodium.from_string('This is short input1');
+    const mac1 = sodium.crypto_shorthash(message1, key);
+    expect(sodium.to_hex(mac1)).toBe('5e8f01039bc53eb7');
+});
