@@ -35,7 +35,7 @@
     "ecc"
   ],
   "scripts": {
-    "test": "env NODE_PATH=dist/modules/ mocha -i -f sumo"
+    "tests": "env NODE_PATH=dist/modules/ mocha -i -f sumo"
   },
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
   "contributors": [

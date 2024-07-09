@@ -9,8 +9,8 @@ LIBSODIUM_DIR=./libsodium
 LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
-TERSIFY = npx terser --mangle --compress drop_console=true,passes=3 --
-NODE := $(shell if which nodejs >/dev/null 2>&1 ; then echo nodejs; else echo node ; fi)
+TERSIFY = bun run terser --mangle --compress drop_console=true,passes=3 --
+BUN := bun
 
 all: pack
 	@echo
@@ -37,7 +37,7 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 targets: standard sumo
 
 pack: targets
-	@-npm install
+	@-bun install
 	@echo + Packing
 	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
 	  echo "Packing [$$i]" ; \
@@ -47,12 +47,12 @@ pack: targets
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
 	mkdir -p $(MODULES_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
+	$(BUN) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
 $(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	$(NODE) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+	$(BUN) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
 $(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium

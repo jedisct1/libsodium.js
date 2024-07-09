@@ -208,7 +208,7 @@ need to be installed on your system:
 * Emscripten
 * binaryen
 * git
-* NodeJS
+* bun
 * make
 
 Running `make` will install the dev dependencies, clone libsodium,
