@@ -50,8 +50,8 @@ test("crypto_box", async () => {
     const bobPublic = bobKeypair.publicKey;
     const nonce = sodium.randombytes_buf(sodium.crypto_box_NONCEBYTES);
 
-    let boxed = sodium.crypto_box_easy(message, nonce, bobPublic, aliceSecret);
-    let unboxed = sodium.crypto_box_open_easy(boxed, nonce, alicePublic, bobSecret);
+    const boxed = sodium.crypto_box_easy(message, nonce, bobPublic, aliceSecret);
+    const unboxed = sodium.crypto_box_open_easy(boxed, nonce, alicePublic, bobSecret);
     expect(unboxed).toEqual(message);
 });
 
@@ -61,7 +61,7 @@ test("crypto_box_seal", async () => {
     const aliceSecret = aliceKeypair.privateKey;
     const alicePublic = aliceKeypair.publicKey;
 
-    let boxed = sodium.crypto_box_seal(message, alicePublic);
-    let unboxed = sodium.crypto_box_seal_open(boxed, alicePublic, aliceSecret);
+    const boxed = sodium.crypto_box_seal(message, alicePublic);
+    const unboxed = sodium.crypto_box_seal_open(boxed, alicePublic, aliceSecret);
     expect(unboxed).toEqual(message);
 });
