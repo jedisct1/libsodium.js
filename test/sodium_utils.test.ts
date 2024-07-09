@@ -3,7 +3,27 @@ const test_helper = require('./test_helper');
 
 let sodium = await test_helper.init();
 
-test("crypto_aead_xchacha20poly1305_ietf_*", async () => {
+test("crypto_aead_aegis128l", async () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(128);
+    const key = sodium.crypto_aead_aegis128l_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis128l_NPUBBYTES);
+    const ciphertext = sodium.crypto_aead_aegis128l_encrypt(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_aegis128l_decrypt(null, ciphertext, ad, nonce, key);
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_aegis256", async () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(128);
+    const key = sodium.crypto_aead_aegis256_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis256_NPUBBYTES);
+    const ciphertext = sodium.crypto_aead_aegis256_encrypt(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_aegis256_decrypt(null, ciphertext, ad, nonce, key);
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_xchacha20poly1305_ietf", async () => {
     const message_hex =
         '4c616469657320616e642047656e746c656d656e206f662074686520636c6173' +
         '73206f66202739393a204966204920636f756c64206f6666657220796f75206f' +
@@ -64,4 +84,23 @@ test("crypto_box_seal", async () => {
     const boxed = sodium.crypto_box_seal(message, alicePublic);
     const unboxed = sodium.crypto_box_seal_open(boxed, alicePublic, aliceSecret);
     expect(unboxed).toEqual(message);
+});
+
+test("crypto_generichash", async () => {
+    const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
+    const piece1 = message.slice(0, 16);
+    const piece2 = message.slice(16);
+    const h = sodium.crypto_generichash(32, message);
+    const expected_hash_hex = '47c1fdbde32b30b9c54dd47cf88ba92d2d05df1265e342c9563ed56aee84ab02';
+    expect(sodium.to_hex(h)).toBe(expected_hash_hex);
+
+    let state = sodium.crypto_generichash_init(null, 32);
+    sodium.crypto_generichash_update(state, piece1);
+    sodium.crypto_generichash_update(state, piece2);
+    const h2 = sodium.crypto_generichash_final(state, 32);
+    expect(h2).toEqual(h);
+
+    const key = sodium.crypto_generichash_keygen();
+    const h3 = sodium.crypto_generichash(32, message, key);
+    expect(h3).not.toEqual(h);
 });
