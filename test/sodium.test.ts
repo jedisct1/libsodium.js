@@ -139,3 +139,13 @@ test("crypto_kx", () => {
     expect(clientKeys.rx).toEqual(serverKeys.tx);
     expect(clientKeys.tx).toEqual(serverKeys.rx);
 });
+
+test("crypto_secretbox", () => {
+    let message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
+    let key = sodium.crypto_secretbox_keygen();
+    let nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+
+    let ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
+    let decrypted = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
+    expect(decrypted).toEqual(message);
+});
