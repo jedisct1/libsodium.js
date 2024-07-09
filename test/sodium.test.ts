@@ -160,3 +160,16 @@ test("crypto_shorthash", () => {
     const mac1 = sodium.crypto_shorthash(message1, key);
     expect(sodium.to_hex(mac1)).toBe('5e8f01039bc53eb7');
 });
+
+test("crypto_scalarmult", () => {
+    const aliceKeypair = sodium.crypto_box_keypair();
+    const aliceSecret = aliceKeypair.privateKey;
+    const alicePublic = aliceKeypair.publicKey;
+    const bobKeypair = sodium.crypto_box_keypair();
+    const bobSecret = bobKeypair.privateKey;
+    const bobPublic = bobKeypair.publicKey;
+
+    const shared1 = sodium.crypto_scalarmult(aliceSecret, bobPublic);
+    const shared2 = sodium.crypto_scalarmult(bobSecret, alicePublic);
+    expect(shared1).toEqual(shared2);
+});
