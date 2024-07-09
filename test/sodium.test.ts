@@ -172,4 +172,36 @@ test("crypto_scalarmult", () => {
     const shared1 = sodium.crypto_scalarmult(aliceSecret, bobPublic);
     const shared2 = sodium.crypto_scalarmult(bobSecret, alicePublic);
     expect(shared1).toEqual(shared2);
+
+    const zero = sodium.from_hex('0000000000000000000000000000000000000000000000000000000000000000');
+    expect(shared1).not.toEqual(zero);
+});
+
+test("crypto_secretbox", () => {
+    let message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
+    let key = sodium.crypto_secretbox_keygen();
+    let nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
+
+    let ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
+    let decrypted = sodium.crypto_secretbox_open_easy(ciphertext, nonce, key);
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_sign", () => {
+    const message = sodium.from_string('Science, math, technology, engineering, and compassion for others.');
+    const keypair = sodium.crypto_sign_keypair();
+    const secretKey = keypair.privateKey;
+    const publicKey = keypair.publicKey;
+
+    const signed = sodium.crypto_sign(message, secretKey);
+    const verified = sodium.crypto_sign_open(signed, publicKey);
+    expect(verified).toEqual(message);
+
+    const signature = sodium.crypto_sign_detached(message, secretKey);
+    const verified2 = sodium.crypto_sign_verify_detached(signature, message, publicKey);
+    expect(verified2).toBe(true);
+
+    const message2 = sodium.from_string('Science, math, technology, engineering, and compassion for others. XYZ');
+    const verified3 = sodium.crypto_sign_verify_detached(signature, message2, publicKey);
+    expect(verified3).toBe(false);
 });
