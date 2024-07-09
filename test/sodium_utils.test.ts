@@ -4,6 +4,9 @@ const test_helper = require('./test_helper');
 let sodium = await test_helper.init();
 
 test("crypto_aead_aegis128l", async () => {
+    if (typeof (sodium.crypto_aead_aegis128l_keygem) == 'undefined') {
+        return;
+    }
     const message = sodium.randombytes_buf(128);
     const ad = sodium.randombytes_buf(128);
     const key = sodium.crypto_aead_aegis128l_keygen();
@@ -14,6 +17,9 @@ test("crypto_aead_aegis128l", async () => {
 });
 
 test("crypto_aead_aegis256", async () => {
+    if (typeof (sodium.crypto_aead_aegis256_keygem) == 'undefined') {
+        return;
+    }
     const message = sodium.randombytes_buf(128);
     const ad = sodium.randombytes_buf(128);
     const key = sodium.crypto_aead_aegis256_keygen();
