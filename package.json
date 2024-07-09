@@ -1,24 +1,15 @@
 {
-  "name": "libsodium-wrappers",
+  "name": "libsodium",
   "version": "0.7.13",
-  "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
-  "main": "dist/modules/libsodium-wrappers.js",
+  "description": "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers)",
+  "main": "dist/modules/libsodium.js",
   "files": [
-    "dist/modules/libsodium-wrappers.js",
+    "dist/modules/libsodium.js",
     "package.json"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/jedisct1/libsodium.js.git"
-  },
-  "dependencies": {
-    "libsodium": "^0.7.13"
-  },
-  "devDependencies": {
-    "assert": "^2.1.0",
-    "chai": "^4.4.1",
-    "mocha": "^10.6.0",
-    "terser": "^5.31.1"
   },
   "keywords": [
     "crypto",
@@ -34,9 +25,6 @@
     "argon2",
     "ecc"
   ],
-  "scripts": {
-    "tests": "env NODE_PATH=dist/modules/ mocha -i -f sumo"
-  },
   "author": "Ahmad Ben Mrad (@BatikhSouri)",
   "contributors": [
     "Frank Denis (@jedisct1)",
