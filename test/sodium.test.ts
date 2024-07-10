@@ -240,3 +240,76 @@ test("sodium_compare", () => {
     expect(sodium.compare(a, c)).toBe(1);
     expect(sodium.compare(c, b)).toBe(-1);
 });
+
+test("sodium_increment", () => {
+    let a = sodium.from_hex('80808080');
+    let b = sodium.from_hex('81808080');
+    sodium.increment(a);
+    expect(sodium.memcmp(b, a)).toBe(true);
+
+    a = sodium.from_hex('ffffffff');
+    b = sodium.from_hex('00000000');
+    sodium.increment(a);
+    expect(sodium.memcmp(b, a)).toBe(true);
+});
+
+test("sodium_is_zero", () => {
+    let buf = sodium.from_hex('00');
+    expect(sodium.is_zero(buf, 1)).toBe(true);
+    buf = sodium.from_hex('01');
+    expect(sodium.is_zero(buf, 1)).toBe(false);
+});
+
+test("sodium_memcmp", () => {
+    const a = sodium.from_hex('80808080');
+    const b = sodium.from_hex('81808080');
+    const c = sodium.from_hex('81808080');
+    expect(sodium.memcmp(a, b)).toBe(false);
+    expect(sodium.memcmp(b, c)).toBe(true);
+});
+
+test("sodium_memzero", () => {
+    let buf = sodium.from_hex('80808080');
+    sodium.memzero(buf);
+    expect(sodium.to_hex(buf)).toBe('00000000');
+});
+
+test("sodium_pad", () => {
+    for (let i = 0; i < 100; i++) {
+        const buf = sodium.randombytes_buf(
+            sodium.randombytes_uniform(96) + 16
+        );
+        const size = sodium.randombytes_uniform(96) + 5;
+        const padded = sodium.pad(buf, size);
+        const unpadded = sodium.unpad(padded, size);
+        expect(unpadded).toEqual(buf);
+    }
+});
+
+test("sodium_add", () => {
+    const one = sodium.from_hex('01000000');
+    let big = sodium.from_hex('fe000000');
+    sodium.add(big, one);
+    expect(big).toEqual(sodium.from_hex('ff000000'));
+    sodium.add(big, one);
+    expect(big).toEqual(sodium.from_hex('00010000'));
+});
+
+test("crypto_generichash", () => {
+    const key = sodium.from_hex('4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8');
+    const message = sodium.from_string('This is just - something to authenticate');
+    const mac1 = sodium.crypto_generichash(32, message, key);
+    const expected_mac_hex = 'e229536f8c0d462126f040126392b46151200531f7bd12061a2237833a0ccdba';
+    expect(sodium.to_hex(mac1)).toBe(expected_mac_hex);
+
+    const part1 = message.slice(0, 16);
+    const part2 = message.slice(16);
+    let state = sodium.crypto_generichash_init(key, 32);
+    sodium.crypto_generichash_update(state, part1);
+    sodium.crypto_generichash_update(state, part2);
+    const mac2 = sodium.crypto_generichash_final(state, 32);
+    expect(mac1).toEqual(mac2);
+
+    const mac3 = sodium.crypto_generichash(32, part1, key);
+    expect(mac3).not.toEqual(mac1);
+});
