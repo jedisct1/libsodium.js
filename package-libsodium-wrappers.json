@@ -1,6 +1,6 @@
 {
   "name": "libsodium-wrappers",
-  "version": "0.7.13",
+  "version": "0.7.14",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
   "main": "dist/modules/libsodium-wrappers.js",
   "files": [
@@ -15,7 +15,7 @@
     "libsodium": "^0.7.14"
   },
   "devDependencies": {
-    "terser": "^5.31.1"
+    "terser": "^5.31.2"
   },
   "keywords": [
     "crypto",
