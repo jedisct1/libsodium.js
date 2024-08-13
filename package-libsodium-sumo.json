@@ -1,6 +1,6 @@
 {
   "name": "libsodium-sumo",
-  "version": "0.7.14",
+  "version": "0.7.15",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (raw library, no wrappers, sumo variant)",
   "main": "dist/modules-sumo/libsodium-sumo.js",
   "files": [

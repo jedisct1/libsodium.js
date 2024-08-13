@@ -8,6 +8,7 @@ for f in \
 ; do
   rm -f package.json
   cp "$f" package.json
+  npm pkg fix
   npm publish || yarn publish
 done
 rm -f package.json
