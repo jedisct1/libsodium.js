@@ -136,8 +136,8 @@ test("crypto_kx", () => {
     const clientKeys = sodium.crypto_kx_client_session_keys(clientPublic, clientSecret, serverPublic);
     const serverKeys = sodium.crypto_kx_server_session_keys(serverPublic, serverSecret, clientPublic);
 
-    expect(clientKeys.rx).toEqual(serverKeys.tx);
-    expect(clientKeys.tx).toEqual(serverKeys.rx);
+    expect(clientKeys.sharedRx).toEqual(serverKeys.sharedTx);
+    expect(clientKeys.sharedTx).toEqual(serverKeys.sharedRx);
 });
 
 test("crypto_secretbox", () => {
