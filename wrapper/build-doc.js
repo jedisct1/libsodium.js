@@ -109,8 +109,10 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Secretstream XChaCha20Poly1305 state address";
       } else if (paramType == "randombytes_implementation") {
         sDoc += "Randombytes implementation";
-      } else if (paramType == "string") {
+      } else if (paramType == "unsized_string") {
         sDoc += "A string";
+      } else if (paramType == "string") {
+        sDoc += "A string with a fixed length";
       } else if (paramType == "u64") {
         sDoc += "An unsigned int or 64-bit BigInt";
       } else throw new Error("Unknown parameter type: " + paramType);

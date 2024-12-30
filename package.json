@@ -39,5 +39,8 @@
     "fs": false,
     "path": false,
     "stream": false
+  },
+  "dependencies": {
+    "terser": "^5.37.0"
   }
 }

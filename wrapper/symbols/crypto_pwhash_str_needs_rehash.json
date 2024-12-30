@@ -4,7 +4,7 @@
   "inputs": [
     {
       "name": "hashed_password",
-      "type": "string"
+      "type": "unsized_string"
     },
     {
       "name": "opsLimit",
