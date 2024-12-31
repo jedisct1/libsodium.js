@@ -4,15 +4,16 @@ var docBuilder = require("./build-doc");
 
 //Parse arguments
 const argv = process.argv;
-if (argv.length != 5) {
+if (argv.length < 5) {
   console.error(
-    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path>"
+    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path> [--esm]"
   );
   process.exit(1);
 }
 const libsodiumModuleName = argv[2],
   apiPath = argv[3],
-  wrappersPath = argv[4];
+  wrappersPath = argv[4],
+  esm = argv[5] === '--esm';
 
 //Loading preset macros
 var macros = {};
@@ -30,7 +31,14 @@ for (var i = 0; i < macrosFiles.length; i++) {
   macros[macroName] = macroCode;
 }
 
-var templateCode = fs.readFileSync(path.join(__dirname, "wrap-template.js"), {
+var utilsCode = fs.readFileSync(path.join(__dirname, "wrap-utils.js"), {
+  encoding: "utf8"
+});
+if (esm) {
+  utilsCode = utilsCode.replace(/\nfunction/g, "\nexport function");
+}
+
+var templateCode = fs.readFileSync(path.join(__dirname, esm ? "wrap-esm-template.js" : "wrap-template.js"), {
   encoding: "utf8"
 });
 
@@ -62,8 +70,14 @@ for (var i = 0; i < symbolsFiles.length; i++) {
 for (var i = 0; i < symbols.length; i++) {
   buildSymbol(symbols[i]);
 }
-exportFunctions(symbols);
-exportConstants(loadConstants());
+if (!esm) {
+  exportFunctions(symbols);
+}
+if (esm) {
+  exportConstantsESM(loadConstants());
+} else {
+  exportConstants(loadConstants());
+}
 finalizeWrapper();
 
 function exportFunctions(symbols) {
@@ -80,6 +94,30 @@ function exportFunctions(symbols) {
   exportsCode += "    exports[exported_functions[i]] = functions[i];\n";
   exportsCode += "  }\n";
   exportsCode += "}\n";
+}
+
+function exportConstantsESM(constSymbols) {
+  var keys = [];
+  for (var i = 0; i < constSymbols.length; i++) {
+    if (constSymbols[i].type === "uint") {
+      keys.push(constSymbols[i].name);
+    }
+  }
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    exportsCode += `export const ${key} = libsodium._${key.toLowerCase()}?.();\n`;
+  }
+
+  keys = [];
+  for (i = 0; i < constSymbols.length; i++) {
+    if (constSymbols[i].type === "string") {
+      keys.push(constSymbols[i].name);
+    }
+  }
+  for (var i = 0; i < keys.length; i++) {
+    const key = keys[i];
+    exportsCode += `export const ${key} = libsodium.UTF8ToString(libsodium._${key.toLowerCase()}?.());\n`;
+  }
 }
 
 function exportConstants(constSymbols) {
@@ -114,6 +152,9 @@ function buildSymbol(symbolDescription) {
   if (symbolDescription.type == "function") {
     var targetName = "libsodium._" + symbolDescription.name;
     var funcCode = "function " + symbolDescription.name + "(";
+    if (esm) {
+      funcCode = "export " + funcCode;
+    }
     var funcBody = "";
     //Adding parameters array in function's interface, their conversions in the function's body
     var paramsArray = [];
@@ -242,8 +283,11 @@ function applyMacro(macroCode, symbols, substitutes) {
 }
 
 function finalizeWrapper() {
+  var subs = esm
+    ? [utilsCode, functionsCode, exportsCode, libsodiumModuleName]
+    : [injectTabs(utilsCode, 2), injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName];
   scriptBuf = applyMacro(
-    scriptBuf, ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], [injectTabs(functionsCode, 2), injectTabs(exportsCode, 3), libsodiumModuleName]
+    scriptBuf, ["/*{{utils_here}}*/", "/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], subs
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
