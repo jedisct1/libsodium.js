@@ -215,6 +215,8 @@ Running `make` will install the dev dependencies, clone libsodium,
 build it, test it, build the wrapper, and create the modules and
 minified distribution files.
 
+Also see [#351](https://github.com/jedisct1/libsodium.js/issues/351#issuecomment-3403382456)
+
 ## Related projects
 
 * [react-native-libsodium](https://github.com/serenity-kit/react-native-libsodium): React Native bindings to Libsodium matching the libsodium-wrappers package API
