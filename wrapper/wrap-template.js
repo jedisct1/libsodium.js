@@ -59,7 +59,7 @@
 
     function add(a, b) {
       if (!(a instanceof Uint8Array) || !(b instanceof Uint8Array)) {
-        throw new TypeError("Only Uint8Array instances can added");
+        throw new TypeError("Only Uint8Array instances can be added");
       }
       var j = a.length,
         c = 0 | 0,
@@ -297,7 +297,7 @@
         hex_end;
       address_pool.push(input_address);
       address_pool.push(result.address);
-      address_pool.push(result.hex_end_p);
+      address_pool.push(hex_end_p);
       if (
         libsodium._sodium_hex2bin(
           result.address,
@@ -371,8 +371,8 @@
         b64_end;
       address_pool.push(input_address);
       address_pool.push(result.address);
-      address_pool.push(result.result_bin_len_p);
-      address_pool.push(result.b64_end_p);
+      address_pool.push(result_bin_len_p);
+      address_pool.push(b64_end_p);
       if (
         libsodium._sodium_base642bin(
           result.address,
@@ -399,9 +399,9 @@
 
     function to_base64(input, variant) {
       variant = check_base64_variant(variant);
+      var address_pool = [];
       input = _any_to_Uint8Array(address_pool, input, "input");
-      var address_pool = [],
-        nibbles = Math.floor(input.length / 3) | 0,
+      var nibbles = Math.floor(input.length / 3) | 0,
         remainder = input.length - 3 * nibbles,
         b64_len =
         nibbles * 4 +
