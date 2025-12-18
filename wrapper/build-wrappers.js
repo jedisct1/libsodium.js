@@ -153,7 +153,7 @@ function buildSymbol(symbolDescription) {
     symbolDescription.outputs = symbolDescription.outputs || [];
     for (i = 0; i < symbolDescription.outputs.length; i++) {
       var currentOutput = symbolDescription.outputs[i];
-      var currentOutputCode = currentOutputCode = macros["output_" + currentOutput.type];
+      var currentOutputCode = macros["output_" + currentOutput.type];
       if (!currentOutputCode) {
         console.error("What is the output type " + currentOutput.type + "?");
         process.exit(1);
