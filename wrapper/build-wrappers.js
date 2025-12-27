@@ -4,7 +4,7 @@ var docBuilder = require("./build-doc");
 
 //Parse arguments
 const argv = process.argv;
-if (argv.length != 5) {
+if (argv.length !== 5) {
   console.error(
     "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path>"
   );
@@ -109,9 +109,9 @@ function exportConstants(constSymbols) {
 }
 
 function buildSymbol(symbolDescription) {
-  if (typeof symbolDescription != "object")
+  if (typeof symbolDescription !== "object")
     throw new TypeError("symbolDescription must be a function");
-  if (symbolDescription.type == "function") {
+  if (symbolDescription.type === "function") {
     var targetName = "libsodium._" + symbolDescription.name;
     var funcCode = "function " + symbolDescription.name + "(";
     var funcBody = "";
@@ -250,7 +250,7 @@ function finalizeWrapper() {
 }
 
 function injectTabs(code, count) {
-  if (count == undefined) count = 1;
+  if (count === undefined) count = 1;
 
   var out = "";
   code = code.replace(/\r?\n$/, "") // remove trailing line break to avoid split result past the code end
@@ -303,6 +303,6 @@ function checkObjectArray(a) {
 
 //Inject a semi-colon at the end of the line, if one is missing
 function sc(s) {
-  if (s.lastIndexOf(";") != s.length - 1) return s + ";";
+  if (s.lastIndexOf(";") !== s.length - 1) return s + ";";
   else return s;
 }

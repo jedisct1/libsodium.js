@@ -58,12 +58,12 @@ docStr +=
   newParagraph();
 
 exports.buildDocForSymbol = function (s) {
-  if (typeof s != "object") throw new TypeError("s must be a object");
-  if (!(s.type && (s.type == "function" || s.type == "uint")))
+  if (typeof s !== "object") throw new TypeError("s must be a object");
+  if (!(s.type && (s.type === "function" || s.type === "uint")))
     throw new Error("Invalid symbol type");
   var sDoc = "## " + s.name + newLine();
 
-  if (s.type == "function") {
+  if (s.type === "function") {
     if (!Array.isArray(s.inputs))
       throw new Error(
         "Invalid type for symbol.inputs. Symbol: " + JSON.stringify(s)
@@ -77,43 +77,43 @@ exports.buildDocForSymbol = function (s) {
     for (var i = 0; i < s.inputs.length; i++) {
       sDoc += "* `" + s.inputs[i].name + "`: ";
       var paramType = s.inputs[i].type;
-      if (paramType == "buf") {
+      if (paramType === "buf") {
         sDoc += "Buf (size: " + s.inputs[i].size + ")";
-      } else if (paramType == "unsized_buf") {
+      } else if (paramType === "unsized_buf") {
         sDoc += "Unsized buf";
-      } else if (paramType == "minsized_buf") {
+      } else if (paramType === "minsized_buf") {
         sDoc += "Minsized buf";
-      } else if (paramType == "unsized_buf_optional") {
+      } else if (paramType === "unsized_buf_optional") {
         sDoc += "Optional unsized buf";
-      } else if (paramType == "buf_optional") {
+      } else if (paramType === "buf_optional") {
         sDoc += "Optional buf";
-      } else if (paramType == "uint") {
+      } else if (paramType === "uint") {
         sDoc += "Unsigned Integer";
-      } else if (paramType == "generichash_state_address") {
+      } else if (paramType === "generichash_state_address") {
         sDoc += "Generichash state address";
-      } else if (paramType == "hash_sha256_state_address") {
+      } else if (paramType === "hash_sha256_state_address") {
         sDoc += "Sha256 state address";
-      } else if (paramType == "hash_sha512_state_address") {
+      } else if (paramType === "hash_sha512_state_address") {
         sDoc += "Sha512 state address";
-      } else if (paramType == "auth_hmacsha256_state_address") {
+      } else if (paramType === "auth_hmacsha256_state_address") {
         sDoc += "Hmac Sha256 state address";
-      } else if (paramType == "auth_hmacsha512_state_address") {
+      } else if (paramType === "auth_hmacsha512_state_address") {
         sDoc += "Hmac Sha512 state address";
-      } else if (paramType == "auth_hmacsha512256_state_address") {
+      } else if (paramType === "auth_hmacsha512256_state_address") {
         sDoc += "Hmac Sha512256 state address";
-      } else if (paramType == "onetimeauth_state_address") {
+      } else if (paramType === "onetimeauth_state_address") {
         sDoc += "OneTimeAuth state address";
-      } else if (paramType == "sign_state_address") {
+      } else if (paramType === "sign_state_address") {
         sDoc += "Signature state address";
-      } else if (paramType == "secretstream_xchacha20poly1305_state_address") {
+      } else if (paramType === "secretstream_xchacha20poly1305_state_address") {
         sDoc += "Secretstream XChaCha20Poly1305 state address";
-      } else if (paramType == "randombytes_implementation") {
+      } else if (paramType === "randombytes_implementation") {
         sDoc += "Randombytes implementation";
-      } else if (paramType == "unsized_string") {
+      } else if (paramType === "unsized_string") {
         sDoc += "A string";
-      } else if (paramType == "string") {
+      } else if (paramType === "string") {
         sDoc += "A string with a fixed length";
-      } else if (paramType == "u64") {
+      } else if (paramType === "u64") {
         sDoc += "An unsigned int or 64-bit BigInt";
       } else throw new Error("Unknown parameter type: " + paramType);
       sDoc += newLine();
@@ -123,27 +123,27 @@ exports.buildDocForSymbol = function (s) {
       for (i = 0; i < s.outputs.length; i++) {
         sDoc += "* `" + s.outputs[i].name + "`: ";
         var outputType = s.outputs[i].type;
-        if (outputType == "buf") {
+        if (outputType === "buf") {
           sDoc += "Buf (size: " + s.outputs[i].size + ")";
-        } else if (outputType == "uint") {
+        } else if (outputType === "uint") {
           sDoc += "Unsigned Integer";
-        } else if (outputType == "generichash_state") {
+        } else if (outputType === "generichash_state") {
           sDoc += "Generichash state";
-        } else if (outputType == "hash_sha256_state") {
+        } else if (outputType === "hash_sha256_state") {
           sDoc += "Sha256 state";
-        } else if (outputType == "hash_sha512_state") {
+        } else if (outputType === "hash_sha512_state") {
           sDoc += "Sha512 state";
-        } else if (outputType == "auth_hmacsha256_state") {
+        } else if (outputType === "auth_hmacsha256_state") {
           sDoc += "Hmac Sha256 state";
-        } else if (outputType == "auth_hmacsha512_state") {
+        } else if (outputType === "auth_hmacsha512_state") {
           sDoc += "Hmac Sha512 state";
-        } else if (outputType == "auth_hmacsha512256_state") {
+        } else if (outputType === "auth_hmacsha512256_state") {
           sDoc += "Hmac Sha512256 state";
-        } else if (outputType == "onetimeauth_state") {
+        } else if (outputType === "onetimeauth_state") {
           sDoc += "OneTimeAuth state";
-        } else if (outputType == "sign_state") {
+        } else if (outputType === "sign_state") {
           sDoc += "Signature state";
-        } else if (outputType == "secretstream_xchacha20poly1305_state") {
+        } else if (outputType === "secretstream_xchacha20poly1305_state") {
           sDoc += "Secretstream XChaCha20Poly1305 state";
         } else throw new Error("Unknown output type: " + outputType);
         sDoc += newLine();

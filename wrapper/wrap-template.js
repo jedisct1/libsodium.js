@@ -64,7 +64,7 @@
       var j = a.length,
         c = 0 | 0,
         i = 0 | 0;
-      if (b.length != a.length) {
+      if (b.length !== a.length) {
         throw new TypeError("Arguments must have the same length");
       }
       for (i = 0; i < j; i++) {
@@ -239,7 +239,7 @@
           (i + 1) * toStringChunkSize + sequenceReadOffset
         );
         //Depending on how much we have shifted
-        if (currentChunk.length == 0) {
+        if (currentChunk.length === 0) {
           continue;
         }
 
@@ -345,14 +345,14 @@
     };
 
     function check_base64_variant(variant) {
-      if (variant == undefined) {
+      if (variant === undefined) {
         return base64_variants.URLSAFE_NO_PADDING;
       }
       if (
         variant !== base64_variants.ORIGINAL &&
         variant !== base64_variants.ORIGINAL_NO_PADDING &&
         variant !== base64_variants.URLSAFE &&
-        variant != base64_variants.URLSAFE_NO_PADDING
+        variant !== base64_variants.URLSAFE_NO_PADDING
       ) {
         throw new Error("unsupported base64 variant");
       }
@@ -555,7 +555,7 @@
     }
 
     function _require_defined(address_pool, varValue, varName) {
-      if (varValue == undefined) {
+      if (varValue === undefined || varValue === null) {
         _free_and_throw_type_error(
           address_pool,
           varName + " cannot be null or undefined"
