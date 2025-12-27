@@ -38,7 +38,8 @@
   "browser": {
     "fs": false,
     "path": false,
-    "stream": false
+    "stream": false,
+    "crypto": false
   },
   "dependencies": {
     "terser": "^5.37.0"

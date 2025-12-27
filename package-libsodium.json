@@ -38,6 +38,7 @@
   "browser": {
     "fs": false,
     "path": false,
-    "stream": false
+    "stream": false,
+    "crypto": false
   }
 }
