@@ -159,7 +159,11 @@ let key = sodium.from_hex('724b092810ec86d7e35c9d067702b31ef90bc43a7b59862674991
 
 function encrypt_and_prepend_nonce(message) {
     let nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
-    return nonce.concat(sodium.crypto_secretbox_easy(message, nonce, key));
+    let ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
+    let result = new Uint8Array(nonce.length + ciphertext.length);
+    result.set(nonce);
+    result.set(ciphertext, nonce.length);
+    return result;
 }
 
 function decrypt_after_extracting_nonce(nonce_and_ciphertext) {
