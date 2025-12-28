@@ -4,7 +4,7 @@
 
 The [sodium](https://github.com/jedisct1/libsodium) crypto library
 compiled to WebAssembly and pure JavaScript using
-[Emscripten](https://github.com/kripken/emscripten), with
+[Emscripten](https://github.com/emscripten-core/emscripten), with
 automatically generated wrappers to make it easy to use in web
 applications.
 
@@ -43,11 +43,15 @@ It contains code for commonly used functions.
 is a superset of the previous script, that contains all functions,
 including rarely used ones and undocumented ones.
 - [modules](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules)
-includes commonly used functions, and is designed to be loaded as a module.
+includes commonly used functions, and is designed to be loaded as a CommonJS module.
 `libsodium-wrappers` is the module your application should load, which
 will in turn automatically load `libsodium` as a dependency.
 - [modules-sumo](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules-sumo)
 contains sumo variants of the previous modules.
+- [modules-esm](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules-esm)
+contains ESM (ES modules) versions with `.mjs` extensions.
+- [modules-sumo-esm](https://github.com/jedisct1/libsodium.js/tree/master/dist/modules-sumo-esm)
+contains sumo ESM variants.
 
 The modules are also available on npm:
 - [libsodium-wrappers](https://www.npmjs.com/package/libsodium-wrappers)
@@ -93,7 +97,7 @@ await (async() => {
 
 The `sodium.js` file includes both the core libsodium functions, as
 well as the higher-level JavaScript wrappers. It can be loaded
-asynchronusly.
+asynchronously.
 
 A `sodium` object should be defined in the global namespace, with the
 following property:
@@ -189,13 +193,13 @@ returns the following object:
 
 ### Standard vs Sumo version
 
-The standard version (in the `dist/browsers` and `dist/modules`
-directories) contains the high-level functions, and is the recommended
-one for most projects.
+The standard version (in the `dist/browsers`, `dist/modules`, and
+`dist/modules-esm` directories) contains the high-level functions, and
+is the recommended one for most projects.
 
 Alternatively, the "sumo" version, available in the
-`dist/browsers-sumo` and `dist/modules-sumo` directories contains all
-the symbols from the original library. This includes undocumented,
+`dist/browsers-sumo`, `dist/modules-sumo`, and `dist/modules-sumo-esm`
+directories contains all the symbols from the original library. This includes undocumented,
 untested, deprecated, low-level and easy to misuse functions.
 
 The `crypto_pwhash_*` function set is only included in the sumo version.
