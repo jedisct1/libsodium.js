@@ -4,15 +4,16 @@ var docBuilder = require("./build-doc");
 
 //Parse arguments
 const argv = process.argv;
-if (argv.length !== 5) {
+if (argv.length !== 5 && argv.length !== 6) {
   console.error(
-    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path>"
+    "Usage: build-wrappers.js <libsodium module name> <API.md path> <wrappers path> [esm wrappers path]"
   );
   process.exit(1);
 }
 const libsodiumModuleName = argv[2],
   apiPath = argv[3],
-  wrappersPath = argv[4];
+  wrappersPath = argv[4],
+  esmWrappersPath = argv[5] || null;
 
 //Loading preset macros
 var macros = {};
@@ -34,7 +35,15 @@ var templateCode = fs.readFileSync(path.join(__dirname, "wrap-template.js"), {
   encoding: "utf8"
 });
 
+var esmTemplateCode = null;
+if (esmWrappersPath) {
+  esmTemplateCode = fs.readFileSync(path.join(__dirname, "wrap-esm-template.js"), {
+    encoding: "utf8"
+  });
+}
+
 var scriptBuf = templateCode;
+var esmScriptBuf = esmTemplateCode;
 var functionsCode = "";
 var exportsCode = "";
 
@@ -247,6 +256,16 @@ function finalizeWrapper() {
   );
   fs.writeFileSync(wrappersPath, scriptBuf);
   fs.writeFileSync(apiPath, docBuilder.getResultDoc());
+
+  // Build ESM version if path provided
+  if (esmWrappersPath && esmScriptBuf) {
+    // For ESM, the module name needs to be a relative path to the .mjs file
+    var esmModuleName = "./" + libsodiumModuleName + ".mjs";
+    esmScriptBuf = applyMacro(
+      esmScriptBuf, ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], [functionsCode, injectTabs(exportsCode, 1), esmModuleName]
+    );
+    fs.writeFileSync(esmWrappersPath, esmScriptBuf);
+  }
 }
 
 function injectTabs(code, count) {

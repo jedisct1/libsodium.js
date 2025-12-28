@@ -3,8 +3,20 @@
   "version": "0.7.15",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers, sumo variant)",
   "main": "dist/modules-sumo/libsodium-wrappers.js",
+  "module": "dist/modules-sumo-esm/libsodium-wrappers.mjs",
+  "types": "dist/modules-sumo/libsodium-wrappers.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/modules-sumo-esm/libsodium-wrappers.mjs",
+      "require": "./dist/modules-sumo/libsodium-wrappers.js",
+      "default": "./dist/modules-sumo/libsodium-wrappers.js"
+    }
+  },
+  "sideEffects": false,
   "files": [
     "dist/modules-sumo/libsodium-wrappers.js",
+    "dist/modules-sumo/libsodium-wrappers.d.ts",
+    "dist/modules-sumo-esm/libsodium-wrappers.mjs",
     "package.json"
   ],
   "repository": {

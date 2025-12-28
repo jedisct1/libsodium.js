@@ -3,8 +3,20 @@
   "version": "0.7.15",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
   "main": "dist/modules/libsodium-wrappers.js",
+  "module": "dist/modules-esm/libsodium-wrappers.mjs",
+  "types": "dist/modules/libsodium-wrappers.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/modules-esm/libsodium-wrappers.mjs",
+      "require": "./dist/modules/libsodium-wrappers.js",
+      "default": "./dist/modules/libsodium-wrappers.js"
+    }
+  },
+  "sideEffects": false,
   "files": [
     "dist/modules/libsodium-wrappers.js",
+    "dist/modules/libsodium-wrappers.d.ts",
+    "dist/modules-esm/libsodium-wrappers.mjs",
     "package.json"
   ],
   "repository": {

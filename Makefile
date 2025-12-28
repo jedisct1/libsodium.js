@@ -3,6 +3,8 @@ OUT_DIR=./dist
 BROWSERS_TEST_DIR=./browsers-test
 MODULES_DIR=$(OUT_DIR)/modules
 MODULES_SUMO_DIR=$(OUT_DIR)/modules-sumo
+MODULES_ESM_DIR=$(OUT_DIR)/modules-esm
+MODULES_SUMO_ESM_DIR=$(OUT_DIR)/modules-sumo-esm
 BROWSERS_DIR=$(OUT_DIR)/browsers
 BROWSERS_SUMO_DIR=$(OUT_DIR)/browsers-sumo
 LIBSODIUM_DIR=./libsodium
@@ -10,6 +12,7 @@ LIBSODIUM_JS_DIR=$(LIBSODIUM_DIR)/libsodium-js
 LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 
 TERSIFY = bun run terser --mangle --compress drop_console=true,passes=3 --
+TERSIFY_ESM = bun run terser --mangle --compress drop_console=true,passes=3 --module --
 BUN := bun
 
 all: pack
@@ -23,10 +26,10 @@ all: pack
 	@ls -l $(MODULES_SUMO_DIR)/
 
 
-standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js
+standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_ESM_DIR)/libsodium.mjs $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
 	@echo + Building standard distribution
 
-sumo: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+sumo: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
 	@echo + Building sumo distribution
 
 tests: browsers-tests
@@ -39,9 +42,14 @@ targets: standard sumo
 pack: targets
 	@-bun install
 	@echo + Packing
-	for i in $(MODULES_DIR)/*.js $(MODULES_SUMO_DIR)/*.js $(BROWSERS_DIR)/*.js $(BROWSERS_SUMO_DIR)/*.js; do \
+	@echo + Note: Skipping libsodium*.js - Terser corrupts embedded WASM binary
+	for i in $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js; do \
 	  echo "Packing [$$i]" ; \
 	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
+	done
+	for i in $(MODULES_ESM_DIR)/libsodium-wrappers.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs; do \
+	  echo "Packing ESM [$$i]" ; \
+	  $(TERSIFY_ESM) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
@@ -49,10 +57,20 @@ $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-do
 	mkdir -p $(MODULES_DIR)
 	$(BUN) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
+$(MODULES_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_ESM_DIR)/libsodium.mjs
+	@echo +++ Building standard/libsodium-wrappers.mjs
+	mkdir -p $(MODULES_ESM_DIR)
+	$(BUN) wrapper/build-wrappers.js libsodium /dev/null /dev/null $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
+
 $(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
 	$(BUN) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+
+$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
+	@echo +++ Building sumo/libsodium-wrappers.mjs
+	mkdir -p $(MODULES_SUMO_ESM_DIR)
+	$(BUN) wrapper/build-wrappers.js libsodium-sumo /dev/null /dev/null $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
 
 $(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium
@@ -62,6 +80,14 @@ $(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js 
 	mkdir -p $(BROWSERS_DIR)
 	cat $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js > $(BROWSERS_DIR)/sodium.js
 
+$(MODULES_ESM_DIR)/libsodium.mjs: wrapper/libsodium-esm-pre.js wrapper/libsodium-esm-post.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+	@echo +++ Building standard/libsodium.mjs
+	mkdir -p $(MODULES_ESM_DIR)
+	cat wrapper/libsodium-esm-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-esm-post.js | \
+		sed 's/require("fs")/null/g' | \
+		sed 's/require("path")/null/g' | \
+		sed 's/require("crypto")/null/g' > $(MODULES_ESM_DIR)/libsodium.mjs
+
 $(MODULES_SUMO_DIR)/libsodium-sumo.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
 	@echo +++ Building sumo/libsodium
 	mkdir -p $(MODULES_SUMO_DIR)
@@ -69,6 +95,14 @@ $(MODULES_SUMO_DIR)/libsodium-sumo.js: wrapper/libsodium-pre.js wrapper/libsodiu
 
 	mkdir -p $(BROWSERS_SUMO_DIR)
 	cat $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js > $(BROWSERS_SUMO_DIR)/sodium.js
+
+$(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs: wrapper/libsodium-esm-pre.js wrapper/libsodium-esm-post.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
+	@echo +++ Building sumo/libsodium-sumo.mjs
+	mkdir -p $(MODULES_SUMO_ESM_DIR)
+	cat wrapper/libsodium-esm-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-esm-post.js | \
+		sed 's/require("fs")/null/g' | \
+		sed 's/require("path")/null/g' | \
+		sed 's/require("crypto")/null/g' > $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
 
 $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --browser-tests
@@ -96,6 +130,7 @@ clean:
 	rm -rf $(LIBSODIUM_JS_DIR)
 	rm -rf $(LIBSODIUM_JS_SUMO_DIR)
 	rm -rf $(OUT_DIR)
+	rm -rf $(MODULES_ESM_DIR) $(MODULES_SUMO_ESM_DIR)
 	-cd $(LIBSODIUM_DIR) && make distclean
 
 distclean: clean

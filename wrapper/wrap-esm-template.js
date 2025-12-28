@@ -11,7 +11,7 @@ const ready = libsodiumModule.ready.then(function () {
   libsodium = libsodiumModule;
 
   function libsodiumInit() {
-    if (libsodium._sodium_init() !== 0) {
+    if (libsodium._sodium_init() < 0) {
       throw new Error("libsodium was not correctly initialized.");
     }
 
