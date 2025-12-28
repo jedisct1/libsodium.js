@@ -53,6 +53,6 @@
   },
   "dependencies": {
     "libsodium-wrappers-sumo": "^0.7.15",
-    "terser": "^5.37.0"
+    "terser": "^5.44.1"
   }
 }

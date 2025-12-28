@@ -27,7 +27,7 @@
     "libsodium-sumo": "^0.7.15"
   },
   "devDependencies": {
-    "terser": "^5.37.0"
+    "terser": "^5.44.1"
   },
   "keywords": [
     "crypto",
