@@ -576,4 +576,30 @@ exports.to_base64 = to_base64;
 exports.to_hex = to_hex;
 exports.to_string = to_string;
 
+// Default export for backwards compatibility
 export default exports;
+
+// Named exports for tree-shaking and selective imports
+// Note: Cryptographic functions and constants are dynamically added to exports.
+// Access them via the default export or use: import sodium from 'libsodium-wrappers'; await sodium.ready;
+export {
+  ready,
+  add,
+  compare,
+  from_base64,
+  from_hex,
+  from_string,
+  increment,
+  is_zero,
+  memcmp,
+  memzero,
+  pad,
+  unpad,
+  symbols,
+  to_base64,
+  to_hex,
+  to_string,
+  output_formats,
+  base64_variants,
+  libsodiumModule as libsodium
+};

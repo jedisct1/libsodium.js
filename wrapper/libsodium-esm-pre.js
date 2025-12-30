@@ -1,16 +1,10 @@
 // ESM polyfills for Node.js compatibility
 // __dirname and __filename are not available in ESM, so we polyfill them for Node.js
+// Using the standard URL API which is available globally in both Node.js and browsers - no imports needed
 var __filename, __dirname;
-try {
-  // Only works in Node.js ESM - browsers will skip this
-  if (typeof process !== 'undefined' && process.versions && process.versions.node) {
-    var url = await import('url');
-    var path = await import('path');
-    __filename = url.fileURLToPath(import.meta.url);
-    __dirname = path.dirname(__filename);
-  }
-} catch (e) {
-  // In browser environments, these are not needed
+if (typeof import.meta !== 'undefined' && import.meta.url) {
+  __filename = new URL(import.meta.url).pathname;
+  __dirname = new URL('.', import.meta.url).pathname;
 }
 
 var Module = {};

@@ -259,8 +259,9 @@ function finalizeWrapper() {
 
   // Build ESM version if path provided
   if (esmWrappersPath && esmScriptBuf) {
-    // For ESM, the module name needs to be a relative path to the .mjs file
-    var esmModuleName = "./" + libsodiumModuleName + ".mjs";
+    // For ESM, use the bare module specifier (package name) for proper bundler resolution
+    // This allows bundlers like webpack to correctly resolve the dependency
+    var esmModuleName = libsodiumModuleName;
     esmScriptBuf = applyMacro(
       esmScriptBuf, ["/*{{wraps_here}}*/", "/*{{exports_here}}*/", "/*{{libsodium}}*/"], [functionsCode, injectTabs(exportsCode, 1), esmModuleName]
     );
