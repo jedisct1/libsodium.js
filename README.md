@@ -60,37 +60,56 @@ The modules are also available on npm:
 ### Usage (as a module)
 
 Load the `libsodium-wrappers` module. The returned object contains a `.ready`
-property: a promise that must be resolve before the sodium functions
+property: a promise that must be resolved before the sodium functions
 can be used.
 
 Example:
 
 ```js
-import _sodium from 'libsodium-wrappers';
-await (async() => {
-  await _sodium.ready;
-  const sodium = _sodium;
+import sodium from 'libsodium-wrappers';
 
-  let key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
+await sodium.ready;
 
-  let res = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
-  let [state_out, header] = [res.state, res.header];
-  let c1 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
-    sodium.from_string('message 1'), null,
-    sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE);
-  let c2 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
-    sodium.from_string('message 2'), null,
-    sodium.crypto_secretstream_xchacha20poly1305_TAG_FINAL);
+let key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
 
-  let state_in = sodium.crypto_secretstream_xchacha20poly1305_init_pull(header, key);
-  let r1 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c1);
-  let [m1, tag1] = [sodium.to_string(r1.message), r1.tag];
-  let r2 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c2);
-  let [m2, tag2] = [sodium.to_string(r2.message), r2.tag];
+let res = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
+let [state_out, header] = [res.state, res.header];
+let c1 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
+  sodium.from_string('message 1'), null,
+  sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE);
+let c2 = sodium.crypto_secretstream_xchacha20poly1305_push(state_out,
+  sodium.from_string('message 2'), null,
+  sodium.crypto_secretstream_xchacha20poly1305_TAG_FINAL);
 
-  console.log(m1);
-  console.log(m2);
-})();
+let state_in = sodium.crypto_secretstream_xchacha20poly1305_init_pull(header, key);
+let r1 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c1);
+let [m1, tag1] = [sodium.to_string(r1.message), r1.tag];
+let r2 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c2);
+let [m2, tag2] = [sodium.to_string(r2.message), r2.tag];
+
+console.log(m1);
+console.log(m2);
+```
+
+**Named exports:** The ESM modules also provide named exports for helper functions:
+
+```js
+import { ready, from_hex, to_hex, from_string, to_string } from 'libsodium-wrappers';
+
+await ready;
+const bytes = from_hex('deadbeef');
+console.log(to_hex(bytes));
+```
+
+**Note:** Cryptographic functions (like `crypto_secretbox_easy`) and constants (like `crypto_secretbox_KEYBYTES`) are dynamically added to the module at runtime after `ready` resolves. They cannot be imported as named exports and must be accessed via the default export:
+
+```js
+import sodium from 'libsodium-wrappers';
+
+await sodium.ready;
+// Now crypto functions and constants are available on the sodium object
+const key = sodium.crypto_secretbox_keygen();
+const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);
 ```
 
 ### Usage (in a web browser, via a callback)
