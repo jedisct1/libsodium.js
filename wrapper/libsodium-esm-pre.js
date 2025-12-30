@@ -3,8 +3,9 @@
 // Using the standard URL API which is available globally in both Node.js and browsers - no imports needed
 var __filename, __dirname;
 if (typeof import.meta !== 'undefined' && import.meta.url) {
-  __filename = new URL(import.meta.url).pathname;
-  __dirname = new URL('.', import.meta.url).pathname;
+  const url = new URL(import.meta.url)
+  __filename = url.pathname;
+  __dirname = new URL('.', url).pathname;
 }
 
 var Module = {};
