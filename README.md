@@ -118,6 +118,14 @@ Example:
 <script src="sodium.js" async></script>
 ```
 
+**Important:** If you inline the library directly into your HTML (rather than loading it from a separate file), make sure your page declares UTF-8 encoding:
+
+```html
+<meta charset="utf-8">
+```
+
+Without this, browsers may corrupt the embedded WebAssembly binary data during HTML parsing, leading to errors like "failed to match magic number" or "HEAPU8 is undefined". Also ensure your server sends the `charset=utf-8` header.
+
 ## Additional helpers
 
 * `from_base64()`, `to_base64()` with an optional second parameter
