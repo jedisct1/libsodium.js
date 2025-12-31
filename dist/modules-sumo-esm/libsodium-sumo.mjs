@@ -1,12 +1,7 @@
-// ESM polyfills for Node.js compatibility
-// __dirname and __filename are not available in ESM, so we polyfill them for Node.js
-// Using the standard URL API which is available globally in both Node.js and browsers - no imports needed
-var __filename, __dirname;
-if (typeof import.meta !== 'undefined' && import.meta.url) {
-  const url = new URL(import.meta.url);
-  __filename = url.pathname;
-  __dirname = new URL('.', url).pathname;
-}
+// ESM polyfills: __dirname and __filename are not available in ESM
+// Since WASM is inlined (SINGLE_FILE=1), scriptDirectory isn't used for loading
+// We just need to prevent errors when emscripten sets scriptDirectory=__dirname+"/"
+var __filename = "", __dirname = "";
 
 var Module = {};
 
