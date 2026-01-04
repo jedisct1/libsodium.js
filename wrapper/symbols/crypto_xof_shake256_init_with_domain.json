@@ -1,0 +1,24 @@
+{
+  "name": "crypto_xof_shake256_init_with_domain",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "domain",
+      "type": "uint"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "xof_shake256_state"
+    }
+  ],
+  "target": "libsodium._crypto_xof_shake256_init_with_domain(state_address, domain) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "state_address"
+}

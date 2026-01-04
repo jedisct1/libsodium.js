@@ -22,6 +22,7 @@ box8.html
 chacha20.html
 codecs.html
 core_ed25519.html
+core_keccak1600.html
 core_ristretto255.html
 core1.html
 core2.html
@@ -35,6 +36,7 @@ generichash2.html
 generichash3.html
 hash.html
 hash3.html
+ipcrypt.html
 kdf_hkdf.html
 kdf.html
 keygen.html
@@ -76,3 +78,7 @@ stream3.html
 stream4.html
 verify1.html
 xchacha20.html
+xof_shake128.html
+xof_shake256.html
+xof_turboshake128.html
+xof_turboshake256.html

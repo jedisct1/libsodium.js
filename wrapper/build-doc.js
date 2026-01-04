@@ -107,6 +107,14 @@ exports.buildDocForSymbol = function (s) {
         sDoc += "Signature state address";
       } else if (paramType === "secretstream_xchacha20poly1305_state_address") {
         sDoc += "Secretstream XChaCha20Poly1305 state address";
+      } else if (paramType === "xof_shake128_state_address") {
+        sDoc += "XOF SHAKE128 state address";
+      } else if (paramType === "xof_shake256_state_address") {
+        sDoc += "XOF SHAKE256 state address";
+      } else if (paramType === "xof_turboshake128_state_address") {
+        sDoc += "XOF TurboSHAKE128 state address";
+      } else if (paramType === "xof_turboshake256_state_address") {
+        sDoc += "XOF TurboSHAKE256 state address";
       } else if (paramType === "randombytes_implementation") {
         sDoc += "Randombytes implementation";
       } else if (paramType === "unsized_string") {
@@ -145,6 +153,14 @@ exports.buildDocForSymbol = function (s) {
           sDoc += "Signature state";
         } else if (outputType === "secretstream_xchacha20poly1305_state") {
           sDoc += "Secretstream XChaCha20Poly1305 state";
+        } else if (outputType === "xof_shake128_state") {
+          sDoc += "XOF SHAKE128 state";
+        } else if (outputType === "xof_shake256_state") {
+          sDoc += "XOF SHAKE256 state";
+        } else if (outputType === "xof_turboshake128_state") {
+          sDoc += "XOF TurboSHAKE128 state";
+        } else if (outputType === "xof_turboshake256_state") {
+          sDoc += "XOF TurboSHAKE256 state";
         } else throw new Error("Unknown output type: " + outputType);
         sDoc += newLine();
       }

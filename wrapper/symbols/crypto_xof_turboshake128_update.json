@@ -1,0 +1,21 @@
+{
+  "name": "crypto_xof_turboshake128_update",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "xof_turboshake128_state_address"
+    },
+    {
+      "name": "message_chunk",
+      "type": "unsized_buf"
+    }
+  ],
+  "target": "libsodium._crypto_xof_turboshake128_update(state_address, message_chunk_address, message_chunk_length, 0) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ]
+}

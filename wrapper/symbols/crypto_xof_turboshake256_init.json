@@ -1,0 +1,19 @@
+{
+  "name": "crypto_xof_turboshake256_init",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "xof_turboshake256_state"
+    }
+  ],
+  "target": "libsodium._crypto_xof_turboshake256_init(state_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "state_address"
+}
