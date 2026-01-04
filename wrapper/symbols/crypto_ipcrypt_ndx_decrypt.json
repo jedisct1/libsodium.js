@@ -1,0 +1,25 @@
+{
+  "name": "crypto_ipcrypt_ndx_decrypt",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "input",
+      "type": "buf",
+      "length": "libsodium._crypto_ipcrypt_ndx_outputbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_ipcrypt_ndx_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_ipcrypt_ndx_inputbytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_ipcrypt_ndx_decrypt(output_address, input_address, key_address)",
+  "return": "_format_output(output, outputFormat)"
+}

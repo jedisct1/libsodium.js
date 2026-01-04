@@ -1,0 +1,30 @@
+{
+  "name": "crypto_ipcrypt_nd_encrypt",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "input",
+      "type": "buf",
+      "length": "libsodium._crypto_ipcrypt_nd_inputbytes()"
+    },
+    {
+      "name": "tweak",
+      "type": "buf",
+      "length": "libsodium._crypto_ipcrypt_nd_tweakbytes()"
+    },
+    {
+      "name": "key",
+      "type": "buf",
+      "length": "libsodium._crypto_ipcrypt_nd_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "output",
+      "length": "libsodium._crypto_ipcrypt_nd_outputbytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_ipcrypt_nd_encrypt(output_address, input_address, tweak_address, key_address)",
+  "return": "_format_output(output, outputFormat)"
+}
