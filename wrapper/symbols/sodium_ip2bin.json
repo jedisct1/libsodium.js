@@ -1,0 +1,25 @@
+{
+  "name": "sodium_ip2bin",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "ip",
+      "type": "unsized_string"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "bin",
+      "type": "buf",
+      "length": "16"
+    }
+  ],
+  "target": "libsodium._sodium_ip2bin(bin_address, ip_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid IP address"
+    }
+  ],
+  "return": "_format_output(bin, outputFormat)"
+}

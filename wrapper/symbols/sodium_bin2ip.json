@@ -1,0 +1,27 @@
+{
+  "name": "sodium_bin2ip",
+  "type": "function",
+  "noOutputFormat": true,
+  "inputs": [
+    {
+      "name": "bin",
+      "type": "buf",
+      "length": "16"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ip",
+      "type": "buf",
+      "length": "46"
+    }
+  ],
+  "target": "libsodium._sodium_bin2ip(ip_address, 46, bin_address)",
+  "assert_retval": [
+    {
+      "condition": "!== 0",
+      "or_else_throw": "conversion failed"
+    }
+  ],
+  "return": "libsodium.UTF8ToString(ip_address)"
+}
