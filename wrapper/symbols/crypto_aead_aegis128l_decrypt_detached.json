@@ -14,7 +14,7 @@
     {
       "name": "mac",
       "type": "buf",
-      "length": "libsodium._crypto_box_macbytes()"
+      "length": "libsodium._crypto_aead_aegis128l_abytes()"
     },
     {
       "name": "additional_data",
