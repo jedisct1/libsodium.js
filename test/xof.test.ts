@@ -1,4 +1,4 @@
-import {expect, test} from "bun:test";
+import { expect, test } from "bun:test";
 const test_helper = require('../test/test_helper');
 
 let sodium = await test_helper.init();
