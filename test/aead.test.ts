@@ -52,3 +52,434 @@ test("crypto_aead_xchacha20poly1305_ietf", () => {
     expect(ciphertext2).not.toEqual(ciphertext);
     expect(decrypted2).toEqual(message);
 });
+
+test("crypto_aead_chacha20poly1305_keygen", () => {
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    expect(key.length).toBe(sodium.crypto_aead_chacha20poly1305_KEYBYTES);
+});
+
+test("crypto_aead_chacha20poly1305 encrypt/decrypt", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_encrypt(message, ad, null, nonce, key);
+    expect(ciphertext.length).toBe(message.length + sodium.crypto_aead_chacha20poly1305_ABYTES);
+    
+    const decrypted = sodium.crypto_aead_chacha20poly1305_decrypt(null, ciphertext, ad, nonce, key);
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_chacha20poly1305 decrypt with wrong key fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const wrongKey = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_encrypt(message, ad, null, nonce, key);
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_decrypt(null, ciphertext, ad, nonce, wrongKey);
+    }).toThrow();
+});
+
+test("crypto_aead_chacha20poly1305 AD verification", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const wrongAd = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_encrypt(message, ad, null, nonce, key);
+    
+    // Decryption with wrong AD should fail
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_decrypt(null, ciphertext, wrongAd, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_chacha20poly1305_ietf_keygen", () => {
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    expect(key.length).toBe(sodium.crypto_aead_chacha20poly1305_ietf_KEYBYTES);
+});
+
+test("crypto_aead_chacha20poly1305_ietf encrypt/decrypt", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_ietf_encrypt(message, ad, null, nonce, key);
+    expect(ciphertext.length).toBe(message.length + sodium.crypto_aead_chacha20poly1305_ietf_ABYTES);
+    
+    const decrypted = sodium.crypto_aead_chacha20poly1305_ietf_decrypt(null, ciphertext, ad, nonce, key);
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_chacha20poly1305_ietf decrypt with wrong key fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const wrongKey = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_ietf_encrypt(message, ad, null, nonce, key);
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_ietf_decrypt(null, ciphertext, ad, nonce, wrongKey);
+    }).toThrow();
+});
+
+test("crypto_aead_chacha20poly1305_ietf AD verification", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const wrongAd = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const ciphertext = sodium.crypto_aead_chacha20poly1305_ietf_encrypt(message, ad, null, nonce, key);
+    
+    // Decryption with wrong AD should fail
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_ietf_decrypt(null, ciphertext, wrongAd, nonce, key);
+    }).toThrow();
+});
+
+// ==================== DETACHED ENCRYPTION TESTS ====================
+
+// --- crypto_aead_chacha20poly1305 detached ---
+
+test("crypto_aead_chacha20poly1305_encrypt_detached returns separate ciphertext and MAC", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const result = sodium.crypto_aead_chacha20poly1305_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Result should have ciphertext and mac properties
+    expect(result.ciphertext).toBeDefined();
+    expect(result.mac).toBeDefined();
+    
+    // Ciphertext should be same length as message (no MAC appended)
+    expect(result.ciphertext.length).toBe(message.length);
+    
+    // MAC should be ABYTES in length
+    expect(result.mac.length).toBe(sodium.crypto_aead_chacha20poly1305_ABYTES);
+});
+
+test("crypto_aead_chacha20poly1305_decrypt_detached round-trip", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_encrypt_detached(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_chacha20poly1305_decrypt_detached(null, ciphertext, mac, ad, nonce, key);
+    
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_chacha20poly1305_decrypt_detached with tampered MAC fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the MAC
+    const tamperedMac = new Uint8Array(mac);
+    tamperedMac[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_decrypt_detached(null, ciphertext, tamperedMac, ad, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_chacha20poly1305_decrypt_detached with tampered ciphertext fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the ciphertext
+    const tamperedCiphertext = new Uint8Array(ciphertext);
+    tamperedCiphertext[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_decrypt_detached(null, tamperedCiphertext, mac, ad, nonce, key);
+    }).toThrow();
+});
+
+// --- crypto_aead_chacha20poly1305_ietf detached ---
+
+test("crypto_aead_chacha20poly1305_ietf_encrypt_detached returns separate ciphertext and MAC", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const result = sodium.crypto_aead_chacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Result should have ciphertext and mac properties
+    expect(result.ciphertext).toBeDefined();
+    expect(result.mac).toBeDefined();
+    
+    // Ciphertext should be same length as message (no MAC appended)
+    expect(result.ciphertext.length).toBe(message.length);
+    
+    // MAC should be ABYTES in length
+    expect(result.mac.length).toBe(sodium.crypto_aead_chacha20poly1305_ietf_ABYTES);
+});
+
+test("crypto_aead_chacha20poly1305_ietf_decrypt_detached round-trip", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_chacha20poly1305_ietf_decrypt_detached(null, ciphertext, mac, ad, nonce, key);
+    
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_chacha20poly1305_ietf_decrypt_detached with tampered MAC fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the MAC
+    const tamperedMac = new Uint8Array(mac);
+    tamperedMac[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_ietf_decrypt_detached(null, ciphertext, tamperedMac, ad, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_chacha20poly1305_ietf_decrypt_detached with tampered ciphertext fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_chacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_chacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_chacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the ciphertext
+    const tamperedCiphertext = new Uint8Array(ciphertext);
+    tamperedCiphertext[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_chacha20poly1305_ietf_decrypt_detached(null, tamperedCiphertext, mac, ad, nonce, key);
+    }).toThrow();
+});
+
+// --- crypto_aead_xchacha20poly1305_ietf detached ---
+
+test("crypto_aead_xchacha20poly1305_ietf_encrypt_detached returns separate ciphertext and MAC", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
+    
+    const result = sodium.crypto_aead_xchacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Result should have ciphertext and mac properties
+    expect(result.ciphertext).toBeDefined();
+    expect(result.mac).toBeDefined();
+    
+    // Ciphertext should be same length as message (no MAC appended)
+    expect(result.ciphertext.length).toBe(message.length);
+    
+    // MAC should be ABYTES in length
+    expect(result.mac.length).toBe(sodium.crypto_aead_xchacha20poly1305_ietf_ABYTES);
+});
+
+test("crypto_aead_xchacha20poly1305_ietf_decrypt_detached round-trip", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_xchacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_xchacha20poly1305_ietf_decrypt_detached(null, ciphertext, mac, ad, nonce, key);
+    
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_xchacha20poly1305_ietf_decrypt_detached with tampered MAC fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_xchacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the MAC
+    const tamperedMac = new Uint8Array(mac);
+    tamperedMac[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_xchacha20poly1305_ietf_decrypt_detached(null, ciphertext, tamperedMac, ad, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_xchacha20poly1305_ietf_decrypt_detached with tampered ciphertext fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_xchacha20poly1305_ietf_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_xchacha20poly1305_ietf_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_xchacha20poly1305_ietf_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the ciphertext
+    const tamperedCiphertext = new Uint8Array(ciphertext);
+    tamperedCiphertext[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_xchacha20poly1305_ietf_decrypt_detached(null, tamperedCiphertext, mac, ad, nonce, key);
+    }).toThrow();
+});
+
+// --- crypto_aead_aegis128l detached ---
+
+test("crypto_aead_aegis128l_encrypt_detached returns separate ciphertext and MAC", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis128l_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis128l_NPUBBYTES);
+    
+    const result = sodium.crypto_aead_aegis128l_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Result should have ciphertext and mac properties
+    expect(result.ciphertext).toBeDefined();
+    expect(result.mac).toBeDefined();
+    
+    // Ciphertext should be same length as message (no MAC appended)
+    expect(result.ciphertext.length).toBe(message.length);
+    
+    // MAC should be ABYTES in length
+    expect(result.mac.length).toBe(sodium.crypto_aead_aegis128l_ABYTES);
+});
+
+test("crypto_aead_aegis128l_decrypt_detached round-trip", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis128l_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis128l_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis128l_encrypt_detached(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_aegis128l_decrypt_detached(null, ciphertext, mac, ad, nonce, key);
+    
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_aegis128l_decrypt_detached with tampered MAC fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis128l_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis128l_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis128l_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the MAC
+    const tamperedMac = new Uint8Array(mac);
+    tamperedMac[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_aegis128l_decrypt_detached(null, ciphertext, tamperedMac, ad, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_aegis128l_decrypt_detached with tampered ciphertext fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis128l_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis128l_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis128l_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the ciphertext
+    const tamperedCiphertext = new Uint8Array(ciphertext);
+    tamperedCiphertext[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_aegis128l_decrypt_detached(null, tamperedCiphertext, mac, ad, nonce, key);
+    }).toThrow();
+});
+
+// --- crypto_aead_aegis256 detached ---
+
+test("crypto_aead_aegis256_encrypt_detached returns separate ciphertext and MAC", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis256_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis256_NPUBBYTES);
+    
+    const result = sodium.crypto_aead_aegis256_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Result should have ciphertext and mac properties
+    expect(result.ciphertext).toBeDefined();
+    expect(result.mac).toBeDefined();
+    
+    // Ciphertext should be same length as message (no MAC appended)
+    expect(result.ciphertext.length).toBe(message.length);
+    
+    // MAC should be ABYTES in length
+    expect(result.mac.length).toBe(sodium.crypto_aead_aegis256_ABYTES);
+});
+
+test("crypto_aead_aegis256_decrypt_detached round-trip", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis256_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis256_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis256_encrypt_detached(message, ad, null, nonce, key);
+    const decrypted = sodium.crypto_aead_aegis256_decrypt_detached(null, ciphertext, mac, ad, nonce, key);
+    
+    expect(decrypted).toEqual(message);
+});
+
+test("crypto_aead_aegis256_decrypt_detached with tampered MAC fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis256_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis256_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis256_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the MAC
+    const tamperedMac = new Uint8Array(mac);
+    tamperedMac[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_aegis256_decrypt_detached(null, ciphertext, tamperedMac, ad, nonce, key);
+    }).toThrow();
+});
+
+test("crypto_aead_aegis256_decrypt_detached with tampered ciphertext fails", () => {
+    const message = sodium.randombytes_buf(128);
+    const ad = sodium.randombytes_buf(64);
+    const key = sodium.crypto_aead_aegis256_keygen();
+    const nonce = sodium.randombytes_buf(sodium.crypto_aead_aegis256_NPUBBYTES);
+    
+    const { ciphertext, mac } = sodium.crypto_aead_aegis256_encrypt_detached(message, ad, null, nonce, key);
+    
+    // Tamper with the ciphertext
+    const tamperedCiphertext = new Uint8Array(ciphertext);
+    tamperedCiphertext[0] ^= 0xff;
+    
+    expect(() => {
+        sodium.crypto_aead_aegis256_decrypt_detached(null, tamperedCiphertext, mac, ad, nonce, key);
+    }).toThrow();
+});

@@ -798,7 +798,7 @@ if (typeof define === 'function' && define.amd) {
       // ---------- input: mac (buf)
 
       mac = _any_to_Uint8Array(address_pool, mac, "mac");
-      var mac_address, mac_length = (libsodium._crypto_box_macbytes()) | 0;
+      var mac_address, mac_length = (libsodium._crypto_aead_aegis128l_abytes()) | 0;
       if (mac.length !== mac_length) {
           _free_and_throw_type_error(address_pool, "invalid mac length");
       }
@@ -1105,7 +1105,7 @@ if (typeof define === 'function' && define.amd) {
       // ---------- input: mac (buf)
 
       mac = _any_to_Uint8Array(address_pool, mac, "mac");
-      var mac_address, mac_length = (libsodium._crypto_box_macbytes()) | 0;
+      var mac_address, mac_length = (libsodium._crypto_aead_aegis256_abytes()) | 0;
       if (mac.length !== mac_length) {
           _free_and_throw_type_error(address_pool, "invalid mac length");
       }
