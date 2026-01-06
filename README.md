@@ -8,8 +8,9 @@ compiled to WebAssembly and pure JavaScript using
 automatically generated wrappers to make it easy to use in web
 applications.
 
-The complete library weighs about 310 KB (minified, gzipped, includes pure JS +
-WebAssembly versions) and can run in a web browser as well as server-side.
+The standard version weighs about 290 KB and the sumo version about 365 KB
+(minified, gzipped, includes pure JS + WebAssembly versions). Both can run in
+a web browser as well as server-side.
 
 ### Compatibility
 
