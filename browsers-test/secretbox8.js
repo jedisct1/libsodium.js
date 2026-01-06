@@ -1,1 +1,985 @@
-var Module=typeof Module!="undefined"?Module:{};var ENVIRONMENT_IS_WEB=!!globalThis.window;var ENVIRONMENT_IS_WORKER=!!globalThis.WorkerGlobalScope;var ENVIRONMENT_IS_NODE=globalThis.process?.versions?.node&&globalThis.process?.type!="renderer";try{this["Module"]=Module;Module.test}catch(e){this["Module"]=Module={}}if(typeof process==="object"){if(typeof FS==="object"){Module["preRun"]=Module["preRun"]||[];Module["preRun"].push(function(){FS.init();FS.mkdir("/test-data");FS.mount(NODEFS,{root:"."},"/test-data")})}}else{Module["print"]=function(x){var event=new Event("test-output");event.data=x;window.dispatchEvent(event)}}var arguments_=[];var thisProgram="./this.program";var quit_=(status,toThrow)=>{throw toThrow};var _scriptName=globalThis.document?.currentScript?.src;if(typeof __filename!="undefined"){_scriptName=__filename}else if(ENVIRONMENT_IS_WORKER){_scriptName=self.location.href}var scriptDirectory="";var readAsync,readBinary;if(ENVIRONMENT_IS_NODE){var fs=require("fs");scriptDirectory=__dirname+"/";readBinary=filename=>{filename=isFileURI(filename)?new URL(filename):filename;var ret=fs.readFileSync(filename);return ret};readAsync=async(filename,binary=true)=>{filename=isFileURI(filename)?new URL(filename):filename;var ret=fs.readFileSync(filename,binary?undefined:"utf8");return ret};if(process.argv.length>1){thisProgram=process.argv[1].replace(/\\/g,"/")}arguments_=process.argv.slice(2);if(typeof module!="undefined"){module["exports"]=Module}quit_=(status,toThrow)=>{process.exitCode=status;throw toThrow}}else if(ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER){try{scriptDirectory=new URL(".",_scriptName).href}catch{}{if(ENVIRONMENT_IS_WORKER){readBinary=url=>{var xhr=new XMLHttpRequest;xhr.open("GET",url,false);xhr.responseType="arraybuffer";xhr.send(null);return new Uint8Array(xhr.response)}}readAsync=async url=>{if(isFileURI(url)){return new Promise((resolve,reject)=>{var xhr=new XMLHttpRequest;xhr.open("GET",url,true);xhr.responseType="arraybuffer";xhr.onload=()=>{if(xhr.status==200||xhr.status==0&&xhr.response){resolve(xhr.response);return}reject(xhr.status)};xhr.onerror=reject;xhr.send(null)})}var response=await fetch(url,{credentials:"same-origin"});if(response.ok){return response.arrayBuffer()}throw new Error(response.status+" : "+response.url)}}}else{}var out=console.log.bind(console);var err=console.error.bind(console);var wasmBinary;var ABORT=false;var EXITSTATUS;var isFileURI=filename=>filename.startsWith("file://");var HEAP8,HEAPU8,HEAP16,HEAPU16,HEAP32,HEAPU32,HEAPF32,HEAPF64;var runtimeInitialized=false;function updateMemoryViews(){var b=wasmMemory.buffer;HEAP8=new Int8Array(b);HEAP16=new Int16Array(b);HEAPU8=new Uint8Array(b);HEAPU16=new Uint16Array(b);HEAP32=new Int32Array(b);HEAPU32=new Uint32Array(b);HEAPF32=new Float32Array(b);HEAPF64=new Float64Array(b)}function preRun(){if(Module["preRun"]){if(typeof Module["preRun"]=="function")Module["preRun"]=[Module["preRun"]];while(Module["preRun"].length){addOnPreRun(Module["preRun"].shift())}}callRuntimeCallbacks(onPreRuns)}function initRuntime(){runtimeInitialized=true;wasmExports["d"]()}function preMain(){}function postRun(){if(Module["postRun"]){if(typeof Module["postRun"]=="function")Module["postRun"]=[Module["postRun"]];while(Module["postRun"].length){addOnPostRun(Module["postRun"].shift())}}callRuntimeCallbacks(onPostRuns)}function abort(what){Module["onAbort"]?.(what);what="Aborted("+what+")";err(what);ABORT=true;what+=". Build with -sASSERTIONS for more info.";var e=new WebAssembly.RuntimeError(what);throw e}var wasmBinaryFile;function findWasmBinary(){return base64Decode("AGFzbQEAAAABXw9gA39/fwF/YAJ/fwF/YAR/f35/AX9gAn9/AGADf39+AGABfwBgBn9/fn9+fwF/YAR/fn9/AX9gBH9/f38Bf2ADf39/AGAAAX9gA39/fgF/YAN/fn8BfmABfwF/YAAAAg0CAWEBYQAIAWEBYgAAAxgXAwkDBAMEBQEKBAUBCwECDA0AAgYHAQ4EBAFwAAsFBwEBggKAgAIGCAF/AUGwgwYLBw0DAWMCAAFkABgBZQAXCRABAEEBCwoUEA8ODRYVEhMRDAEGCuc6F9YCAQF/AkAgAUUNACAAQQA6AAAgACABaiICQQFrQQA6AAAgAUEDSQ0AIABBADoAAiAAQQA6AAEgAkEDa0EAOgAAIAJBAmtBADoAACABQQdJDQAgAEEAOgADIAJBBGtBADoAACABQQlJDQAgAEEAIABrQQNxIgJqIgBBADYCACAAIAEgAmtBfHEiAmoiAUEEa0EANgIAIAJBCUkNACAAQQA2AgggAEEANgIEIAFBCGtBADYCACABQQxrQQA2AgAgAkEZSQ0AIABBADYCGCAAQQA2AhQgAEEANgIQIABBADYCDCABQRBrQQA2AgAgAUEUa0EANgIAIAFBGGtBADYCACABQRxrQQA2AgAgAiAAQQRxQRhyIgJrIgFBIEkNACAAIAJqIQADQCAAQgA3AxggAEIANwMQIABCADcDCCAAQgA3AwAgAEEgaiEAIAFBIGsiAUEfSw0ACwsLtwUBH39B5fDBiwYhBCACKAAAIhUhBSACKAAEIhYhByACKAAIIhchCCACKAAMIhghCUHuyIGZAyENIAEoAAAiGSEKIAEoAAQiGiELIAEoAAgiGyEMIAEoAAwiHCEQQbLaiMsHIQEgAigAECIdIQNB9MqB2QYhBiACKAAcIh4hESACKAAYIh8hDyACKAAUIiAhAgNAIAUgDWpBB3cgEHMiDiANakEJdyAPcyITIAIgBGpBB3cgCXMiCSAEakEJdyAMcyIUIAlqQQ13IAJzIiEgCCADIAZqQQd3cyIIIAZqQQl3IAtzIgsgCGpBDXcgA3MiDCALakESdyAGcyIGIAEgCmpBB3cgEXMiA2pBB3dzIgIgBmpBCXdzIg8gAmpBDXcgA3MiESAPakESdyAGcyEGIAwgAyABIANqQQl3IAdzIgdqQQ13IApzIgogB2pBEncgAXMiASAOakEHd3MiAyABakEJdyAUcyIMIANqQQ13IA5zIhAgDGpBEncgAXMhASAKIBMgDiATakENdyAFcyIOakESdyANcyIFIAlqQQd3cyIKIAVqQQl3IAtzIgsgCmpBDXcgCXMiCSALakESdyAFcyENIBQgIWpBEncgBHMiBCAIakEHdyAOcyIFIARqQQl3IAdzIgcgBWpBDXcgCHMiCCAHakESdyAEcyEEIBJBAmoiEkEUSQ0ACyAAIAZB9MqB2QZqNgA8IAAgESAeajYAOCAAIA8gH2o2ADQgACACICBqNgAwIAAgAyAdajYALCAAIAFBstqIywdqNgAoIAAgECAcajYAJCAAIAwgG2o2ACAgACALIBpqNgAcIAAgCiAZajYAGCAAIA1B7siBmQNqNgAUIAAgCSAYajYAECAAIAggF2o2AAwgACAHIBZqNgAIIAAgBSAVajYABCAAIARB5fDBiwZqNgAAC0MBAn8jAEEQayICJAAgAQRAA0AgAkEAOgAPIAAgA2pByAkgAkEPakEAEAE6AAAgA0EBaiIDIAFHDQALCyACQRBqJAALogQCDn4Kf0EAQYCAgAggAC0AUBshFiAAKAIkIRIgACgCICETIAAoAhwhFCAAKAIYIRUgACgCFCERIAAoAhAiF60hDyAAKAIMIhitIQ0gACgCCCIZrSELIAAoAgQiGq0hCSAaQQVsrSEQIBlBBWytIQ4gGEEFbK0hDCAXQQVsrSEKIAA1AgAhCANAIAEoAANBAnZB////H3EgFWqtIgMgDX4gASgAAEH///8fcSARaq0iBCAPfnwgASgABkEEdkH///8fcSAUaq0iBSALfnwgASgACUEGdiATaq0iBiAJfnwgEiAWaiABKAAMQQh2aq0iByAIfnwgAyALfiAEIA1+fCAFIAl+fCAGIAh+fCAHIAp+fCADIAl+IAQgC358IAUgCH58IAYgCn58IAcgDH58IAMgCH4gBCAJfnwgBSAKfnwgBiAMfnwgByAOfnwgAyAKfiAEIAh+fCAFIAx+fCAGIA5+fCAHIBB+fCIDQhqIQv////8Pg3wiBEIaiEL/////D4N8IgVCGohC/////w+DfCIGQhqIQv////8Pg3wiB0IaiKdBBWwgA6dB////H3FqIhFBGnYgBKdB////H3FqIRUgBadB////H3EhFCAGp0H///8fcSETIAenQf///x9x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")}function getBinarySync(file){if(ArrayBuffer.isView(file)){return file}if(file==wasmBinaryFile&&wasmBinary){return new Uint8Array(wasmBinary)}if(readBinary){return readBinary(file)}throw"both async and sync fetching of the wasm failed"}async function getWasmBinary(binaryFile){return getBinarySync(binaryFile)}async function instantiateArrayBuffer(binaryFile,imports){try{var binary=await getWasmBinary(binaryFile);var instance=await WebAssembly.instantiate(binary,imports);return instance}catch(reason){err(`failed to asynchronously prepare wasm: ${reason}`);abort(reason)}}async function instantiateAsync(binary,binaryFile,imports){return instantiateArrayBuffer(binaryFile,imports)}function getWasmImports(){var imports={a:wasmImports};return imports}async function createWasm(){function receiveInstance(instance,module){wasmExports=instance.exports;assignWasmExports(wasmExports);updateMemoryViews();removeRunDependency("wasm-instantiate");return wasmExports}addRunDependency("wasm-instantiate");function receiveInstantiationResult(result){return receiveInstance(result["instance"])}var info=getWasmImports();if(Module["instantiateWasm"]){return new Promise((resolve,reject)=>{Module["instantiateWasm"](info,(inst,mod)=>{resolve(receiveInstance(inst,mod))})})}wasmBinaryFile??=findWasmBinary();var result=await instantiateAsync(wasmBinary,wasmBinaryFile,info);var exports=receiveInstantiationResult(result);return exports}class ExitStatus{name="ExitStatus";constructor(status){this.message=`Program terminated with exit(${status})`;this.status=status}}var callRuntimeCallbacks=callbacks=>{while(callbacks.length>0){callbacks.shift()(Module)}};var onPostRuns=[];var addOnPostRun=cb=>onPostRuns.push(cb);var onPreRuns=[];var addOnPreRun=cb=>onPreRuns.push(cb);var runDependencies=0;var dependenciesFulfilled=null;var removeRunDependency=id=>{runDependencies--;Module["monitorRunDependencies"]?.(runDependencies);if(runDependencies==0){if(dependenciesFulfilled){var callback=dependenciesFulfilled;dependenciesFulfilled=null;callback()}}};var addRunDependency=id=>{runDependencies++;Module["monitorRunDependencies"]?.(runDependencies)};var base64Decode=b64=>{if(ENVIRONMENT_IS_NODE){var buf=Buffer.from(b64,"base64");return new Uint8Array(buf.buffer,buf.byteOffset,buf.length)}var b1,b2,i=0,j=0,bLength=b64.length;var output=new Uint8Array((bLength*3>>2)-(b64[bLength-2]=="=")-(b64[bLength-1]=="="));for(;i<bLength;i+=4,j+=3){b1=base64ReverseLookup[b64.charCodeAt(i+1)];b2=base64ReverseLookup[b64.charCodeAt(i+2)];output[j]=base64ReverseLookup[b64.charCodeAt(i)]<<2|b1>>4;output[j+1]=b1<<4|b2>>2;output[j+2]=b2<<6|base64ReverseLookup[b64.charCodeAt(i+3)]}return output};var noExitRuntime=true;var readEmAsmArgsArray=[];var readEmAsmArgs=(sigPtr,buf)=>{readEmAsmArgsArray.length=0;var ch;while(ch=HEAPU8[sigPtr++]){var wide=ch!=105;wide&=ch!=112;buf+=wide&&buf%8?4:0;readEmAsmArgsArray.push(ch==112?HEAPU32[buf>>2]:ch==105?HEAP32[buf>>2]:HEAPF64[buf>>3]);buf+=wide?8:4}return readEmAsmArgsArray};var runEmAsmFunction=(code,sigPtr,argbuf)=>{var args=readEmAsmArgs(sigPtr,argbuf);return ASM_CONSTS[code](...args)};var _emscripten_asm_const_int=(code,sigPtr,argbuf)=>runEmAsmFunction(code,sigPtr,argbuf);var printCharBuffers=[null,[],[]];var UTF8Decoder=globalThis.TextDecoder&&new TextDecoder;var findStringEnd=(heapOrArray,idx,maxBytesToRead,ignoreNul)=>{var maxIdx=idx+maxBytesToRead;if(ignoreNul)return maxIdx;while(heapOrArray[idx]&&!(idx>=maxIdx))++idx;return idx};var UTF8ArrayToString=(heapOrArray,idx=0,maxBytesToRead,ignoreNul)=>{var endPtr=findStringEnd(heapOrArray,idx,maxBytesToRead,ignoreNul);if(endPtr-idx>16&&heapOrArray.buffer&&UTF8Decoder){return UTF8Decoder.decode(heapOrArray.subarray(idx,endPtr))}var str="";while(idx<endPtr){var u0=heapOrArray[idx++];if(!(u0&128)){str+=String.fromCharCode(u0);continue}var u1=heapOrArray[idx++]&63;if((u0&224)==192){str+=String.fromCharCode((u0&31)<<6|u1);continue}var u2=heapOrArray[idx++]&63;if((u0&240)==224){u0=(u0&15)<<12|u1<<6|u2}else{u0=(u0&7)<<18|u1<<12|u2<<6|heapOrArray[idx++]&63}if(u0<65536){str+=String.fromCharCode(u0)}else{var ch=u0-65536;str+=String.fromCharCode(55296|ch>>10,56320|ch&1023)}}return str};var printChar=(stream,curr)=>{var buffer=printCharBuffers[stream];if(curr===0||curr===10){(stream===1?out:err)(UTF8ArrayToString(buffer));buffer.length=0}else{buffer.push(curr)}};var _fd_write=(fd,iov,iovcnt,pnum)=>{var num=0;for(var i=0;i<iovcnt;i++){var ptr=HEAPU32[iov>>2];var len=HEAPU32[iov+4>>2];iov+=8;for(var j=0;j<len;j++){printChar(fd,HEAPU8[ptr+j])}num+=len}HEAPU32[pnum>>2]=num;return 0};var runtimeKeepaliveCounter=0;var keepRuntimeAlive=()=>noExitRuntime||runtimeKeepaliveCounter>0;var _proc_exit=code=>{EXITSTATUS=code;if(!keepRuntimeAlive()){Module["onExit"]?.(code);ABORT=true}quit_(code,new ExitStatus(code))};var exitJS=(status,implicit)=>{EXITSTATUS=status;_proc_exit(status)};var handleException=e=>{if(e instanceof ExitStatus||e=="unwind"){return EXITSTATUS}quit_(1,e)};for(var base64ReverseLookup=new Uint8Array(123),i=25;i>=0;--i){base64ReverseLookup[48+i]=52+i;base64ReverseLookup[65+i]=i;base64ReverseLookup[97+i]=26+i}base64ReverseLookup[43]=62;base64ReverseLookup[47]=63;{if(Module["noExitRuntime"])noExitRuntime=Module["noExitRuntime"];if(Module["print"])out=Module["print"];if(Module["printErr"])err=Module["printErr"];if(Module["wasmBinary"])wasmBinary=Module["wasmBinary"];if(Module["arguments"])arguments_=Module["arguments"];if(Module["thisProgram"])thisProgram=Module["thisProgram"];if(Module["preInit"]){if(typeof Module["preInit"]=="function")Module["preInit"]=[Module["preInit"]];while(Module["preInit"].length>0){Module["preInit"].shift()()}}}var ASM_CONSTS={1224:()=>Module.getRandomValue(),1260:()=>{if(Module.getRandomValue===undefined){try{var window_="object"===typeof window?window:self;var crypto_=typeof window_.crypto!=="undefined"?window_.crypto:window_.msCrypto;crypto_=crypto_===undefined?crypto:crypto_;var randomValuesStandard=function(){var buf=new Uint32Array(1);crypto_.getRandomValues(buf);return buf[0]>>>0};randomValuesStandard();Module.getRandomValue=randomValuesStandard}catch(e){try{var crypto=require("crypto");var randomValueNodeJS=function(){var buf=crypto["randomBytes"](4);return(buf[0]<<24|buf[1]<<16|buf[2]<<8|buf[3])>>>0};randomValueNodeJS();Module.getRandomValue=randomValueNodeJS}catch(e){throw"No secure random number generator found"}}}}};var _main,dynCall_iiiji,dynCall_iiij,dynCall_iijii,dynCall_iiijiji,dynCall_jiji,memory,__indirect_function_table,wasmMemory;function assignWasmExports(wasmExports){_main=Module["_main"]=wasmExports["e"];dynCall_iiiji=wasmExports["dynCall_iiiji"];dynCall_iiij=wasmExports["dynCall_iiij"];dynCall_iijii=wasmExports["dynCall_iijii"];dynCall_iiijiji=wasmExports["dynCall_iiijiji"];dynCall_jiji=wasmExports["dynCall_jiji"];memory=wasmMemory=wasmExports["c"];__indirect_function_table=wasmExports["__indirect_function_table"]}var wasmImports={b:_emscripten_asm_const_int,a:_fd_write};function callMain(){var entryFunction=_main;var argc=0;var argv=0;try{var ret=entryFunction(argc,argv);exitJS(ret,true);return ret}catch(e){return handleException(e)}}function run(){if(runDependencies>0){dependenciesFulfilled=run;return}preRun();if(runDependencies>0){dependenciesFulfilled=run;return}function doRun(){Module["calledRun"]=true;if(ABORT)return;initRuntime();preMain();Module["onRuntimeInitialized"]?.();var noInitialRun=Module["noInitialRun"]||false;if(!noInitialRun)callMain();postRun()}if(Module["setStatus"]){Module["setStatus"]("Running...");setTimeout(()=>{setTimeout(()=>Module["setStatus"](""),1);doRun()},1)}else{doRun()}}var wasmExports;createWasm();run();
+// include: shell.js
+// include: minimum_runtime_check.js
+// end include: minimum_runtime_check.js
+// The Module object: Our interface to the outside world. We import
+// and export values on it. There are various ways Module can be used:
+// 1. Not defined. We create it here
+// 2. A function parameter, function(moduleArg) => Promise<Module>
+// 3. pre-run appended it, var Module = {}; ..generated code..
+// 4. External script tag defines var Module.
+// We need to check if Module already exists (e.g. case 3 above).
+// Substitution will be replaced with actual code on later stage of the build,
+// this way Closure Compiler will not mangle it (e.g. case 4. above).
+// Note that if you want to run closure, and also to use Module
+// after the generated code, you will need to define   var Module = {};
+// before the code. Then that object will be used in the code, and you
+// can continue to use Module afterwards as well.
+var Module = typeof Module != 'undefined' ? Module : {};
+
+// Determine the runtime environment we are in. You can customize this by
+// setting the ENVIRONMENT setting at compile time (see settings.js).
+
+// Attempt to auto-detect the environment
+var ENVIRONMENT_IS_WEB = !!globalThis.window;
+var ENVIRONMENT_IS_WORKER = !!globalThis.WorkerGlobalScope;
+// N.b. Electron.js environment is simultaneously a NODE-environment, but
+// also a web environment.
+var ENVIRONMENT_IS_NODE = globalThis.process?.versions?.node && globalThis.process?.type != 'renderer';
+var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
+
+// --pre-jses are emitted after the Module integration code, so that they can
+// refer to Module (if they choose; they can also define Module)
+// include: pre.js.inc
+try {
+    this['Module'] = Module;
+    Module.test;
+} catch(e) {
+    this['Module'] = Module = {};
+}
+if (typeof process === 'object') {
+    if (typeof(FS) === 'object') {
+        Module['preRun'] = Module['preRun'] || [];
+        Module['preRun'].push(function() {
+            FS.init();
+            FS.mkdir('/test-data');
+            FS.mount(NODEFS,  { root: '.' }, '/test-data');
+        });
+    }
+} else {
+    Module['print'] = function(x) {
+        var event = new Event('test-output');
+        event.data = x;
+        window.dispatchEvent(event);
+    };
+}
+// end include: pre.js.inc
+
+
+var arguments_ = [];
+var thisProgram = './this.program';
+var quit_ = (status, toThrow) => {
+  throw toThrow;
+};
+
+// In MODULARIZE mode _scriptName needs to be captured already at the very top of the page immediately when the page is parsed, so it is generated there
+// before the page load. In non-MODULARIZE modes generate it here.
+var _scriptName = globalThis.document?.currentScript?.src;
+
+if (typeof __filename != 'undefined') { // Node
+  _scriptName = __filename;
+} else
+if (ENVIRONMENT_IS_WORKER) {
+  _scriptName = self.location.href;
+}
+
+// `/` should be present at the end if `scriptDirectory` is not empty
+var scriptDirectory = '';
+function locateFile(path) {
+  if (Module['locateFile']) {
+    return Module['locateFile'](path, scriptDirectory);
+  }
+  return scriptDirectory + path;
+}
+
+// Hooks that are implemented differently in different runtime environments.
+var readAsync, readBinary;
+
+if (ENVIRONMENT_IS_NODE) {
+
+  // These modules will usually be used on Node.js. Load them eagerly to avoid
+  // the complexity of lazy-loading.
+  var fs = require('fs');
+
+  scriptDirectory = __dirname + '/';
+
+// include: node_shell_read.js
+readBinary = (filename) => {
+  // We need to re-wrap `file://` strings to URLs.
+  filename = isFileURI(filename) ? new URL(filename) : filename;
+  var ret = fs.readFileSync(filename);
+  return ret;
+};
+
+readAsync = async (filename, binary = true) => {
+  // See the comment in the `readBinary` function.
+  filename = isFileURI(filename) ? new URL(filename) : filename;
+  var ret = fs.readFileSync(filename, binary ? undefined : 'utf8');
+  return ret;
+};
+// end include: node_shell_read.js
+  if (process.argv.length > 1) {
+    thisProgram = process.argv[1].replace(/\\/g, '/');
+  }
+
+  arguments_ = process.argv.slice(2);
+
+  // MODULARIZE will export the module in the proper place outside, we don't need to export here
+  if (typeof module != 'undefined') {
+    module['exports'] = Module;
+  }
+
+  quit_ = (status, toThrow) => {
+    process.exitCode = status;
+    throw toThrow;
+  };
+
+} else
+
+// Note that this includes Node.js workers when relevant (pthreads is enabled).
+// Node.js workers are detected as a combination of ENVIRONMENT_IS_WORKER and
+// ENVIRONMENT_IS_NODE.
+if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
+  try {
+    scriptDirectory = new URL('.', _scriptName).href; // includes trailing slash
+  } catch {
+    // Must be a `blob:` or `data:` URL (e.g. `blob:http://site.com/etc/etc`), we cannot
+    // infer anything from them.
+  }
+
+  {
+// include: web_or_worker_shell_read.js
+if (ENVIRONMENT_IS_WORKER) {
+    readBinary = (url) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, false);
+      xhr.responseType = 'arraybuffer';
+      xhr.send(null);
+      return new Uint8Array(/** @type{!ArrayBuffer} */(xhr.response));
+    };
+  }
+
+  readAsync = async (url) => {
+    // Fetch has some additional restrictions over XHR, like it can't be used on a file:// url.
+    // See https://github.com/github/fetch/pull/92#issuecomment-140665932
+    // Cordova or Electron apps are typically loaded from a file:// url.
+    // So use XHR on webview if URL is a file URL.
+    if (isFileURI(url)) {
+      return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.responseType = 'arraybuffer';
+        xhr.onload = () => {
+          if (xhr.status == 200 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
+            resolve(xhr.response);
+            return;
+          }
+          reject(xhr.status);
+        };
+        xhr.onerror = reject;
+        xhr.send(null);
+      });
+    }
+    var response = await fetch(url, { credentials: 'same-origin' });
+    if (response.ok) {
+      return response.arrayBuffer();
+    }
+    throw new Error(response.status + ' : ' + response.url);
+  };
+// end include: web_or_worker_shell_read.js
+  }
+} else
+{
+}
+
+var out = console.log.bind(console);
+var err = console.error.bind(console);
+
+// end include: shell.js
+
+// include: preamble.js
+// === Preamble library stuff ===
+
+// Documentation for the public APIs defined in this file must be updated in:
+//    site/source/docs/api_reference/preamble.js.rst
+// A prebuilt local version of the documentation is available at:
+//    site/build/text/docs/api_reference/preamble.js.txt
+// You can also build docs locally as HTML or other formats in site/
+// An online HTML version (which may be of a different version of Emscripten)
+//    is up at http://kripken.github.io/emscripten-site/docs/api_reference/preamble.js.html
+
+var wasmBinary;
+
+// Wasm globals
+
+//========================================
+// Runtime essentials
+//========================================
+
+// whether we are quitting the application. no code should run after this.
+// set in exit() and abort()
+var ABORT = false;
+
+// set by exit() and abort().  Passed to 'onExit' handler.
+// NOTE: This is also used as the process return code code in shell environments
+// but only when noExitRuntime is false.
+var EXITSTATUS;
+
+// In STRICT mode, we only define assert() when ASSERTIONS is set.  i.e. we
+// don't define it at all in release modes.  This matches the behaviour of
+// MINIMAL_RUNTIME.
+// TODO(sbc): Make this the default even without STRICT enabled.
+/** @type {function(*, string=)} */
+function assert(condition, text) {
+  if (!condition) {
+    // This build was created without ASSERTIONS defined.  `assert()` should not
+    // ever be called in this configuration but in case there are callers in
+    // the wild leave this simple abort() implementation here for now.
+    abort(text);
+  }
+}
+
+/**
+ * Indicates whether filename is delivered via file protocol (as opposed to http/https)
+ * @noinline
+ */
+var isFileURI = (filename) => filename.startsWith('file://');
+
+// include: runtime_common.js
+// include: runtime_stack_check.js
+// end include: runtime_stack_check.js
+// include: runtime_exceptions.js
+// end include: runtime_exceptions.js
+// include: runtime_debug.js
+// end include: runtime_debug.js
+// Memory management
+var
+/** @type {!Int8Array} */
+  HEAP8,
+/** @type {!Uint8Array} */
+  HEAPU8,
+/** @type {!Int16Array} */
+  HEAP16,
+/** @type {!Uint16Array} */
+  HEAPU16,
+/** @type {!Int32Array} */
+  HEAP32,
+/** @type {!Uint32Array} */
+  HEAPU32,
+/** @type {!Float32Array} */
+  HEAPF32,
+/** @type {!Float64Array} */
+  HEAPF64;
+
+var runtimeInitialized = false;
+
+
+
+function updateMemoryViews() {
+  var b = wasmMemory.buffer;
+  HEAP8 = new Int8Array(b);
+  HEAP16 = new Int16Array(b);
+  HEAPU8 = new Uint8Array(b);
+  HEAPU16 = new Uint16Array(b);
+  HEAP32 = new Int32Array(b);
+  HEAPU32 = new Uint32Array(b);
+  HEAPF32 = new Float32Array(b);
+  HEAPF64 = new Float64Array(b);
+}
+
+// include: memoryprofiler.js
+// end include: memoryprofiler.js
+// end include: runtime_common.js
+function preRun() {
+  if (Module['preRun']) {
+    if (typeof Module['preRun'] == 'function') Module['preRun'] = [Module['preRun']];
+    while (Module['preRun'].length) {
+      addOnPreRun(Module['preRun'].shift());
+    }
+  }
+  // Begin ATPRERUNS hooks
+  callRuntimeCallbacks(onPreRuns);
+  // End ATPRERUNS hooks
+}
+
+function initRuntime() {
+  runtimeInitialized = true;
+
+  // No ATINITS hooks
+
+  wasmExports['__wasm_call_ctors']();
+
+  // No ATPOSTCTORS hooks
+}
+
+function preMain() {
+  // No ATMAINS hooks
+}
+
+function postRun() {
+   // PThreads reuse the runtime from the main thread.
+
+  if (Module['postRun']) {
+    if (typeof Module['postRun'] == 'function') Module['postRun'] = [Module['postRun']];
+    while (Module['postRun'].length) {
+      addOnPostRun(Module['postRun'].shift());
+    }
+  }
+
+  // Begin ATPOSTRUNS hooks
+  callRuntimeCallbacks(onPostRuns);
+  // End ATPOSTRUNS hooks
+}
+
+/** @param {string|number=} what */
+function abort(what) {
+  Module['onAbort']?.(what);
+
+  what = 'Aborted(' + what + ')';
+  // TODO(sbc): Should we remove printing and leave it up to whoever
+  // catches the exception?
+  err(what);
+
+  ABORT = true;
+
+  what += '. Build with -sASSERTIONS for more info.';
+
+  // Use a wasm runtime error, because a JS error might be seen as a foreign
+  // exception, which means we'd run destructors on it. We need the error to
+  // simply make the program stop.
+  // FIXME This approach does not work in Wasm EH because it currently does not assume
+  // all RuntimeErrors are from traps; it decides whether a RuntimeError is from
+  // a trap or not based on a hidden field within the object. So at the moment
+  // we don't have a way of throwing a wasm trap from JS. TODO Make a JS API that
+  // allows this in the wasm spec.
+
+  // Suppress closure compiler warning here. Closure compiler's builtin extern
+  // definition for WebAssembly.RuntimeError claims it takes no arguments even
+  // though it can.
+  // TODO(https://github.com/google/closure-compiler/pull/3913): Remove if/when upstream closure gets fixed.
+  /** @suppress {checkTypes} */
+  var e = new WebAssembly.RuntimeError(what);
+
+  // Throw the error whether or not MODULARIZE is set because abort is used
+  // in code paths apart from instantiation where an exception is expected
+  // to be thrown when abort is called.
+  throw e;
+}
+
+var wasmBinaryFile;
+
+function findWasmBinary() {
+  return base64Decode('AGFzbQEAAAAB3gEhYAAAYAF/AGADf39/AX9gAAF/YAJ/fwBgAn9/AX9gAX8Bf2ADf39/AGAFf39+f38AYAR/fn5/AGAEf39+fwBgBH9/fn8Bf2ADf39+AGAEf35/fwF/YAZ/f35/fn8Bf2AEf39/fwBgA39+fwF+YAV/f39/fwF/YAZ/fH9/f38Bf2ACfn8Bf2AEf39/fwF/YAJ/fAF/YAJ+fgF8YAF+AGABfgF/YAV/f35/fwF/YAd/f39/f39/AX9gA35/fwF/YAV/f39/fwBgAXwBfmACfH8BfGACf3wAYAR/f35/AX4CswEGA2VudhhlbXNjcmlwdGVuX2FzbV9jb25zdF9pbnQAAgNlbnYJX2Fib3J0X2pzAAAWd2FzaV9zbmFwc2hvdF9wcmV2aWV3MQhmZF93cml0ZQAUA2Vudg1fc2V0aXRpbWVyX2pzABUDZW52I19lbXNjcmlwdGVuX3J1bnRpbWVfa2VlcGFsaXZlX2NsZWFyAAAWd2FzaV9zbmFwc2hvdF9wcmV2aWV3MQlwcm9jX2V4aXQAAQN3dgADAgUGAQYCAgIBAwEGAwkJFgMDAwAEFwMYCBkICgcLCgsABAwEBQwEBAYHDQgOBgUEDQ4AAgMAAAAAAAAAAAAAAAAAAAMEBAcPBgUEAAYQAgYRGgcGDxsTEwUcBQISBB0eBQUfAQEBAQYBBQEAAwMAAQAFIBEEBAFwAAkFBwEBggKAgAIGGwR/AUGAgAQLfwFBAAt/AEHIhwQLfwBB9I0ECweBAgwGbWVtb3J5AgARX193YXNtX2NhbGxfY3RvcnMABgRtYWluAHkZX19pbmRpcmVjdF9mdW5jdGlvbl90YWJsZQEAE19lbXNjcmlwdGVuX3RpbWVvdXQAahlfZW1zY3JpcHRlbl9zdGFja19yZXN0b3JlABIXX2Vtc2NyaXB0ZW5fc3RhY2tfYWxsb2MAExxlbXNjcmlwdGVuX3N0YWNrX2dldF9jdXJyZW50ABQiX19jeGFfaW5jcmVtZW50X2V4Y2VwdGlvbl9yZWZjb3VudAByDl9fc3RhcnRfZW1fYXNtAwINX19zdG9wX2VtX2FzbQMDDGR5bkNhbGxfamlqaQB7CQ4BAEEBCwhkZXZUVlVtbAwBAwq1qQF2AgALBgBBgI4EC/ICAgN/AX4CQCACRQ0AIAAgAToAACAAIAJqIgNBf2ogAToAACACQQNJDQAgACABOgACIAAgAToAASADQX1qIAE6AAAgA0F+aiABOgAAIAJBB0kNACAAIAE6AAMgA0F8aiABOgAAIAJBCUkNACAAQQAgAGtBA3EiBGoiAyABQf8BcUGBgoQIbCIBNgIAIAMgAiAEa0F8cSIEaiICQXxqIAE2AgAgBEEJSQ0AIAMgATYCCCADIAE2AgQgAkF4aiABNgIAIAJBdGogATYCACAEQRlJDQAgAyABNgIYIAMgATYCFCADIAE2AhAgAyABNgIMIAJBcGogATYCACACQWxqIAE2AgAgAkFoaiABNgIAIAJBZGogATYCACAEIANBBHFBGHIiBWsiAkEgSQ0AIAGtQoGAgIAQfiEGIAMgBWohAQNAIAEgBjcDGCABIAY3AxAgASAGNwMIIAEgBjcDACABQSBqIQEgAkFgaiICQR9LDQALCyAACykBAX8jAEEQayICJAAgAiABNgIMQbiGBCAAIAEQYyEBIAJBEGokACABCwQAQQELAgALXAEBfyAAIAAoAkgiAUF/aiABcjYCSAJAIAAoAgAiAUEIcUUNACAAIAFBIHI2AgBBfw8LIABCADcCBCAAIAAoAiwiATYCHCAAIAE2AhQgACABIAAoAjBqNgIQQQALEwAgAgRAIAAgASAC/AoAAAsgAAuQBAEDfwJAIAJBgARJDQAgACABIAIQDQ8LIAAgAmohAwJAAkAgASAAc0EDcQ0AAkACQCAAQQNxDQAgACECDAELAkAgAg0AIAAhAgwBCyAAIQIDQCACIAEtAAA6AAAgAUEBaiEBIAJBAWoiAkEDcUUNASACIANJDQALCyADQXxxIQQCQCADQcAASQ0AIAIgBEFAaiIFSw0AA0AgAiABKAIANgIAIAIgASgCBDYCBCACIAEoAgg2AgggAiABKAIMNgIMIAIgASgCEDYCECACIAEoAhQ2AhQgAiABKAIYNgIYIAIgASgCHDYCHCACIAEoAiA2AiAgAiABKAIkNgIkIAIgASgCKDYCKCACIAEoAiw2AiwgAiABKAIwNgIwIAIgASgCNDYCNCACIAEoAjg2AjggAiABKAI8NgI8IAFBwABqIQEgAkHAAGoiAiAFTQ0ACwsgAiAETw0BA0AgAiABKAIANgIAIAFBBGohASACQQRqIgIgBEkNAAwCCwALAkAgA0EETw0AIAAhAgwBCwJAIAJBBE8NACAAIQIMAQsgA0F8aiEEIAAhAgNAIAIgAS0AADoAACACIAEtAAE6AAEgAiABLQACOgACIAIgAS0AAzoAAyABQQRqIQEgAkEEaiICIARNDQALCwJAIAIgA08NAANAIAIgAS0AADoAACABQQFqIQEgAkEBaiICIANHDQALCyAAC88BAQN/AkACQCACKAIQIgMNAEEAIQQgAhAMDQEgAigCECEDCwJAIAEgAyACKAIUIgRrTQ0AIAIgACABIAIoAiQRAgAPCwJAAkAgAigCUEEASA0AIAFFDQAgASEDAkADQCAAIANqIgVBf2otAABBCkYNASADQX9qIgNFDQIMAAsACyACIAAgAyACKAIkEQIAIgQgA0kNAiABIANrIQEgAigCFCEEDAELIAAhBUEAIQMLIAQgBSABEA4aIAIgAigCFCABajYCFCADIAFqIQQLIAQLBgAgACQBCwQAIwELBgAgACQACxIBAn8jACAAa0FwcSIBJAAgAQsEACMAC1MBAX4CQAJAIANBwABxRQ0AIAEgA0FAaq2GIQJCACEBDAELIANFDQAgAUHAACADa62IIAIgA60iBIaEIQIgASAEhiEBCyAAIAE3AwAgACACNwMIC1MBAX4CQAJAIANBwABxRQ0AIAIgA0FAaq2IIQFCACECDAELIANFDQAgAkHAACADa62GIAEgA60iBIiEIQEgAiAEiCECCyAAIAE3AwAgACACNwMIC5MEAgV/An4jAEEgayICJAAgAUL///////8/gyEHAkACQCABQjCIQv//AYMiCKciA0H/h39qQf0PSw0AIABCPIggB0IEhoQhByADQYCIf2qtIQgCQAJAIABC//////////8PgyIAQoGAgICAgICACFQNACAHQgF8IQcMAQsgAEKAgICAgICAgAhSDQAgB0IBgyAHfCEHC0IAIAcgB0L/////////B1YiAxshACADrSAIfCEHDAELAkAgACAHhFANACAIQv//AVINACAAQjyIIAdCBIaEQoCAgICAgIAEhCEAQv8PIQcMAQsCQCADQf6HAU0NAEL/DyEHQgAhAAwBCwJAQYD4AEGB+AAgCFAiBBsiBSADayIGQfAATA0AQgAhAEIAIQcMAQsgByAHQoCAgICAgMAAhCAEGyEHQQAhBAJAIAUgA0YNACACQRBqIAAgB0GAASAG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AygCPEEQaiADQRBqEDI2AgwgA0EQakEgEC8gA0HQAGokAAtKAQF/IwBBIGsiBCQAIAQgADYCHCAEIAE2AhggBCACNwMQIAQgAzYCDCAEKAIcIAQoAhggBCkDECAEKAIMECchACAEQSBqJAAgAAtTAQJ/IwAiBEGAAWtBQHEiBSQAIAUgADYCfCAFIAE2AnggBSACNwNwIAUgAzYCbCAFIAUoAmwQKSAFIAUoAnggBSkDcBAqIAUgBSgCfBArIAQkAAtQAQF/IwBBMGsiBCQAIAQgADYCLCAEIAE2AiggBCACNwMgIAQgAzYCHCAEIAQoAiggBCkDICAEKAIcECYgBCgCLCAEECwhACAEQTBqJAAgAAsCAAuXAwEBfyMAQRBrIgIkACACIAA2AgwgAiABNgIIIAIoAggQMCEAIAIoAgwgAEH///8fcTYCACACKAIIQQNqEDAhACACKAIMQQRqIABBAnZBg/7/H3E2AgAgAigCCEEGahAwIQAgAigCDEEIaiAAQQR2Qf+B/x9xNgIAIAIoAghBCWoQMCEAIAIoAgxBDGogAEEGdkH//8AfcTYCACACKAIIQQxqEDAhACACKAIMQRBqIABBCHZB//8/cTYCACACKAIMQRRqQQA2AgAgAigCDEEUakEEakEANgIAIAIoAgxBFGpBCGpBADYCACACKAIMQRRqQQxqQQA2AgAgAigCDEEUakEQakEANgIAIAIoAghBEGoQMCEAIAIoAgxBKGogADYCACACKAIIQRRqEDAhACACKAIMQShqQQRqIAA2AgAgAigCCEEYahAwIQAgAigCDEEoakEIaiAANgIAIAIoAghBHGoQMCEAIAIoAgxBKGpBDGogADYCACACKAIMQThqQgA3AwAgAigCDEHQAGpBADoAACACQRBqJAALkwQBAX8jAEEwayIDJAAgAyAANgIsIAMgATYCKCADIAI3AyACQAJAIAMoAixBOGopAwBCAFJBAXFFDQAgA0IQIAMoAixBOGopAwB9NwMQAkAgAykDECADKQMgVkEBcUUNACADIAMpAyA3AxALIANCADcDGAJAA0AgAykDGCADKQMQVEEBcUUNASADKAIsQcAAaiADKAIsQThqKQMAIAMpAxh8p2ogAygCKCADKQMYp2otAAA6AAAgAyADKQMYQgF8NwMYDAALAAsgAyADKQMgIAMpAxB9NwMgIAMgAygCKCADKQMQp2o2AiggAygCLEE4aiIAIAApAwAgAykDEHw3AwACQCADKAIsQThqKQMAQhBUQQFxRQ0ADAILIAMoAiwgAygCLEHAAGpCEBAtIAMoAixBOGpCADcDAAsCQCADKQMgQhBaQQFxRQ0AIAMgAykDIEJwgzcDCCADKAIsIAMoAiggAykDCBAtIAMgAygCKCADKQMIp2o2AiggAyADKQMgIAMpAwh9NwMgCyADKQMgQgBSQQFxRQ0AIANCADcDGAJAA0AgAykDGCADKQMgVEEBcUUNASADKAIsQcAAaiADKAIsQThqKQMAIAMpAxh8p2ogAygCKCADKQMYp2otAAA6AAAgAyADKQMYQgF8NwMYDAALAAsgAygCLEE4aiIAIAApAwAgAykDIHw3AwALIANBMGokAAv1CQIBfwF+IwBB0ABrIgIkACACIAA2AkwgAiABNgJIAkAgAigCTEE4aikDAEIAUkEBcUUNACACIAIoAkxBOGopAwA3AwAgAigCTCEAIAIgAikDACIDQgF8NwMAIABBwABqIAOnakEBOgAAAkADQCACKQMAQhBUQQFxRQ0BIAIoAkxBwABqIAIpAwCnakEAOgAAIAIgAikDAEIBfDcDAAwACwALIAIoAkxB0ABqQQE6AAAgAigCTCACKAJMQcAAakIQEC0LIAIgAigCTEEUaigCADYCRCACIAIoAkxBFGpBBGooAgA2AkAgAiACKAJMQRRqQQhqKAIANgI8IAIgAigCTEEUakEMaigCADYCOCACIAIoAkxBFGpBEGooAgA2AjQgAiACKAJAQRp2NgIwIAIgAigCQEH///8fcTYCQCACIAIoAjwgAigCMGo2AjwgAiACKAI8QRp2NgIwIAIgAigCPEH///8fcTYCPCACIAIoAjggAigCMGo2AjggAiACKAI4QRp2NgIwIAIgAigCOEH///8fcTYCOCACIAIoAjQgAigCMGo2AjQgAiACKAI0QRp2NgIwIAIgAigCNEH///8fcTYCNCACIAIoAkQgAigCMEEFbGo2AkQgAiACKAJEQRp2NgIwIAIgAigCREH///8fcTYCRCACIAIoAkAgAigCMGo2AkAgAiACKAJEQQVqNgIsIAIgAigCLEEadjYCMCACIAIoAixB////H3E2AiwgAiACKAJAIAIoAjBqNgIoIAIgAigCKEEadjYCMCACIAIoAihB////H3E2AiggAiACKAI8IAIoAjBqNgIkIAIgAigCJEEadjYCMCACIAIoAiRB////H3E2AiQgAiACKAI4IAIoAjBqNgIgIAIgAigCIEEadjYCMCACIAIoAiBB////H3E2AiAgAiACKAI0IAIoAjBqQYCAgCBrNgIcIAIgAigCHEEfdkEBazYCDCACIAIoAiwgAigCDHE2AiwgAiACKAIoIAIoAgxxNgIoIAIgAigCJCACKAIMcTYCJCACIAIoAiAgAigCDHE2AiAgAiACKAIcIAIoAgxxNgIcIAIgAigCDEF/czYCDCACIAIoAkQgAigCDHEgAigCLHI2AkQgAiACKAJAIAIoAgxxIAIoAihyNgJAIAIgAigCPCACKAIMcSACKAIkcjYCPCACIAIoAjggAigCDHEgAigCIHI2AjggAiACKAI0IAIoAgxxIAIoAhxyNgI0IAIgAigCRCACKAJAQRp0cjYCRCACIAIoAkBBBnYgAigCPEEUdHI2AkAgAiACKAI8QQx2IAIoAjhBDnRyNgI8IAIgAigCOEESdiACKAI0QQh0cjYCOCACIAIoAkStIAIoAkxBKGooAgCtfDcDECACIAIpAxCnNgJEIAIgAigCQK0gAigCTEEoakEEaigCAK18IAIpAxBCIIh8NwMQIAIgAikDEKc2AkAgAiACKAI8rSACKAJMQShqQQhqKAIArXwgAikDEEIgiHw3AxAgAiACKQMQpzYCPCACIAIoAjitIAIoAkxBKGpBDGooAgCtfCACKQMQQiCIfDcDECACIAIpAxCnNgI4IAIoAkggAigCRBAuIAIoAkhBBGogAigCQBAuIAIoAkhBCGogAigCPBAuIAIoAkhBDGogAigCOBAuIAIoAkxB2AAQLyACQdAAaiQACzQBAX8jAEEQayICJAAgAiAANgIMIAIgATYCCCACKAIMIAIoAghBEBA7IQAgAkEQaiQAIAAL4QkBAX8jAEGAAWsiAyQAIAMgADYCfCADIAE2AnggAyACNwNwIANBAEGAgIAIIAMoAnxB0ABqLQAAQf8BcRs2AmwgAyADKAJ8KAIANgJoIAMgAygCfEEEaigCADYCZCADIAMoAnxBCGooAgA2AmAgAyADKAJ8QQxqKAIANgJcIAMgAygCfEEQaigCADYCWCADIAMoAmRBBWw2AlQgAyADKAJgQQVsNgJQIAMgAygCXEEFbDYCTCADIAMoAlhBBWw2AkggAyADKAJ8QRRqKAIANgJEIAMgAygCfEEUakEEaigCADYCQCADIAMoAnxBFGpBCGooAgA2AjwgAyADKAJ8QRRqQQxqKAIANgI4IAMgAygCfEEUakEQaigCADYCNAJAA0AgAykDcEIQWkEBcUUNASADKAJ4EDAhACADIAMoAkQgAEH///8fcWo2AkQgAygCeEEDahAwIQAgAyADKAJAIABBAnZB////H3FqNgJAIAMoAnhBBmoQMCEAIAMgAygCPCAAQQR2Qf///x9xajYCPCADKAJ4QQlqEDAhACADIAMoAjggAEEGdmo2AjggAygCeEEMahAwIQAgAyADKAI0IABBCHYgAygCbHJqNgI0IAMgAygCRK0gAygCaK1+IAMoAkCtIAMoAkitfnwgAygCPK0gAygCTK1+fCADKAI4rSADKAJQrX58IAMoAjStIAMoAlStfnw3AyggAyADKAJErSADKAJkrX4gAygCQK0gAygCaK1+fCADKAI8rSADKAJIrX58IAMoAjitIAMoAkytfnwgAygCNK0gAygCUK1+fDcDICADIAMoAkStIAMoAmCtfiADKAJArSADKAJkrX58IAMoAjytIAMoAmitfnwgAygCOK0gAygCSK1+fCADKAI0rSADKAJMrX58NwMYIAMgAygCRK0gAygCXK1+IAMoAkCtIAMoAmCtfnwgAygCPK0gAygCZK1+fCADKAI4rSADKAJorX58IAMoAjStIAMoAkitfnw3AxAgAyADKAJErSADKAJYrX4gAygCQK0gAygCXK1+fCADKAI8rSADKAJgrX58IAMoAjitIAMoAmStfnwgAygCNK0gAygCaK1+fDcDCCADIAMpAyhCGoinNgIEIAMgAykDKKdB////H3E2AkQgAyADKQMgIAMoAgStfDcDICADIAMpAyBCGoinNgIEIAMgAykDIKdB////H3E2AkAgAyADKQMYIAMoAgStfDcDGCADIAMpAxhCGoinNgIEIAMgAykDGKdB////H3E2AjwgAyADKQMQIAMoAgStfDcDECADIAMpAxBCGoinNgIEIAMgAykDEKdB////H3E2AjggAyADKQMIIAMoAgStfDcDCCADIAMpAwhCGoinNgIEIAMgAykDCKdB////H3E2AjQgAyADKAJEIAMoAgRBBWxqNgJEIAMgAygCREEadjYCBCADIAMoAkRB////H3E2AkQgAyADKAJAIAMoAgRqNgJAIAMgAygCeEEQajYCeCADIAMpA3BCEH03A3AMAAsACyADKAJ8QRRqIAMoAkQ2AgAgAygCfEEUakEEaiADKAJANgIAIAMoAnxBFGpBCGogAygCPDYCACADKAJ8QRRqQQxqIAMoAjg2AgAgAygCfEEUakEQaiADKAI0NgIAIANBgAFqJAALJAEBfyMAQRBrIgIgADYCDCACIAE2AgggAigCDCACKAIINgAACy4BAX8jAEEQayICJAAgAiAANgIMIAIgATYCCCACKAIMIAIoAggQTSACQRBqJAALIgEBfyMAQRBrIgEgADYCDCABIAEoAgwoAAA2AgggASgCCAu7CgEBfyMAQeAAayIDJAAgAyAANgJcIAMgATYCWCADIAI2AlQgA0EANgJQAkACQCADKAJQQQBGQQFxRQ0AIANB5fDBiwY2AkwgA0HuyIGZAzYCOCADQbLaiMsHNgIkIANB9MqB2QY2AhAMAQsgAyADKAJQEDU2AkwgAyADKAJQQQRqEDU2AjggAyADKAJQQQhqEDU2AiQgAyADKAJQQQxqEDU2AhALIAMgAygCVBA1NgJIIAMgAygCVEEEahA1NgJEIAMgAygCVEEIahA1NgJAIAMgAygCVEEMahA1NgI8IAMgAygCVEEQahA1NgIgIAMgAygCVEEUahA1NgIcIAMgAygCVEEYahA1NgIYIAMgAygCVEEcahA1NgIUIAMgAygCWBA1NgI0IAMgAygCWEEEahA1NgIwIAMgAygCWEEIahA1NgIsIAMgAygCWEEMahA1NgIoIANBFDYCDAJAA0AgAygCDEEASkEBcUUNASADIAMoAkwgAygCHGpBBxA2IAMoAjxzNgI8IAMgAygCPCADKAJMakEJEDYgAygCLHM2AiwgAyADKAIsIAMoAjxqQQ0QNiADKAIcczYCHCADIAMoAhwgAygCLGpBEhA2IAMoAkxzNgJMIAMgAygCOCADKAJIakEHEDYgAygCKHM2AiggAyADKAIoIAMoAjhqQQkQNiADKAIYczYCGCADIAMoAhggAygCKGpBDRA2IAMoAkhzNgJIIAMgAygCSCADKAIYakESEDYgAygCOHM2AjggAyADKAIkIAMoAjRqQQcQNiADKAIUczYCFCADIAMoAhQgAygCJGpBCRA2IAMoAkRzNgJEIAMgAygCRCADKAIUakENEDYgAygCNHM2AjQgAyADKAI0IAMoAkRqQRIQNiADKAIkczYCJCADIAMoAhAgAygCIGpBBxA2IAMoAkBzNgJAIAMgAygCQCADKAIQakEJEDYgAygCMHM2AjAgAyADKAIwIAMoAkBqQQ0QNiADKAIgczYCICADIAMoAiAgAygCMGpBEhA2IAMoAhBzNgIQIAMgAygCTCADKAJAakEHEDYgAygCSHM2AkggAyADKAJIIAMoAkxqQQkQNiADKAJEczYCRCADIAMoAkQgAygCSGpBDRA2IAMoAkBzNgJAIAMgAygCQCADKAJEakESEDYgAygCTHM2AkwgAyADKAI4IAMoAjxqQQcQNiADKAI0czYCNCADIAMoAjQgAygCOGpBCRA2IAMoAjBzNgIwIAMgAygCMCADKAI0akENEDYgAygCPHM2AjwgAyADKAI8IAMoAjBqQRIQNiADKAI4czYCOCADIAMoAiQgAygCKGpBBxA2IAMoAiBzNgIgIAMgAygCICADKAIkakEJEDYgAygCLHM2AiwgAyADKAIsIAMoAiBqQQ0QNiADKAIoczYCKCADIAMoAiggAygCLGpBEhA2IAMoAiRzNgIkIAMgAygCECADKAIUakEHEDYgAygCHHM2AhwgAyADKAIcIAMoAhBqQQkQNiADKAIYczYCGCADIAMoAhggAygCHGpBDRA2IAMoAhRzNgIUIAMgAygCFCADKAIYakESEDYgAygCEHM2AhAgAyADKAIMQQJrNgIMDAALAAsgAygCXCADKAJMEDcgAygCXEEEaiADKAI4EDcgAygCXEEIaiADKAIkEDcgAygCXEEMaiADKAIQEDcgAygCXEEQaiADKAI0EDcgAygCXEEUaiADKAIwEDcgAygCXEEYaiADKAIsEDcgAygCXEEcaiADKAIoEDcgA0HgAGokAAtKAQF/IwBBIGsiBCQAIAQgADYCHCAEIAE3AxAgBCACNgIMIAQgAzYCCCAEKAIcIAQpAxAgBCgCDCAEKAIIEDghACAEQSBqJAAgAAuCAQEBfyMAQeAAayIFJAAgBSAANgJcIAUgATYCWCAFIAI3A1AgBSADNgJMIAVCADcDQCAFIAQ2AjwgBUEQaiAFKAJMIAUoAjwQMSAFIAUoAlwgBSgCWCAFKQNQIAUoAkxBEGogBSkDQCAFQRBqEDQ2AgwgBUEQakEgEC8gBUHgAGokAAtiAQF/IwBBMGsiBiQAIAYgADYCLCAGIAE2AiggBiACNwMgIAYgAzYCHCAGIAQ3AxAgBiAFNgIMIAYoAiwgBigCKCAGKQMgIAYoAhwgBikDECAGKAIMEDkhACAGQTBqJAAgAAsiAQF/IwBBEGsiASAANgIMIAEgASgCDCgAADYCCCABKAIICzEBAX8jAEEQayICIAA2AgwgAiABNgIIIAIoAgwgAigCCHQgAigCDEEgIAIoAghrdnILJAEBfyMAQRBrIgIgADYCDCACIAE2AgggAigCDCACKAIINgAAC/QEAQF/IwBBoAFrIgQkACAEIAA2ApgBIAQgATcDkAEgBCACNgKMASAEIAM2AogBAkACQCAEKQOQAUIAUkEBcQ0AIARBADYCnAEMAQsgBEEANgIMAkADQCAEKAIMQSBJQQFxRQ0BIARBEGogBCgCDGogBCgCiAEgBCgCDGotAAA6AAAgBCAEKAIMQQFqNgIMDAALAAsgBEEANgIMAkADQCAEKAIMQQhJQQFxRQ0BIARB8ABqIAQoAgxqIAQoAowBIAQoAgxqLQAAOgAAIAQgBCgCDEEBajYCDAwACwALIARBCDYCDAJAA0AgBCgCDEEQSUEBcUUNASAEQfAAaiAEKAIMakEAOgAAIAQgBCgCDEEBajYCDAwACwALAkADQCAEKQOQAULAAFpBAXFFDQEgBCgCmAEgBEHwAGogBEEQahBOIARBATYCCCAEQQg2AgwCQANAIAQoAgxBEElBAXFFDQEgBCAEKAIIIARB8ABqIAQoAgxqLQAAQf8BcWo2AgggBEHwAGogBCgCDGogBCgCCDoAACAEIAQoAghBCHY2AgggBCAEKAIMQQFqNgIMDAALAAsgBCAEKQOQAULAAH03A5ABIAQgBCgCmAFBwABqNgKYAQwACwALAkAgBCkDkAFCAFJBAXFFDQAgBEEwaiAEQfAAaiAEQRBqEE4gBEEANgIMAkADQCAEKAIMIAQpA5ABp0lBAXFFDQEgBCgCmAEgBCgCDGogBEEwaiAEKAIMai0AADoAACAEIAQoAgxBAWo2AgwMAAsACwsgBEEwakHAABAvIARBEGpBIBAvIARBADYCnAELIAQoApwBIQAgBEGgAWokACAAC6QGAQF/IwBBsAFrIgYkACAGIAA2AqgBIAYgATYCpAEgBiACNwOYASAGIAM2ApQBIAYgBDcDiAEgBiAFNgKEAQJAAkAgBikDmAFCAFJBAXENACAGQQA2AqwBDAELIAZBADYCDAJAA0AgBigCDEEgSUEBcUUNASAGQRBqIAYoAgxqIAYoAoQBIAYoAgxqLQAAOgAAIAYgBigCDEEBajYCDAwACwALIAZBADYCDAJAA0AgBigCDEEISUEBcUUNASAGQfAAaiAGKAIMaiAGKAKUASAGKAIMai0AADoAACAGIAYoAgxBAWo2AgwMAAsACyAGQQg2AgwCQANAIAYoAgxBEElBAXFFDQEgBkHwAGogBigCDGogBikDiAFC/wGDpzoAACAGIAYpA4gBQgiINwOIASAGIAYoAgxBAWo2AgwMAAsACwJAA0AgBikDmAFCwABaQQFxRQ0BIAZBMGogBkHwAGogBkEQahBOIAZBADYCDAJAA0AgBigCDEHAAElBAXFFDQEgBigCqAEgBigCDGogBigCpAEgBigCDGotAABB/wFxIAZBMGogBigCDGotAABB/wFxczoAACAGIAYoAgxBAWo2AgwMAAsACyAGQQE2AgggBkEINgIMAkADQCAGKAIMQRBJQQFxRQ0BIAYgBigCCCAGQfAAaiAGKAIMai0AAEH/AXFqNgIIIAZB8ABqIAYoAgxqIAYoAgg6AAAgBiAGKAIIQQh2NgIIIAYgBigCDEEBajYCDAwACwALIAYgBikDmAFCwAB9NwOYASAGIAYoAqgBQcAAajYCqAEgBiAGKAKkAUHAAGo2AqQBDAALAAsCQCAGKQOYAUIAUkEBcUUNACAGQTBqIAZB8ABqIAZBEGoQTiAGQQA2AgwCQANAIAYoAgwgBikDmAGnSUEBcUUNASAGKAKoASAGKAIMaiAGKAKkASAGKAIMai0AAEH/AXEgBkEwaiAGKAIMai0AAEH/AXFzOgAAIAYgBigCDEEBajYCDAwACwALCyAGQTBqQcAAEC8gBkEQakEgEC8gBkEANgKsAQsgBigCrAEhACAGQbABaiQAIAALAgAL7gEBAX8jAEEgayIDIAA2AhwgAyABNgIYIAMgAjYCFCADIAMoAhw2AhAgAyADKAIYNgIMIANBADsBCiADQQA2AgQCQANAIAMoAgQgAygCFEhBAXFFDQEgAygCECADKAIEai0AACEAIAMoAgwgAygCBGotAAAhASADIAMvAQpB//8DcSAAQf8BcSABQf8BcXNyOwEKIAMgAygCBEEBajYCBAwACwALIAMvAQohACADIAA7AQogAyADLwEKQX9qOwEKIAMgAy8BCkH//wNxQQ12QQAvAYD5BUH//wNxc0ECdjsBCiADLwEKQf//A3FBAWsLOgECfyMAQRBrIgAkACAAQciHBDYCDCAAKAIMIQEgAEEAOgALIAEgAEELakEAEAAhASAAQRBqJAAgAQs3AQJ/IwBBEGsiACQAIABB7IcENgIMIAAoAgwhASAAQQA6AAsgASAAQQtqQQAQABogAEEQaiQACwIACwIACwIACz0BAX8jAEEQayIAJAAgAEF/NgIMEEogACAAKAIMNgIMIAAQSyAAKAIMcTYCDEEAQQE2Aoj5BSAAQRBqJAALCgBBwPkFQRAQHAsEABBICwQAEEkLAgALAgALAgALAgALAgALLAEBfyMAQRBrIgBBiPkFNgIMIAAoAgxBBGpBADYCACAAKAIMQQhqQQA2AgAL4QEBAn8jAEEwayIAJAAgAEGI+QU2AiggAEEANgIMIABBEGpBABBMAkACQCAAQRBqKAIADQAgAEF/NgIsDAELIABBEGpBARBMIAAoAihBDGpBADYCACAAKAIoQRBqQQA2AgAgACgCKEEUakEANgIAIAAoAihBGGpBADYCACAAKAIoQRxqQQA2AgAgACgCKEEgakEANgIAIAAoAihBJGpBADYCACAAKAIoQShqQQA2AgAgACgCKEEsakEANgIAIAAoAihBMGpBADYCACAAQQA2AiwLIAAoAiwhASAAQTBqJAAgAQtIAQF/IwBBEGsiAiAANgIMIAIgATYCCCACKAIMQQxqQQA2AgAgAigCDEEIakEANgIAIAIoAgxBBGpBADYCACACKAIMQQA2AgALDAAgAEEAIAEQCCEBC0YBAX8jAEEQayIDJAAgAyAANgIMIAMgATYCCCADIAI2AgQgA0EANgIAIAMoAgwgAygCCCADKAIEIAMoAgAQTyADQRBqJAALmg4BAX8jAEGgAWsiBCQAIAQgADYCnAEgBCABNgKYASAEIAI2ApQBIAQgAzYCkAEgBEEUNgKMASAEQeXwwYsGNgKIASAEQeXwwYsGNgJIIARB7siBmQM2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CHQgAigCDEEgIAIoAghrdnILJAEBfyMAQRBrIgIgADYCDCACIAE2AgggAigCDCACKAIINgAACwUAEAEACwQAQQALBABCAAvEAgEHfyMAQSBrIgMkACADIAAoAhwiBDYCECAAKAIUIQUgAyACNgIcIAMgATYCGCADIAUgBGsiATYCFCABIAJqIQZBAiEHIANBEGohAQJAAkADQAJAAkACQCAAKAI8IAEgByADQQxqEAIQVw0AIAYgAygCDCIERg0BIARBf0oNAgwECyAGQX9HDQMLIAAgACgCLCIBNgIcIAAgATYCFCAAIAEgACgCMGo2AhAgAiEEDAMLIAFBCEEAIAQgASgCBCIISyIFG2oiCSAJKAIAIAQgCEEAIAUbayIIajYCACABQQxBBCAFG2oiASABKAIAIAhrNgIAIAYgBGshBiAHIAVrIQcgCSEBDAALAAtBACEEIABBADYCHCAAQgA3AxAgACAAKAIAQSByNgIAIAdBAkYNACACIAEoAgRrIQQLIANBIGokACAECxUAAkAgAA0AQQAPCxAHIAA2AgBBfwvrAgEEfyMAQdABayIFJAAgBSACNgLMASAFQaABakEAQSj8CwAgBSAFKALMATYCyAECQAJAQQAgASAFQcgBaiAFQdAAaiAFQaABaiADIAQQWUEATg0AQX8hBAwBCwJAAkAgACgCTEEATg0AQQEhBgwBCyAAEApFIQYLIAAgACgCACIHQV9xNgIAAkACQAJAAkAgACgCMA0AIABB0AA2AjAgAEEANgIcIABCADcDECAAKAIsIQggACAFNgIsDAELQQAhCCAAKAIQDQELQX8hAiAAEAwNAQsgACABIAVByAFqIAVB0ABqIAVBoAFqIAMgBBBZIQILIAdBIHEhBAJAIAhFDQAgAEEAQQAgACgCJBECABogAEEANgIwIAAgCDYCLCAAQQA2AhwgACgCFCEDIABCADcDECACQX8gAxshAgsgACAAKAIAIgMgBHI2AgBBfyACIANBIHEbIQQgBg0AIAAQCwsgBUHQAWokACAEC5gTAhN/AX4jAEHAAGsiByQAIAcgATYCPCAHQSlqIQggB0EnaiEJIAdBKGohCkEAIQtBACEMAkACQAJAAkADQEEAIQ0DQCABIQ4gDSAMQf////8Hc0oNAiANIAxqIQwgDiENAkACQAJAAkACQAJAIA4tAAAi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BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQAAAAYAAADofAEAAAQAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAP////8KAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEHIhwQLrAZ7IHJldHVybiBNb2R1bGUuZ2V0UmFuZG9tVmFsdWUoKTsgfQB7IGlmIChNb2R1bGUuZ2V0UmFuZG9tVmFsdWUgPT09IHVuZGVmaW5lZCkgeyB0cnkgeyB2YXIgd2luZG93XyA9ICdvYmplY3QnID09PSB0eXBlb2Ygd2luZG93ID8gd2luZG93IDogc2VsZjsgdmFyIGNyeXB0b18gPSB0eXBlb2Ygd2luZG93Xy5jcnlwdG8gIT09ICd1bmRlZmluZWQnID8gd2luZG93Xy5jcnlwdG8gOiB3aW5kb3dfLm1zQ3J5cHRvOyBjcnlwdG9fID0gKGNyeXB0b18gPT09IHVuZGVmaW5lZCkgPyBjcnlwdG8gOiBjcnlwdG9fOyB2YXIgcmFuZG9tVmFsdWVzU3RhbmRhcmQgPSBmdW5jdGlvbigpIHsgdmFyIGJ1ZiA9IG5ldyBVaW50MzJBcnJheSgxKTsgY3J5cHRvXy5nZXRSYW5kb21WYWx1ZXMoYnVmKTsgcmV0dXJuIGJ1ZlswXSA+Pj4gMDsgfTsgcmFuZG9tVmFsdWVzU3RhbmRhcmQoKTsgTW9kdWxlLmdldFJhbmRvbVZhbHVlID0gcmFuZG9tVmFsdWVzU3RhbmRhcmQ7IH0gY2F0Y2ggKGUpIHsgdHJ5IHsgdmFyIGNyeXB0byA9IHJlcXVpcmUoJ2NyeXB0bycpOyB2YXIgcmFuZG9tVmFsdWVOb2RlSlMgPSBmdW5jdGlvbigpIHsgdmFyIGJ1ZiA9IGNyeXB0b1sncmFuZG9tQnl0ZXMnXSg0KTsgcmV0dXJuIChidWZbMF0gPDwgMjQgfCBidWZbMV0gPDwgMTYgfCBidWZbMl0gPDwgOCB8IGJ1ZlszXSkgPj4+IDA7IH07IHJhbmRvbVZhbHVlTm9kZUpTKCk7IE1vZHVsZS5nZXRSYW5kb21WYWx1ZSA9IHJhbmRvbVZhbHVlTm9kZUpTOyB9IGNhdGNoIChlKSB7IHRocm93ICdObyBzZWN1cmUgcmFuZG9tIG51bWJlciBnZW5lcmF0b3IgZm91bmQnOyB9IH0gfSB9AACUAQ90YXJnZXRfZmVhdHVyZXMIKw9tdXRhYmxlLWdsb2JhbHMrE25vbnRyYXBwaW5nLWZwdG9pbnQrC2J1bGstbWVtb3J5KwhzaWduLWV4dCsPcmVmZXJlbmNlLXR5cGVzKwptdWx0aXZhbHVlKw9idWxrLW1lbW9yeS1vcHQrFmNhbGwtaW5kaXJlY3Qtb3Zlcmxvbmc=');
+}
+
+function getBinarySync(file) {
+  if (ArrayBuffer.isView(file)) {
+    return file;
+  }
+  if (file == wasmBinaryFile && wasmBinary) {
+    return new Uint8Array(wasmBinary);
+  }
+  if (readBinary) {
+    return readBinary(file);
+  }
+  // Throwing a plain string here, even though it not normally adviables since
+  // this gets turning into an `abort` in instantiateArrayBuffer.
+  throw 'both async and sync fetching of the wasm failed';
+}
+
+async function getWasmBinary(binaryFile) {
+
+  // Otherwise, getBinarySync should be able to get it synchronously
+  return getBinarySync(binaryFile);
+}
+
+async function instantiateArrayBuffer(binaryFile, imports) {
+  try {
+    var binary = await getWasmBinary(binaryFile);
+    var instance = await WebAssembly.instantiate(binary, imports);
+    return instance;
+  } catch (reason) {
+    err(`failed to asynchronously prepare wasm: ${reason}`);
+
+    abort(reason);
+  }
+}
+
+async function instantiateAsync(binary, binaryFile, imports) {
+  return instantiateArrayBuffer(binaryFile, imports);
+}
+
+function getWasmImports() {
+  // prepare imports
+  var imports = {
+    'env': wasmImports,
+    'wasi_snapshot_preview1': wasmImports,
+  };
+  return imports;
+}
+
+// Create the wasm instance.
+// Receives the wasm imports, returns the exports.
+async function createWasm() {
+  // Load the wasm module and create an instance of using native support in the JS engine.
+  // handle a generated wasm instance, receiving its exports and
+  // performing other necessary setup
+  /** @param {WebAssembly.Module=} module*/
+  function receiveInstance(instance, module) {
+    wasmExports = instance.exports;
+
+    assignWasmExports(wasmExports);
+
+    updateMemoryViews();
+
+    removeRunDependency('wasm-instantiate');
+    return wasmExports;
+  }
+  addRunDependency('wasm-instantiate');
+
+  // Prefer streaming instantiation if available.
+  function receiveInstantiationResult(result) {
+    // 'result' is a ResultObject object which has both the module and instance.
+    // receiveInstance() will swap in the exports (to Module.asm) so they can be called
+    // TODO: Due to Closure regression https://github.com/google/closure-compiler/issues/3193, the above line no longer optimizes out down to the following line.
+    // When the regression is fixed, can restore the above PTHREADS-enabled path.
+    return receiveInstance(result['instance']);
+  }
+
+  var info = getWasmImports();
+
+  // User shell pages can write their own Module.instantiateWasm = function(imports, successCallback) callback
+  // to manually instantiate the Wasm module themselves. This allows pages to
+  // run the instantiation parallel to any other async startup actions they are
+  // performing.
+  // Also pthreads and wasm workers initialize the wasm instance through this
+  // path.
+  if (Module['instantiateWasm']) {
+    return new Promise((resolve, reject) => {
+        Module['instantiateWasm'](info, (inst, mod) => {
+          resolve(receiveInstance(inst, mod));
+        });
+    });
+  }
+
+  wasmBinaryFile ??= findWasmBinary();
+  var result = await instantiateAsync(wasmBinary, wasmBinaryFile, info);
+  var exports = receiveInstantiationResult(result);
+  return exports;
+}
+
+// Globals used by JS i64 conversions (see makeSetValue)
+var tempDouble;
+var tempI64;
+
+// end include: preamble.js
+
+// Begin JS library code
+
+
+  class ExitStatus {
+      name = 'ExitStatus';
+      constructor(status) {
+        this.message = `Program terminated with exit(${status})`;
+        this.status = status;
+      }
+    }
+
+  var callRuntimeCallbacks = (callbacks) => {
+      while (callbacks.length > 0) {
+        // Pass the module as the first argument.
+        callbacks.shift()(Module);
+      }
+    };
+  var onPostRuns = [];
+  var addOnPostRun = (cb) => onPostRuns.push(cb);
+
+  var onPreRuns = [];
+  var addOnPreRun = (cb) => onPreRuns.push(cb);
+
+  var runDependencies = 0;
+  
+  
+  var dependenciesFulfilled = null;
+  var removeRunDependency = (id) => {
+      runDependencies--;
+  
+      Module['monitorRunDependencies']?.(runDependencies);
+  
+      if (runDependencies == 0) {
+        if (dependenciesFulfilled) {
+          var callback = dependenciesFulfilled;
+          dependenciesFulfilled = null;
+          callback(); // can add another dependenciesFulfilled
+        }
+      }
+    };
+  var addRunDependency = (id) => {
+      runDependencies++;
+  
+      Module['monitorRunDependencies']?.(runDependencies);
+  
+    };
+
+  /** @noinline */
+  var base64Decode = (b64) => {
+      if (ENVIRONMENT_IS_NODE) {
+        var buf = Buffer.from(b64, 'base64');
+        return new Uint8Array(buf.buffer, buf.byteOffset, buf.length);
+      }
+  
+      var b1, b2, i = 0, j = 0, bLength = b64.length;
+      var output = new Uint8Array((bLength*3>>2) - (b64[bLength-2] == '=') - (b64[bLength-1] == '='));
+      for (; i < bLength; i += 4, j += 3) {
+        b1 = base64ReverseLookup[b64.charCodeAt(i+1)];
+        b2 = base64ReverseLookup[b64.charCodeAt(i+2)];
+        output[j] = base64ReverseLookup[b64.charCodeAt(i)] << 2 | b1 >> 4;
+        output[j+1] = b1 << 4 | b2 >> 2;
+        output[j+2] = b2 << 6 | base64ReverseLookup[b64.charCodeAt(i+3)];
+      }
+      return output;
+    };
+
+
+  
+    /**
+     * @param {number} ptr
+     * @param {string} type
+     */
+  function getValue(ptr, type = 'i8') {
+    if (type.endsWith('*')) type = '*';
+    switch (type) {
+      case 'i1': return HEAP8[ptr];
+      case 'i8': return HEAP8[ptr];
+      case 'i16': return HEAP16[((ptr)>>1)];
+      case 'i32': return HEAP32[((ptr)>>2)];
+      case 'i64': abort('to do getValue(i64) use WASM_BIGINT');
+      case 'float': return HEAPF32[((ptr)>>2)];
+      case 'double': return HEAPF64[((ptr)>>3)];
+      case '*': return HEAPU32[((ptr)>>2)];
+      default: abort(`invalid type for getValue: ${type}`);
+    }
+  }
+
+  var noExitRuntime = true;
+
+
+  
+    /**
+     * @param {number} ptr
+     * @param {number} value
+     * @param {string} type
+     */
+  function setValue(ptr, value, type = 'i8') {
+    if (type.endsWith('*')) type = '*';
+    switch (type) {
+      case 'i1': HEAP8[ptr] = value; break;
+      case 'i8': HEAP8[ptr] = value; break;
+      case 'i16': HEAP16[((ptr)>>1)] = value; break;
+      case 'i32': HEAP32[((ptr)>>2)] = value; break;
+      case 'i64': abort('to do setValue(i64) use WASM_BIGINT');
+      case 'float': HEAPF32[((ptr)>>2)] = value; break;
+      case 'double': HEAPF64[((ptr)>>3)] = value; break;
+      case '*': HEAPU32[((ptr)>>2)] = value; break;
+      default: abort(`invalid type for setValue: ${type}`);
+    }
+  }
+
+  var stackRestore = (val) => __emscripten_stack_restore(val);
+
+  var stackSave = () => _emscripten_stack_get_current();
+
+  
+
+  var __abort_js = () =>
+      abort('');
+
+  var runtimeKeepaliveCounter = 0;
+  var __emscripten_runtime_keepalive_clear = () => {
+      noExitRuntime = false;
+      runtimeKeepaliveCounter = 0;
+    };
+
+  var timers = {
+  };
+  
+  var handleException = (e) => {
+      // Certain exception types we do not treat as errors since they are used for
+      // internal control flow.
+      // 1. ExitStatus, which is thrown by exit()
+      // 2. "unwind", which is thrown by emscripten_unwind_to_js_event_loop() and others
+      //    that wish to return to JS event loop.
+      if (e instanceof ExitStatus || e == 'unwind') {
+        return EXITSTATUS;
+      }
+      quit_(1, e);
+    };
+  
+  
+  var keepRuntimeAlive = () => noExitRuntime || runtimeKeepaliveCounter > 0;
+  var _proc_exit = (code) => {
+      EXITSTATUS = code;
+      if (!keepRuntimeAlive()) {
+        Module['onExit']?.(code);
+        ABORT = true;
+      }
+      quit_(code, new ExitStatus(code));
+    };
+  /** @param {boolean|number=} implicit */
+  var exitJS = (status, implicit) => {
+      EXITSTATUS = status;
+  
+      _proc_exit(status);
+    };
+  var _exit = exitJS;
+  
+  
+  var maybeExit = () => {
+      if (!keepRuntimeAlive()) {
+        try {
+          _exit(EXITSTATUS);
+        } catch (e) {
+          handleException(e);
+        }
+      }
+    };
+  var callUserCallback = (func) => {
+      if (ABORT) {
+        return;
+      }
+      try {
+        func();
+        maybeExit();
+      } catch (e) {
+        handleException(e);
+      }
+    };
+  
+  
+  var _emscripten_get_now = () => performance.now();
+  var __setitimer_js = (which, timeout_ms) => {
+      // First, clear any existing timer.
+      if (timers[which]) {
+        clearTimeout(timers[which].id);
+        delete timers[which];
+      }
+  
+      // A timeout of zero simply cancels the current timeout so we have nothing
+      // more to do.
+      if (!timeout_ms) return 0;
+  
+      var id = setTimeout(() => {
+        delete timers[which];
+        callUserCallback(() => __emscripten_timeout(which, _emscripten_get_now()));
+      }, timeout_ms);
+      timers[which] = { id, timeout_ms };
+      return 0;
+    };
+
+  var readEmAsmArgsArray = [];
+  var readEmAsmArgs = (sigPtr, buf) => {
+      readEmAsmArgsArray.length = 0;
+      var ch;
+      // Most arguments are i32s, so shift the buffer pointer so it is a plain
+      // index into HEAP32.
+      while (ch = HEAPU8[sigPtr++]) {
+        // Floats are always passed as doubles, so all types except for 'i'
+        // are 8 bytes and require alignment.
+        var wide = (ch != 105);
+        wide &= (ch != 112);
+        buf += wide && (buf % 8) ? 4 : 0;
+        readEmAsmArgsArray.push(
+          // Special case for pointers under wasm64 or CAN_ADDRESS_2GB mode.
+          ch == 112 ? HEAPU32[((buf)>>2)] :
+          ch == 105 ?
+            HEAP32[((buf)>>2)] :
+            HEAPF64[((buf)>>3)]
+        );
+        buf += wide ? 8 : 4;
+      }
+      return readEmAsmArgsArray;
+    };
+  var runEmAsmFunction = (code, sigPtr, argbuf) => {
+      var args = readEmAsmArgs(sigPtr, argbuf);
+      return ASM_CONSTS[code](...args);
+    };
+  var _emscripten_asm_const_int = (code, sigPtr, argbuf) => {
+      return runEmAsmFunction(code, sigPtr, argbuf);
+    };
+
+  var printCharBuffers = [null,[],[]];
+  
+  var UTF8Decoder = globalThis.TextDecoder && new TextDecoder();
+  
+  var findStringEnd = (heapOrArray, idx, maxBytesToRead, ignoreNul) => {
+      var maxIdx = idx + maxBytesToRead;
+      if (ignoreNul) return maxIdx;
+      // TextDecoder needs to know the byte length in advance, it doesn't stop on
+      // null terminator by itself.
+      // As a tiny code save trick, compare idx against maxIdx using a negation,
+      // so that maxBytesToRead=undefined/NaN means Infinity.
+      while (heapOrArray[idx] && !(idx >= maxIdx)) ++idx;
+      return idx;
+    };
+  
+    /**
+     * Given a pointer 'idx' to a null-terminated UTF8-encoded string in the given
+     * array that contains uint8 values, returns a copy of that string as a
+     * Javascript String object.
+     * heapOrArray is either a regular array, or a JavaScript typed array view.
+     * @param {number=} idx
+     * @param {number=} maxBytesToRead
+     * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
+     * @return {string}
+     */
+  var UTF8ArrayToString = (heapOrArray, idx = 0, maxBytesToRead, ignoreNul) => {
+  
+      var endPtr = findStringEnd(heapOrArray, idx, maxBytesToRead, ignoreNul);
+  
+      // When using conditional TextDecoder, skip it for short strings as the overhead of the native call is not worth it.
+      if (endPtr - idx > 16 && heapOrArray.buffer && UTF8Decoder) {
+        return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
+      }
+      var str = '';
+      while (idx < endPtr) {
+        // For UTF8 byte structure, see:
+        // http://en.wikipedia.org/wiki/UTF-8#Description
+        // https://www.ietf.org/rfc/rfc2279.txt
+        // https://tools.ietf.org/html/rfc3629
+        var u0 = heapOrArray[idx++];
+        if (!(u0 & 0x80)) { str += String.fromCharCode(u0); continue; }
+        var u1 = heapOrArray[idx++] & 63;
+        if ((u0 & 0xE0) == 0xC0) { str += String.fromCharCode(((u0 & 31) << 6) | u1); continue; }
+        var u2 = heapOrArray[idx++] & 63;
+        if ((u0 & 0xF0) == 0xE0) {
+          u0 = ((u0 & 15) << 12) | (u1 << 6) | u2;
+        } else {
+          u0 = ((u0 & 7) << 18) | (u1 << 12) | (u2 << 6) | (heapOrArray[idx++] & 63);
+        }
+  
+        if (u0 < 0x10000) {
+          str += String.fromCharCode(u0);
+        } else {
+          var ch = u0 - 0x10000;
+          str += String.fromCharCode(0xD800 | (ch >> 10), 0xDC00 | (ch & 0x3FF));
+        }
+      }
+      return str;
+    };
+  var printChar = (stream, curr) => {
+      var buffer = printCharBuffers[stream];
+      if (curr === 0 || curr === 10) {
+        (stream === 1 ? out : err)(UTF8ArrayToString(buffer));
+        buffer.length = 0;
+      } else {
+        buffer.push(curr);
+      }
+    };
+  
+  var flush_NO_FILESYSTEM = () => {
+      // flush anything remaining in the buffers during shutdown
+      if (printCharBuffers[1].length) printChar(1, 10);
+      if (printCharBuffers[2].length) printChar(2, 10);
+    };
+  
+  
+  
+    /**
+     * Given a pointer 'ptr' to a null-terminated UTF8-encoded string in the
+     * emscripten HEAP, returns a copy of that string as a Javascript String object.
+     *
+     * @param {number} ptr
+     * @param {number=} maxBytesToRead - An optional length that specifies the
+     *   maximum number of bytes to read. You can omit this parameter to scan the
+     *   string until the first 0 byte. If maxBytesToRead is passed, and the string
+     *   at [ptr, ptr+maxBytesToReadr[ contains a null byte in the middle, then the
+     *   string will cut short at that byte index.
+     * @param {boolean=} ignoreNul - If true, the function will not stop on a NUL character.
+     * @return {string}
+     */
+  var UTF8ToString = (ptr, maxBytesToRead, ignoreNul) => {
+      return ptr ? UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead, ignoreNul) : '';
+    };
+  var SYSCALLS = {
+  varargs:undefined,
+  getStr(ptr) {
+        var ret = UTF8ToString(ptr);
+        return ret;
+      },
+  };
+  var _fd_write = (fd, iov, iovcnt, pnum) => {
+      // hack to support printf in SYSCALLS_REQUIRE_FILESYSTEM=0
+      var num = 0;
+      for (var i = 0; i < iovcnt; i++) {
+        var ptr = HEAPU32[((iov)>>2)];
+        var len = HEAPU32[(((iov)+(4))>>2)];
+        iov += 8;
+        for (var j = 0; j < len; j++) {
+          printChar(fd, HEAPU8[ptr+j]);
+        }
+        num += len;
+      }
+      HEAPU32[((pnum)>>2)] = num;
+      return 0;
+    };
+
+
+
+
+    // Precreate a reverse lookup table from chars
+    // "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/" back to
+    // bytes to make decoding fast.
+    for (var base64ReverseLookup = new Uint8Array(123/*'z'+1*/), i = 25; i >= 0; --i) {
+      base64ReverseLookup[48+i] = 52+i; // '0-9'
+      base64ReverseLookup[65+i] = i; // 'A-Z'
+      base64ReverseLookup[97+i] = 26+i; // 'a-z'
+    }
+    base64ReverseLookup[43] = 62; // '+'
+    base64ReverseLookup[47] = 63; // '/'
+  ;
+// End JS library code
+
+// include: postlibrary.js
+// This file is included after the automatically-generated JS library code
+// but before the wasm module is created.
+
+{
+
+  // Begin ATMODULES hooks
+  if (Module['noExitRuntime']) noExitRuntime = Module['noExitRuntime'];
+if (Module['print']) out = Module['print'];
+if (Module['printErr']) err = Module['printErr'];
+if (Module['wasmBinary']) wasmBinary = Module['wasmBinary'];
+  // End ATMODULES hooks
+
+  if (Module['arguments']) arguments_ = Module['arguments'];
+  if (Module['thisProgram']) thisProgram = Module['thisProgram'];
+
+  if (Module['preInit']) {
+    if (typeof Module['preInit'] == 'function') Module['preInit'] = [Module['preInit']];
+    while (Module['preInit'].length > 0) {
+      Module['preInit'].shift()();
+    }
+  }
+}
+
+// Begin runtime exports
+  // End runtime exports
+  // Begin JS library exports
+  // End JS library exports
+
+// end include: postlibrary.js
+
+var ASM_CONSTS = {
+  66504: () => { return Module.getRandomValue(); },  
+ 66540: () => { if (Module.getRandomValue === undefined) { try { var window_ = 'object' === typeof window ? window : self; var crypto_ = typeof window_.crypto !== 'undefined' ? window_.crypto : window_.msCrypto; crypto_ = (crypto_ === undefined) ? crypto : crypto_; var randomValuesStandard = function() { var buf = new Uint32Array(1); crypto_.getRandomValues(buf); return buf[0] >>> 0; }; randomValuesStandard(); Module.getRandomValue = randomValuesStandard; } catch (e) { try { var crypto = require('crypto'); var randomValueNodeJS = function() { var buf = crypto['randomBytes'](4); return (buf[0] << 24 | buf[1] << 16 | buf[2] << 8 | buf[3]) >>> 0; }; randomValueNodeJS(); Module.getRandomValue = randomValueNodeJS; } catch (e) { throw 'No secure random number generator found'; } } } }
+};
+
+// Imports from the Wasm binary.
+var _main,
+  __emscripten_timeout,
+  __emscripten_stack_restore,
+  __emscripten_stack_alloc,
+  _emscripten_stack_get_current,
+  ___cxa_increment_exception_refcount,
+  dynCall_jiji,
+  memory,
+  __indirect_function_table,
+  wasmMemory;
+
+
+function assignWasmExports(wasmExports) {
+  _main = Module['_main'] = wasmExports['main'];
+  __emscripten_timeout = wasmExports['_emscripten_timeout'];
+  __emscripten_stack_restore = wasmExports['_emscripten_stack_restore'];
+  __emscripten_stack_alloc = wasmExports['_emscripten_stack_alloc'];
+  _emscripten_stack_get_current = wasmExports['emscripten_stack_get_current'];
+  ___cxa_increment_exception_refcount = wasmExports['__cxa_increment_exception_refcount'];
+  dynCall_jiji = wasmExports['dynCall_jiji'];
+  memory = wasmMemory = wasmExports['memory'];
+  __indirect_function_table = wasmExports['__indirect_function_table'];
+}
+
+var wasmImports = {
+  /** @export */
+  _abort_js: __abort_js,
+  /** @export */
+  _emscripten_runtime_keepalive_clear: __emscripten_runtime_keepalive_clear,
+  /** @export */
+  _setitimer_js: __setitimer_js,
+  /** @export */
+  emscripten_asm_const_int: _emscripten_asm_const_int,
+  /** @export */
+  fd_write: _fd_write,
+  /** @export */
+  proc_exit: _proc_exit
+};
+
+
+// include: postamble.js
+// === Auto-generated postamble setup entry stuff ===
+
+function callMain() {
+
+  var entryFunction = _main;
+
+  var argc = 0;
+  var argv = 0;
+
+  try {
+
+    var ret = entryFunction(argc, argv);
+
+    // if we're not running an evented main loop, it's time to exit
+    exitJS(ret, /* implicit = */ true);
+    return ret;
+  } catch (e) {
+    return handleException(e);
+  }
+}
+
+function run() {
+
+  if (runDependencies > 0) {
+    dependenciesFulfilled = run;
+    return;
+  }
+
+  preRun();
+
+  // a preRun added a dependency, run will be called later
+  if (runDependencies > 0) {
+    dependenciesFulfilled = run;
+    return;
+  }
+
+  function doRun() {
+    // run may have just been called through dependencies being fulfilled just in this very frame,
+    // or while the async setStatus time below was happening
+    Module['calledRun'] = true;
+
+    if (ABORT) return;
+
+    initRuntime();
+
+    preMain();
+
+    Module['onRuntimeInitialized']?.();
+
+    var noInitialRun = Module['noInitialRun'] || false;
+    if (!noInitialRun) callMain();
+
+    postRun();
+  }
+
+  if (Module['setStatus']) {
+    Module['setStatus']('Running...');
+    setTimeout(() => {
+      setTimeout(() => Module['setStatus'](''), 1);
+      doRun();
+    }, 1);
+  } else
+  {
+    doRun();
+  }
+}
+
+var wasmExports;
+
+// With async instantation wasmExports is assigned asynchronously when the
+// instance is received.
+createWasm();
+
+run();
+
+// end include: postamble.js
+
