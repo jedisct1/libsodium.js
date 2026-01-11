@@ -39,17 +39,31 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 
 targets: standard sumo
 
-pack: targets
+typescript-defs: $(MODULES_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts
+	@echo + Generated TypeScript definitions
+
+$(MODULES_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.js
+	@echo +++ Generating TypeScript definitions for standard distribution
+	node wrapper/build-typescript-defs.js
+
+$(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.js
+	@echo +++ Generating TypeScript definitions for sumo distribution
+	node wrapper/build-typescript-defs.js --sumo
+
+pack: targets typescript-defs
 	@-bun install
 	@echo + Packing
-	@echo + Note: Skipping libsodium*.js - Terser corrupts embedded WASM binary
-	for i in $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js; do \
+	for i in $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js; do \
 	  echo "Packing [$$i]" ; \
 	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
-	for i in $(MODULES_ESM_DIR)/libsodium-wrappers.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs; do \
+	for i in $(MODULES_ESM_DIR)/libsodium.mjs $(MODULES_ESM_DIR)/libsodium-wrappers.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs; do \
 	  echo "Packing ESM [$$i]" ; \
 	  $(TERSIFY_ESM) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
+	done
+	for i in $(BROWSERS_DIR)/sodium.js $(BROWSERS_SUMO_DIR)/sodium.js; do \
+	  echo "Packing browser [$$i]" ; \
+	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
