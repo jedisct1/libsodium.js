@@ -36,8 +36,9 @@ const ready = libsodiumModule.ready.then(function () {
     }
   }
 
-  libsodium.useBackupModule();
-  libsodiumInit();
+  return libsodium.useBackupModule().then(function() {
+    libsodiumInit();
+  });
 });
 
 function symbols() {

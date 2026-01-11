@@ -30,14 +30,15 @@
           return;
         }
       }
-      catch (err) { 
+      catch (err) {
         if (libsodium.useBackupModule == null) {
           throw new Error("Both wasm and asm failed to load" + err)
         }
       }
 
-      libsodium.useBackupModule();
-      libsodiumInit();
+      return libsodium.useBackupModule().then(function() {
+        libsodiumInit();
+      });
     });
 
     // List of functions and constants defined in the wrapped libsodium
