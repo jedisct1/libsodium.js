@@ -42,13 +42,13 @@ targets: standard sumo
 typescript-defs: $(MODULES_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts
 	@echo + Generated TypeScript definitions
 
-$(MODULES_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.js
+$(MODULES_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.ts
 	@echo +++ Generating TypeScript definitions for standard distribution
-	node wrapper/build-typescript-defs.js
+	$(BUN) wrapper/build-typescript-defs.ts
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.ts
 	@echo +++ Generating TypeScript definitions for sumo distribution
-	node wrapper/build-typescript-defs.js --sumo
+	$(BUN) wrapper/build-typescript-defs.ts --sumo
 
 pack: targets typescript-defs
 	@-bun install
@@ -66,25 +66,25 @@ pack: targets typescript-defs
 	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
 	done
 
-$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.ts wrapper/build-doc.ts wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
 	mkdir -p $(MODULES_DIR)
-	$(BUN) wrapper/build-wrappers.js libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
+	$(BUN) wrapper/build-wrappers.ts libsodium API.md $(MODULES_DIR)/libsodium-wrappers.js
 
-$(MODULES_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_ESM_DIR)/libsodium.mjs
+$(MODULES_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/build-doc.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_ESM_DIR)/libsodium.mjs
 	@echo +++ Building standard/libsodium-wrappers.mjs
 	mkdir -p $(MODULES_ESM_DIR)
-	$(BUN) wrapper/build-wrappers.js libsodium /dev/null /dev/null $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
+	$(BUN) wrapper/build-wrappers.ts libsodium /dev/null /dev/null $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
 
-$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js
+$(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.ts wrapper/build-doc.ts wrapper/wrap-template.js
 	@echo +++ Building sumo/libsodium-wrappers.js
 	mkdir -p $(MODULES_SUMO_DIR)
-	$(BUN) wrapper/build-wrappers.js libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+	$(BUN) wrapper/build-wrappers.ts libsodium-sumo API_sumo.md $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 
-$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.js wrapper/build-doc.js wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
+$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/build-doc.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
 	@echo +++ Building sumo/libsodium-wrappers.mjs
 	mkdir -p $(MODULES_SUMO_ESM_DIR)
-	$(BUN) wrapper/build-wrappers.js libsodium-sumo /dev/null /dev/null $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
+	$(BUN) wrapper/build-wrappers.ts libsodium-sumo /dev/null /dev/null $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
 
 $(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium
