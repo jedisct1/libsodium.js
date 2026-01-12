@@ -18,5 +18,6 @@
       "condition": "=== 0",
       "or_else_throw": "invalid usage"
     }
-  ]
+  ],
+  "outputs": []
 }

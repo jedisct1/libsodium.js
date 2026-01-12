@@ -14,5 +14,6 @@
       "or_else_throw": "invalid usage"
     }
   ],
-  "return": "state_address"
+  "return": "state_address",
+  "inputs": []
 }

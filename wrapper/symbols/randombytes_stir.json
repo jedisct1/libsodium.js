@@ -1,5 +1,7 @@
 {
   "name": "randombytes_stir",
   "type": "function",
-  "target": "libsodium._randombytes_stir()"
+  "target": "libsodium._randombytes_stir()",
+  "outputs": [],
+  "inputs": []
 }

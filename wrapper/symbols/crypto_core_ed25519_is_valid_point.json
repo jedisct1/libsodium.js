@@ -9,5 +9,6 @@
     }
   ],
   "target": "var result = libsodium._crypto_core_ed25519_is_valid_point(repr_address) | 0",
-  "return": "result === 1"
+  "return": "result === 1",
+  "outputs": []
 }

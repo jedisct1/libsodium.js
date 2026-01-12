@@ -1,5 +1,7 @@
 {
   "name": "randombytes_close",
   "type": "function",
-  "target": "libsodium._randombytes_close()"
+  "target": "libsodium._randombytes_close()",
+  "outputs": [],
+  "inputs": []
 }
