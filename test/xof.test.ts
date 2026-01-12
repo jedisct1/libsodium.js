@@ -1,8 +1,8 @@
 import { expect, test } from "bun:test";
 
-const test_helper = require("../test/test_helper");
+import { init } from "./test_helper.ts";
 
-const sodium = await test_helper.init();
+const sodium = await init();
 
 test("crypto_xof_shake128 one-shot", () => {
 	const message = sodium.from_string("test message");

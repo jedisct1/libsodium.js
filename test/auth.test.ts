@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test";
 
-const test_helper = require("./test_helper");
+import { init } from "./test_helper.ts";
 
-const sodium = await test_helper.init();
+const sodium = await init();
 
 test("crypto_auth", () => {
 	const key = sodium.crypto_auth_keygen();

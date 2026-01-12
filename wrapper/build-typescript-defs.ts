@@ -4,8 +4,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 interface SymbolInput {
 	name: string;
@@ -168,74 +167,21 @@ export const ready: Promise<void>;
 			continue;
 		}
 
-		const funcName = symbol.name;
-		const inputs = symbol.inputs || [];
-		const outputs = symbol.outputs || [];
+		const inputs = symbol.inputs ?? [];
+		const outputs = symbol.outputs ?? [];
 
-		const params: string[] = [];
-
-		for (const input of inputs) {
-			const tsType = typeMap[input.type] || "any";
-			params.push(`${input.name}: ${tsType}`);
-		}
+		const params: string[] = inputs.map(
+			(input) => `${input.name}: ${typeMap[input.type] ?? "any"}`,
+		);
 
 		const hasFormattedOutput = symbol.return?.includes("_format_output");
 		if (hasFormattedOutput) {
 			params.push(`outputFormat?: ${outputFormatType}`);
 		}
 
-		let returnType = "void";
+		const returnType = inferReturnType(symbol, outputs, hasFormattedOutput);
 
-		const objectReturnType = parseObjectReturnType(symbol.return);
-		if (objectReturnType) {
-			returnType = objectReturnType;
-		} else if (outputs.length > 0) {
-			const outputType = outputs[0].type;
-
-			if (
-				outputType &&
-				(outputType.includes("_state") || outputType.includes("state_address"))
-			) {
-				returnType = "StateAddress";
-			} else if (hasFormattedOutput) {
-				returnType = returnTypeWithFormat;
-			} else if (typeMap[outputType]) {
-				returnType = typeMap[outputType];
-			} else {
-				returnType = "Uint8Array";
-			}
-		} else if (symbol.return) {
-			if (
-				symbol.return.includes("===") ||
-				symbol.return.includes("!==") ||
-				symbol.return.includes("==") ||
-				symbol.return.includes("!=") ||
-				funcName.includes("_verify")
-			) {
-				returnType = "boolean";
-			} else if (hasFormattedOutput) {
-				returnType = returnTypeWithFormat;
-			} else if (
-				symbol.return.includes("UTF8ToString") ||
-				symbol.return.includes("_string")
-			) {
-				returnType = "string";
-			} else if (
-				symbol.return.includes("random_value") ||
-				symbol.return.includes(">>> 0") ||
-				(symbol.return.match(/\b(value|result|ret|retval)\b/) &&
-					!symbol.return.includes("_format_output"))
-			) {
-				returnType = "number";
-			}
-		}
-
-		const jsdoc = generateJSDoc(symbol);
-		if (jsdoc) {
-			dts += jsdoc;
-		}
-
-		dts += `export function ${funcName}(${params.join(", ")}): ${returnType};\n`;
+		dts += `export function ${symbol.name}(${params.join(", ")}): ${returnType};\n`;
 	}
 
 	dts += "\n// Internal: list of all exported symbols\n";
@@ -245,8 +191,57 @@ export const ready: Promise<void>;
 	console.log(`Generated TypeScript definitions: ${outputFile}`);
 }
 
-function generateJSDoc(_symbol: Symbol): string {
-	return "";
+function inferReturnType(
+	symbol: Symbol,
+	outputs: SymbolOutput[],
+	hasFormattedOutput: boolean | undefined,
+): string {
+	const objectType = parseObjectReturnType(symbol.return);
+	if (objectType) {
+		return objectType;
+	}
+
+	if (outputs.length > 0) {
+		const outputType = outputs[0].type;
+		if (outputType?.includes("_state") || outputType?.includes("state_address")) {
+			return "StateAddress";
+		}
+		if (hasFormattedOutput) {
+			return returnTypeWithFormat;
+		}
+		if (typeMap[outputType]) {
+			return typeMap[outputType];
+		}
+		return "Uint8Array";
+	}
+
+	if (symbol.return) {
+		const ret = symbol.return;
+		if (
+			ret.includes("===") ||
+			ret.includes("!==") ||
+			ret.includes("==") ||
+			ret.includes("!=") ||
+			symbol.name.includes("_verify")
+		) {
+			return "boolean";
+		}
+		if (hasFormattedOutput) {
+			return returnTypeWithFormat;
+		}
+		if (ret.includes("UTF8ToString") || ret.includes("_string")) {
+			return "string";
+		}
+		if (
+			ret.includes("random_value") ||
+			ret.includes(">>> 0") ||
+			(ret.match(/\b(value|result|ret|retval)\b/) && !ret.includes("_format_output"))
+		) {
+			return "number";
+		}
+	}
+
+	return "void";
 }
 
 function parseObjectReturnType(returnStatement?: string): string | null {

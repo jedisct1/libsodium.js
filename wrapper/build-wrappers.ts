@@ -38,11 +38,6 @@ interface Symbol {
 	assert_retval?: AssertRetval[];
 }
 
-interface Substitution {
-	from: string;
-	to: string;
-}
-
 interface Constant {
 	name: string;
 	type: "uint" | "string";
@@ -175,49 +170,34 @@ function exportConstants(constSymbols: Constant[]): void {
 }
 
 function buildSymbol(symbolDescription: Symbol): void {
-	if (typeof symbolDescription !== "object") {
-		throw new TypeError("symbolDescription must be an object");
-	}
-
 	if (symbolDescription.type === "function") {
-		const _targetName = `libsodium._${symbolDescription.name}`;
 		let funcCode = `function ${symbolDescription.name}(`;
 		let funcBody = "";
 
 		const paramsArray: string[] = [];
-		const inputs = symbolDescription.inputs || [];
+		const inputs = symbolDescription.inputs ?? [];
 
-		for (const currentParameter of inputs) {
-			paramsArray.push(currentParameter.name);
+		for (const param of inputs) {
+			paramsArray.push(param.name);
 
-			const currentParameterCode = macros[`input_${currentParameter.type}`];
-			if (!currentParameterCode) {
-				console.error(`Unsupported input type ${currentParameter.type}?`);
+			const macroCode = macros[`input_${param.type}`];
+			if (!macroCode) {
+				console.error(`Unsupported input type ${param.type}?`);
 				process.exit(1);
 			}
 
-			const substitutions: Substitution[] = [
-				{ from: "{var_name}", to: currentParameter.name },
-			];
-			if (currentParameter.length !== undefined) {
-				substitutions.push({
-					from: "{var_length}",
-					to: currentParameter.length,
-				});
+			const symbols = ["{var_name}"];
+			const substitutes = [param.name];
+			if (param.length !== undefined) {
+				symbols.push("{var_length}");
+				substitutes.push(param.length);
 			}
-			if (currentParameter.min_length !== undefined) {
-				substitutions.push({
-					from: "{var_min_length}",
-					to: currentParameter.min_length,
-				});
+			if (param.min_length !== undefined) {
+				symbols.push("{var_min_length}");
+				substitutes.push(param.min_length);
 			}
 
-			const processedCode = applyMacro(
-				currentParameterCode,
-				substitutions.map((s) => s.from),
-				substitutions.map((s) => s.to),
-			);
-			funcBody += `${processedCode}\n`;
+			funcBody += `${applyMacro(macroCode, symbols, substitutes)}\n`;
 		}
 
 		if (!symbolDescription.noOutputFormat) {
@@ -232,33 +212,26 @@ function buildSymbol(symbolDescription: Symbol): void {
 			funcCode += "  _check_output_format(outputFormat);\n";
 		}
 
-		const outputs = symbolDescription.outputs || [];
-		for (const currentOutput of outputs) {
-			const currentOutputCode = macros[`output_${currentOutput.type}`];
-			if (!currentOutputCode) {
-				console.error(`What is the output type ${currentOutput.type}?`);
+		const outputs = symbolDescription.outputs ?? [];
+		for (const output of outputs) {
+			const macroCode = macros[`output_${output.type}`];
+			if (!macroCode) {
+				console.error(`What is the output type ${output.type}?`);
 				process.exit(1);
 			}
 
-			const substitutions: Substitution[] = [
-				{ from: "{var_name}", to: currentOutput.name },
-			];
-			if (currentOutput.length !== undefined) {
-				substitutions.push({ from: "{var_length}", to: currentOutput.length });
+			const symbols = ["{var_name}"];
+			const substitutes = [output.name];
+			if (output.length !== undefined) {
+				symbols.push("{var_length}");
+				substitutes.push(output.length);
 			}
-			if (currentOutput.min_length !== undefined) {
-				substitutions.push({
-					from: "{var_min_length}",
-					to: currentOutput.min_length,
-				});
+			if (output.min_length !== undefined) {
+				symbols.push("{var_min_length}");
+				substitutes.push(output.min_length);
 			}
 
-			const processedCode = applyMacro(
-				currentOutputCode,
-				substitutions.map((s) => s.from),
-				substitutions.map((s) => s.to),
-			);
-			funcBody += `${processedCode}\n`;
+			funcBody += `${applyMacro(macroCode, symbols, substitutes)}\n`;
 		}
 
 		if (symbolDescription.assert_retval !== undefined) {
@@ -322,29 +295,6 @@ function applyMacro(
 	symbols: string[],
 	substitutes: string[],
 ): string {
-	if (typeof macroCode !== "string") {
-		throw new TypeError(`macroCode must be a string, not ${typeof macroCode}`);
-	}
-	if (!Array.isArray(symbols) || !checkStrArray(symbols)) {
-		throw new TypeError(
-			`symbols must be an array of strings (found: ${typeof symbols})`,
-		);
-	}
-	if (!Array.isArray(substitutes) || !checkStrArray(substitutes)) {
-		throw new TypeError(
-			"substitutes must be an array of strings for [" +
-				macroCode +
-				"] [" +
-				substitutes +
-				"] (found: " +
-				typeof substitutes +
-				")",
-		);
-	}
-	if (symbols.length > substitutes.length) {
-		throw new TypeError("invalid array length for substitutes");
-	}
-
 	let result = macroCode;
 	for (let i = 0; i < symbols.length; i++) {
 		result = result.split(symbols[i]).join(substitutes[i]);
@@ -404,27 +354,12 @@ function loadConstants(): Constant[] {
 		process.exit(1);
 	}
 
-	if (!Array.isArray(constList) || !checkObjectArray(constList)) {
-		console.error("constants file must contain an array of objects");
+	if (!Array.isArray(constList)) {
+		console.error("constants file must contain an array");
 		process.exit(1);
 	}
 
-	const constSymbols: Constant[] = [];
-	for (const currentConstant of constList) {
-		constSymbols.push({
-			name: currentConstant.name,
-			type: currentConstant.type,
-		});
-	}
-	return constSymbols;
-}
-
-function checkStrArray(a: unknown[]): boolean {
-	return a.every((item) => typeof item === "string");
-}
-
-function checkObjectArray(a: unknown[]): boolean {
-	return a.every((item) => typeof item === "object" && item !== null);
+	return constList;
 }
 
 function sc(s: string): string {
