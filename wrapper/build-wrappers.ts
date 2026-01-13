@@ -3,7 +3,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import * as docBuilder from "./build-doc.ts";
 import type {
 	Constant,
 	FunctionSymbol,
@@ -56,21 +55,14 @@ class WrapperBuilder {
 		return fs.readFileSync(path.join(__dirname, filename), "utf8");
 	}
 
-	build(
-		symbols: FunctionSymbol[],
-		constants: Constant[],
-		apiPath: string,
-	): void {
-		docBuilder.resetDocBuilder();
-
+	build(symbols: FunctionSymbol[], constants: Constant[]): void {
 		for (const symbol of symbols) {
 			this.buildSymbolFunction(symbol);
-			docBuilder.buildDocForSymbol(symbol);
 		}
 
 		this.buildFunctionExports(symbols);
 		this.buildConstantExports(constants);
-		this.writeOutputFiles(apiPath);
+		this.writeOutputFiles();
 	}
 
 	private buildSymbolFunction(symbol: FunctionSymbol): void {
@@ -245,7 +237,7 @@ class WrapperBuilder {
 		this.exportsCode.push("}");
 	}
 
-	private writeOutputFiles(apiPath: string): void {
+	private writeOutputFiles(): void {
 		const functionsText = this.functionsCode.join("\n");
 		const exportsText = this.exportsCode.join("\n");
 
@@ -256,7 +248,6 @@ class WrapperBuilder {
 		});
 
 		fs.writeFileSync(this.wrappersPath, cjsOutput);
-		fs.writeFileSync(apiPath, docBuilder.getResultDoc());
 
 		if (this.esmWrappersPath && this.esmTemplateCode) {
 			const esmOutput = this.applyTemplate(this.esmTemplateCode, {
@@ -339,17 +330,16 @@ function loadConstants(): Constant[] {
 
 function main(): void {
 	const argv = process.argv;
-	if (argv.length !== 5 && argv.length !== 6) {
+	if (argv.length !== 4 && argv.length !== 5) {
 		console.error(
-			"Usage: build-wrappers.ts <libsodium module name> <API.md path> <wrappers path> [esm wrappers path]",
+			"Usage: build-wrappers.ts <libsodium module name> <wrappers path> [esm wrappers path]",
 		);
 		process.exit(1);
 	}
 
 	const libsodiumModuleName = argv[2];
-	const apiPath = argv[3];
-	const wrappersPath = argv[4];
-	const esmWrappersPath = argv[5] || null;
+	const wrappersPath = argv[3];
+	const esmWrappersPath = argv[4] ?? null;
 
 	const symbols = loadSymbols();
 	const constants = loadConstants();
@@ -359,7 +349,7 @@ function main(): void {
 		wrappersPath,
 		esmWrappersPath,
 	);
-	builder.build(symbols, constants, apiPath);
+	builder.build(symbols, constants);
 }
 
 main();

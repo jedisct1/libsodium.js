@@ -472,7 +472,7 @@ export function crypto_ipcrypt_ndx_keygen(outputFormat?: "uint8array" | "text" |
 export function crypto_ipcrypt_pfx_decrypt(input: Uint8Array, key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function crypto_ipcrypt_pfx_encrypt(input: Uint8Array, key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function crypto_ipcrypt_pfx_keygen(outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
-export function crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number, ctx: string, key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
+export function crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number | bigint, ctx: string, key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function crypto_kdf_keygen(outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function crypto_kx_client_session_keys(clientPublicKey: Uint8Array, clientSecretKey: Uint8Array, serverPublicKey: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): {sharedRx: Uint8Array | string, sharedTx: Uint8Array | string};
 export function crypto_kx_keypair(outputFormat?: "uint8array" | "text" | "hex" | "base64"): {publicKey: Uint8Array | string, privateKey: Uint8Array | string, keyType: string};
@@ -508,7 +508,7 @@ export function crypto_secretbox_open_easy(ciphertext: Uint8Array, nonce: Uint8A
 export function crypto_secretstream_xchacha20poly1305_init_pull(header: Uint8Array, key: Uint8Array): StateAddress;
 export function crypto_secretstream_xchacha20poly1305_init_push(key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): {state: StateAddress, header: Uint8Array | string};
 export function crypto_secretstream_xchacha20poly1305_keygen(outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
-export function crypto_secretstream_xchacha20poly1305_pull(state_address: StateAddress, cipher: Uint8Array, ad: Uint8Array | string | null, outputFormat?: "uint8array" | "text" | "hex" | "base64"): {message: Uint8Array | string, tag: number} | void;
+export function crypto_secretstream_xchacha20poly1305_pull(state_address: StateAddress, cipher: Uint8Array, ad: Uint8Array | string | null, outputFormat?: "uint8array" | "text" | "hex" | "base64"): {message: Uint8Array | string, tag: number} | false;
 export function crypto_secretstream_xchacha20poly1305_push(state_address: StateAddress, message_chunk: Uint8Array | string, ad: Uint8Array | string | null, tag: number, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function crypto_secretstream_xchacha20poly1305_rekey(state_address: StateAddress): void;
 export function crypto_shorthash(message: Uint8Array | string, key: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
@@ -562,7 +562,7 @@ export function randombytes_buf(length: number, outputFormat?: "uint8array" | "t
 export function randombytes_buf_deterministic(length: number, seed: Uint8Array, outputFormat?: "uint8array" | "text" | "hex" | "base64"): Uint8Array | string;
 export function randombytes_close(): void;
 export function randombytes_random(): number;
-export function randombytes_set_implementation(implementation: any): void;
+export function randombytes_set_implementation(implementation: object): void;
 export function randombytes_stir(): void;
 export function randombytes_uniform(upper_bound: number): number;
 export function sodium_bin2ip(bin: Uint8Array): Uint8Array;

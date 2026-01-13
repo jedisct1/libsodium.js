@@ -1,168 +1,313 @@
-import type { FunctionSymbol, SymbolInput, SymbolOutput } from "./types.ts";
+#!/usr/bin/env bun
 
-const INPUT_TYPE_NAMES: Record<string, string> = {
-	buf: "Buf",
-	unsized_buf: "Unsized buf",
-	minsized_buf: "Minsized buf",
-	unsized_buf_optional: "Optional unsized buf",
-	buf_optional: "Optional buf",
-	uint: "Unsigned Integer",
-	generichash_state_address: "Generichash state address",
-	hash_sha256_state_address: "Sha256 state address",
-	hash_sha512_state_address: "Sha512 state address",
-	auth_hmacsha256_state_address: "Hmac Sha256 state address",
-	auth_hmacsha512_state_address: "Hmac Sha512 state address",
-	auth_hmacsha512256_state_address: "Hmac Sha512256 state address",
-	onetimeauth_state_address: "OneTimeAuth state address",
-	sign_state_address: "Signature state address",
-	secretstream_xchacha20poly1305_state_address:
-		"Secretstream XChaCha20Poly1305 state address",
-	xof_shake128_state_address: "XOF SHAKE128 state address",
-	xof_shake256_state_address: "XOF SHAKE256 state address",
-	xof_turboshake128_state_address: "XOF TurboSHAKE128 state address",
-	xof_turboshake256_state_address: "XOF TurboSHAKE256 state address",
-	randombytes_implementation: "Randombytes implementation",
-	unsized_string: "A string",
-	string: "A string with a fixed length",
-	u64: "An unsigned int or 64-bit BigInt",
-};
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import type { Constant, FunctionSymbol, SymbolInput, SymbolOutput } from "./types.ts";
+import { isFunctionSymbol } from "./types.ts";
+import {
+	FUNCTION_CATEGORIES,
+	getInputTypeInfo,
+	groupByCategory,
+	hasFormattedOutput,
+	isSumoOnly,
+	parseReturnType,
+} from "./shared-types.ts";
 
-const OUTPUT_TYPE_NAMES: Record<string, string> = {
-	buf: "Buf",
-	uint: "Unsigned Integer",
-	generichash_state: "Generichash state",
-	hash_sha256_state: "Sha256 state",
-	hash_sha512_state: "Sha512 state",
-	auth_hmacsha256_state: "Hmac Sha256 state",
-	auth_hmacsha512_state: "Hmac Sha512 state",
-	auth_hmacsha512256_state: "Hmac Sha512256 state",
-	onetimeauth_state: "OneTimeAuth state",
-	sign_state: "Signature state",
-	secretstream_xchacha20poly1305_state: "Secretstream XChaCha20Poly1305 state",
-	xof_shake128_state: "XOF SHAKE128 state",
-	xof_shake256_state: "XOF SHAKE256 state",
-	xof_turboshake128_state: "XOF TurboSHAKE128 state",
-	xof_turboshake256_state: "XOF TurboSHAKE256 state",
-};
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export class DocBuilder {
-	private lines: string[] = [];
+function loadSymbols(symbolsDir: string): FunctionSymbol[] {
+	const files = fs.readdirSync(symbolsDir).filter((f) => f.endsWith(".json"));
+	const symbols: FunctionSymbol[] = [];
 
-	constructor() {
-		this.lines = this.buildHeader();
+	for (const file of files.sort()) {
+		const content = fs.readFileSync(path.join(symbolsDir, file), "utf8");
+		const symbol = JSON.parse(content);
+		if (isFunctionSymbol(symbol)) {
+			symbols.push(symbol);
+		}
 	}
 
-	private buildHeader(): string[] {
-		return [
-			"# Libsodium.js wrapper - API usage",
-			"",
-			"To learn about the role of each method, please refer to the original [documentation](https://doc.libsodium.org) of libsodium",
-			"",
-			"List of existing types:",
-			"* `Buf`: An Uint8Array of a determined size. Used for keys, nonces, etc...",
-			"* `Unsized Buf`: An Uint8Array of an arbitrary size. Used for messages to sign, encrypt, hash, etc...",
-			"* `Minsized Buf`: An Uint8Array of a minimum size. Used for ciphertexts",
-			"* `Optional unsized buf`",
-			"* `Unsigned Integer`",
-			"* `Generichash state`",
-			"* `OneTimeAuth state`",
-			"* `Secretstream XChaCha20Poly1305 state`",
-			"* `Signature state`",
-			"* `Randombytes implementation`",
-			"* `String`",
-			'* outputFormat: A string indicating in which output format you want the result to be returned. Supported values are "uint8array", "text", "hex", "base64". Optional parameter. Not available on all functions. Defaults to uint8array.',
-			"",
-			"Please note that a function that returns more than one variable will in fact return an object, which will contain the outputs in question and whose attributes will be named after the outputs' names",
-			"",
-			'Please also note that these are the function available "in general" in the wrapper. The actual number of available functions in given build may be inferior to that, depending on what functions you choose to build to JS.',
-			"",
-			"In addition to the main functions listed below, the library comes with a short list of helper methods. And here they are:",
-			"* `from_string(string)`: converts a standard string into a Uint8Array",
-			"* `to_string(buf)`: converts a Uint8Array to a standard string",
-			"* `to_hex(buf)`: returns the hexadecimal representation of the provided buf",
-			"* `from_hex(string)`: converts the provided hex-string into a Uint8Array and returns it",
-			"* `to_base64(buf, variant)`: returns the base64 representation of the provided buf",
-			"* `from_base64(string, variant)`: tries to convert the supposedly base64 string into a Uint8Array",
-			"* `symbols()`: returns a list of the currently methods and constants",
-			"* `raw`: attribute referencing the raw emscripten-built libsodium library that we are wrapping",
-			"",
-		];
+	return symbols;
+}
+
+function loadConstants(constantsFile: string): Constant[] {
+	return JSON.parse(fs.readFileSync(constantsFile, "utf8"));
+}
+
+function formatInputType(input: SymbolInput): string {
+	const typeInfo = getInputTypeInfo(input.type);
+	return typeInfo?.doc ?? "unknown";
+}
+
+function formatOutputType(output: SymbolOutput): string {
+	if (output.type === "buf") return "Uint8Array";
+	if (output.type === "uint") return "number";
+	if (output.type.includes("state")) return "StateAddress";
+	return "Uint8Array";
+}
+
+function formatSize(length: string | undefined): string | null {
+	if (!length) return null;
+	const match = length.match(/libsodium\._(\w+)\(\)/);
+	if (match) {
+		return match[1].toUpperCase();
+	}
+	if (length.includes("_length")) {
+		return length.replace(/_length/g, ".length").replace(/libsodium\._(\w+)\(\)/g, (_, fn) => fn.toUpperCase());
+	}
+	return null;
+}
+
+function buildFunctionSignature(symbol: FunctionSymbol): string {
+	const inputs = symbol.inputs ?? [];
+	const outputs = symbol.outputs ?? [];
+
+	const params: string[] = [];
+	for (const input of inputs) {
+		const type = formatInputType(input);
+		params.push(`${input.name}: ${type}`);
 	}
 
-	addSymbol(symbol: FunctionSymbol): void {
-		this.lines.push(...this.buildFunctionDoc(symbol));
+	if (hasFormattedOutput(symbol)) {
+		params.push(`outputFormat?: OutputFormat`);
 	}
 
-	private buildFunctionDoc(symbol: FunctionSymbol): string[] {
-		const lines: string[] = [];
-		const inputs = symbol.inputs ?? [];
-		const outputs = symbol.outputs ?? [];
+	const returnType = parseReturnType(symbol, outputs);
+	return `${symbol.name}(${params.join(", ")}): ${returnType.doc}`;
+}
 
-		lines.push(`## ${symbol.name}`);
-		lines.push("Function");
+function buildFunctionDoc(symbol: FunctionSymbol): string[] {
+	const lines: string[] = [];
+	const inputs = symbol.inputs ?? [];
+	const outputs = symbol.outputs ?? [];
+
+	lines.push(`### ${symbol.name}`);
+	lines.push("");
+	lines.push("```typescript");
+	lines.push(buildFunctionSignature(symbol));
+	lines.push("```");
+	lines.push("");
+
+	if (inputs.length > 0) {
+		lines.push("**Parameters:**");
 		lines.push("");
-		lines.push("__Parameters:__");
-
 		for (const input of inputs) {
-			lines.push(this.formatInput(input));
+			const type = formatInputType(input);
+			const size = formatSize(input.length);
+			const sizeNote = size ? ` — size: \`${size}\`` : "";
+			lines.push(`- \`${input.name}\`: \`${type}\`${sizeNote}`);
+		}
+		lines.push("");
+	}
+
+	const returnType = parseReturnType(symbol, outputs);
+
+	if (returnType.isObject && returnType.fields) {
+		lines.push("**Returns:** An object with:");
+		lines.push("");
+		for (const field of returnType.fields) {
+			lines.push(`- \`${field.name}\`: \`${field.type}\``);
+		}
+		lines.push("");
+	} else if (outputs.length > 0) {
+		const output = outputs[0];
+		const type = formatOutputType(output);
+		const size = formatSize(output.length);
+		const sizeNote = size ? ` — size: \`${size}\`` : "";
+		lines.push(`**Returns:** \`${type}\`${sizeNote}`);
+		lines.push("");
+	} else if (returnType.doc !== "void") {
+		lines.push(`**Returns:** \`${returnType.doc}\``);
+		lines.push("");
+	}
+
+	return lines;
+}
+
+function groupConstants(constants: Constant[]): Map<string, Constant[]> {
+	const groups = new Map<string, Constant[]>();
+
+	for (const constant of constants) {
+		const parts = constant.name.split("_");
+		let group = "SODIUM";
+
+		if (parts[0] === "crypto" && parts.length >= 3) {
+			group = `${parts[0]}_${parts[1]}_${parts[2]}`.toUpperCase();
+		} else if (parts[0] === "SODIUM") {
+			group = "SODIUM";
+		}
+
+		if (!groups.has(group)) {
+			groups.set(group, []);
+		}
+		groups.get(group)!.push(constant);
+	}
+
+	return groups;
+}
+
+function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: boolean): string {
+	const lines: string[] = [];
+	const variant = isSumo ? " (Sumo)" : "";
+
+	lines.push(`# libsodium.js API Reference${variant}`);
+	lines.push("");
+	lines.push("JavaScript bindings for libsodium, compiled to WebAssembly.");
+	lines.push("");
+	lines.push("For detailed documentation on each function, see the [libsodium documentation](https://doc.libsodium.org).");
+	lines.push("");
+
+	lines.push("## Quick Start");
+	lines.push("");
+	lines.push("```javascript");
+	lines.push("import sodium from 'libsodium-wrappers';");
+	lines.push("");
+	lines.push("await sodium.ready;");
+	lines.push("");
+	lines.push("const key = sodium.crypto_secretbox_keygen();");
+	lines.push("const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);");
+	lines.push("const message = sodium.from_string('Hello, World!');");
+	lines.push("const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);");
+	lines.push("```");
+	lines.push("");
+
+	lines.push("## Types");
+	lines.push("");
+	lines.push("| Type | Description |");
+	lines.push("|------|-------------|");
+	lines.push("| `Uint8Array` | Binary data (keys, nonces, messages) |");
+	lines.push("| `Uint8Array \\| string` | Binary data or UTF-8 string |");
+	lines.push("| `StateAddress` | Opaque state object for streaming operations |");
+	lines.push("| `OutputFormat` | `\"uint8array\"` \\| `\"hex\"` \\| `\"base64\"` \\| `\"text\"` |");
+	lines.push("");
+
+	lines.push("## Helper Functions");
+	lines.push("");
+	lines.push("| Function | Description |");
+	lines.push("|----------|-------------|");
+	lines.push("| `from_string(str)` | Convert UTF-8 string to `Uint8Array` |");
+	lines.push("| `to_string(buf)` | Convert `Uint8Array` to UTF-8 string |");
+	lines.push("| `from_hex(hex)` | Decode hex string to `Uint8Array` |");
+	lines.push("| `to_hex(buf)` | Encode `Uint8Array` to hex string |");
+	lines.push("| `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |");
+	lines.push("| `to_base64(buf, variant?)` | Encode `Uint8Array` to base64 |");
+	lines.push("| `memzero(buf)` | Securely zero memory |");
+	lines.push("| `memcmp(a, b)` | Constant-time comparison |");
+	lines.push("| `increment(buf)` | Increment as little-endian number |");
+	lines.push("| `add(a, b)` | Add as little-endian numbers |");
+	lines.push("| `compare(a, b)` | Compare as little-endian numbers |");
+	lines.push("| `is_zero(buf)` | Check if all bytes are zero |");
+	lines.push("| `pad(buf, blocksize)` | Add ISO/IEC 7816-4 padding |");
+	lines.push("| `unpad(buf, blocksize)` | Remove padding |");
+	lines.push("");
+
+	lines.push("## Table of Contents");
+	lines.push("");
+
+	const grouped = groupByCategory(symbols);
+	const categoryOrder = FUNCTION_CATEGORIES.map((c) => c.name);
+	categoryOrder.push("Other");
+
+	for (const categoryName of categoryOrder) {
+		const categorySymbols = grouped.get(categoryName);
+		if (!categorySymbols || categorySymbols.length === 0) continue;
+
+		const filteredSymbols = isSumo
+			? categorySymbols
+			: categorySymbols.filter((s) => !isSumoOnly(s.name));
+
+		if (filteredSymbols.length === 0) continue;
+
+		const anchor = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+		lines.push(`- [${categoryName}](#${anchor}) (${filteredSymbols.length})`);
+	}
+
+	lines.push("- [Constants](#constants)");
+	lines.push("");
+
+	for (const categoryName of categoryOrder) {
+		const categorySymbols = grouped.get(categoryName);
+		if (!categorySymbols || categorySymbols.length === 0) continue;
+
+		const filteredSymbols = isSumo
+			? categorySymbols
+			: categorySymbols.filter((s) => !isSumoOnly(s.name));
+
+		if (filteredSymbols.length === 0) continue;
+
+		const category = FUNCTION_CATEGORIES.find((c) => c.name === categoryName);
+		const description = category?.description ?? "";
+
+		lines.push(`## ${categoryName}`);
+		lines.push("");
+		if (description) {
+			lines.push(description);
+			lines.push("");
+		}
+
+		for (const symbol of filteredSymbols) {
+			lines.push(...buildFunctionDoc(symbol));
+		}
+	}
+
+	lines.push("## Constants");
+	lines.push("");
+	lines.push("Constants define sizes for keys, nonces, and other parameters.");
+	lines.push("");
+
+	const groupedConstants = groupConstants(constants);
+	const sortedGroups = Array.from(groupedConstants.keys()).sort();
+
+	let currentPrefix = "";
+	for (const group of sortedGroups) {
+		const groupConstants = groupedConstants.get(group)!;
+		const prefix = group.split("_").slice(0, 2).join("_");
+
+		if (prefix !== currentPrefix && prefix !== "SODIUM") {
+			currentPrefix = prefix;
+		}
+
+		lines.push(`### ${group}`);
+		lines.push("");
+		lines.push("| Constant | Type |");
+		lines.push("|----------|------|");
+
+		for (const constant of groupConstants) {
+			const type = constant.type === "string" ? "string" : "number";
+			lines.push(`| \`${constant.name}\` | ${type} |`);
 		}
 
 		lines.push("");
-		lines.push("__Outputs:__");
-
-		if (outputs.length > 0) {
-			for (const output of outputs) {
-				lines.push(this.formatOutput(output));
-			}
-		} else {
-			lines.push(
-				"Boolean. True if method executed with success; false otherwise",
-			);
-		}
-
-		lines.push("");
-		return lines;
 	}
 
-	private formatInput(input: SymbolInput): string {
-		const typeName = INPUT_TYPE_NAMES[input.type];
-		if (!typeName) {
-			throw new Error(`Unknown parameter type: ${input.type}`);
-		}
-		const sizeInfo = input.type === "buf" ? ` (size: ${input.size})` : "";
-		return `* \`${input.name}\`: ${typeName}${sizeInfo}`;
+	return lines.join("\n");
+}
+
+function main(): void {
+	const args = process.argv.slice(2);
+	const isSumo = args.includes("--sumo");
+	const generateAll = args.includes("--all");
+
+	const symbolsDir = path.join(__dirname, "symbols");
+	const constantsFile = path.join(__dirname, "constants.json");
+
+	const symbols = loadSymbols(symbolsDir);
+	const constants = loadConstants(constantsFile);
+
+	if (!isSumo || generateAll) {
+		const outputFile = path.join(__dirname, "..", "API.md");
+		const doc = buildDoc(symbols, constants, false);
+		fs.writeFileSync(outputFile, doc);
+		console.log(`Generated API documentation: ${outputFile}`);
 	}
 
-	private formatOutput(output: SymbolOutput): string {
-		const typeName = OUTPUT_TYPE_NAMES[output.type];
-		if (!typeName) {
-			throw new Error(`Unknown output type: ${output.type}`);
-		}
-		const sizeInfo = output.type === "buf" ? ` (size: ${output.size})` : "";
-		return `* \`${output.name}\`: ${typeName}${sizeInfo}`;
-	}
-
-	build(): string {
-		return this.lines.join("\r\n");
+	if (isSumo || generateAll) {
+		const outputFile = path.join(__dirname, "..", "API_sumo.md");
+		const doc = buildDoc(symbols, constants, true);
+		fs.writeFileSync(outputFile, doc);
+		console.log(`Generated API documentation: ${outputFile}`);
 	}
 }
 
-let globalDocBuilder: DocBuilder | null = null;
-
-export function buildDocForSymbol(symbol: FunctionSymbol): void {
-	if (!globalDocBuilder) {
-		globalDocBuilder = new DocBuilder();
-	}
-	globalDocBuilder.addSymbol(symbol);
-}
-
-export function getResultDoc(): string {
-	if (!globalDocBuilder) {
-		globalDocBuilder = new DocBuilder();
-	}
-	return globalDocBuilder.build();
-}
-
-export function resetDocBuilder(): void {
-	globalDocBuilder = null;
-}
+main();
