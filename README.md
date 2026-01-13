@@ -251,6 +251,12 @@ Running `make` will install the dev dependencies, clone libsodium,
 build it, test it, build the wrapper, and create the modules and
 minified distribution files.
 
+### Benchmarks
+
+Run `make benchmark` to measure the performance of the cryptographic functions.
+You can also run specific benchmarks with `bun benchmark/index.ts --only <name>`
+(use `--list` to see available benchmarks).
+
 ## Related projects
 
 * [react-native-libsodium](https://github.com/serenity-kit/react-native-libsodium): React Native bindings to Libsodium matching the libsodium-wrappers package API

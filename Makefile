@@ -156,3 +156,7 @@ distclean: clean
 rewrap:
 	rm -fr $(OUT_DIR)
 	make
+
+.PHONY: benchmark
+benchmark:
+	$(BUN) benchmark/index.ts
