@@ -3,33 +3,12 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import type { Constant, FunctionSymbol, SymbolOutput } from "./types.ts";
+import { isFunctionSymbol } from "./types.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-interface SymbolInput {
-	name: string;
-	type: string;
-}
-
-interface SymbolOutput {
-	name: string;
-	type: string;
-}
-
-interface Symbol {
-	name: string;
-	type: string;
-	inputs?: SymbolInput[];
-	outputs?: SymbolOutput[];
-	return?: string;
-}
-
-interface Constant {
-	name: string;
-	type: "uint" | "string";
-}
-
-const typeMap: Record<string, string> = {
+const INPUT_TYPE_MAP: Record<string, string> = {
 	buf: "Uint8Array",
 	unsized_buf: "Uint8Array | string",
 	unsized_buf_optional: "Uint8Array | string | null",
@@ -68,256 +47,307 @@ const typeMap: Record<string, string> = {
 	xof_turboshake256_state_address: "StateAddress",
 };
 
-const outputFormatType = '"uint8array" | "text" | "hex" | "base64"';
-const returnTypeWithFormat = "Uint8Array | string";
+const OUTPUT_FORMAT_TYPE = '"uint8array" | "text" | "hex" | "base64"';
+const FORMATTED_RETURN_TYPE = "Uint8Array | string";
 
-const helperFunctions = `
-// Helper functions
-export function from_base64(input: string, variant?: base64_variants): Uint8Array;
-export function to_base64(input: Uint8Array | string, variant?: base64_variants): string;
-export function from_hex(input: string): Uint8Array;
-export function to_hex(input: Uint8Array | string): string;
-export function from_string(input: string): Uint8Array;
-export function to_string(input: Uint8Array): string;
-export function pad(buf: Uint8Array, blocksize: number): Uint8Array;
-export function unpad(buf: Uint8Array, blocksize: number): Uint8Array;
-export function memcmp(b1: Uint8Array, b2: Uint8Array): boolean;
-export function memzero(bytes: Uint8Array): void;
-export function increment(bytes: Uint8Array): void;
-export function add(a: Uint8Array, b: Uint8Array): void;
-export function compare(b1: Uint8Array, b2: Uint8Array): number;
-export function is_zero(bytes: Uint8Array): boolean;
-`;
+const SUMO_ONLY_PREFIXES = [
+	"crypto_pwhash_scryptsalsa208sha256",
+	"crypto_pwhash_scryptsalsa208sha256_str",
+	"crypto_pwhash_scryptsalsa208sha256_str_verify",
+];
 
-const base64Variants = `
-export const base64_variants: {
-  ORIGINAL: number;
-  ORIGINAL_NO_PADDING: number;
-  URLSAFE: number;
-  URLSAFE_NO_PADDING: number;
-};
+class TypeScriptDefBuilder {
+	private lines: string[] = [];
 
-export type base64_variants = number;
-`;
+	constructor(private isSumo: boolean) {}
 
-const outputFormats = `
-export const output_formats: string[];
-`;
-
-const stateAddressType = `
-export type StateAddress = {
-  name: string;
-  address: number;
-};
-`;
-
-function generateTypeScriptDefs(
-	symbolsDir: string,
-	constantsFile: string,
-	outputFile: string,
-	isSumo: boolean = false,
-): void {
-	let dts = `// TypeScript definitions for libsodium-wrappers${isSumo ? "-sumo" : ""}
-// Auto-generated - do not edit manually
-
-`;
-
-	dts += `/**
- * Promise that resolves when the library is ready to use.
- * All crypto operations must wait for this promise to resolve.
- */
-export const ready: Promise<void>;
-
-`;
-
-	dts += `${stateAddressType}\n`;
-	dts += `${base64Variants}\n`;
-	dts += `${outputFormats}\n`;
-	dts += `${helperFunctions}\n`;
-
-	const constants: Constant[] = JSON.parse(
-		fs.readFileSync(constantsFile, "utf8"),
-	);
-	dts += "// Constants\n";
-	for (const constant of constants) {
-		const tsType = constant.type === "string" ? "string" : "number";
-		dts += `export const ${constant.name}: ${tsType};\n`;
+	build(symbols: FunctionSymbol[], constants: Constant[]): string {
+		this.addHeader();
+		this.addReadyPromise();
+		this.addStateAddressType();
+		this.addBase64Variants();
+		this.addOutputFormats();
+		this.addHelperFunctions();
+		this.addConstants(constants);
+		this.addFunctions(symbols);
+		this.addSymbolsFunction();
+		return `${this.lines.join("\n")}\n`;
 	}
-	dts += "\n";
 
-	const symbolFiles = fs
-		.readdirSync(symbolsDir)
-		.filter((f) => f.endsWith(".json"));
+	private addHeader(): void {
+		const variant = this.isSumo ? "-sumo" : "";
+		this.lines.push(
+			`// TypeScript definitions for libsodium-wrappers${variant}`,
+		);
+		this.lines.push("// Auto-generated - do not edit manually");
+		this.lines.push("");
+	}
 
-	const sumoOnlySymbols = [
-		"crypto_pwhash_scryptsalsa208sha256",
-		"crypto_pwhash_scryptsalsa208sha256_str",
-		"crypto_pwhash_scryptsalsa208sha256_str_verify",
-	];
+	private addReadyPromise(): void {
+		this.lines.push("/**");
+		this.lines.push(
+			" * Promise that resolves when the library is ready to use.",
+		);
+		this.lines.push(
+			" * All crypto operations must wait for this promise to resolve.",
+		);
+		this.lines.push(" */");
+		this.lines.push("export const ready: Promise<void>;");
+		this.lines.push("");
+	}
 
-	dts += "// Crypto functions\n";
+	private addStateAddressType(): void {
+		this.lines.push("export type StateAddress = {");
+		this.lines.push("  name: string;");
+		this.lines.push("  address: number;");
+		this.lines.push("};");
+		this.lines.push("");
+	}
 
-	for (const file of symbolFiles.sort()) {
-		const symbolPath = path.join(symbolsDir, file);
-		const symbol: Symbol = JSON.parse(fs.readFileSync(symbolPath, "utf8"));
+	private addBase64Variants(): void {
+		this.lines.push("export const base64_variants: {");
+		this.lines.push("  ORIGINAL: number;");
+		this.lines.push("  ORIGINAL_NO_PADDING: number;");
+		this.lines.push("  URLSAFE: number;");
+		this.lines.push("  URLSAFE_NO_PADDING: number;");
+		this.lines.push("};");
+		this.lines.push("");
+		this.lines.push("export type base64_variants = number;");
+		this.lines.push("");
+	}
 
-		if (symbol.type !== "function") continue;
+	private addOutputFormats(): void {
+		this.lines.push("export const output_formats: string[];");
+		this.lines.push("");
+	}
 
-		if (!isSumo && sumoOnlySymbols.some((s) => symbol.name.startsWith(s))) {
-			continue;
+	private addHelperFunctions(): void {
+		this.lines.push(
+			"export function from_base64(input: string, variant?: base64_variants): Uint8Array;",
+		);
+		this.lines.push(
+			"export function to_base64(input: Uint8Array | string, variant?: base64_variants): string;",
+		);
+		this.lines.push("export function from_hex(input: string): Uint8Array;");
+		this.lines.push(
+			"export function to_hex(input: Uint8Array | string): string;",
+		);
+		this.lines.push("export function from_string(input: string): Uint8Array;");
+		this.lines.push("export function to_string(input: Uint8Array): string;");
+		this.lines.push(
+			"export function pad(buf: Uint8Array, blocksize: number): Uint8Array;",
+		);
+		this.lines.push(
+			"export function unpad(buf: Uint8Array, blocksize: number): Uint8Array;",
+		);
+		this.lines.push(
+			"export function memcmp(b1: Uint8Array, b2: Uint8Array): boolean;",
+		);
+		this.lines.push("export function memzero(bytes: Uint8Array): void;");
+		this.lines.push("export function increment(bytes: Uint8Array): void;");
+		this.lines.push("export function add(a: Uint8Array, b: Uint8Array): void;");
+		this.lines.push(
+			"export function compare(b1: Uint8Array, b2: Uint8Array): number;",
+		);
+		this.lines.push("export function is_zero(bytes: Uint8Array): boolean;");
+		this.lines.push("");
+	}
+
+	private addConstants(constants: Constant[]): void {
+		this.lines.push("// Constants");
+		for (const constant of constants) {
+			const tsType = constant.type === "string" ? "string" : "number";
+			this.lines.push(`export const ${constant.name}: ${tsType};`);
 		}
+		this.lines.push("");
+	}
 
+	private addFunctions(symbols: FunctionSymbol[]): void {
+		this.lines.push("// Crypto functions");
+
+		for (const symbol of symbols) {
+			if (this.shouldSkipSymbol(symbol)) continue;
+
+			const declaration = this.buildFunctionDeclaration(symbol);
+			this.lines.push(declaration);
+		}
+		this.lines.push("");
+	}
+
+	private shouldSkipSymbol(symbol: FunctionSymbol): boolean {
+		if (this.isSumo) return false;
+		return SUMO_ONLY_PREFIXES.some((prefix) => symbol.name.startsWith(prefix));
+	}
+
+	private buildFunctionDeclaration(symbol: FunctionSymbol): string {
 		const inputs = symbol.inputs ?? [];
 		const outputs = symbol.outputs ?? [];
 
-		const params: string[] = inputs.map(
-			(input) => `${input.name}: ${typeMap[input.type] ?? "any"}`,
-		);
+		const params: string[] = inputs.map((input) => {
+			const tsType = INPUT_TYPE_MAP[input.type] ?? "any";
+			return `${input.name}: ${tsType}`;
+		});
 
 		const hasFormattedOutput = symbol.return?.includes("_format_output");
 		if (hasFormattedOutput) {
-			params.push(`outputFormat?: ${outputFormatType}`);
+			params.push(`outputFormat?: ${OUTPUT_FORMAT_TYPE}`);
 		}
 
-		const returnType = inferReturnType(symbol, outputs, hasFormattedOutput);
-
-		dts += `export function ${symbol.name}(${params.join(", ")}): ${returnType};\n`;
+		const returnType = this.inferReturnType(
+			symbol,
+			outputs,
+			hasFormattedOutput,
+		);
+		return `export function ${symbol.name}(${params.join(", ")}): ${returnType};`;
 	}
 
-	dts += "\n// Internal: list of all exported symbols\n";
-	dts += "export function symbols(): string[];\n";
+	private inferReturnType(
+		symbol: FunctionSymbol,
+		outputs: SymbolOutput[],
+		hasFormattedOutput: boolean | undefined,
+	): string {
+		const objectType = this.parseObjectReturnType(symbol.return);
+		if (objectType) return objectType;
 
-	fs.writeFileSync(outputFile, dts);
-	console.log(`Generated TypeScript definitions: ${outputFile}`);
-}
+		if (outputs.length > 0) {
+			const outputType = outputs[0].type;
+			if (
+				outputType?.includes("_state") ||
+				outputType?.includes("state_address")
+			) {
+				return "StateAddress";
+			}
+			if (hasFormattedOutput) return FORMATTED_RETURN_TYPE;
+			if (INPUT_TYPE_MAP[outputType]) return INPUT_TYPE_MAP[outputType];
+			return "Uint8Array";
+		}
 
-function inferReturnType(
-	symbol: Symbol,
-	outputs: SymbolOutput[],
-	hasFormattedOutput: boolean | undefined,
-): string {
-	const objectType = parseObjectReturnType(symbol.return);
-	if (objectType) {
-		return objectType;
+		if (symbol.return) {
+			const ret = symbol.return;
+			if (this.looksLikeBoolean(ret, symbol.name)) return "boolean";
+			if (hasFormattedOutput) return FORMATTED_RETURN_TYPE;
+			if (ret.includes("UTF8ToString") || ret.includes("_string"))
+				return "string";
+			if (this.looksLikeNumber(ret)) return "number";
+		}
+
+		return "void";
 	}
 
-	if (outputs.length > 0) {
-		const outputType = outputs[0].type;
-		if (outputType?.includes("_state") || outputType?.includes("state_address")) {
-			return "StateAddress";
-		}
-		if (hasFormattedOutput) {
-			return returnTypeWithFormat;
-		}
-		if (typeMap[outputType]) {
-			return typeMap[outputType];
-		}
-		return "Uint8Array";
+	private looksLikeBoolean(returnExpr: string, functionName: string): boolean {
+		return (
+			returnExpr.includes("===") ||
+			returnExpr.includes("!==") ||
+			returnExpr.includes("==") ||
+			returnExpr.includes("!=") ||
+			functionName.includes("_verify")
+		);
 	}
 
-	if (symbol.return) {
-		const ret = symbol.return;
-		if (
-			ret.includes("===") ||
-			ret.includes("!==") ||
-			ret.includes("==") ||
-			ret.includes("!=") ||
-			symbol.name.includes("_verify")
-		) {
-			return "boolean";
-		}
-		if (hasFormattedOutput) {
-			return returnTypeWithFormat;
-		}
-		if (ret.includes("UTF8ToString") || ret.includes("_string")) {
-			return "string";
-		}
-		if (
-			ret.includes("random_value") ||
-			ret.includes(">>> 0") ||
-			(ret.match(/\b(value|result|ret|retval)\b/) && !ret.includes("_format_output"))
-		) {
-			return "number";
-		}
+	private looksLikeNumber(returnExpr: string): boolean {
+		return (
+			returnExpr.includes("random_value") ||
+			returnExpr.includes(">>> 0") ||
+			(/\b(value|result|ret|retval)\b/.test(returnExpr) &&
+				!returnExpr.includes("_format_output"))
+		);
 	}
 
-	return "void";
-}
+	// Object return types require special parsing because the return statement
+	// may contain complex expressions like {publicKey: ..., privateKey: ...}
+	private parseObjectReturnType(returnStatement?: string): string | null {
+		if (!returnStatement || !returnStatement.includes("{")) return null;
 
-function parseObjectReturnType(returnStatement?: string): string | null {
-	if (!returnStatement || !returnStatement.includes("{")) {
+		if (returnStatement.match(/\{publicKey:.*privateKey:.*keyType:/)) {
+			return `{publicKey: ${FORMATTED_RETURN_TYPE}, privateKey: ${FORMATTED_RETURN_TYPE}, keyType: string}`;
+		}
+
+		if (returnStatement.match(/_format_output\(\{ciphertext:.*mac:.*\}/)) {
+			return `{ciphertext: ${FORMATTED_RETURN_TYPE}, mac: ${FORMATTED_RETURN_TYPE}}`;
+		}
+
+		if (returnStatement.match(/_format_output\(\{mac:.*cipher:.*\}/)) {
+			return `{mac: ${FORMATTED_RETURN_TYPE}, cipher: ${FORMATTED_RETURN_TYPE}}`;
+		}
+
+		if (returnStatement.match(/_format_output\(\{sharedRx:.*sharedTx:.*\}/)) {
+			return `{sharedRx: ${FORMATTED_RETURN_TYPE}, sharedTx: ${FORMATTED_RETURN_TYPE}}`;
+		}
+
+		if (returnStatement.match(/\{\s*state:\s*state_address,\s*header:/)) {
+			return `{state: StateAddress, header: ${FORMATTED_RETURN_TYPE}}`;
+		}
+
+		if (returnStatement.match(/ret\s*&&\s*\{message:.*tag:/)) {
+			return `{message: ${FORMATTED_RETURN_TYPE}, tag: number} | void`;
+		}
+
 		return null;
 	}
 
-	const keypairMatch = returnStatement.match(
-		/\{publicKey:.*privateKey:.*keyType:/,
-	);
-	if (keypairMatch) {
-		return `{publicKey: ${returnTypeWithFormat}, privateKey: ${returnTypeWithFormat}, keyType: string}`;
+	private addSymbolsFunction(): void {
+		this.lines.push("// Internal: list of all exported symbols");
+		this.lines.push("export function symbols(): string[];");
 	}
-
-	const detachedCipherMatch = returnStatement.match(
-		/_format_output\(\{ciphertext:.*mac:.*\}/,
-	);
-	if (detachedCipherMatch) {
-		return `{ciphertext: ${returnTypeWithFormat}, mac: ${returnTypeWithFormat}}`;
-	}
-
-	const detachedMacCipherMatch = returnStatement.match(
-		/_format_output\(\{mac:.*cipher:.*\}/,
-	);
-	if (detachedMacCipherMatch) {
-		return `{mac: ${returnTypeWithFormat}, cipher: ${returnTypeWithFormat}}`;
-	}
-
-	const sessionKeysMatch = returnStatement.match(
-		/_format_output\(\{sharedRx:.*sharedTx:.*\}/,
-	);
-	if (sessionKeysMatch) {
-		return `{sharedRx: ${returnTypeWithFormat}, sharedTx: ${returnTypeWithFormat}}`;
-	}
-
-	const stateHeaderMatch = returnStatement.match(
-		/\{\s*state:\s*state_address,\s*header:/,
-	);
-	if (stateHeaderMatch) {
-		return `{state: StateAddress, header: ${returnTypeWithFormat}}`;
-	}
-
-	const pullMatch = returnStatement.match(/ret\s*&&\s*\{message:.*tag:/);
-	if (pullMatch) {
-		return `{message: ${returnTypeWithFormat}, tag: number} | void`;
-	}
-
-	return null;
 }
 
-const args = process.argv.slice(2);
-const isSumo = args.includes("--sumo");
+function loadSymbols(symbolsDir: string): FunctionSymbol[] {
+	const files = fs.readdirSync(symbolsDir).filter((f) => f.endsWith(".json"));
+	const symbols: FunctionSymbol[] = [];
 
-const symbolsDir = path.join(__dirname, "symbols");
-const constantsFile = path.join(__dirname, "constants.json");
+	for (const file of files.sort()) {
+		const content = fs.readFileSync(path.join(symbolsDir, file), "utf8");
+		const symbol = JSON.parse(content);
+		if (isFunctionSymbol(symbol)) {
+			symbols.push(symbol);
+		}
+	}
 
-if (!isSumo || args.includes("--all")) {
-	const outputFile = path.join(
-		__dirname,
-		"..",
-		"dist",
-		"modules",
-		"libsodium-wrappers.d.ts",
-	);
-	fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-	generateTypeScriptDefs(symbolsDir, constantsFile, outputFile, false);
+	return symbols;
 }
 
-if (isSumo || args.includes("--all")) {
-	const outputFile = path.join(
-		__dirname,
-		"..",
-		"dist",
-		"modules-sumo",
-		"libsodium-wrappers.d.ts",
-	);
-	fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-	generateTypeScriptDefs(symbolsDir, constantsFile, outputFile, true);
+function loadConstants(constantsFile: string): Constant[] {
+	return JSON.parse(fs.readFileSync(constantsFile, "utf8"));
 }
+
+function main(): void {
+	const args = process.argv.slice(2);
+	const isSumo = args.includes("--sumo");
+	const generateAll = args.includes("--all");
+
+	const symbolsDir = path.join(__dirname, "symbols");
+	const constantsFile = path.join(__dirname, "constants.json");
+
+	const symbols = loadSymbols(symbolsDir);
+	const constants = loadConstants(constantsFile);
+
+	if (!isSumo || generateAll) {
+		const outputFile = path.join(
+			__dirname,
+			"..",
+			"dist",
+			"modules",
+			"libsodium-wrappers.d.ts",
+		);
+		fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+		const builder = new TypeScriptDefBuilder(false);
+		fs.writeFileSync(outputFile, builder.build(symbols, constants));
+		console.log(`Generated TypeScript definitions: ${outputFile}`);
+	}
+
+	if (isSumo || generateAll) {
+		const outputFile = path.join(
+			__dirname,
+			"..",
+			"dist",
+			"modules-sumo",
+			"libsodium-wrappers.d.ts",
+		);
+		fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+		const builder = new TypeScriptDefBuilder(true);
+		fs.writeFileSync(outputFile, builder.build(symbols, constants));
+		console.log(`Generated TypeScript definitions: ${outputFile}`);
+	}
+}
+
+main();
