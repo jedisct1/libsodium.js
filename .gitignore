@@ -1,8 +1,6 @@
 #*#
 *.tmp
 *~
-API.md
-API_sumo.md
 node_modules/
 package-lock.json
 yarn.lock
