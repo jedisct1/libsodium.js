@@ -8,7 +8,7 @@ compiled to WebAssembly and pure JavaScript using
 automatically generated wrappers to make it easy to use in web
 applications.
 
-The standard version weighs about 290 KB and the sumo version about 365 KB
+The standard version weighs about 290 KB and the sumo version about 375 KB
 (minified, gzipped, includes pure JS + WebAssembly versions). Both can run in
 a web browser as well as server-side.
 
@@ -216,7 +216,7 @@ Functions returning more than one output buffer are returning them as
 an object. For example, the `sodium.crypto_box_keypair()` function
 returns the following object:
 ```javascript
-{ keyType: 'curve25519', privateKey: (Uint8Array), publicKey: (Uint8Array) }
+{ publicKey: (Uint8Array), privateKey: (Uint8Array), keyType: 'x25519' }
 ```
 
 ### Standard vs Sumo version
