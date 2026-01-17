@@ -5,6 +5,11 @@
   "main": "dist/modules/libsodium-wrappers.js",
   "module": "dist/modules-esm/libsodium-wrappers.mjs",
   "types": "dist/modules/libsodium-wrappers.d.ts",
+  "scripts": {
+    "lint": "biome check test/*.ts wrapper/*.ts",
+    "lint:fix": "biome check --write test/*.ts wrapper/*.ts",
+    "format": "biome format --write test/*.ts wrapper/*.ts"
+  },
   "exports": {
     ".": {
       "import": "./dist/modules-esm/libsodium-wrappers.mjs",
@@ -27,6 +32,7 @@
     "libsodium": "^0.8.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.11",
     "terser": "^5.44.1"
   },
   "keywords": [
