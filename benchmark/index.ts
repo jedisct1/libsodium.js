@@ -1,8 +1,6 @@
 // biome-ignore lint/suspicious/noExplicitAny: Dynamic require of sodium library
 const sodium: any = require("../dist/browsers-sumo/sodium");
 
-await sodium.ready;
-
 interface BenchmarkResult {
 	name: string;
 	iterations: number;
@@ -1073,7 +1071,10 @@ const BENCHMARKS: Record<string, () => Promise<void>> = {
 };
 
 function printUsage(): void {
-	console.log("Usage: bun run benchmark/index.ts [--only <name>] [--list]");
+	console.log(
+		"Usage: bun run benchmark/index.ts [--only <name>] [--list]",
+	);
+	console.log("       npx tsx benchmark/index.ts [--only <name>] [--list]");
 	console.log("\nOptions:");
 	console.log("  --only, -o <name>  Run only the specified benchmark");
 	console.log("  --list, -l         List available benchmarks");
@@ -1081,6 +1082,15 @@ function printUsage(): void {
 	for (const name of Object.keys(BENCHMARKS)) {
 		console.log(`  ${name}`);
 	}
+}
+
+function getRuntimeInfo(): string {
+	// biome-ignore lint/suspicious/noExplicitAny: Runtime detection
+	if (typeof (globalThis as any).Bun !== "undefined") {
+		// biome-ignore lint/suspicious/noExplicitAny: Runtime detection
+		return `Bun: ${(globalThis as any).Bun.version}`;
+	}
+	return `Node.js: ${process.version}`;
 }
 
 async function main(): Promise<void> {
@@ -1109,11 +1119,13 @@ async function main(): Promise<void> {
 		}
 	}
 
+	await sodium.ready;
+
 	console.log("=".repeat(90));
 	console.log("libsodium.js Benchmark Suite");
 	console.log("=".repeat(90));
 	console.log(`Platform: ${process.platform} ${process.arch}`);
-	console.log(`Bun: ${Bun.version}`);
+	console.log(getRuntimeInfo());
 	console.log(`libsodium: ${sodium.SODIUM_VERSION_STRING}`);
 	console.log(`Minimum benchmark time: ${MIN_BENCHMARK_TIME_MS}ms per test`);
 
