@@ -149,7 +149,7 @@ clean:
 	rm -rf $(LIBSODIUM_JS_SUMO_DIR)
 	rm -rf $(OUT_DIR)
 	rm -rf $(MODULES_ESM_DIR) $(MODULES_SUMO_ESM_DIR)
-	-cd $(LIBSODIUM_DIR) && make distclean
+	-cd $(LIBSODIUM_DIR) && test -f Makefile && make distclean || true
 
 distclean: clean
 
