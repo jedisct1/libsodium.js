@@ -14,6 +14,24 @@ LIBSODIUM_JS_SUMO_DIR=$(LIBSODIUM_DIR)/libsodium-js-sumo
 TERSIFY = bun run terser --mangle --compress drop_console=true,passes=3 --
 TERSIFY_ESM = bun run terser --mangle --compress drop_console=true,passes=3 --module --
 BUN := bun
+BUN_INSTALL_TARGET = bun-install
+
+PACK_JS = \
+	$(MODULES_DIR)/libsodium.js \
+	$(MODULES_DIR)/libsodium-wrappers.js \
+	$(MODULES_SUMO_DIR)/libsodium-sumo.js \
+	$(MODULES_SUMO_DIR)/libsodium-wrappers.js \
+	$(BROWSERS_DIR)/sodium.js \
+	$(BROWSERS_SUMO_DIR)/sodium.js
+
+PACK_ESM = \
+	$(MODULES_ESM_DIR)/libsodium.mjs \
+	$(MODULES_ESM_DIR)/libsodium-wrappers.mjs \
+	$(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs \
+	$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
+
+PACK_JS_TARGETS = $(PACK_JS:%=%.pack-js)
+PACK_ESM_TARGETS = $(PACK_ESM:%=%.pack-esm)
 
 # libsodium builds reconfigure the in-tree source and must not run concurrently.
 LIBSODIUM_SERIAL_TARGETS = \
@@ -34,10 +52,10 @@ all: pack browsers-tests
 	@ls -l $(MODULES_SUMO_DIR)/
 
 
-standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_ESM_DIR)/libsodium.mjs $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
+standard: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_ESM_DIR)/libsodium.mjs $(MODULES_ESM_DIR)/libsodium-wrappers.mjs $(BROWSERS_DIR)/sodium.js
 	@echo + Building standard distribution
 
-sumo: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
+sumo: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs $(BROWSERS_SUMO_DIR)/sodium.js
 	@echo + Building sumo distribution
 
 tests: browsers-tests
@@ -58,21 +76,19 @@ $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrapp
 	@echo +++ Generating TypeScript definitions for sumo distribution
 	$(BUN) wrapper/build-typescript-defs.ts --sumo
 
-pack: targets typescript-defs
-	@-bun install
+pack: targets typescript-defs $(PACK_JS_TARGETS) $(PACK_ESM_TARGETS)
 	@echo + Packing
-	for i in $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js; do \
-	  echo "Packing [$$i]" ; \
-	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
-	done
-	for i in $(MODULES_ESM_DIR)/libsodium.mjs $(MODULES_ESM_DIR)/libsodium-wrappers.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs; do \
-	  echo "Packing ESM [$$i]" ; \
-	  $(TERSIFY_ESM) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
-	done
-	for i in $(BROWSERS_DIR)/sodium.js $(BROWSERS_SUMO_DIR)/sodium.js; do \
-	  echo "Packing browser [$$i]" ; \
-	  $(TERSIFY) $$i > $$i.tmp && mv -f $$i.tmp $$i  ; \
-	done
+
+$(BUN_INSTALL_TARGET):
+	@-$(BUN) install
+
+%.pack-js: % | $(BUN_INSTALL_TARGET)
+	@echo "Packing [$<]"
+	$(TERSIFY) $< > $<.tmp && mv -f $<.tmp $<
+
+%.pack-esm: % | $(BUN_INSTALL_TARGET)
+	@echo "Packing ESM [$<]"
+	$(TERSIFY_ESM) $< > $<.tmp && mv -f $<.tmp $<
 
 $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.ts wrapper/wrap-template.js
 	@echo +++ Building standard/libsodium-wrappers.js
@@ -80,7 +96,7 @@ $(MODULES_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.ts wrapper/wrap-tem
 	$(BUN) wrapper/build-wrappers.ts libsodium $(MODULES_DIR)/libsodium-wrappers.js
 	$(BUN) wrapper/build-doc.ts
 
-$(MODULES_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_ESM_DIR)/libsodium.mjs
+$(MODULES_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js
 	@echo +++ Building standard/libsodium-wrappers.mjs
 	mkdir -p $(MODULES_ESM_DIR)
 	$(BUN) wrapper/build-wrappers.ts libsodium /dev/null $(MODULES_ESM_DIR)/libsodium-wrappers.mjs
@@ -91,16 +107,18 @@ $(MODULES_SUMO_DIR)/libsodium-wrappers.js: wrapper/build-wrappers.ts wrapper/wra
 	$(BUN) wrapper/build-wrappers.ts libsodium-sumo $(MODULES_SUMO_DIR)/libsodium-wrappers.js
 	$(BUN) wrapper/build-doc.ts --sumo
 
-$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
+$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs: wrapper/build-wrappers.ts wrapper/wrap-template.js wrapper/wrap-esm-template.js
 	@echo +++ Building sumo/libsodium-wrappers.mjs
 	mkdir -p $(MODULES_SUMO_ESM_DIR)
 	$(BUN) wrapper/build-wrappers.ts libsodium-sumo /dev/null $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.mjs
 
-$(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
+$(MODULES_DIR)/libsodium.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js
 	@echo +++ Building standard/libsodium
 	mkdir -p $(MODULES_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_DIR)/libsodium.js
 
+$(BROWSERS_DIR)/sodium.js: $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js
+	@echo +++ Building browsers/sodium.js
 	mkdir -p $(BROWSERS_DIR)
 	cat $(MODULES_DIR)/libsodium.js $(MODULES_DIR)/libsodium-wrappers.js | \
 		sed 's/require("libsodium")/exports/g' > $(BROWSERS_DIR)/sodium.js
@@ -113,11 +131,13 @@ $(MODULES_ESM_DIR)/libsodium.mjs: wrapper/libsodium-esm-pre.js wrapper/libsodium
 		sed "s/require(['\"]path['\"])/null/g" | \
 		sed "s/require(['\"]crypto['\"])/null/g" > $(MODULES_ESM_DIR)/libsodium.mjs
 
-$(MODULES_SUMO_DIR)/libsodium-sumo.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
+$(MODULES_SUMO_DIR)/libsodium-sumo.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
 	@echo +++ Building sumo/libsodium
 	mkdir -p $(MODULES_SUMO_DIR)
 	cat wrapper/libsodium-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-post.js > $(MODULES_SUMO_DIR)/libsodium-sumo.js
 
+$(BROWSERS_SUMO_DIR)/sodium.js: $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js
+	@echo +++ Building browsers-sumo/sodium.js
 	mkdir -p $(BROWSERS_SUMO_DIR)
 	cat $(MODULES_SUMO_DIR)/libsodium-sumo.js $(MODULES_SUMO_DIR)/libsodium-wrappers.js | \
 		sed 's/require("libsodium-sumo")/exports/g' > $(BROWSERS_SUMO_DIR)/sodium.js
@@ -165,6 +185,6 @@ rewrap:
 	rm -fr $(OUT_DIR)
 	$(MAKE)
 
-.PHONY: benchmark
+.PHONY: benchmark $(BUN_INSTALL_TARGET)
 benchmark:
 	$(BUN) benchmark/index.ts
