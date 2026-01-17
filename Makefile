@@ -23,7 +23,7 @@ LIBSODIUM_SERIAL_TARGETS = \
 
 .NOTPARALLEL: $(LIBSODIUM_SERIAL_TARGETS)
 
-all: pack browser-tests
+all: pack browsers-tests
 	@echo
 	@echo Standard distribution
 	@echo =====================
