@@ -15,7 +15,15 @@ TERSIFY = bun run terser --mangle --compress drop_console=true,passes=3 --
 TERSIFY_ESM = bun run terser --mangle --compress drop_console=true,passes=3 --module --
 BUN := bun
 
-all: pack
+# libsodium builds reconfigure the in-tree source and must not run concurrently.
+LIBSODIUM_SERIAL_TARGETS = \
+	$(LIBSODIUM_JS_DIR)/lib/libsodium.js \
+	$(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js \
+	$(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
+
+.NOTPARALLEL: $(LIBSODIUM_SERIAL_TARGETS)
+
+all: pack browser-tests
 	@echo
 	@echo Standard distribution
 	@echo =====================
@@ -155,7 +163,7 @@ distclean: clean
 
 rewrap:
 	rm -fr $(OUT_DIR)
-	make
+	$(MAKE)
 
 .PHONY: benchmark
 benchmark:
