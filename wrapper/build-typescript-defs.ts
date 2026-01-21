@@ -44,6 +44,7 @@ class TypeScriptDefBuilder {
 		this.addConstants(constants);
 		this.addFunctions(symbols);
 		this.addSymbolsFunction();
+		this.addDefaultExport(constants, symbols);
 		return `${this.lines.join("\n")}\n`;
 	}
 
@@ -256,6 +257,52 @@ class TypeScriptDefBuilder {
 		this.lines.push("// Internal: list of all exported symbols");
 		this.lines.push("export function symbols(): string[];");
 	}
+
+	addDefaultExport(constants: Constant[], symbols: FunctionSymbol[]): void {
+		this.lines.push("");
+		this.lines.push("// Default export interface containing all exports");
+		this.lines.push("declare const sodium: {");
+		this.lines.push("  readonly ready: Promise<void>;");
+		this.lines.push("  readonly base64_variants: typeof base64_variants;");
+		this.lines.push("  readonly output_formats: string[];");
+
+		// Add helper functions
+		this.lines.push(
+			"  from_base64(input: string, variant?: base64_variants): Uint8Array;",
+		);
+		this.lines.push(
+			"  to_base64(input: Uint8Array | string, variant?: base64_variants): string;",
+		);
+		this.lines.push("  from_hex(input: string): Uint8Array;");
+		this.lines.push("  to_hex(input: Uint8Array | string): string;");
+		this.lines.push("  from_string(input: string): Uint8Array;");
+		this.lines.push("  to_string(input: Uint8Array): string;");
+		this.lines.push("  pad(buf: Uint8Array, blocksize: number): Uint8Array;");
+		this.lines.push("  unpad(buf: Uint8Array, blocksize: number): Uint8Array;");
+		this.lines.push("  memcmp(b1: Uint8Array, b2: Uint8Array): boolean;");
+		this.lines.push("  memzero(bytes: Uint8Array): void;");
+		this.lines.push("  increment(bytes: Uint8Array): void;");
+		this.lines.push("  add(a: Uint8Array, b: Uint8Array): void;");
+		this.lines.push("  compare(b1: Uint8Array, b2: Uint8Array): number;");
+		this.lines.push("  is_zero(bytes: Uint8Array): boolean;");
+		this.lines.push("  symbols(): string[];");
+
+		// Add constants
+		for (const constant of constants) {
+			const tsType = constant.type === "string" ? "string" : "number";
+			this.lines.push(`  readonly ${constant.name}: ${tsType};`);
+		}
+
+		// Add crypto functions (simplified - just reference that they exist)
+		for (const symbol of symbols) {
+			if (this.shouldSkipSymbol(symbol)) continue;
+			this.lines.push(`  ${symbol.name}: typeof ${symbol.name};`);
+		}
+
+		this.lines.push("};");
+		this.lines.push("");
+		this.lines.push("export default sodium;");
+	}
 }
 
 function loadSymbols(symbolsDir: string): FunctionSymbol[] {
@@ -289,31 +336,61 @@ function main(): void {
 	const constants = loadConstants(constantsFile);
 
 	if (!isSumo || generateAll) {
-		const outputFile = path.join(
+		const builder = new TypeScriptDefBuilder(false);
+		const content = builder.build(symbols, constants);
+
+		// CJS module types
+		const cjsOutputFile = path.join(
 			__dirname,
 			"..",
 			"dist",
 			"modules",
 			"libsodium-wrappers.d.ts",
 		);
-		fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-		const builder = new TypeScriptDefBuilder(false);
-		fs.writeFileSync(outputFile, builder.build(symbols, constants));
-		console.log(`Generated TypeScript definitions: ${outputFile}`);
+		fs.mkdirSync(path.dirname(cjsOutputFile), { recursive: true });
+		fs.writeFileSync(cjsOutputFile, content);
+		console.log(`Generated TypeScript definitions: ${cjsOutputFile}`);
+
+		// ESM module types (.d.mts)
+		const esmOutputFile = path.join(
+			__dirname,
+			"..",
+			"dist",
+			"modules-esm",
+			"libsodium-wrappers.d.mts",
+		);
+		fs.mkdirSync(path.dirname(esmOutputFile), { recursive: true });
+		fs.writeFileSync(esmOutputFile, content);
+		console.log(`Generated TypeScript definitions: ${esmOutputFile}`);
 	}
 
 	if (isSumo || generateAll) {
-		const outputFile = path.join(
+		const builder = new TypeScriptDefBuilder(true);
+		const content = builder.build(symbols, constants);
+
+		// CJS module types
+		const cjsOutputFile = path.join(
 			__dirname,
 			"..",
 			"dist",
 			"modules-sumo",
 			"libsodium-wrappers.d.ts",
 		);
-		fs.mkdirSync(path.dirname(outputFile), { recursive: true });
-		const builder = new TypeScriptDefBuilder(true);
-		fs.writeFileSync(outputFile, builder.build(symbols, constants));
-		console.log(`Generated TypeScript definitions: ${outputFile}`);
+		fs.mkdirSync(path.dirname(cjsOutputFile), { recursive: true });
+		fs.writeFileSync(cjsOutputFile, content);
+		console.log(`Generated TypeScript definitions: ${cjsOutputFile}`);
+
+		// ESM module types (.d.mts)
+		const esmOutputFile = path.join(
+			__dirname,
+			"..",
+			"dist",
+			"modules-sumo-esm",
+			"libsodium-wrappers.d.mts",
+		);
+		fs.mkdirSync(path.dirname(esmOutputFile), { recursive: true });
+		fs.writeFileSync(esmOutputFile, content);
+		console.log(`Generated TypeScript definitions: ${esmOutputFile}`);
 	}
 }
 

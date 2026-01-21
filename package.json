@@ -12,10 +12,14 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/modules/libsodium-wrappers.d.ts",
-      "import": "./dist/modules-esm/libsodium-wrappers.mjs",
-      "require": "./dist/modules/libsodium-wrappers.js",
-      "default": "./dist/modules/libsodium-wrappers.js"
+      "import": {
+        "types": "./dist/modules-esm/libsodium-wrappers.d.mts",
+        "default": "./dist/modules-esm/libsodium-wrappers.mjs"
+      },
+      "require": {
+        "types": "./dist/modules/libsodium-wrappers.d.ts",
+        "default": "./dist/modules/libsodium-wrappers.js"
+      }
     }
   },
   "sideEffects": false,
@@ -23,6 +27,7 @@
     "dist/modules/libsodium-wrappers.js",
     "dist/modules/libsodium-wrappers.d.ts",
     "dist/modules-esm/libsodium-wrappers.mjs",
+    "dist/modules-esm/libsodium-wrappers.d.mts",
     "package.json"
   ],
   "repository": {

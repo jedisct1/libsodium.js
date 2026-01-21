@@ -7,10 +7,14 @@
   "types": "dist/modules-sumo/libsodium-wrappers.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/modules-sumo/libsodium-wrappers.d.ts",
-      "import": "./dist/modules-sumo-esm/libsodium-wrappers.mjs",
-      "require": "./dist/modules-sumo/libsodium-wrappers.js",
-      "default": "./dist/modules-sumo/libsodium-wrappers.js"
+      "import": {
+        "types": "./dist/modules-sumo-esm/libsodium-wrappers.d.mts",
+        "default": "./dist/modules-sumo-esm/libsodium-wrappers.mjs"
+      },
+      "require": {
+        "types": "./dist/modules-sumo/libsodium-wrappers.d.ts",
+        "default": "./dist/modules-sumo/libsodium-wrappers.js"
+      }
     }
   },
   "sideEffects": false,
@@ -18,6 +22,7 @@
     "dist/modules-sumo/libsodium-wrappers.js",
     "dist/modules-sumo/libsodium-wrappers.d.ts",
     "dist/modules-sumo-esm/libsodium-wrappers.mjs",
+    "dist/modules-sumo-esm/libsodium-wrappers.d.mts",
     "package.json"
   ],
   "repository": {
