@@ -109,6 +109,7 @@ export interface ParsedReturnType {
 	doc: string;
 	isObject: boolean;
 	fields?: { name: string; type: string }[];
+	canBeFalse?: boolean;
 }
 
 export function parseReturnType(
@@ -187,6 +188,7 @@ export function parseReturnType(
 				{ name: "message", type: "Uint8Array | string" },
 				{ name: "tag", type: "number" },
 			],
+			canBeFalse: true,
 		};
 	}
 
@@ -196,7 +198,11 @@ export function parseReturnType(
 			return { ts: "StateAddress", doc: "StateAddress", isObject: false };
 		}
 		if (hasFormattedOutput(symbol)) {
-			return { ts: "Uint8Array | string", doc: "Uint8Array | string", isObject: false };
+			return {
+				ts: "Uint8Array | string",
+				doc: "Uint8Array | string",
+				isObject: false,
+			};
 		}
 		const typeInfo = getOutputTypeInfo(outputType);
 		return { ts: typeInfo.ts, doc: typeInfo.doc, isObject: false };
@@ -207,7 +213,11 @@ export function parseReturnType(
 			return { ts: "boolean", doc: "boolean", isObject: false };
 		}
 		if (hasFormattedOutput(symbol)) {
-			return { ts: "Uint8Array | string", doc: "Uint8Array | string", isObject: false };
+			return {
+				ts: "Uint8Array | string",
+				doc: "Uint8Array | string",
+				isObject: false,
+			};
 		}
 		if (ret.includes("UTF8ToString") || ret.includes("_string")) {
 			return { ts: "string", doc: "string", isObject: false };
