@@ -66,7 +66,6 @@ test("text outputFormat returns string", () => {
 test("keypair with default format returns object with Uint8Array fields", () => {
 	const keys = sodium.crypto_box_keypair();
 
-	// TypeScript should infer { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string }
 	const pk: Uint8Array = keys.publicKey;
 	const sk: Uint8Array = keys.privateKey;
 	const kt: string = keys.keyType;
@@ -79,7 +78,6 @@ test("keypair with default format returns object with Uint8Array fields", () => 
 test("keypair with hex format returns object with string fields", () => {
 	const keys = sodium.crypto_box_keypair("hex");
 
-	// TypeScript should infer { publicKey: string; privateKey: string; keyType: string }
 	const pk: string = keys.publicKey;
 	const sk: string = keys.privateKey;
 	const kt: string = keys.keyType;

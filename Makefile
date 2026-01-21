@@ -65,7 +65,7 @@ browsers-tests: $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html
 
 targets: standard sumo
 
-typescript-defs: $(MODULES_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts
+typescript-defs: $(MODULES_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts $(MODULES_ESM_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.d.ts
 	@echo + Generated TypeScript definitions
 
 $(MODULES_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.ts
@@ -75,6 +75,14 @@ $(MODULES_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.js wra
 $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrappers.js wrapper/build-typescript-defs.ts
 	@echo +++ Generating TypeScript definitions for sumo distribution
 	$(BUN) wrapper/build-typescript-defs.ts --sumo
+
+$(MODULES_ESM_DIR)/libsodium-wrappers.d.ts: $(MODULES_DIR)/libsodium-wrappers.d.ts
+	@echo +++ Copying TypeScript definitions to ESM directory
+	cp $(MODULES_DIR)/libsodium-wrappers.d.ts $(MODULES_ESM_DIR)/libsodium-wrappers.d.ts
+
+$(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.d.ts: $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts
+	@echo +++ Copying TypeScript definitions to ESM sumo directory
+	cp $(MODULES_SUMO_DIR)/libsodium-wrappers.d.ts $(MODULES_SUMO_ESM_DIR)/libsodium-wrappers.d.ts
 
 pack: targets typescript-defs $(PACK_JS_TARGETS) $(PACK_ESM_TARGETS)
 	@echo + Packing

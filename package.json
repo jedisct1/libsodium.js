@@ -12,6 +12,7 @@
   },
   "exports": {
     ".": {
+      "types": "./dist/modules/libsodium-wrappers.d.ts",
       "import": "./dist/modules-esm/libsodium-wrappers.mjs",
       "require": "./dist/modules/libsodium-wrappers.js",
       "default": "./dist/modules/libsodium-wrappers.js"

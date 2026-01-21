@@ -9,6 +9,7 @@ import {
 	getInputTypeInfo,
 	hasFormattedOutput,
 	isSumoOnly,
+	parseConstantReference,
 	parseReturnType,
 } from "./shared-types.ts";
 
@@ -151,6 +152,43 @@ class TypeScriptDefBuilder {
 		return isSumoOnly(symbol.name);
 	}
 
+	private buildJsDoc(symbol: FunctionSymbol): string[] {
+		const inputs = symbol.inputs ?? [];
+		const outputs = symbol.outputs ?? [];
+		const lines: string[] = [];
+
+		lines.push("/**");
+
+		// Add parameter documentation
+		for (const input of inputs) {
+			const sizeRef = input.length ? parseConstantReference(input.length) : null;
+			const sizeNote = sizeRef ? ` (${sizeRef} bytes)` : "";
+			lines.push(` * @param ${input.name}${sizeNote}`);
+		}
+
+		if (hasFormattedOutput(symbol)) {
+			lines.push(" * @param outputFormat Output format (default: Uint8Array)");
+		}
+
+		// Add return documentation
+		const returnInfo = parseReturnType(symbol, outputs);
+		if (returnInfo.ts !== "void") {
+			if (outputs.length > 0 && outputs[0].length) {
+				const sizeRef = parseConstantReference(outputs[0].length);
+				if (sizeRef) {
+					lines.push(` * @returns ${returnInfo.doc} (${sizeRef} bytes)`);
+				} else {
+					lines.push(` * @returns ${returnInfo.doc}`);
+				}
+			} else {
+				lines.push(` * @returns ${returnInfo.doc}`);
+			}
+		}
+
+		lines.push(" */");
+		return lines;
+	}
+
 	private buildFunctionDeclaration(symbol: FunctionSymbol): string {
 		const inputs = symbol.inputs ?? [];
 		const outputs = symbol.outputs ?? [];
@@ -162,10 +200,11 @@ class TypeScriptDefBuilder {
 		});
 
 		const returnInfo = parseReturnType(symbol, outputs);
+		const jsDoc = this.buildJsDoc(symbol);
 
 		if (!hasFormattedOutput(symbol)) {
-			// No formatting - single declaration
-			return `export function ${symbol.name}(${baseParams.join(", ")}): ${returnInfo.ts};`;
+			// No formatting - single declaration with JSDoc
+			return [...jsDoc, `export function ${symbol.name}(${baseParams.join(", ")}): ${returnInfo.ts};`].join("\n");
 		}
 
 		// Derive uint8 and string types from fields
@@ -181,16 +220,17 @@ class TypeScriptDefBuilder {
 			stringType = "string";
 		}
 
-		// Generate overloads
+		// Generate overloads with JSDoc on first overload
 		const lines: string[] = [];
 
-		// Overload 1: uint8array (default)
+		// JSDoc + Overload 1: uint8array (default)
+		lines.push(...jsDoc);
 		const uint8Params = [...baseParams, "outputFormat?: Uint8ArrayOutputFormat | null"];
 		lines.push(
 			`export function ${symbol.name}(${uint8Params.join(", ")}): ${uint8Type};`,
 		);
 
-		// Overload 2: string formats
+		// Overload 2: string formats (no JSDoc to avoid duplication)
 		const stringParams = [...baseParams, "outputFormat: StringOutputFormat"];
 		lines.push(
 			`export function ${symbol.name}(${stringParams.join(", ")}): ${stringType};`,
