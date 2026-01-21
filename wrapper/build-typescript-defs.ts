@@ -14,7 +14,16 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const OUTPUT_FORMAT_TYPE = '"uint8array" | "text" | "hex" | "base64"';
+function generateObjectType(fields: { name: string; type: string }[], useString: boolean): string {
+	const typedFields = fields.map(({ name, type }) => {
+		let resolvedType = type;
+		if (type === "Uint8Array | string") {
+			resolvedType = useString ? "string" : "Uint8Array";
+		}
+		return `${name}: ${resolvedType}`;
+	});
+	return `{ ${typedFields.join("; ")} }`;
+}
 
 class TypeScriptDefBuilder {
 	private lines: string[] = [];
@@ -78,6 +87,9 @@ class TypeScriptDefBuilder {
 
 	private addOutputFormats(): void {
 		this.lines.push("export const output_formats: string[];");
+		this.lines.push("");
+		this.lines.push('export type Uint8ArrayOutputFormat = "uint8array";');
+		this.lines.push('export type StringOutputFormat = "text" | "hex" | "base64";');
 		this.lines.push("");
 	}
 
@@ -143,18 +155,48 @@ class TypeScriptDefBuilder {
 		const inputs = symbol.inputs ?? [];
 		const outputs = symbol.outputs ?? [];
 
-		const params: string[] = inputs.map((input) => {
+		const baseParams: string[] = inputs.map((input) => {
 			const typeInfo = getInputTypeInfo(input.type);
 			const tsType = typeInfo?.ts ?? "any";
 			return `${input.name}: ${tsType}`;
 		});
 
-		if (hasFormattedOutput(symbol)) {
-			params.push(`outputFormat?: ${OUTPUT_FORMAT_TYPE}`);
+		const returnInfo = parseReturnType(symbol, outputs);
+
+		if (!hasFormattedOutput(symbol)) {
+			// No formatting - single declaration
+			return `export function ${symbol.name}(${baseParams.join(", ")}): ${returnInfo.ts};`;
 		}
 
-		const returnType = parseReturnType(symbol, outputs);
-		return `export function ${symbol.name}(${params.join(", ")}): ${returnType.ts};`;
+		// Derive uint8 and string types from fields
+		let uint8Type: string;
+		let stringType: string;
+		const falseSuffix = returnInfo.canBeFalse ? " | false" : "";
+
+		if (returnInfo.fields) {
+			uint8Type = generateObjectType(returnInfo.fields, false) + falseSuffix;
+			stringType = generateObjectType(returnInfo.fields, true) + falseSuffix;
+		} else {
+			uint8Type = "Uint8Array";
+			stringType = "string";
+		}
+
+		// Generate overloads
+		const lines: string[] = [];
+
+		// Overload 1: uint8array (default)
+		const uint8Params = [...baseParams, "outputFormat?: Uint8ArrayOutputFormat | null"];
+		lines.push(
+			`export function ${symbol.name}(${uint8Params.join(", ")}): ${uint8Type};`,
+		);
+
+		// Overload 2: string formats
+		const stringParams = [...baseParams, "outputFormat: StringOutputFormat"];
+		lines.push(
+			`export function ${symbol.name}(${stringParams.join(", ")}): ${stringType};`,
+		);
+
+		return lines.join("\n");
 	}
 
 	private addSymbolsFunction(): void {
