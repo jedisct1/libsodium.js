@@ -119,14 +119,27 @@ test("detached encryption with hex format returns string fields", () => {
 
 test("secretstream pull with default format can return false", () => {
 	const key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
-	const { state, header } = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
+	const { state, header } =
+		sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
 
 	const message = sodium.from_string("test");
 	const tag = sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE;
-	const cipher = sodium.crypto_secretstream_xchacha20poly1305_push(state, message, null, tag);
+	const cipher = sodium.crypto_secretstream_xchacha20poly1305_push(
+		state,
+		message,
+		null,
+		tag,
+	);
 
-	const pullState = sodium.crypto_secretstream_xchacha20poly1305_init_pull(header, key);
-	const result = sodium.crypto_secretstream_xchacha20poly1305_pull(pullState, cipher, null);
+	const pullState = sodium.crypto_secretstream_xchacha20poly1305_init_pull(
+		header,
+		key,
+	);
+	const result = sodium.crypto_secretstream_xchacha20poly1305_pull(
+		pullState,
+		cipher,
+		null,
+	);
 
 	// TypeScript should infer { message: Uint8Array; tag: number } | false
 	if (result !== false) {
@@ -139,14 +152,28 @@ test("secretstream pull with default format can return false", () => {
 
 test("secretstream pull with hex format can return false", () => {
 	const key = sodium.crypto_secretstream_xchacha20poly1305_keygen();
-	const { state, header } = sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
+	const { state, header } =
+		sodium.crypto_secretstream_xchacha20poly1305_init_push(key);
 
 	const message = sodium.from_string("test");
 	const tag = sodium.crypto_secretstream_xchacha20poly1305_TAG_MESSAGE;
-	const cipher = sodium.crypto_secretstream_xchacha20poly1305_push(state, message, null, tag);
+	const cipher = sodium.crypto_secretstream_xchacha20poly1305_push(
+		state,
+		message,
+		null,
+		tag,
+	);
 
-	const pullState = sodium.crypto_secretstream_xchacha20poly1305_init_pull(header, key);
-	const result = sodium.crypto_secretstream_xchacha20poly1305_pull(pullState, cipher, null, "hex");
+	const pullState = sodium.crypto_secretstream_xchacha20poly1305_init_pull(
+		header,
+		key,
+	);
+	const result = sodium.crypto_secretstream_xchacha20poly1305_pull(
+		pullState,
+		cipher,
+		null,
+		"hex",
+	);
 
 	// TypeScript should infer { message: string; tag: number } | false
 	if (result !== false) {

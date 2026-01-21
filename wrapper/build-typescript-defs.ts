@@ -3,8 +3,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { Constant, FunctionSymbol } from "./types.ts";
-import { isFunctionSymbol } from "./types.ts";
 import {
 	getInputTypeInfo,
 	hasFormattedOutput,
@@ -12,10 +10,15 @@ import {
 	parseConstantReference,
 	parseReturnType,
 } from "./shared-types.ts";
+import type { Constant, FunctionSymbol } from "./types.ts";
+import { isFunctionSymbol } from "./types.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-function generateObjectType(fields: { name: string; type: string }[], useString: boolean): string {
+function generateObjectType(
+	fields: { name: string; type: string }[],
+	useString: boolean,
+): string {
 	const typedFields = fields.map(({ name, type }) => {
 		let resolvedType = type;
 		if (type === "Uint8Array | string") {
@@ -90,7 +93,9 @@ class TypeScriptDefBuilder {
 		this.lines.push("export const output_formats: string[];");
 		this.lines.push("");
 		this.lines.push('export type Uint8ArrayOutputFormat = "uint8array";');
-		this.lines.push('export type StringOutputFormat = "text" | "hex" | "base64";');
+		this.lines.push(
+			'export type StringOutputFormat = "text" | "hex" | "base64";',
+		);
 		this.lines.push("");
 	}
 
@@ -161,7 +166,9 @@ class TypeScriptDefBuilder {
 
 		// Add parameter documentation
 		for (const input of inputs) {
-			const sizeRef = input.length ? parseConstantReference(input.length) : null;
+			const sizeRef = input.length
+				? parseConstantReference(input.length)
+				: null;
 			const sizeNote = sizeRef ? ` (${sizeRef} bytes)` : "";
 			lines.push(` * @param ${input.name}${sizeNote}`);
 		}
@@ -204,7 +211,10 @@ class TypeScriptDefBuilder {
 
 		if (!hasFormattedOutput(symbol)) {
 			// No formatting - single declaration with JSDoc
-			return [...jsDoc, `export function ${symbol.name}(${baseParams.join(", ")}): ${returnInfo.ts};`].join("\n");
+			return [
+				...jsDoc,
+				`export function ${symbol.name}(${baseParams.join(", ")}): ${returnInfo.ts};`,
+			].join("\n");
 		}
 
 		// Derive uint8 and string types from fields
@@ -225,7 +235,10 @@ class TypeScriptDefBuilder {
 
 		// JSDoc + Overload 1: uint8array (default)
 		lines.push(...jsDoc);
-		const uint8Params = [...baseParams, "outputFormat?: Uint8ArrayOutputFormat | null"];
+		const uint8Params = [
+			...baseParams,
+			"outputFormat?: Uint8ArrayOutputFormat | null",
+		];
 		lines.push(
 			`export function ${symbol.name}(${uint8Params.join(", ")}): ${uint8Type};`,
 		);

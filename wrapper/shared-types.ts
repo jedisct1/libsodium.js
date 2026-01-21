@@ -1,7 +1,11 @@
-import type { FunctionSymbol, SymbolInput, SymbolOutput } from "./types.ts";
+import type { FunctionSymbol, SymbolOutput } from "./types.ts";
 
 export const INPUT_TYPES = {
-	buf: { ts: "Uint8Array", doc: "Uint8Array", description: "Fixed-size buffer" },
+	buf: {
+		ts: "Uint8Array",
+		doc: "Uint8Array",
+		description: "Fixed-size buffer",
+	},
 	unsized_buf: {
 		ts: "Uint8Array | string",
 		doc: "Uint8Array | string",
@@ -74,7 +78,11 @@ export function getInputTypeInfo(
 		return INPUT_TYPES[type as keyof typeof INPUT_TYPES];
 	}
 	if (isStateAddressType(type)) {
-		return { ts: "StateAddress", doc: "StateAddress", description: "State object" };
+		return {
+			ts: "StateAddress",
+			doc: "StateAddress",
+			description: "State object",
+		};
 	}
 	return null;
 }
@@ -249,9 +257,7 @@ function looksLikeNumber(returnExpr: string): boolean {
 	);
 }
 
-export const SUMO_ONLY_PREFIXES = [
-	"crypto_pwhash_scryptsalsa208sha256",
-];
+export const SUMO_ONLY_PREFIXES = ["crypto_pwhash_scryptsalsa208sha256"];
 
 export function isSumoOnly(name: string): boolean {
 	return SUMO_ONLY_PREFIXES.some((prefix) => name.startsWith(prefix));
@@ -287,7 +293,11 @@ export const FUNCTION_CATEGORIES: FunctionCategory[] = [
 	{
 		name: "Hashing",
 		description: "Cryptographic hash functions",
-		patterns: [/^crypto_hash(_|$)/, /^crypto_generichash(_|$)/, /^crypto_shorthash(_|$)/],
+		patterns: [
+			/^crypto_hash(_|$)/,
+			/^crypto_generichash(_|$)/,
+			/^crypto_shorthash(_|$)/,
+		],
 	},
 	{
 		name: "Password Hashing",

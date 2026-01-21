@@ -1,4 +1,4 @@
-import { expect, test, describe } from "bun:test";
+import { describe, expect, test } from "bun:test";
 import { init } from "./test_helper.ts";
 
 const sodium = await init();
@@ -263,11 +263,7 @@ describe("randombytes_buf_deterministic", () => {
 
 		const bytes = sodium.randombytes_buf_deterministic(length, seed);
 		const hex = sodium.randombytes_buf_deterministic(length, seed, "hex");
-		const base64 = sodium.randombytes_buf_deterministic(
-			length,
-			seed,
-			"base64",
-		);
+		const base64 = sodium.randombytes_buf_deterministic(length, seed, "base64");
 
 		expect(bytes).toBeInstanceOf(Uint8Array);
 		expect(typeof hex).toBe("string");

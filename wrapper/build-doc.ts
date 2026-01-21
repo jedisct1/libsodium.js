@@ -3,8 +3,6 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import type { Constant, FunctionSymbol, SymbolInput, SymbolOutput } from "./types.ts";
-import { isFunctionSymbol } from "./types.ts";
 import {
 	FUNCTION_CATEGORIES,
 	getInputTypeInfo,
@@ -13,6 +11,13 @@ import {
 	isSumoOnly,
 	parseReturnType,
 } from "./shared-types.ts";
+import type {
+	Constant,
+	FunctionSymbol,
+	SymbolInput,
+	SymbolOutput,
+} from "./types.ts";
+import { isFunctionSymbol } from "./types.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -54,7 +59,9 @@ function formatSize(length: string | undefined): string | null {
 		return match[1].toUpperCase();
 	}
 	if (length.includes("_length")) {
-		return length.replace(/_length/g, ".length").replace(/libsodium\._(\w+)\(\)/g, (_, fn) => fn.toUpperCase());
+		return length
+			.replace(/_length/g, ".length")
+			.replace(/libsodium\._(\w+)\(\)/g, (_, fn) => fn.toUpperCase());
 	}
 	return null;
 }
@@ -147,7 +154,11 @@ function groupConstants(constants: Constant[]): Map<string, Constant[]> {
 	return groups;
 }
 
-function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: boolean): string {
+function buildDoc(
+	symbols: FunctionSymbol[],
+	constants: Constant[],
+	isSumo: boolean,
+): string {
 	const lines: string[] = [];
 	const variant = isSumo ? " (Sumo)" : "";
 
@@ -155,7 +166,9 @@ function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: bool
 	lines.push("");
 	lines.push("JavaScript bindings for libsodium, compiled to WebAssembly.");
 	lines.push("");
-	lines.push("For detailed documentation on each function, see the [libsodium documentation](https://doc.libsodium.org).");
+	lines.push(
+		"For detailed documentation on each function, see the [libsodium documentation](https://doc.libsodium.org).",
+	);
 	lines.push("");
 
 	lines.push("## Quick Start");
@@ -166,9 +179,13 @@ function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: bool
 	lines.push("await sodium.ready;");
 	lines.push("");
 	lines.push("const key = sodium.crypto_secretbox_keygen();");
-	lines.push("const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);");
+	lines.push(
+		"const nonce = sodium.randombytes_buf(sodium.crypto_secretbox_NONCEBYTES);",
+	);
 	lines.push("const message = sodium.from_string('Hello, World!');");
-	lines.push("const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);");
+	lines.push(
+		"const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);",
+	);
 	lines.push("```");
 	lines.push("");
 
@@ -178,8 +195,12 @@ function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: bool
 	lines.push("|------|-------------|");
 	lines.push("| `Uint8Array` | Binary data (keys, nonces, messages) |");
 	lines.push("| `Uint8Array \\| string` | Binary data or UTF-8 string |");
-	lines.push("| `StateAddress` | Opaque state object for streaming operations |");
-	lines.push("| `OutputFormat` | `\"uint8array\"` \\| `\"hex\"` \\| `\"base64\"` \\| `\"text\"` |");
+	lines.push(
+		"| `StateAddress` | Opaque state object for streaming operations |",
+	);
+	lines.push(
+		'| `OutputFormat` | `"uint8array"` \\| `"hex"` \\| `"base64"` \\| `"text"` |',
+	);
 	lines.push("");
 
 	lines.push("## Helper Functions");
@@ -190,7 +211,9 @@ function buildDoc(symbols: FunctionSymbol[], constants: Constant[], isSumo: bool
 	lines.push("| `to_string(buf)` | Convert `Uint8Array` to UTF-8 string |");
 	lines.push("| `from_hex(hex)` | Decode hex string to `Uint8Array` |");
 	lines.push("| `to_hex(buf)` | Encode `Uint8Array` to hex string |");
-	lines.push("| `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |");
+	lines.push(
+		"| `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |",
+	);
 	lines.push("| `to_base64(buf, variant?)` | Encode `Uint8Array` to base64 |");
 	lines.push("| `memzero(buf)` | Securely zero memory |");
 	lines.push("| `memcmp(a, b)` | Constant-time comparison |");
