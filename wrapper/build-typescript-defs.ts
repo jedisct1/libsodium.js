@@ -34,7 +34,12 @@ class TypeScriptDefBuilder {
 
 	constructor(private isSumo: boolean) {}
 
-	build(symbols: FunctionSymbol[], constants: Constant[]): string {
+	build(
+		symbols: FunctionSymbol[],
+		constants: Constant[],
+		includeDefaultExport: boolean,
+	): string {
+		this.lines = [];
 		this.addHeader();
 		this.addReadyPromise();
 		this.addStateAddressType();
@@ -44,7 +49,9 @@ class TypeScriptDefBuilder {
 		this.addConstants(constants);
 		this.addFunctions(symbols);
 		this.addSymbolsFunction();
-		this.addDefaultExport(constants, symbols);
+		if (includeDefaultExport) {
+			this.addDefaultExport(constants, symbols);
+		}
 		return `${this.lines.join("\n")}\n`;
 	}
 
@@ -258,7 +265,10 @@ class TypeScriptDefBuilder {
 		this.lines.push("export function symbols(): string[];");
 	}
 
-	addDefaultExport(constants: Constant[], symbols: FunctionSymbol[]): void {
+	private addDefaultExport(
+		constants: Constant[],
+		symbols: FunctionSymbol[],
+	): void {
 		this.lines.push("");
 		this.lines.push("// Default export interface containing all exports");
 		this.lines.push("declare const sodium: {");
@@ -337,9 +347,9 @@ function main(): void {
 
 	if (!isSumo || generateAll) {
 		const builder = new TypeScriptDefBuilder(false);
-		const content = builder.build(symbols, constants);
 
-		// CJS module types
+		// CJS module types (no default export)
+		const cjsContent = builder.build(symbols, constants, false);
 		const cjsOutputFile = path.join(
 			__dirname,
 			"..",
@@ -348,10 +358,11 @@ function main(): void {
 			"libsodium-wrappers.d.ts",
 		);
 		fs.mkdirSync(path.dirname(cjsOutputFile), { recursive: true });
-		fs.writeFileSync(cjsOutputFile, content);
+		fs.writeFileSync(cjsOutputFile, cjsContent);
 		console.log(`Generated TypeScript definitions: ${cjsOutputFile}`);
 
-		// ESM module types (.d.mts)
+		// ESM module types (.d.mts) - with default export
+		const esmContent = builder.build(symbols, constants, true);
 		const esmOutputFile = path.join(
 			__dirname,
 			"..",
@@ -360,15 +371,15 @@ function main(): void {
 			"libsodium-wrappers.d.mts",
 		);
 		fs.mkdirSync(path.dirname(esmOutputFile), { recursive: true });
-		fs.writeFileSync(esmOutputFile, content);
+		fs.writeFileSync(esmOutputFile, esmContent);
 		console.log(`Generated TypeScript definitions: ${esmOutputFile}`);
 	}
 
 	if (isSumo || generateAll) {
 		const builder = new TypeScriptDefBuilder(true);
-		const content = builder.build(symbols, constants);
 
-		// CJS module types
+		// CJS module types (no default export)
+		const cjsContent = builder.build(symbols, constants, false);
 		const cjsOutputFile = path.join(
 			__dirname,
 			"..",
@@ -377,10 +388,11 @@ function main(): void {
 			"libsodium-wrappers.d.ts",
 		);
 		fs.mkdirSync(path.dirname(cjsOutputFile), { recursive: true });
-		fs.writeFileSync(cjsOutputFile, content);
+		fs.writeFileSync(cjsOutputFile, cjsContent);
 		console.log(`Generated TypeScript definitions: ${cjsOutputFile}`);
 
-		// ESM module types (.d.mts)
+		// ESM module types (.d.mts) - with default export
+		const esmContent = builder.build(symbols, constants, true);
 		const esmOutputFile = path.join(
 			__dirname,
 			"..",
@@ -389,7 +401,7 @@ function main(): void {
 			"libsodium-wrappers.d.mts",
 		);
 		fs.mkdirSync(path.dirname(esmOutputFile), { recursive: true });
-		fs.writeFileSync(esmOutputFile, content);
+		fs.writeFileSync(esmOutputFile, esmContent);
 		console.log(`Generated TypeScript definitions: ${esmOutputFile}`);
 	}
 }
