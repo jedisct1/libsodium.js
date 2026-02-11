@@ -1,6 +1,6 @@
 {
   "name": "libsodium-wrappers",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "description": "The Sodium cryptographic library compiled to pure JavaScript (wrappers)",
   "main": "dist/modules/libsodium-wrappers.js",
   "module": "dist/modules-esm/libsodium-wrappers.mjs",

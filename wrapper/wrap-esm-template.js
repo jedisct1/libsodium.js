@@ -1,14 +1,25 @@
 "use strict";
 
-import libsodiumModule from "/*{{libsodium}}*/";
+import createLibsodium from "/*{{libsodium}}*/";
 
 const output_format = "uint8array";
 
 let libsodium;
 const exports = {};
 
-const ready = libsodiumModule.ready.then(function () {
+if (typeof globalThis.crypto === "undefined" || typeof globalThis.crypto.getRandomValues !== "function") {
+  throw new Error("globalThis.crypto.getRandomValues is not available. The ESM build of libsodium requires a secure random source (available in all browsers and Node.js 19+).");
+}
+
+const ready = createLibsodium({
+  getRandomValue: function() {
+    var buf = new Uint32Array(1);
+    globalThis.crypto.getRandomValues(buf);
+    return buf[0] >>> 0;
+  }
+}).then(function (libsodiumModule) {
   libsodium = libsodiumModule;
+  exports.libsodium = libsodium;
 
   function libsodiumInit() {
     if (libsodium._sodium_init() < 0) {
@@ -18,27 +29,16 @@ const ready = libsodiumModule.ready.then(function () {
 /*{{exports_here}}*/
   }
 
-  try {
-    libsodiumInit();
-    var message = new Uint8Array([98, 97, 108, 108, 115]);
-    var nonce = exports.randombytes_buf(exports.crypto_secretbox_NONCEBYTES);
-    var key = exports.randombytes_buf(exports.crypto_secretbox_KEYBYTES);
-    var encrypted = exports.crypto_secretbox_easy(message, nonce, key);
-    var decrypted = exports.crypto_secretbox_open_easy(encrypted, nonce, key);
+  libsodiumInit();
+  var message = new Uint8Array([98, 97, 108, 108, 115]);
+  var nonce = exports.randombytes_buf(exports.crypto_secretbox_NONCEBYTES);
+  var key = exports.randombytes_buf(exports.crypto_secretbox_KEYBYTES);
+  var encrypted = exports.crypto_secretbox_easy(message, nonce, key);
+  var decrypted = exports.crypto_secretbox_open_easy(encrypted, nonce, key);
 
-    if (exports.memcmp(message, decrypted)) {
-      return;
-    }
+  if (!exports.memcmp(message, decrypted)) {
+    throw new Error("Initialization self-test failed");
   }
-  catch (err) {
-    if (libsodium.useBackupModule == null) {
-      throw new Error("Both wasm and asm failed to load" + err)
-    }
-  }
-
-  return libsodium.useBackupModule().then(function() {
-    libsodiumInit();
-  });
 });
 
 function symbols() {
@@ -565,7 +565,6 @@ exports.from_hex = from_hex;
 exports.from_string = from_string;
 exports.increment = increment;
 exports.is_zero = is_zero;
-exports.libsodium = libsodiumModule;
 exports.memcmp = memcmp;
 exports.memzero = memzero;
 exports.output_formats = output_formats;
@@ -577,12 +576,8 @@ exports.to_base64 = to_base64;
 exports.to_hex = to_hex;
 exports.to_string = to_string;
 
-// Default export for backwards compatibility
 export default exports;
 
-// Named exports for tree-shaking and selective imports
-// Note: Cryptographic functions and constants are dynamically added to exports.
-// Access them via the default export or use: import sodium from 'libsodium-wrappers'; await sodium.ready;
 export {
   ready,
   add,
@@ -602,5 +597,5 @@ export {
   to_string,
   output_formats,
   base64_variants,
-  libsodiumModule as libsodium
+  libsodium
 };
