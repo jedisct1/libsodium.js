@@ -137,7 +137,8 @@ $(MODULES_ESM_DIR)/libsodium.mjs: wrapper/libsodium-esm-pre.js wrapper/libsodium
 	cat wrapper/libsodium-esm-pre.js $(LIBSODIUM_JS_DIR)/lib/libsodium.js wrapper/libsodium-esm-post.js | \
 		sed "s/require(['\"]fs['\"])/null/g" | \
 		sed "s/require(['\"]path['\"])/null/g" | \
-		sed "s/require(['\"]crypto['\"])/null/g" > $(MODULES_ESM_DIR)/libsodium.mjs
+		sed "s/require(['\"]crypto['\"])/null/g" | \
+		sed 's/"undefined"!=typeof module&&(module\.exports=[A-Za-z_$$][A-Za-z0-9_$$]*)/void 0/g' > $(MODULES_ESM_DIR)/libsodium.mjs
 
 $(MODULES_SUMO_DIR)/libsodium-sumo.js: wrapper/libsodium-pre.js wrapper/libsodium-post.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js
 	@echo +++ Building sumo/libsodium
@@ -156,7 +157,8 @@ $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs: wrapper/libsodium-esm-pre.js wrapper
 	cat wrapper/libsodium-esm-pre.js $(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js wrapper/libsodium-esm-post.js | \
 		sed "s/require(['\"]fs['\"])/null/g" | \
 		sed "s/require(['\"]path['\"])/null/g" | \
-		sed "s/require(['\"]crypto['\"])/null/g" > $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
+		sed "s/require(['\"]crypto['\"])/null/g" | \
+		sed 's/"undefined"!=typeof module&&(module\.exports=[A-Za-z_$$][A-Za-z0-9_$$]*)/void 0/g' > $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
 
 $(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --browser-tests
