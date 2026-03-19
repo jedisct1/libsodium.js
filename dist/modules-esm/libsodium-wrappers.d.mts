@@ -1449,9 +1449,9 @@ export function crypto_pwhash(keyLength: number, password: Uint8Array | string, 
  * @param password
  * @param opsLimit
  * @param memLimit
- * @returns Uint8Array (CRYPTO_PWHASH_STRBYTES bytes)
+ * @returns string (CRYPTO_PWHASH_STRBYTES bytes)
  */
-export function crypto_pwhash_str(password: Uint8Array | string, opsLimit: number, memLimit: number): Uint8Array;
+export function crypto_pwhash_str(password: Uint8Array | string, opsLimit: number, memLimit: number): string;
 /**
  * @param hashed_password
  * @param opsLimit
@@ -1968,9 +1968,9 @@ export function randombytes_stir(): void;
 export function randombytes_uniform(upper_bound: number): number;
 /**
  * @param bin
- * @returns Uint8Array
+ * @returns string
  */
-export function sodium_bin2ip(bin: Uint8Array): Uint8Array;
+export function sodium_bin2ip(bin: Uint8Array): string;
 /**
  * @param ip
  * @param outputFormat Output format (default: Uint8Array)

@@ -200,6 +200,10 @@ export function parseReturnType(
 		};
 	}
 
+	if (ret?.includes("UTF8ToString")) {
+		return { ts: "string", doc: "string", isObject: false };
+	}
+
 	if (outputs.length > 0) {
 		const outputType = outputs[0].type;
 		if (isStateType(outputType) || isStateAddressType(outputType)) {
@@ -226,9 +230,6 @@ export function parseReturnType(
 				doc: "Uint8Array | string",
 				isObject: false,
 			};
-		}
-		if (ret.includes("UTF8ToString") || ret.includes("_string")) {
-			return { ts: "string", doc: "string", isObject: false };
 		}
 		if (looksLikeNumber(ret)) {
 			return { ts: "number", doc: "number", isObject: false };
