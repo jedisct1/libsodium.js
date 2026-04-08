@@ -1446,7 +1446,7 @@ crypto_pwhash_scryptsalsa208sha256_ll(password: Uint8Array | string, salt: Uint8
 ### crypto_pwhash_scryptsalsa208sha256_str
 
 ```typescript
-crypto_pwhash_scryptsalsa208sha256_str(password: Uint8Array | string, opsLimit: number, memLimit: number): Uint8Array
+crypto_pwhash_scryptsalsa208sha256_str(password: Uint8Array | string, opsLimit: number, memLimit: number): string
 ```
 
 **Parameters:**
@@ -1473,7 +1473,7 @@ crypto_pwhash_scryptsalsa208sha256_str_verify(hashed_password: string, password:
 ### crypto_pwhash_str
 
 ```typescript
-crypto_pwhash_str(password: Uint8Array | string, opsLimit: number, memLimit: number): Uint8Array
+crypto_pwhash_str(password: Uint8Array | string, opsLimit: number, memLimit: number): string
 ```
 
 **Parameters:**
@@ -2529,7 +2529,7 @@ crypto_core_ristretto255_sub(p: Uint8Array, q: Uint8Array, outputFormat?: Output
 ### sodium_bin2ip
 
 ```typescript
-sodium_bin2ip(bin: Uint8Array): Uint8Array
+sodium_bin2ip(bin: Uint8Array): string
 ```
 
 **Parameters:**
