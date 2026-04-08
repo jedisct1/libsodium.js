@@ -1,0 +1,31 @@
+{
+  "name": "crypto_kem_enc",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_publickeybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ciphertext",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_ciphertextbytes()"
+    },
+    {
+      "name": "sharedSecret",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_sharedsecretbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_kem_enc(ciphertext_address, sharedSecret_address, publicKey_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output({ciphertext: ciphertext, sharedSecret: sharedSecret}, outputFormat)"
+}

@@ -161,6 +161,8 @@ export const crypto_generichash_blake2b_PERSONALBYTES: number;
 export const crypto_generichash_blake2b_SALTBYTES: number;
 export const crypto_hash_BYTES: number;
 export const crypto_hash_sha256_BYTES: number;
+export const crypto_hash_sha3256_BYTES: number;
+export const crypto_hash_sha3512_BYTES: number;
 export const crypto_hash_sha512_BYTES: number;
 export const crypto_ipcrypt_BYTES: number;
 export const crypto_ipcrypt_KEYBYTES: number;
@@ -188,6 +190,22 @@ export const crypto_kdf_hkdf_sha256_KEYBYTES: number;
 export const crypto_kdf_hkdf_sha512_BYTES_MAX: number;
 export const crypto_kdf_hkdf_sha512_BYTES_MIN: number;
 export const crypto_kdf_hkdf_sha512_KEYBYTES: number;
+export const crypto_kem_CIPHERTEXTBYTES: number;
+export const crypto_kem_PRIMITIVE: string;
+export const crypto_kem_PUBLICKEYBYTES: number;
+export const crypto_kem_SECRETKEYBYTES: number;
+export const crypto_kem_SEEDBYTES: number;
+export const crypto_kem_SHAREDSECRETBYTES: number;
+export const crypto_kem_mlkem768_CIPHERTEXTBYTES: number;
+export const crypto_kem_mlkem768_PUBLICKEYBYTES: number;
+export const crypto_kem_mlkem768_SECRETKEYBYTES: number;
+export const crypto_kem_mlkem768_SEEDBYTES: number;
+export const crypto_kem_mlkem768_SHAREDSECRETBYTES: number;
+export const crypto_kem_xwing_CIPHERTEXTBYTES: number;
+export const crypto_kem_xwing_PUBLICKEYBYTES: number;
+export const crypto_kem_xwing_SECRETKEYBYTES: number;
+export const crypto_kem_xwing_SEEDBYTES: number;
+export const crypto_kem_xwing_SHAREDSECRETBYTES: number;
 export const crypto_kx_PUBLICKEYBYTES: number;
 export const crypto_kx_SECRETKEYBYTES: number;
 export const crypto_kx_SEEDBYTES: number;
@@ -1238,6 +1256,52 @@ export function crypto_hash_sha256_update(state_address: StateAddress, message_c
 /**
  * @param message
  * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_HASH_SHA3256_BYTES bytes)
+ */
+export function crypto_hash_sha3256(message: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_hash_sha3256(message: Uint8Array | string, outputFormat: StringOutputFormat): string;
+/**
+ * @param state_address
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_HASH_SHA3256_BYTES bytes)
+ */
+export function crypto_hash_sha3256_final(state_address: StateAddress, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_hash_sha3256_final(state_address: StateAddress, outputFormat: StringOutputFormat): string;
+/**
+ * @returns StateAddress
+ */
+export function crypto_hash_sha3256_init(): StateAddress;
+/**
+ * @param state_address
+ * @param message_chunk
+ */
+export function crypto_hash_sha3256_update(state_address: StateAddress, message_chunk: Uint8Array | string): void;
+/**
+ * @param message
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_HASH_SHA3512_BYTES bytes)
+ */
+export function crypto_hash_sha3512(message: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_hash_sha3512(message: Uint8Array | string, outputFormat: StringOutputFormat): string;
+/**
+ * @param state_address
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_HASH_SHA3512_BYTES bytes)
+ */
+export function crypto_hash_sha3512_final(state_address: StateAddress, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_hash_sha3512_final(state_address: StateAddress, outputFormat: StringOutputFormat): string;
+/**
+ * @returns StateAddress
+ */
+export function crypto_hash_sha3512_init(): StateAddress;
+/**
+ * @param state_address
+ * @param message_chunk
+ */
+export function crypto_hash_sha3512_update(state_address: StateAddress, message_chunk: Uint8Array | string): void;
+/**
+ * @param message
+ * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_HASH_SHA512_BYTES bytes)
  */
 export function crypto_hash_sha512(message: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
@@ -1364,6 +1428,110 @@ export function crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number
  */
 export function crypto_kdf_keygen(outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_kdf_keygen(outputFormat: StringOutputFormat): string;
+/**
+ * @param ciphertext (CRYPTO_KEM_CIPHERTEXTBYTES bytes)
+ * @param privateKey (CRYPTO_KEM_SECRETKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KEM_SHAREDSECRETBYTES bytes)
+ */
+export function crypto_kem_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kem_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat: StringOutputFormat): string;
+/**
+ * @param publicKey (CRYPTO_KEM_PUBLICKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {ciphertext, sharedSecret} (CRYPTO_KEM_CIPHERTEXTBYTES bytes)
+ */
+export function crypto_kem_enc(publicKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { ciphertext: Uint8Array; sharedSecret: Uint8Array };
+export function crypto_kem_enc(publicKey: Uint8Array, outputFormat: StringOutputFormat): { ciphertext: string; sharedSecret: string };
+/**
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_keypair(outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_keypair(outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
+/**
+ * @param ciphertext (CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES bytes)
+ * @param privateKey (CRYPTO_KEM_MLKEM768_SECRETKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KEM_MLKEM768_SHAREDSECRETBYTES bytes)
+ */
+export function crypto_kem_mlkem768_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kem_mlkem768_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat: StringOutputFormat): string;
+/**
+ * @param publicKey (CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {ciphertext, sharedSecret} (CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES bytes)
+ */
+export function crypto_kem_mlkem768_enc(publicKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { ciphertext: Uint8Array; sharedSecret: Uint8Array };
+export function crypto_kem_mlkem768_enc(publicKey: Uint8Array, outputFormat: StringOutputFormat): { ciphertext: string; sharedSecret: string };
+/**
+ * @param publicKey (CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES bytes)
+ * @param seed
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {ciphertext, sharedSecret} (CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES bytes)
+ */
+export function crypto_kem_mlkem768_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { ciphertext: Uint8Array; sharedSecret: Uint8Array };
+export function crypto_kem_mlkem768_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat: StringOutputFormat): { ciphertext: string; sharedSecret: string };
+/**
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_mlkem768_keypair(outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_mlkem768_keypair(outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
+/**
+ * @param seed (CRYPTO_KEM_MLKEM768_SEEDBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_mlkem768_seed_keypair(seed: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_mlkem768_seed_keypair(seed: Uint8Array, outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
+/**
+ * @returns string
+ */
+export function crypto_kem_primitive(): string;
+/**
+ * @param seed (CRYPTO_KEM_SEEDBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_seed_keypair(seed: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_seed_keypair(seed: Uint8Array, outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
+/**
+ * @param ciphertext (CRYPTO_KEM_XWING_CIPHERTEXTBYTES bytes)
+ * @param privateKey (CRYPTO_KEM_XWING_SECRETKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KEM_XWING_SHAREDSECRETBYTES bytes)
+ */
+export function crypto_kem_xwing_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kem_xwing_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat: StringOutputFormat): string;
+/**
+ * @param publicKey (CRYPTO_KEM_XWING_PUBLICKEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {ciphertext, sharedSecret} (CRYPTO_KEM_XWING_CIPHERTEXTBYTES bytes)
+ */
+export function crypto_kem_xwing_enc(publicKey: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { ciphertext: Uint8Array; sharedSecret: Uint8Array };
+export function crypto_kem_xwing_enc(publicKey: Uint8Array, outputFormat: StringOutputFormat): { ciphertext: string; sharedSecret: string };
+/**
+ * @param publicKey (CRYPTO_KEM_XWING_PUBLICKEYBYTES bytes)
+ * @param seed
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {ciphertext, sharedSecret} (CRYPTO_KEM_XWING_CIPHERTEXTBYTES bytes)
+ */
+export function crypto_kem_xwing_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { ciphertext: Uint8Array; sharedSecret: Uint8Array };
+export function crypto_kem_xwing_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat: StringOutputFormat): { ciphertext: string; sharedSecret: string };
+/**
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_XWING_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_xwing_keypair(outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_xwing_keypair(outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
+/**
+ * @param seed (CRYPTO_KEM_XWING_SEEDBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns {publicKey, privateKey, keyType} (CRYPTO_KEM_XWING_PUBLICKEYBYTES bytes)
+ */
+export function crypto_kem_xwing_seed_keypair(seed: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): { publicKey: Uint8Array; privateKey: Uint8Array; keyType: string };
+export function crypto_kem_xwing_seed_keypair(seed: Uint8Array, outputFormat: StringOutputFormat): { publicKey: string; privateKey: string; keyType: string };
 /**
  * @param clientPublicKey (CRYPTO_KX_PUBLICKEYBYTES bytes)
  * @param clientSecretKey (CRYPTO_KX_SECRETKEYBYTES bytes)

@@ -1,0 +1,9 @@
+{
+  "name": "crypto_kem_primitive",
+  "type": "function",
+  "noOutputFormat": true,
+  "inputs": [],
+  "outputs": [],
+  "target": "var primitive = libsodium._crypto_kem_primitive()",
+  "return": "libsodium.UTF8ToString(primitive)"
+}

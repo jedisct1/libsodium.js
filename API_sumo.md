@@ -51,10 +51,11 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 - [Secret-key Encryption](#secret-key-encryption) (15)
 - [Public-key Encryption](#public-key-encryption) (24)
 - [Signatures](#signatures) (14)
-- [Hashing](#hashing) (18)
+- [Hashing](#hashing) (26)
 - [Password Hashing](#password-hashing) (8)
 - [Key Derivation](#key-derivation) (2)
 - [Key Exchange](#key-exchange) (12)
+- [Key Encapsulation](#key-encapsulation) (15)
 - [Message Authentication](#message-authentication) (27)
 - [Secret Streams](#secret-streams) (6)
 - [Random](#random) (7)
@@ -1312,6 +1313,92 @@ crypto_hash_sha256_update(state_address: StateAddress, message_chunk: Uint8Array
 - `state_address`: `StateAddress`
 - `message_chunk`: `Uint8Array | string`
 
+### crypto_hash_sha3256
+
+```typescript
+crypto_hash_sha3256(message: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `message`: `Uint8Array | string`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_HASH_SHA3256_BYTES`
+
+### crypto_hash_sha3256_final
+
+```typescript
+crypto_hash_sha3256_final(state_address: StateAddress, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_HASH_SHA3256_BYTES`
+
+### crypto_hash_sha3256_init
+
+```typescript
+crypto_hash_sha3256_init(): StateAddress
+```
+
+**Returns:** `StateAddress`
+
+### crypto_hash_sha3256_update
+
+```typescript
+crypto_hash_sha3256_update(state_address: StateAddress, message_chunk: Uint8Array | string): void
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+- `message_chunk`: `Uint8Array | string`
+
+### crypto_hash_sha3512
+
+```typescript
+crypto_hash_sha3512(message: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `message`: `Uint8Array | string`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_HASH_SHA3512_BYTES`
+
+### crypto_hash_sha3512_final
+
+```typescript
+crypto_hash_sha3512_final(state_address: StateAddress, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_HASH_SHA3512_BYTES`
+
+### crypto_hash_sha3512_init
+
+```typescript
+crypto_hash_sha3512_init(): StateAddress
+```
+
+**Returns:** `StateAddress`
+
+### crypto_hash_sha3512_update
+
+```typescript
+crypto_hash_sha3512_update(state_address: StateAddress, message_chunk: Uint8Array | string): void
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+- `message_chunk`: `Uint8Array | string`
+
 ### crypto_hash_sha512
 
 ```typescript
@@ -1703,6 +1790,218 @@ crypto_scalarmult_ristretto255_base(scalar: Uint8Array, outputFormat?: OutputFor
 - `scalar`: `Uint8Array` — size: `CRYPTO_CORE_RISTRETTO255_SCALARBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_RISTRETTO255_BYTES`
+
+## Key Encapsulation
+
+Public-key encapsulation producing ciphertexts and shared secrets
+
+### crypto_kem_dec
+
+```typescript
+crypto_kem_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `ciphertext`: `Uint8Array` — size: `CRYPTO_KEM_CIPHERTEXTBYTES`
+- `privateKey`: `Uint8Array` — size: `CRYPTO_KEM_SECRETKEYBYTES`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KEM_SHAREDSECRETBYTES`
+
+### crypto_kem_enc
+
+```typescript
+crypto_kem_enc(publicKey: Uint8Array, outputFormat?: OutputFormat): {ciphertext, sharedSecret}
+```
+
+**Parameters:**
+
+- `publicKey`: `Uint8Array` — size: `CRYPTO_KEM_PUBLICKEYBYTES`
+
+**Returns:** An object with:
+
+- `ciphertext`: `Uint8Array | string`
+- `sharedSecret`: `Uint8Array | string`
+
+### crypto_kem_keypair
+
+```typescript
+crypto_kem_keypair(outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
+
+### crypto_kem_mlkem768_dec
+
+```typescript
+crypto_kem_mlkem768_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `ciphertext`: `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_CIPHERTEXTBYTES`
+- `privateKey`: `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_SECRETKEYBYTES`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_SHAREDSECRETBYTES`
+
+### crypto_kem_mlkem768_enc
+
+```typescript
+crypto_kem_mlkem768_enc(publicKey: Uint8Array, outputFormat?: OutputFormat): {ciphertext, sharedSecret}
+```
+
+**Parameters:**
+
+- `publicKey`: `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES`
+
+**Returns:** An object with:
+
+- `ciphertext`: `Uint8Array | string`
+- `sharedSecret`: `Uint8Array | string`
+
+### crypto_kem_mlkem768_enc_deterministic
+
+```typescript
+crypto_kem_mlkem768_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat?: OutputFormat): {ciphertext, sharedSecret}
+```
+
+**Parameters:**
+
+- `publicKey`: `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_PUBLICKEYBYTES`
+- `seed`: `Uint8Array`
+
+**Returns:** An object with:
+
+- `ciphertext`: `Uint8Array | string`
+- `sharedSecret`: `Uint8Array | string`
+
+### crypto_kem_mlkem768_keypair
+
+```typescript
+crypto_kem_mlkem768_keypair(outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
+
+### crypto_kem_mlkem768_seed_keypair
+
+```typescript
+crypto_kem_mlkem768_seed_keypair(seed: Uint8Array, outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Parameters:**
+
+- `seed`: `Uint8Array` — size: `CRYPTO_KEM_MLKEM768_SEEDBYTES`
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
+
+### crypto_kem_primitive
+
+```typescript
+crypto_kem_primitive(): string
+```
+
+**Returns:** `string`
+
+### crypto_kem_seed_keypair
+
+```typescript
+crypto_kem_seed_keypair(seed: Uint8Array, outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Parameters:**
+
+- `seed`: `Uint8Array` — size: `CRYPTO_KEM_SEEDBYTES`
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
+
+### crypto_kem_xwing_dec
+
+```typescript
+crypto_kem_xwing_dec(ciphertext: Uint8Array, privateKey: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `ciphertext`: `Uint8Array` — size: `CRYPTO_KEM_XWING_CIPHERTEXTBYTES`
+- `privateKey`: `Uint8Array` — size: `CRYPTO_KEM_XWING_SECRETKEYBYTES`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KEM_XWING_SHAREDSECRETBYTES`
+
+### crypto_kem_xwing_enc
+
+```typescript
+crypto_kem_xwing_enc(publicKey: Uint8Array, outputFormat?: OutputFormat): {ciphertext, sharedSecret}
+```
+
+**Parameters:**
+
+- `publicKey`: `Uint8Array` — size: `CRYPTO_KEM_XWING_PUBLICKEYBYTES`
+
+**Returns:** An object with:
+
+- `ciphertext`: `Uint8Array | string`
+- `sharedSecret`: `Uint8Array | string`
+
+### crypto_kem_xwing_enc_deterministic
+
+```typescript
+crypto_kem_xwing_enc_deterministic(publicKey: Uint8Array, seed: Uint8Array, outputFormat?: OutputFormat): {ciphertext, sharedSecret}
+```
+
+**Parameters:**
+
+- `publicKey`: `Uint8Array` — size: `CRYPTO_KEM_XWING_PUBLICKEYBYTES`
+- `seed`: `Uint8Array`
+
+**Returns:** An object with:
+
+- `ciphertext`: `Uint8Array | string`
+- `sharedSecret`: `Uint8Array | string`
+
+### crypto_kem_xwing_keypair
+
+```typescript
+crypto_kem_xwing_keypair(outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
+
+### crypto_kem_xwing_seed_keypair
+
+```typescript
+crypto_kem_xwing_seed_keypair(seed: Uint8Array, outputFormat?: OutputFormat): {publicKey, privateKey, keyType}
+```
+
+**Parameters:**
+
+- `seed`: `Uint8Array` — size: `CRYPTO_KEM_XWING_SEEDBYTES`
+
+**Returns:** An object with:
+
+- `publicKey`: `Uint8Array | string`
+- `privateKey`: `Uint8Array | string`
+- `keyType`: `string`
 
 ## Message Authentication
 
@@ -3212,6 +3511,18 @@ Constants define sizes for keys, nonces, and other parameters.
 |----------|------|
 | `crypto_hash_sha256_BYTES` | number |
 
+### CRYPTO_HASH_SHA3256
+
+| Constant | Type |
+|----------|------|
+| `crypto_hash_sha3256_BYTES` | number |
+
+### CRYPTO_HASH_SHA3512
+
+| Constant | Type |
+|----------|------|
+| `crypto_hash_sha3512_BYTES` | number |
+
 ### CRYPTO_HASH_SHA512
 
 | Constant | Type |
@@ -3293,6 +3604,62 @@ Constants define sizes for keys, nonces, and other parameters.
 | Constant | Type |
 |----------|------|
 | `crypto_kdf_KEYBYTES` | number |
+
+### CRYPTO_KEM_CIPHERTEXTBYTES
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_CIPHERTEXTBYTES` | number |
+
+### CRYPTO_KEM_MLKEM768
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_mlkem768_CIPHERTEXTBYTES` | number |
+| `crypto_kem_mlkem768_PUBLICKEYBYTES` | number |
+| `crypto_kem_mlkem768_SECRETKEYBYTES` | number |
+| `crypto_kem_mlkem768_SEEDBYTES` | number |
+| `crypto_kem_mlkem768_SHAREDSECRETBYTES` | number |
+
+### CRYPTO_KEM_PRIMITIVE
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_PRIMITIVE` | string |
+
+### CRYPTO_KEM_PUBLICKEYBYTES
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_PUBLICKEYBYTES` | number |
+
+### CRYPTO_KEM_SECRETKEYBYTES
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_SECRETKEYBYTES` | number |
+
+### CRYPTO_KEM_SEEDBYTES
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_SEEDBYTES` | number |
+
+### CRYPTO_KEM_SHAREDSECRETBYTES
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_SHAREDSECRETBYTES` | number |
+
+### CRYPTO_KEM_XWING
+
+| Constant | Type |
+|----------|------|
+| `crypto_kem_xwing_CIPHERTEXTBYTES` | number |
+| `crypto_kem_xwing_PUBLICKEYBYTES` | number |
+| `crypto_kem_xwing_SECRETKEYBYTES` | number |
+| `crypto_kem_xwing_SEEDBYTES` | number |
+| `crypto_kem_xwing_SHAREDSECRETBYTES` | number |
 
 ### CRYPTO_KX_PUBLICKEYBYTES
 

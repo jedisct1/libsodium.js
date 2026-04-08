@@ -1,0 +1,19 @@
+{
+  "name": "crypto_hash_sha3256_init",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "hash_sha3256_state"
+    }
+  ],
+  "target": "libsodium._crypto_hash_sha3256_init(state_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "state_address"
+}

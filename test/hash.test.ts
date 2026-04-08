@@ -251,3 +251,31 @@ test("crypto_hash - different inputs produce different hashes", () => {
 	const hash2 = sodium.crypto_hash(message2);
 	expect(hash1).not.toEqual(hash2);
 });
+
+test("crypto_hash_sha3256 - known test vector and streaming", () => {
+	const message = sodium.from_string("abc");
+	const oneShot = sodium.crypto_hash_sha3256(message);
+	expect(oneShot.length).toBe(sodium.crypto_hash_sha3256_BYTES);
+	expect(sodium.to_hex(oneShot)).toBe(
+		"3a985da74fe225b2045c172d6bd390bd855f086e3e9d525b46bfe24511431532",
+	);
+
+	const state = sodium.crypto_hash_sha3256_init();
+	sodium.crypto_hash_sha3256_update(state, sodium.from_string("a"));
+	sodium.crypto_hash_sha3256_update(state, sodium.from_string("bc"));
+	expect(sodium.crypto_hash_sha3256_final(state)).toEqual(oneShot);
+});
+
+test("crypto_hash_sha3512 - known test vector and streaming", () => {
+	const message = sodium.from_string("abc");
+	const oneShot = sodium.crypto_hash_sha3512(message);
+	expect(oneShot.length).toBe(sodium.crypto_hash_sha3512_BYTES);
+	expect(sodium.to_hex(oneShot)).toBe(
+		"b751850b1a57168a5693cd924b6b096e08f621827444f70d884f5d0240d2712e10e116e9192af3c91a7ec57647e3934057340b4cf408d5a56592f8274eec53f0",
+	);
+
+	const state = sodium.crypto_hash_sha3512_init();
+	sodium.crypto_hash_sha3512_update(state, sodium.from_string("a"));
+	sodium.crypto_hash_sha3512_update(state, sodium.from_string("bc"));
+	expect(sodium.crypto_hash_sha3512_final(state)).toEqual(oneShot);
+});

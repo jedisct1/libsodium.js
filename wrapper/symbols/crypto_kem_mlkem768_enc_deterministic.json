@@ -1,0 +1,36 @@
+{
+  "name": "crypto_kem_mlkem768_enc_deterministic",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "publicKey",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_mlkem768_publickeybytes()"
+    },
+    {
+      "name": "seed",
+      "type": "buf",
+      "length": "32"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "ciphertext",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_mlkem768_ciphertextbytes()"
+    },
+    {
+      "name": "sharedSecret",
+      "type": "buf",
+      "length": "libsodium._crypto_kem_mlkem768_sharedsecretbytes()"
+    }
+  ],
+  "target": "libsodium._crypto_kem_mlkem768_enc_deterministic(ciphertext_address, sharedSecret_address, publicKey_address, seed_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output({ciphertext: ciphertext, sharedSecret: sharedSecret}, outputFormat)"
+}

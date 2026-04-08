@@ -49,6 +49,8 @@ export const STATE_TYPES = [
 	"generichash_state",
 	"hash_sha256_state",
 	"hash_sha512_state",
+	"hash_sha3256_state",
+	"hash_sha3512_state",
 	"auth_hmacsha256_state",
 	"auth_hmacsha512_state",
 	"auth_hmacsha512256_state",
@@ -171,6 +173,18 @@ export function parseReturnType(
 			fields: [
 				{ name: "sharedRx", type: "Uint8Array | string" },
 				{ name: "sharedTx", type: "Uint8Array | string" },
+			],
+		};
+	}
+
+	if (ret?.match(/_format_output\(\{ciphertext:.*sharedSecret:.*\}/)) {
+		return {
+			ts: "{ciphertext: Uint8Array | string, sharedSecret: Uint8Array | string}",
+			doc: "{ciphertext, sharedSecret}",
+			isObject: true,
+			fields: [
+				{ name: "ciphertext", type: "Uint8Array | string" },
+				{ name: "sharedSecret", type: "Uint8Array | string" },
 			],
 		};
 	}
@@ -314,6 +328,11 @@ export const FUNCTION_CATEGORIES: FunctionCategory[] = [
 		name: "Key Exchange",
 		description: "Shared secret computation from key pairs",
 		patterns: [/^crypto_kx(_|$)/, /^crypto_scalarmult(_|$)/],
+	},
+	{
+		name: "Key Encapsulation",
+		description: "Public-key encapsulation producing ciphertexts and shared secrets",
+		patterns: [/^crypto_kem(_|$)/],
 	},
 	{
 		name: "Message Authentication",
