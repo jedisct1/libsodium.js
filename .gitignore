@@ -1,8 +1,10 @@
-#*#
+.grepai/
+.swival/
 *.tmp
 *~
+#*#
+AGENTS.md
+bun.lockdb
 node_modules/
 package-lock.json
 yarn.lock
-bun.lockdb
-.grepai/
