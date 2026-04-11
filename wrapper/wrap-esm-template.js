@@ -1,23 +1,55 @@
 "use strict";
 
-import createLibsodium from "/*{{libsodium}}*/";
+import libsodiumModuleOrFactory from "/*{{libsodium}}*/";
 
 const output_format = "uint8array";
 
 let libsodium;
 const exports = {};
 
+function _get_sodium_initializer(moduleOrFactory) {
+  if (typeof moduleOrFactory === "function") {
+    return moduleOrFactory;
+  }
+  if (moduleOrFactory != null && typeof moduleOrFactory.default === "function") {
+    return moduleOrFactory.default;
+  }
+  return null;
+}
+
+function _get_sodium_module(moduleOrFactory) {
+  if (moduleOrFactory != null && typeof moduleOrFactory.ready !== "undefined") {
+    return moduleOrFactory;
+  }
+  if (moduleOrFactory != null && moduleOrFactory.default != null && typeof moduleOrFactory.default.ready !== "undefined") {
+    return moduleOrFactory.default;
+  }
+  return null;
+}
+
 if (typeof globalThis.crypto === "undefined" || typeof globalThis.crypto.getRandomValues !== "function") {
   throw new Error("globalThis.crypto.getRandomValues is not available. The ESM build of libsodium requires a secure random source (available in all browsers and Node.js 19+).");
 }
 
-const ready = createLibsodium({
-  getRandomValue: function() {
-    var buf = new Uint32Array(1);
-    globalThis.crypto.getRandomValues(buf);
-    return buf[0] >>> 0;
-  }
-}).then(function (libsodiumModule) {
+const getRandomValue = function() {
+  var buf = new Uint32Array(1);
+  globalThis.crypto.getRandomValues(buf);
+  return buf[0] >>> 0;
+};
+
+const initializer = _get_sodium_initializer(libsodiumModuleOrFactory);
+const moduleInstance = _get_sodium_module(libsodiumModuleOrFactory);
+
+const ready = (initializer != null
+  ? initializer({
+      getRandomValue: getRandomValue
+    })
+  : moduleInstance != null
+    ? moduleInstance.ready.then(function () {
+        return moduleInstance;
+      })
+    : Promise.reject(new Error("Unsupported libsodium ESM export shape"))
+).then(function (libsodiumModule) {
   libsodium = libsodiumModule;
   exports.libsodium = libsodium;
 
