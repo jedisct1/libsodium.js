@@ -24,3 +24,39 @@ test("crypto_kdf", () => {
 	const subkey3 = sodium.crypto_kdf_derive_from_key(32, 1, context, key2);
 	expect(subkey3).not.toEqual(subkey);
 });
+
+test("crypto_kdf rejects out-of-range subkey_len", () => {
+	const key = sodium.from_hex(
+		"808182838485868788898a8b8c8d8e8f909192939495969798999a9b9c9d9e9f",
+	);
+	const context = "NaClTest";
+
+	// libsodium returns -1 key len errors, but wrapper previously 
+	// ignored the error and returned partially-initialized output
+	expect(() =>
+		sodium.crypto_kdf_derive_from_key(12, 1, context, key),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_kdf_derive_from_key(0, 1, context, key),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_kdf_derive_from_key(128, 1, context, key),
+	).toThrow();
+
+	// check boundry lengths
+	const min_subkey = sodium.crypto_kdf_derive_from_key(
+		sodium.crypto_kdf_BYTES_MIN,
+		1,
+		context,
+		key,
+	);
+	expect(min_subkey.length).toBe(sodium.crypto_kdf_BYTES_MIN);
+
+	const max_subkey = sodium.crypto_kdf_derive_from_key(
+		sodium.crypto_kdf_BYTES_MAX,
+		1,
+		context,
+		key,
+	);
+	expect(max_subkey.length).toBe(sodium.crypto_kdf_BYTES_MAX);
+});
