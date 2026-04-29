@@ -8,7 +8,9 @@
     },
     {
       "name": "hash_length",
-      "type": "uint"
+      "type": "ranged_uint",
+      "min_value": "libsodium._crypto_generichash_bytes_min()",
+      "max_value": "libsodium._crypto_generichash_bytes_max()"
     }
   ],
   "outputs": [

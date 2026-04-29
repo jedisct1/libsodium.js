@@ -27,6 +27,7 @@ export const INPUT_TYPES = {
 		description: "Optional fixed-size buffer",
 	},
 	uint: { ts: "number", doc: "number", description: "Unsigned integer" },
+	ranged_uint: { ts: "number", doc: "number", description: "Range bound unsigned integer" },
 	u64: {
 		ts: "number | bigint",
 		doc: "number | bigint",

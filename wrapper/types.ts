@@ -3,6 +3,8 @@ export interface SymbolInput {
 	type: string;
 	length?: string;
 	min_length?: string;
+	min_value?: string;
+	max_value?: string;
 	size?: string;
 }
 
