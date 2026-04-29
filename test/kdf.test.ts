@@ -24,3 +24,25 @@ test("crypto_kdf", () => {
 	const subkey3 = sodium.crypto_kdf_derive_from_key(32, 1, context, key2);
 	expect(subkey3).not.toEqual(subkey);
 });
+
+test("crypto_kdf_derive_from_key rejects invalid subkey lengths", () => {
+	const key = sodium.crypto_kdf_keygen();
+	const context = "NaClTest";
+
+	expect(() =>
+		sodium.crypto_kdf_derive_from_key(
+			sodium.crypto_kdf_BYTES_MIN - 1,
+			1,
+			context,
+			key,
+		),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_kdf_derive_from_key(
+			sodium.crypto_kdf_BYTES_MAX + 1,
+			1,
+			context,
+			key,
+		),
+	).toThrow();
+});
