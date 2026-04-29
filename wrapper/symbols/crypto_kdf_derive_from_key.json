@@ -4,7 +4,9 @@
   "inputs": [
     {
       "name": "subkey_len",
-      "type": "uint"
+      "type": "ranged_uint",
+      "min_value": "libsodium._crypto_kdf_bytes_min()",
+      "max_value": "libsodium._crypto_kdf_bytes_max()"
     },
     {
       "name": "subkey_id",

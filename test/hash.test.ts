@@ -61,6 +61,49 @@ test("crypto_generichash2", () => {
 	expect(mac3).not.toEqual(mac1);
 });
 
+test("crypto_generichash rejects out-of-range hash_length", () => {
+	const message = sodium.from_string("hello");
+
+	// Confirm errors
+	expect(() =>
+		sodium.crypto_generichash(
+			sodium.crypto_generichash_BYTES_MIN - 1,
+			message,
+		),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_generichash(
+			sodium.crypto_generichash_BYTES_MAX + 1,
+			message,
+		),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_generichash_init(
+			null,
+			sodium.crypto_generichash_BYTES_MIN - 1,
+		),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_generichash_init(
+			null,
+			sodium.crypto_generichash_BYTES_MAX + 1,
+		),
+	).toThrow();
+
+	// Boundary values succeed
+	const min_hash = sodium.crypto_generichash(
+		sodium.crypto_generichash_BYTES_MIN,
+		message,
+	);
+	expect(min_hash.length).toBe(sodium.crypto_generichash_BYTES_MIN);
+
+	const max_hash = sodium.crypto_generichash(
+		sodium.crypto_generichash_BYTES_MAX,
+		message,
+	);
+	expect(max_hash.length).toBe(sodium.crypto_generichash_BYTES_MAX);
+});
+
 // SHA-256 Tests
 
 test("crypto_hash_sha256 - one-shot basic", () => {

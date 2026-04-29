@@ -141,6 +141,12 @@ class WrapperBuilder {
 		if (variable.min_length !== undefined) {
 			result = result.split("{var_min_length}").join(variable.min_length);
 		}
+		if (variable.min_value !== undefined) {
+			result = result.split("{var_min_value}").join(variable.min_value);
+		}
+		if (variable.max_value !== undefined) {
+			result = result.split("{var_max_value}").join(variable.max_value);
+		}
 		return result;
 	}
 
