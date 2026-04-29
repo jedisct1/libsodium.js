@@ -64,18 +64,11 @@ test("crypto_generichash2", () => {
 test("crypto_generichash rejects out-of-range hash_length", () => {
 	const message = sodium.from_string("hello");
 
-	// Confirm errors
 	expect(() =>
-		sodium.crypto_generichash(
-			sodium.crypto_generichash_BYTES_MIN - 1,
-			message,
-		),
+		sodium.crypto_generichash(sodium.crypto_generichash_BYTES_MIN - 1, message),
 	).toThrow();
 	expect(() =>
-		sodium.crypto_generichash(
-			sodium.crypto_generichash_BYTES_MAX + 1,
-			message,
-		),
+		sodium.crypto_generichash(sodium.crypto_generichash_BYTES_MAX + 1, message),
 	).toThrow();
 	expect(() =>
 		sodium.crypto_generichash_init(
@@ -90,7 +83,6 @@ test("crypto_generichash rejects out-of-range hash_length", () => {
 		),
 	).toThrow();
 
-	// Boundary values succeed
 	const min_hash = sodium.crypto_generichash(
 		sodium.crypto_generichash_BYTES_MIN,
 		message,
@@ -102,6 +94,89 @@ test("crypto_generichash rejects out-of-range hash_length", () => {
 		message,
 	);
 	expect(max_hash.length).toBe(sodium.crypto_generichash_BYTES_MAX);
+});
+
+test("crypto_generichash_final rejects out-of-range hash_length", () => {
+	const message = sodium.from_string("hello");
+
+	const bad_state = sodium.crypto_generichash_init(null, 32);
+	sodium.crypto_generichash_update(bad_state, message);
+	expect(() =>
+		sodium.crypto_generichash_final(
+			bad_state,
+			sodium.crypto_generichash_BYTES_MIN - 1,
+		),
+	).toThrow();
+
+	const bad_state2 = sodium.crypto_generichash_init(null, 32);
+	sodium.crypto_generichash_update(bad_state2, message);
+	expect(() =>
+		sodium.crypto_generichash_final(
+			bad_state2,
+			sodium.crypto_generichash_BYTES_MAX + 1,
+		),
+	).toThrow();
+
+	const min_state = sodium.crypto_generichash_init(
+		null,
+		sodium.crypto_generichash_BYTES_MIN,
+	);
+	sodium.crypto_generichash_update(min_state, message);
+	const min_hash = sodium.crypto_generichash_final(
+		min_state,
+		sodium.crypto_generichash_BYTES_MIN,
+	);
+	expect(min_hash.length).toBe(sodium.crypto_generichash_BYTES_MIN);
+
+	const max_state = sodium.crypto_generichash_init(
+		null,
+		sodium.crypto_generichash_BYTES_MAX,
+	);
+	sodium.crypto_generichash_update(max_state, message);
+	const max_hash = sodium.crypto_generichash_final(
+		max_state,
+		sodium.crypto_generichash_BYTES_MAX,
+	);
+	expect(max_hash.length).toBe(sodium.crypto_generichash_BYTES_MAX);
+});
+
+test("crypto_generichash_blake2b_salt_personal rejects out-of-range subkey_len", () => {
+	const key = sodium.crypto_generichash_keygen();
+	const id = new Uint8Array(sodium.crypto_generichash_blake2b_SALTBYTES);
+	const ctx = new Uint8Array(sodium.crypto_generichash_blake2b_PERSONALBYTES);
+
+	expect(() =>
+		sodium.crypto_generichash_blake2b_salt_personal(
+			sodium.crypto_generichash_BYTES_MIN - 1,
+			key,
+			id,
+			ctx,
+		),
+	).toThrow();
+	expect(() =>
+		sodium.crypto_generichash_blake2b_salt_personal(
+			sodium.crypto_generichash_BYTES_MAX + 1,
+			key,
+			id,
+			ctx,
+		),
+	).toThrow();
+
+	const min_subkey = sodium.crypto_generichash_blake2b_salt_personal(
+		sodium.crypto_generichash_BYTES_MIN,
+		key,
+		id,
+		ctx,
+	);
+	expect(min_subkey.length).toBe(sodium.crypto_generichash_BYTES_MIN);
+
+	const max_subkey = sodium.crypto_generichash_blake2b_salt_personal(
+		sodium.crypto_generichash_BYTES_MAX,
+		key,
+		id,
+		ctx,
+	);
+	expect(max_subkey.length).toBe(sodium.crypto_generichash_BYTES_MAX);
 });
 
 // SHA-256 Tests

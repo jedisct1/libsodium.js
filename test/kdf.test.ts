@@ -45,4 +45,20 @@ test("crypto_kdf_derive_from_key rejects invalid subkey lengths", () => {
 			key,
 		),
 	).toThrow();
+
+	const min_subkey = sodium.crypto_kdf_derive_from_key(
+		sodium.crypto_kdf_BYTES_MIN,
+		1,
+		context,
+		key,
+	);
+	expect(min_subkey.length).toBe(sodium.crypto_kdf_BYTES_MIN);
+
+	const max_subkey = sodium.crypto_kdf_derive_from_key(
+		sodium.crypto_kdf_BYTES_MAX,
+		1,
+		context,
+		key,
+	);
+	expect(max_subkey.length).toBe(sodium.crypto_kdf_BYTES_MAX);
 });

@@ -80,10 +80,10 @@ test("crypto_kem_mlkem768 round-trip and deterministic encapsulation", () => {
 
 	expect(enc1).toEqual(enc2);
 	expect(enc3.ciphertext).not.toEqual(enc1.ciphertext);
-	expect(sodium.crypto_kem_mlkem768_dec(enc1.ciphertext, pair.privateKey)).toEqual(
-		enc1.sharedSecret,
-	);
-	expect(sodium.crypto_kem_mlkem768_dec(enc3.ciphertext, pair.privateKey)).toEqual(
-		enc3.sharedSecret,
-	);
+	expect(
+		sodium.crypto_kem_mlkem768_dec(enc1.ciphertext, pair.privateKey),
+	).toEqual(enc1.sharedSecret);
+	expect(
+		sodium.crypto_kem_mlkem768_dec(enc3.ciphertext, pair.privateKey),
+	).toEqual(enc3.sharedSecret);
 });

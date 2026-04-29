@@ -27,7 +27,11 @@ export const INPUT_TYPES = {
 		description: "Optional fixed-size buffer",
 	},
 	uint: { ts: "number", doc: "number", description: "Unsigned integer" },
-	ranged_uint: { ts: "number", doc: "number", description: "Range bound unsigned integer" },
+	ranged_uint: {
+		ts: "number",
+		doc: "number",
+		description: "Range-bounded unsigned integer",
+	},
 	u64: {
 		ts: "number | bigint",
 		doc: "number | bigint",
@@ -332,7 +336,8 @@ export const FUNCTION_CATEGORIES: FunctionCategory[] = [
 	},
 	{
 		name: "Key Encapsulation",
-		description: "Public-key encapsulation producing ciphertexts and shared secrets",
+		description:
+			"Public-key encapsulation producing ciphertexts and shared secrets",
 		patterns: [/^crypto_kem(_|$)/],
 	},
 	{
