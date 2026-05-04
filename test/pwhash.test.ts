@@ -154,6 +154,16 @@ test("crypto_pwhash_str_needs_rehash - increased parameters", () => {
 	expect(needsRehash).toBe(true);
 });
 
+test("crypto_pwhash_str_needs_rehash rejects invalid hash strings", () => {
+	expect(() =>
+		sodium.crypto_pwhash_str_needs_rehash(
+			"not-a-password-hash",
+			sodium.crypto_pwhash_OPSLIMIT_INTERACTIVE,
+			sodium.crypto_pwhash_MEMLIMIT_INTERACTIVE,
+		),
+	).toThrow();
+});
+
 test("crypto_pwhash with different output lengths", () => {
 	const password = sodium.from_string("password for key derivation");
 	const salt = sodium.randombytes_buf(sodium.crypto_pwhash_SALTBYTES);

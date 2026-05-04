@@ -16,6 +16,12 @@
     }
   ],
   "target": "var result = libsodium._crypto_pwhash_str_needs_rehash(hashed_password_address, opsLimit, 0, memLimit) | 0",
-  "return": "result !== 0",
+  "assert_retval": [
+    {
+      "condition": "!== -1",
+      "or_else_throw": "invalid hash"
+    }
+  ],
+  "return": "result === 1",
   "outputs": []
 }

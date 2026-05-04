@@ -154,11 +154,11 @@ class WrapperBuilder {
 		const lines: string[] = [];
 
 		if (symbol.assert_retval !== undefined) {
-			let target = symbol.target!;
-			if (symbol.assert_retval.length > 1) {
-				lines.push(`var _ret = ${target};`);
-				target = "_ret";
-			}
+			const { setup, expression: target } = this.prepareReturnTarget(
+				symbol.target!,
+				symbol.assert_retval.length > 1,
+			);
+			lines.push(...setup);
 
 			if (symbol.return !== undefined) {
 				for (const assert of symbol.assert_retval) {
@@ -191,6 +191,26 @@ class WrapperBuilder {
 		}
 
 		return lines;
+	}
+
+	private prepareReturnTarget(
+		target: string,
+		forceTemporary: boolean,
+	): { setup: string[]; expression: string } {
+		const declaredVar = target.match(/^var\s+([A-Za-z_$][\w$]*)\s*=/);
+		if (declaredVar) {
+			return {
+				setup: [this.ensureSemicolon(target)],
+				expression: declaredVar[1],
+			};
+		}
+		if (forceTemporary) {
+			return {
+				setup: [`var _ret = ${target};`],
+				expression: "_ret",
+			};
+		}
+		return { setup: [], expression: target };
 	}
 
 	private buildFunctionExports(symbols: FunctionSymbol[]): void {

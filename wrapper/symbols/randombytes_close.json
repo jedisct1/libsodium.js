@@ -2,6 +2,12 @@
   "name": "randombytes_close",
   "type": "function",
   "target": "libsodium._randombytes_close()",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "randombytes_close failed"
+    }
+  ],
   "outputs": [],
   "inputs": []
 }

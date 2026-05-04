@@ -275,6 +275,19 @@ describe("randombytes_buf_deterministic", () => {
 	});
 });
 
+describe("randombytes_close", () => {
+	test("throws when the underlying close fails", () => {
+		const originalClose = sodium.libsodium._randombytes_close;
+
+		sodium.libsodium._randombytes_close = () => -1;
+		try {
+			expect(() => sodium.randombytes_close()).toThrow();
+		} finally {
+			sodium.libsodium._randombytes_close = originalClose;
+		}
+	});
+});
+
 describe("randomness quality", () => {
 	test("entropy estimate via compression ratio", () => {
 		// Truly random data should not compress well

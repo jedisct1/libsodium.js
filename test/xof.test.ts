@@ -188,6 +188,19 @@ test("crypto_xof_turboshake256 init_with_domain", () => {
 	expect(out_standard).not.toEqual(out_custom);
 });
 
+test("crypto_xof init_with_domain rejects values outside unsigned char range", () => {
+	for (const initWithDomain of [
+		sodium.crypto_xof_shake128_init_with_domain,
+		sodium.crypto_xof_shake256_init_with_domain,
+		sodium.crypto_xof_turboshake128_init_with_domain,
+		sodium.crypto_xof_turboshake256_init_with_domain,
+	]) {
+		expect(initWithDomain(0)).toBeDefined();
+		expect(initWithDomain(255)).toBeDefined();
+		expect(() => initWithDomain(256)).toThrow();
+	}
+});
+
 test("crypto_xof constants", () => {
 	expect(sodium.crypto_xof_shake128_BLOCKBYTES).toBe(168);
 	expect(sodium.crypto_xof_shake128_STATEBYTES).toBe(256);

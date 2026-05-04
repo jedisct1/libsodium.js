@@ -14,7 +14,7 @@
     },
     {
       "name": "constant",
-      "type": "unsized_buf_optional",
+      "type": "buf_optional",
       "length": "libsodium._crypto_core_hsalsa20_constbytes()"
     }
   ],

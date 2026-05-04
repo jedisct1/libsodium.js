@@ -37,6 +37,26 @@ test("crypto_generichash", () => {
 	expect(h3).not.toEqual(h);
 });
 
+test("crypto_generichash_init allocates the runtime state size", () => {
+	const stateBytes = sodium.libsodium._crypto_generichash_statebytes();
+	const allocations: number[] = [];
+	const originalMalloc = sodium.libsodium._malloc;
+
+	sodium.libsodium._malloc = (length: number) => {
+		allocations.push(length);
+		return originalMalloc(length);
+	};
+
+	try {
+		const state = sodium.crypto_generichash_init(null, 32);
+		sodium.crypto_generichash_final(state, 32);
+	} finally {
+		sodium.libsodium._malloc = originalMalloc;
+	}
+
+	expect(allocations).toContain(stateBytes);
+});
+
 test("crypto_generichash2", () => {
 	const key = sodium.from_hex(
 		"4777a57dadf099111c8c21954b0b470b1990f34623990d32bf0340795ff858d8",
