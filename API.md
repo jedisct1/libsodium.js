@@ -588,14 +588,14 @@ crypto_stream_chacha20_xor(input_message: Uint8Array | string, nonce: Uint8Array
 ### crypto_stream_chacha20_xor_ic
 
 ```typescript
-crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
 - `input_message`: `Uint8Array | string`
 - `nonce`: `Uint8Array` — size: `CRYPTO_STREAM_CHACHA20_NONCEBYTES`
-- `nonce_increment`: `number`
+- `nonce_increment`: `number | bigint`
 - `key`: `Uint8Array` — size: `CRYPTO_STREAM_CHACHA20_KEYBYTES`
 
 **Returns:** `Uint8Array` — size: `input_message.length`
@@ -633,14 +633,14 @@ crypto_stream_xchacha20_xor(input_message: Uint8Array | string, nonce: Uint8Arra
 ### crypto_stream_xchacha20_xor_ic
 
 ```typescript
-crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
 - `input_message`: `Uint8Array | string`
 - `nonce`: `Uint8Array` — size: `CRYPTO_STREAM_XCHACHA20_NONCEBYTES`
-- `nonce_increment`: `number`
+- `nonce_increment`: `number | bigint`
 - `key`: `Uint8Array` — size: `CRYPTO_STREAM_XCHACHA20_KEYBYTES`
 
 **Returns:** `Uint8Array` — size: `input_message.length`
@@ -2587,28 +2587,28 @@ crypto_core_ed25519_sub(p: Uint8Array, q: Uint8Array, outputFormat?: OutputForma
 ### crypto_core_hchacha20
 
 ```typescript
-crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat?: OutputFormat): Uint8Array | string
+crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
 - `input`: `Uint8Array` — size: `CRYPTO_CORE_HCHACHA20_INPUTBYTES`
 - `privateKey`: `Uint8Array` — size: `CRYPTO_CORE_HCHACHA20_KEYBYTES`
-- `constant`: `Uint8Array | string | null` — size: `CRYPTO_CORE_HCHACHA20_CONSTBYTES`
+- `constant`: `Uint8Array | null` — size: `CRYPTO_CORE_HCHACHA20_CONSTBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_HCHACHA20_OUTPUTBYTES`
 
 ### crypto_core_hsalsa20
 
 ```typescript
-crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat?: OutputFormat): Uint8Array | string
+crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
 - `input`: `Uint8Array` — size: `CRYPTO_CORE_HSALSA20_INPUTBYTES`
 - `privateKey`: `Uint8Array` — size: `CRYPTO_CORE_HSALSA20_KEYBYTES`
-- `constant`: `Uint8Array | string | null` — size: `CRYPTO_CORE_HSALSA20_CONSTBYTES`
+- `constant`: `Uint8Array | null` — size: `CRYPTO_CORE_HSALSA20_CONSTBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_HSALSA20_OUTPUTBYTES`
 

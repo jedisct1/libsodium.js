@@ -1076,8 +1076,8 @@ export function crypto_core_ed25519_sub(p: Uint8Array, q: Uint8Array, outputForm
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_CORE_HCHACHA20_OUTPUTBYTES bytes)
  */
-export function crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat: StringOutputFormat): string;
+export function crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat: StringOutputFormat): string;
 /**
  * @param input (CRYPTO_CORE_HSALSA20_INPUTBYTES bytes)
  * @param privateKey (CRYPTO_CORE_HSALSA20_KEYBYTES bytes)
@@ -1085,8 +1085,8 @@ export function crypto_core_hchacha20(input: Uint8Array, privateKey: Uint8Array,
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_CORE_HSALSA20_OUTPUTBYTES bytes)
  */
-export function crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | string | null, outputFormat: StringOutputFormat): string;
+export function crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, constant: Uint8Array | null, outputFormat: StringOutputFormat): string;
 /**
  * @param p (CRYPTO_CORE_RISTRETTO255_BYTES bytes)
  * @param q (CRYPTO_CORE_RISTRETTO255_BYTES bytes)
@@ -1983,8 +1983,8 @@ export function crypto_stream_chacha20_xor(input_message: Uint8Array | string, n
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string
  */
-export function crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat: StringOutputFormat): string;
+export function crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_stream_chacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_STREAM_KEYBYTES bytes)
@@ -2014,8 +2014,8 @@ export function crypto_stream_xchacha20_xor(input_message: Uint8Array | string, 
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string
  */
-export function crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number, key: Uint8Array, outputFormat: StringOutputFormat): string;
+export function crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_stream_xchacha20_xor_ic(input_message: Uint8Array | string, nonce: Uint8Array, nonce_increment: number | bigint, key: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
  * @param out_length
  * @param message
