@@ -1,0 +1,8 @@
+[install]
+minimumReleaseAge = 259200
+minimumReleaseAgeExcludes = [
+  "libsodium",
+  "libsodium-wrappers",
+  "libsodium-sumo",
+  "libsodium-wrappers-sumo",
+]
