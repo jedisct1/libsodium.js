@@ -44,7 +44,7 @@ export interface Constant {
 	type: "uint" | "string";
 }
 
-export const FUNCTION_SYMBOLS = new Set<string>([
+export const FUNCTION_SYMBOL_KEYS = new Set<string>([
 	"name",
 	"type",
 	"inputs",
@@ -63,7 +63,7 @@ export function checkFunctionSymbol(symbol: LibsodiumSymbol): {
 		return { valid: false, error: "not a function" };
 	}
 	for (const key of Object.keys(symbol)) {
-		if (!FUNCTION_SYMBOLS.has(key)) {
+		if (!FUNCTION_SYMBOL_KEYS.has(key)) {
 			return { valid: false, error: `invalid symbol: ${key}` };
 		}
 	}
