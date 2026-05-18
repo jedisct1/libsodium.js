@@ -4,7 +4,8 @@
   "inputs": [
     {
       "name": "key",
-      "type": "unsized_buf_optional"
+      "type": "buf",
+      "length": "libsodium._crypto_onetimeauth_keybytes()"
     }
   ],
   "outputs": [
