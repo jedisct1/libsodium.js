@@ -9,7 +9,7 @@ import type {
 	SymbolInput,
 	SymbolOutput,
 } from "./types.ts";
-import { isFunctionSymbol } from "./types.ts";
+import { checkFunctionSymbol } from "./types.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -325,10 +325,11 @@ function loadSymbols(): FunctionSymbol[] {
 			process.exit(1);
 		}
 
-		if (isFunctionSymbol(symbol as FunctionSymbol)) {
+		const check = checkFunctionSymbol(symbol as FunctionSymbol);
+		if (check.valid) {
 			symbols.push(symbol as FunctionSymbol);
 		} else {
-			console.error(`Unknown symbol type in ${file}`);
+			console.error(`${file}: ${check.error}`);
 			process.exit(1);
 		}
 	}
