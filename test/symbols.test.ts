@@ -12,14 +12,15 @@ test("checkFunctionSymbol accepts a valid symbol", () => {
 	const symbol: FunctionSymbol = sealOpenSymbol;
 	const result = checkFunctionSymbol(symbol);
 	expect(result.valid).toBe(true);
-	expect(result.error).toBe("");
 });
 
 test("checkFunctionSymbol rejects a symbol with 'expect' key", () => {
 	const symbol: FunctionSymbol = { ...sealOpenSymbol, expect: "=== 0" };
 	const result = checkFunctionSymbol(symbol);
 	expect(result.valid).toBe(false);
-	expect(result.error).toBe("invalid symbol: expect");
+	if (!result.valid) {
+		expect(result.error).toBe("invalid symbol: expect");
+	}
 });
 
 test("checkFunctionSymbol rejects a non-function symbol", () => {
@@ -29,5 +30,7 @@ test("checkFunctionSymbol rejects a non-function symbol", () => {
 	};
 	const result = checkFunctionSymbol(symbol);
 	expect(result.valid).toBe(false);
-	expect(result.error).toBe("not a function");
+	if (!result.valid) {
+		expect(result.error).toBe("not a function");
+	}
 });

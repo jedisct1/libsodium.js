@@ -28,9 +28,12 @@ function loadSymbols(symbolsDir: string): FunctionSymbol[] {
 	for (const file of files.sort()) {
 		const content = fs.readFileSync(path.join(symbolsDir, file), "utf8");
 		const symbol = JSON.parse(content);
-		if (checkFunctionSymbol(symbol).valid) {
-			symbols.push(symbol);
+		const check = checkFunctionSymbol(symbol);
+		if (!check.valid) {
+			console.error(`${file}: ${check.error}`);
+			process.exit(1);
 		}
+		symbols.push(symbol);
 	}
 
 	return symbols;

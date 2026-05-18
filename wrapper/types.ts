@@ -55,10 +55,9 @@ export const FUNCTION_SYMBOL_KEYS = new Set<string>([
 	"assert_retval",
 ]);
 
-export function checkFunctionSymbol(symbol: LibsodiumSymbol): {
-	valid: boolean;
-	error: string;
-} {
+export function checkFunctionSymbol(
+	symbol: LibsodiumSymbol,
+): { valid: true } | { valid: false; error: string } {
 	if (symbol.type !== "function") {
 		return { valid: false, error: "not a function" };
 	}
@@ -67,5 +66,5 @@ export function checkFunctionSymbol(symbol: LibsodiumSymbol): {
 			return { valid: false, error: `invalid symbol: ${key}` };
 		}
 	}
-	return { valid: true, error: "" };
+	return { valid: true };
 }
