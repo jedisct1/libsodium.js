@@ -11,7 +11,7 @@ import {
 	parseReturnType,
 } from "./shared-types.ts";
 import type { Constant, FunctionSymbol } from "./types.ts";
-import { isFunctionSymbol } from "./types.ts";
+import { checkFunctionSymbol } from "./types.ts";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -322,7 +322,7 @@ function loadSymbols(symbolsDir: string): FunctionSymbol[] {
 	for (const file of files.sort()) {
 		const content = fs.readFileSync(path.join(symbolsDir, file), "utf8");
 		const symbol = JSON.parse(content);
-		if (isFunctionSymbol(symbol)) {
+		if (checkFunctionSymbol(symbol).valid) {
 			symbols.push(symbol);
 		}
 	}
