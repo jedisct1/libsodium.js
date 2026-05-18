@@ -1,6 +1,5 @@
 {
   "name": "crypto_auth_hmacsha512256_update",
-  "dependencies": [],
   "type": "function",
   "inputs": [
     {
