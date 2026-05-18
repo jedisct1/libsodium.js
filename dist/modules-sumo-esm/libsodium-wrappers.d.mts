@@ -979,19 +979,19 @@ export function crypto_box_seed_keypair(seed: Uint8Array, outputFormat: StringOu
 export function crypto_core_ed25519_add(p: Uint8Array, q: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_core_ed25519_add(p: Uint8Array, q: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
- * @param r
+ * @param r (CRYPTO_CORE_ED25519_HASHBYTES bytes)
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_CORE_ED25519_BYTES bytes)
  */
-export function crypto_core_ed25519_from_hash(r: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_core_ed25519_from_hash(r: Uint8Array | string, outputFormat: StringOutputFormat): string;
+export function crypto_core_ed25519_from_hash(r: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_core_ed25519_from_hash(r: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
- * @param r
+ * @param r (CRYPTO_CORE_ED25519_UNIFORMBYTES bytes)
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_CORE_ED25519_BYTES bytes)
  */
-export function crypto_core_ed25519_from_uniform(r: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_core_ed25519_from_uniform(r: Uint8Array | string, outputFormat: StringOutputFormat): string;
+export function crypto_core_ed25519_from_uniform(r: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_core_ed25519_from_uniform(r: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
  * @param repr (CRYPTO_CORE_ED25519_BYTES bytes)
  * @returns boolean
@@ -1096,12 +1096,12 @@ export function crypto_core_hsalsa20(input: Uint8Array, privateKey: Uint8Array, 
 export function crypto_core_ristretto255_add(p: Uint8Array, q: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_core_ristretto255_add(p: Uint8Array, q: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
- * @param r
+ * @param r (CRYPTO_CORE_RISTRETTO255_HASHBYTES bytes)
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_CORE_RISTRETTO255_BYTES bytes)
  */
-export function crypto_core_ristretto255_from_hash(r: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
-export function crypto_core_ristretto255_from_hash(r: Uint8Array | string, outputFormat: StringOutputFormat): string;
+export function crypto_core_ristretto255_from_hash(r: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_core_ristretto255_from_hash(r: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
  * @param repr (CRYPTO_CORE_RISTRETTO255_BYTES bytes)
  * @returns boolean
@@ -1579,10 +1579,10 @@ export function crypto_onetimeauth(message: Uint8Array | string, key: Uint8Array
 export function crypto_onetimeauth_final(state_address: StateAddress, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_onetimeauth_final(state_address: StateAddress, outputFormat: StringOutputFormat): string;
 /**
- * @param key
+ * @param key (CRYPTO_ONETIMEAUTH_KEYBYTES bytes)
  * @returns StateAddress
  */
-export function crypto_onetimeauth_init(key: Uint8Array | string | null): StateAddress;
+export function crypto_onetimeauth_init(key: Uint8Array): StateAddress;
 /**
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_ONETIMEAUTH_KEYBYTES bytes)

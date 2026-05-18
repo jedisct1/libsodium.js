@@ -2280,12 +2280,12 @@ crypto_onetimeauth_final(state_address: StateAddress, outputFormat?: OutputForma
 ### crypto_onetimeauth_init
 
 ```typescript
-crypto_onetimeauth_init(key: Uint8Array | string | null): StateAddress
+crypto_onetimeauth_init(key: Uint8Array): StateAddress
 ```
 
 **Parameters:**
 
-- `key`: `Uint8Array | string | null`
+- `key`: `Uint8Array` — size: `CRYPTO_ONETIMEAUTH_KEYBYTES`
 
 **Returns:** `StateAddress`
 
@@ -2495,24 +2495,24 @@ crypto_core_ed25519_add(p: Uint8Array, q: Uint8Array, outputFormat?: OutputForma
 ### crypto_core_ed25519_from_hash
 
 ```typescript
-crypto_core_ed25519_from_hash(r: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+crypto_core_ed25519_from_hash(r: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
-- `r`: `Uint8Array | string`
+- `r`: `Uint8Array` — size: `CRYPTO_CORE_ED25519_HASHBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_ED25519_BYTES`
 
 ### crypto_core_ed25519_from_uniform
 
 ```typescript
-crypto_core_ed25519_from_uniform(r: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+crypto_core_ed25519_from_uniform(r: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
-- `r`: `Uint8Array | string`
+- `r`: `Uint8Array` — size: `CRYPTO_CORE_ED25519_UNIFORMBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_ED25519_BYTES`
 
@@ -2688,12 +2688,12 @@ crypto_core_ristretto255_add(p: Uint8Array, q: Uint8Array, outputFormat?: Output
 ### crypto_core_ristretto255_from_hash
 
 ```typescript
-crypto_core_ristretto255_from_hash(r: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+crypto_core_ristretto255_from_hash(r: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
 ```
 
 **Parameters:**
 
-- `r`: `Uint8Array | string`
+- `r`: `Uint8Array` — size: `CRYPTO_CORE_RISTRETTO255_HASHBYTES`
 
 **Returns:** `Uint8Array` — size: `CRYPTO_CORE_RISTRETTO255_BYTES`
 
