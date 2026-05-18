@@ -4,7 +4,8 @@
   "inputs": [
     {
       "name": "r",
-      "type": "unsized_buf"
+      "type": "buf",
+      "length": "libsodium._crypto_core_ristretto255_hashbytes()"
     }
   ],
   "outputs": [

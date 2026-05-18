@@ -29,3 +29,34 @@ test("crypto_core_hsalsa20 checks optional constant length", () => {
 		sodium.crypto_core_hsalsa20(input, key, constant.slice(1)),
 	).toThrow();
 });
+
+test("crypto_core_ed25519_from_uniform checks input length", () => {
+	const uniform = new Uint8Array(sodium.crypto_core_ed25519_UNIFORMBYTES);
+
+	expect(sodium.crypto_core_ed25519_from_uniform(uniform).length).toBe(
+		sodium.crypto_core_ed25519_BYTES,
+	);
+	expect(() =>
+		sodium.crypto_core_ed25519_from_uniform(uniform.slice(1)),
+	).toThrow();
+});
+
+test("crypto_core_ed25519_from_hash checks input length", () => {
+	const hash = new Uint8Array(sodium.crypto_core_ed25519_HASHBYTES);
+
+	expect(sodium.crypto_core_ed25519_from_hash(hash).length).toBe(
+		sodium.crypto_core_ed25519_BYTES,
+	);
+	expect(() => sodium.crypto_core_ed25519_from_hash(hash.slice(1))).toThrow();
+});
+
+test("crypto_core_ristretto255_from_hash checks input length", () => {
+	const hash = new Uint8Array(sodium.crypto_core_ristretto255_HASHBYTES);
+
+	expect(sodium.crypto_core_ristretto255_from_hash(hash).length).toBe(
+		sodium.crypto_core_ristretto255_BYTES,
+	);
+	expect(() =>
+		sodium.crypto_core_ristretto255_from_hash(hash.slice(1)),
+	).toThrow();
+});
