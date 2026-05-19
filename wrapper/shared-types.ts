@@ -43,11 +43,6 @@ export const INPUT_TYPES = {
 		doc: "string",
 		description: "Variable-length string",
 	},
-	randombytes_implementation: {
-		ts: "object",
-		doc: "object",
-		description: "Random bytes implementation",
-	},
 } as const;
 
 export const STATE_TYPES = [

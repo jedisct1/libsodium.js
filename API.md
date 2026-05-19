@@ -58,7 +58,7 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 - [Key Encapsulation](#key-encapsulation) (15)
 - [Message Authentication](#message-authentication) (27)
 - [Secret Streams](#secret-streams) (6)
-- [Random](#random) (7)
+- [Random](#random) (6)
 - [Utilities](#utilities) (32)
 - [XOF (Extendable Output)](#xof-extendable-output-) (20)
 - [IP Address Encryption](#ip-address-encryption) (12)
@@ -246,7 +246,7 @@ crypto_aead_chacha20poly1305_decrypt_detached(secret_nonce: Uint8Array | string 
 
 - `secret_nonce`: `Uint8Array | string | null` — size: `CRYPTO_AEAD_CHACHA20POLY1305_NSECBYTES`
 - `ciphertext`: `Uint8Array | string`
-- `mac`: `Uint8Array` — size: `CRYPTO_BOX_MACBYTES`
+- `mac`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_ABYTES`
 - `additional_data`: `Uint8Array | string | null`
 - `public_nonce`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_NPUBBYTES`
 - `key`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_KEYBYTES`
@@ -314,7 +314,7 @@ crypto_aead_chacha20poly1305_ietf_decrypt_detached(secret_nonce: Uint8Array | st
 
 - `secret_nonce`: `Uint8Array | string | null` — size: `CRYPTO_AEAD_CHACHA20POLY1305_IETF_NSECBYTES`
 - `ciphertext`: `Uint8Array | string`
-- `mac`: `Uint8Array` — size: `CRYPTO_BOX_MACBYTES`
+- `mac`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_IETF_ABYTES`
 - `additional_data`: `Uint8Array | string | null`
 - `public_nonce`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_IETF_NPUBBYTES`
 - `key`: `Uint8Array` — size: `CRYPTO_AEAD_CHACHA20POLY1305_IETF_KEYBYTES`
@@ -398,7 +398,7 @@ crypto_aead_xchacha20poly1305_ietf_decrypt_detached(secret_nonce: Uint8Array | s
 
 - `secret_nonce`: `Uint8Array | string | null` — size: `CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NSECBYTES`
 - `ciphertext`: `Uint8Array | string`
-- `mac`: `Uint8Array` — size: `CRYPTO_BOX_MACBYTES`
+- `mac`: `Uint8Array` — size: `CRYPTO_AEAD_XCHACHA20POLY1305_IETF_ABYTES`
 - `additional_data`: `Uint8Array | string | null`
 - `public_nonce`: `Uint8Array` — size: `CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES`
 - `key`: `Uint8Array` — size: `CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES`
@@ -2386,16 +2386,6 @@ randombytes_random(): number
 ```
 
 **Returns:** `number`
-
-### randombytes_set_implementation
-
-```typescript
-randombytes_set_implementation(implementation: object): void
-```
-
-**Parameters:**
-
-- `implementation`: `object`
 
 ### randombytes_stir
 

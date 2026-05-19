@@ -483,7 +483,7 @@ export function crypto_aead_chacha20poly1305_decrypt(secret_nonce: Uint8Array | 
 /**
  * @param secret_nonce (CRYPTO_AEAD_CHACHA20POLY1305_NSECBYTES bytes)
  * @param ciphertext
- * @param mac (CRYPTO_BOX_MACBYTES bytes)
+ * @param mac (CRYPTO_AEAD_CHACHA20POLY1305_ABYTES bytes)
  * @param additional_data
  * @param public_nonce (CRYPTO_AEAD_CHACHA20POLY1305_NPUBBYTES bytes)
  * @param key (CRYPTO_AEAD_CHACHA20POLY1305_KEYBYTES bytes)
@@ -528,7 +528,7 @@ export function crypto_aead_chacha20poly1305_ietf_decrypt(secret_nonce: Uint8Arr
 /**
  * @param secret_nonce (CRYPTO_AEAD_CHACHA20POLY1305_IETF_NSECBYTES bytes)
  * @param ciphertext
- * @param mac (CRYPTO_BOX_MACBYTES bytes)
+ * @param mac (CRYPTO_AEAD_CHACHA20POLY1305_IETF_ABYTES bytes)
  * @param additional_data
  * @param public_nonce (CRYPTO_AEAD_CHACHA20POLY1305_IETF_NPUBBYTES bytes)
  * @param key (CRYPTO_AEAD_CHACHA20POLY1305_IETF_KEYBYTES bytes)
@@ -585,7 +585,7 @@ export function crypto_aead_xchacha20poly1305_ietf_decrypt(secret_nonce: Uint8Ar
 /**
  * @param secret_nonce (CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NSECBYTES bytes)
  * @param ciphertext
- * @param mac (CRYPTO_BOX_MACBYTES bytes)
+ * @param mac (CRYPTO_AEAD_XCHACHA20POLY1305_IETF_ABYTES bytes)
  * @param additional_data
  * @param public_nonce (CRYPTO_AEAD_XCHACHA20POLY1305_IETF_NPUBBYTES bytes)
  * @param key (CRYPTO_AEAD_XCHACHA20POLY1305_IETF_KEYBYTES bytes)
@@ -2159,10 +2159,6 @@ export function randombytes_close(): void;
  */
 export function randombytes_random(): number;
 /**
- * @param implementation
- */
-export function randombytes_set_implementation(implementation: object): void;
-/**
  */
 export function randombytes_stir(): void;
 /**
@@ -2772,7 +2768,6 @@ declare const sodium: {
   randombytes_buf_deterministic: typeof randombytes_buf_deterministic;
   randombytes_close: typeof randombytes_close;
   randombytes_random: typeof randombytes_random;
-  randombytes_set_implementation: typeof randombytes_set_implementation;
   randombytes_stir: typeof randombytes_stir;
   randombytes_uniform: typeof randombytes_uniform;
   sodium_bin2ip: typeof sodium_bin2ip;
