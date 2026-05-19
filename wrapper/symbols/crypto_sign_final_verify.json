@@ -19,5 +19,5 @@
   ],
   "outputs": [],
   "target": "var verificationResult = libsodium._crypto_sign_final_verify(state_address, signature_address, publicKey_address) | 0",
-  "return": "verificationResult === 0"
+  "return": "(libsodium._free(state_address), verificationResult === 0)"
 }
