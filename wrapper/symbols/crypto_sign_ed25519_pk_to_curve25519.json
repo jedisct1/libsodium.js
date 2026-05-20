@@ -12,7 +12,7 @@
     {
       "name": "cPk",
       "type": "buf",
-      "length": "libsodium._crypto_scalarmult_scalarbytes()"
+      "length": "libsodium._crypto_scalarmult_curve25519_bytes()"
     }
   ],
   "target": "libsodium._crypto_sign_ed25519_pk_to_curve25519(cPk_address, edPk_address) | 0",
