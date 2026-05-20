@@ -199,7 +199,7 @@ function buildDoc(
 	lines.push("| `Uint8Array` | Binary data (keys, nonces, messages) |");
 	lines.push("| `Uint8Array \\| string` | Binary data or UTF-8 string |");
 	lines.push(
-		"| `StateAddress` | Opaque state object for streaming operations |",
+		"| `StateAddress` | Opaque state handle for streaming operations. Call `free(state_address)` when a state has no final function. |",
 	);
 	lines.push(
 		'| `OutputFormat` | `"uint8array"` \\| `"hex"` \\| `"base64"` \\| `"text"` |',
@@ -214,6 +214,9 @@ function buildDoc(
 	lines.push("| `to_string(buf)` | Convert `Uint8Array` to UTF-8 string |");
 	lines.push("| `from_hex(hex)` | Decode hex string to `Uint8Array` |");
 	lines.push("| `to_hex(buf)` | Encode `Uint8Array` to hex string |");
+	lines.push(
+		"| `free(state_address)` | Free a streaming state returned by an init function with no final function |",
+	);
 	lines.push(
 		"| `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |",
 	);

@@ -78,10 +78,7 @@ class TypeScriptDefBuilder {
 	}
 
 	private addStateAddressType(): void {
-		this.lines.push("export type StateAddress = {");
-		this.lines.push("  name: string;");
-		this.lines.push("  address: number;");
-		this.lines.push("};");
+		this.lines.push("export type StateAddress = number;");
 		this.lines.push("");
 	}
 
@@ -118,6 +115,7 @@ class TypeScriptDefBuilder {
 		this.lines.push(
 			"export function to_hex(input: Uint8Array | string): string;",
 		);
+		this.lines.push("export function free(state_address: StateAddress): void;");
 		this.lines.push("export function from_string(input: string): Uint8Array;");
 		this.lines.push("export function to_string(input: Uint8Array): string;");
 		this.lines.push(
@@ -285,6 +283,7 @@ class TypeScriptDefBuilder {
 		);
 		this.lines.push("  from_hex(input: string): Uint8Array;");
 		this.lines.push("  to_hex(input: Uint8Array | string): string;");
+		this.lines.push("  free(state_address: StateAddress): void;");
 		this.lines.push("  from_string(input: string): Uint8Array;");
 		this.lines.push("  to_string(input: Uint8Array): string;");
 		this.lines.push("  pad(buf: Uint8Array, blocksize: number): Uint8Array;");

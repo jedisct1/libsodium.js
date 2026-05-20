@@ -235,3 +235,12 @@ test("crypto_xof output format hex", () => {
 	expect(typeof hash_hex).toBe("string");
 	expect(hash_hex.length).toBe(64); // 32 bytes = 64 hex chars
 });
+
+test("free releases streaming state handles", () => {
+	const message = sodium.from_string("test message");
+	const state = sodium.crypto_xof_shake128_init();
+	sodium.crypto_xof_shake128_update(state, message);
+	expect(sodium.crypto_xof_shake128_squeeze(state, 32).length).toBe(32);
+	expect(() => sodium.free(state)).not.toThrow();
+	expect(() => sodium.free(0)).toThrow(TypeError);
+});

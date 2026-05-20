@@ -23,7 +23,7 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 |------|-------------|
 | `Uint8Array` | Binary data (keys, nonces, messages) |
 | `Uint8Array \| string` | Binary data or UTF-8 string |
-| `StateAddress` | Opaque state object for streaming operations |
+| `StateAddress` | Opaque state handle for streaming operations. Call `free(state_address)` when a state has no final function. |
 | `OutputFormat` | `"uint8array"` \| `"hex"` \| `"base64"` \| `"text"` |
 
 ## Helper Functions
@@ -34,6 +34,7 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 | `to_string(buf)` | Convert `Uint8Array` to UTF-8 string |
 | `from_hex(hex)` | Decode hex string to `Uint8Array` |
 | `to_hex(buf)` | Encode `Uint8Array` to hex string |
+| `free(state_address)` | Free a streaming state returned by an init function with no final function |
 | `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |
 | `to_base64(buf, variant?)` | Encode `Uint8Array` to base64 |
 | `memzero(buf)` | Securely zero memory |

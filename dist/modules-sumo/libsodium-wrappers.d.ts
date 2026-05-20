@@ -7,10 +7,7 @@
  */
 export const ready: Promise<void>;
 
-export type StateAddress = {
-  name: string;
-  address: number;
-};
+export type StateAddress = number;
 
 export const base64_variants: {
   ORIGINAL: number;
@@ -30,6 +27,7 @@ export function from_base64(input: string, variant?: base64_variants): Uint8Arra
 export function to_base64(input: Uint8Array | string, variant?: base64_variants): string;
 export function from_hex(input: string): Uint8Array;
 export function to_hex(input: Uint8Array | string): string;
+export function free(state_address: StateAddress): void;
 export function from_string(input: string): Uint8Array;
 export function to_string(input: Uint8Array): string;
 export function pad(buf: Uint8Array, blocksize: number): Uint8Array;

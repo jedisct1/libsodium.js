@@ -46,6 +46,17 @@
       return Object.keys(exports).sort();
     }
 
+    function free(state_address) {
+      if (
+        typeof state_address !== "number" ||
+        !isFinite(state_address) ||
+        state_address <= 0
+      ) {
+        throw new TypeError("state_address must be a valid StateAddress");
+      }
+      _free(state_address);
+    }
+
     function increment(bytes) {
       if (!(bytes instanceof Uint8Array)) {
         throw new TypeError("Only Uint8Array instances can be incremented");
@@ -582,6 +593,7 @@
     exports.add = add;
     exports.base64_variants = base64_variants;
     exports.compare = compare;
+    exports.free = free;
     exports.from_base64 = from_base64;
     exports.from_hex = from_hex;
     exports.from_string = from_string;
