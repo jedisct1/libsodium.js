@@ -1049,7 +1049,7 @@ crypto_sign_ed25519_pk_to_curve25519(edPk: Uint8Array, outputFormat?: OutputForm
 
 - `edPk`: `Uint8Array` — size: `CRYPTO_SIGN_PUBLICKEYBYTES`
 
-**Returns:** `Uint8Array` — size: `CRYPTO_SCALARMULT_SCALARBYTES`
+**Returns:** `Uint8Array` — size: `CRYPTO_SCALARMULT_CURVE25519_BYTES`
 
 ### crypto_sign_ed25519_sk_to_curve25519
 
@@ -1061,7 +1061,7 @@ crypto_sign_ed25519_sk_to_curve25519(edSk: Uint8Array, outputFormat?: OutputForm
 
 - `edSk`: `Uint8Array` — size: `CRYPTO_SIGN_SECRETKEYBYTES`
 
-**Returns:** `Uint8Array` — size: `CRYPTO_SCALARMULT_SCALARBYTES`
+**Returns:** `Uint8Array` — size: `CRYPTO_SCALARMULT_CURVE25519_BYTES`
 
 ### crypto_sign_ed25519_sk_to_pk
 
