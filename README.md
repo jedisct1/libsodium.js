@@ -231,6 +231,14 @@ This also applies to newer APIs such as:
 ```
 for `crypto_secretstream_xchacha20poly1305_init_push()` and `crypto_kem_enc()`.
 
+A `StateAddress` is an opaque numeric handle to memory allocated in the
+WebAssembly heap. Streaming APIs with a `*_final()` function free their state
+automatically when finalizing. Streaming APIs without a final function, such as
+`crypto_secretstream_xchacha20poly1305_*` and `crypto_xof_*`, require callers to
+call `sodium.free(state_address)` once after the last operation. Do not use a
+state after calling `sodium.free()` or after passing it to a `*_final()`
+function.
+
 ### Standard vs Sumo version
 
 The standard version (in the `dist/browsers`, `dist/modules`, and
