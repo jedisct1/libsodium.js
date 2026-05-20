@@ -154,32 +154,28 @@ class WrapperBuilder {
 		const lines: string[] = [];
 
 		if (symbol.assert_retval !== undefined) {
+			const assert = symbol.assert_retval[0];
 			const { setup, expression: target } = this.prepareReturnTarget(
 				symbol.target!,
-				symbol.assert_retval.length > 1,
 			);
 			lines.push(...setup);
 
 			if (symbol.return !== undefined) {
-				for (const assert of symbol.assert_retval) {
-					lines.push(`if ((${target}) ${assert.condition}) {`);
-					lines.push(`\tvar ret = ${symbol.return};`);
-					lines.push("\t_free_all(address_pool);");
-					lines.push("\treturn ret;");
-					lines.push("}");
-					lines.push(
-						`_free_and_throw_error(address_pool, "${assert.or_else_throw}");`,
-					);
-				}
+				lines.push(`if ((${target}) ${assert.condition}) {`);
+				lines.push(`\tvar ret = ${symbol.return};`);
+				lines.push("\t_free_all(address_pool);");
+				lines.push("\treturn ret;");
+				lines.push("}");
+				lines.push(
+					`_free_and_throw_error(address_pool, "${assert.or_else_throw}");`,
+				);
 			} else {
-				for (const assert of symbol.assert_retval) {
-					lines.push(`if (!((${target}) ${assert.condition})) {`);
-					lines.push(
-						`\t_free_and_throw_error(address_pool, "${assert.or_else_throw}");`,
-					);
-					lines.push("}");
-					lines.push("_free_all(address_pool);");
-				}
+				lines.push(`if (!((${target}) ${assert.condition})) {`);
+				lines.push(
+					`\t_free_and_throw_error(address_pool, "${assert.or_else_throw}");`,
+				);
+				lines.push("}");
+				lines.push("_free_all(address_pool);");
 			}
 		} else if (symbol.return !== undefined) {
 			lines.push(this.ensureSemicolon(symbol.target!));
@@ -193,21 +189,15 @@ class WrapperBuilder {
 		return lines;
 	}
 
-	private prepareReturnTarget(
-		target: string,
-		forceTemporary: boolean,
-	): { setup: string[]; expression: string } {
+	private prepareReturnTarget(target: string): {
+		setup: string[];
+		expression: string;
+	} {
 		const declaredVar = target.match(/^var\s+([A-Za-z_$][\w$]*)\s*=/);
 		if (declaredVar) {
 			return {
 				setup: [this.ensureSemicolon(target)],
 				expression: declaredVar[1],
-			};
-		}
-		if (forceTemporary) {
-			return {
-				setup: [`var _ret = ${target};`],
-				expression: "_ret",
 			};
 		}
 		return { setup: [], expression: target };

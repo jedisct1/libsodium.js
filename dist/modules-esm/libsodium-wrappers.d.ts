@@ -1817,14 +1817,14 @@ export function crypto_sign_detached(message: Uint8Array | string, privateKey: U
 /**
  * @param edPk (CRYPTO_SIGN_PUBLICKEYBYTES bytes)
  * @param outputFormat Output format (default: Uint8Array)
- * @returns Uint8Array | string (CRYPTO_SCALARMULT_SCALARBYTES bytes)
+ * @returns Uint8Array | string (CRYPTO_SCALARMULT_CURVE25519_BYTES bytes)
  */
 export function crypto_sign_ed25519_pk_to_curve25519(edPk: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_sign_ed25519_pk_to_curve25519(edPk: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
  * @param edSk (CRYPTO_SIGN_SECRETKEYBYTES bytes)
  * @param outputFormat Output format (default: Uint8Array)
- * @returns Uint8Array | string (CRYPTO_SCALARMULT_SCALARBYTES bytes)
+ * @returns Uint8Array | string (CRYPTO_SCALARMULT_CURVE25519_BYTES bytes)
  */
 export function crypto_sign_ed25519_sk_to_curve25519(edSk: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_sign_ed25519_sk_to_curve25519(edSk: Uint8Array, outputFormat: StringOutputFormat): string;

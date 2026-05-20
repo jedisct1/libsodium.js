@@ -66,5 +66,38 @@ export function checkFunctionSymbol(
 			return { valid: false, error: `invalid symbol: ${key}` };
 		}
 	}
+
+	const assertRetval = symbol.assert_retval;
+	if (assertRetval !== undefined) {
+		if (!Array.isArray(assertRetval)) {
+			return { valid: false, error: "assert_retval must be an array" };
+		}
+		if (assertRetval.length !== 1) {
+			return {
+				valid: false,
+				error: "assert_retval must contain exactly one entry",
+			};
+		}
+
+		const [assert] = assertRetval as unknown[];
+		if (typeof assert !== "object" || assert === null) {
+			return { valid: false, error: "assert_retval entry must be an object" };
+		}
+
+		const assertObj = assert as Record<string, unknown>;
+		if (typeof assertObj.condition !== "string") {
+			return {
+				valid: false,
+				error: "assert_retval entry condition must be a string",
+			};
+		}
+		if (typeof assertObj.or_else_throw !== "string") {
+			return {
+				valid: false,
+				error: "assert_retval entry or_else_throw must be a string",
+			};
+		}
+	}
+
 	return { valid: true };
 }

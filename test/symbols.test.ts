@@ -34,3 +34,30 @@ test("checkFunctionSymbol rejects a non-function symbol", () => {
 		expect(result.error).toBe("not a function");
 	}
 });
+
+test("checkFunctionSymbol rejects multiple assert_retval entries", () => {
+	const symbol = {
+		...sealOpenSymbol,
+		assert_retval: [
+			{ condition: "=== 0", or_else_throw: "failed" },
+			{ condition: "!== -1", or_else_throw: "also failed" },
+		],
+	};
+	const result = checkFunctionSymbol(symbol as unknown as FunctionSymbol);
+	expect(result.valid).toBe(false);
+	if (!result.valid) {
+		expect(result.error).toBe("assert_retval must contain exactly one entry");
+	}
+});
+
+test("checkFunctionSymbol rejects malformed assert_retval entries", () => {
+	const symbol = {
+		...sealOpenSymbol,
+		assert_retval: [{ condition: 0, or_else_throw: "failed" }],
+	};
+	const result = checkFunctionSymbol(symbol as unknown as FunctionSymbol);
+	expect(result.valid).toBe(false);
+	if (!result.valid) {
+		expect(result.error).toBe("assert_retval entry condition must be a string");
+	}
+});
