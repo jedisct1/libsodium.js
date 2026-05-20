@@ -199,10 +199,25 @@ function buildDoc(
 	lines.push("| `Uint8Array` | Binary data (keys, nonces, messages) |");
 	lines.push("| `Uint8Array \\| string` | Binary data or UTF-8 string |");
 	lines.push(
-		"| `StateAddress` | Opaque state handle for streaming operations. Call `free(state_address)` when a state has no final function. |",
+		"| `StateAddress` | Opaque numeric state handle for streaming operations |",
 	);
 	lines.push(
 		'| `OutputFormat` | `"uint8array"` \\| `"hex"` \\| `"base64"` \\| `"text"` |',
+	);
+	lines.push("");
+	lines.push("### State Lifecycle");
+	lines.push("");
+	lines.push(
+		"Streaming `*_init()` functions return `StateAddress` handles allocated in the WebAssembly heap.",
+	);
+	lines.push(
+		"APIs with a `*_final()` function free their state automatically when `*_final()` returns.",
+	);
+	lines.push(
+		"For streaming APIs without a final function, such as `crypto_xof_*` and `crypto_secretstream_xchacha20poly1305_*`, call `free(state_address)` once after the last update, squeeze, push, or pull operation.",
+	);
+	lines.push(
+		"Do not use a state after passing it to `free()` or after passing it to a `*_final()` function.",
 	);
 	lines.push("");
 
@@ -215,7 +230,7 @@ function buildDoc(
 	lines.push("| `from_hex(hex)` | Decode hex string to `Uint8Array` |");
 	lines.push("| `to_hex(buf)` | Encode `Uint8Array` to hex string |");
 	lines.push(
-		"| `free(state_address)` | Free a streaming state returned by an init function with no final function |",
+		"| `free(state_address)` | Free a streaming state handle that will not be freed by a final function |",
 	);
 	lines.push(
 		"| `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |",

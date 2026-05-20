@@ -29,7 +29,7 @@ export interface FunctionSymbol {
 	target?: string;
 	return?: string;
 	noOutputFormat?: boolean;
-	assert_retval?: AssertRetval[];
+	assert_retval?: [AssertRetval];
 }
 
 export interface ConstantSymbol {

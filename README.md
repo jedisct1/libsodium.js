@@ -97,7 +97,7 @@ console.log(m2);
 **Named exports:** The ESM modules also provide named exports for helper functions:
 
 ```js
-import { ready, from_hex, to_hex, from_string, to_string } from 'libsodium-wrappers';
+import { ready, free, from_hex, to_hex, from_string, to_string } from 'libsodium-wrappers';
 
 await ready;
 const bytes = from_hex('deadbeef');

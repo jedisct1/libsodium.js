@@ -23,8 +23,15 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 |------|-------------|
 | `Uint8Array` | Binary data (keys, nonces, messages) |
 | `Uint8Array \| string` | Binary data or UTF-8 string |
-| `StateAddress` | Opaque state handle for streaming operations. Call `free(state_address)` when a state has no final function. |
+| `StateAddress` | Opaque numeric state handle for streaming operations |
 | `OutputFormat` | `"uint8array"` \| `"hex"` \| `"base64"` \| `"text"` |
+
+### State Lifecycle
+
+Streaming `*_init()` functions return `StateAddress` handles allocated in the WebAssembly heap.
+APIs with a `*_final()` function free their state automatically when `*_final()` returns.
+For streaming APIs without a final function, such as `crypto_xof_*` and `crypto_secretstream_xchacha20poly1305_*`, call `free(state_address)` once after the last update, squeeze, push, or pull operation.
+Do not use a state after passing it to `free()` or after passing it to a `*_final()` function.
 
 ## Helper Functions
 
@@ -34,7 +41,7 @@ const ciphertext = sodium.crypto_secretbox_easy(message, nonce, key);
 | `to_string(buf)` | Convert `Uint8Array` to UTF-8 string |
 | `from_hex(hex)` | Decode hex string to `Uint8Array` |
 | `to_hex(buf)` | Encode `Uint8Array` to hex string |
-| `free(state_address)` | Free a streaming state returned by an init function with no final function |
+| `free(state_address)` | Free a streaming state handle that will not be freed by a final function |
 | `from_base64(b64, variant?)` | Decode base64 to `Uint8Array` |
 | `to_base64(buf, variant?)` | Encode `Uint8Array` to base64 |
 | `memzero(buf)` | Securely zero memory |
