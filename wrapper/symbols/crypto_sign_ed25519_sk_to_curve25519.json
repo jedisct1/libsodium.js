@@ -12,7 +12,7 @@
     {
       "name": "cSk",
       "type": "buf",
-      "length": "libsodium._crypto_scalarmult_scalarbytes()"
+      "length": "libsodium._crypto_scalarmult_curve25519_bytes()"
     }
   ],
   "target": "libsodium._crypto_sign_ed25519_sk_to_curve25519(cSk_address, edSk_address) | 0",
