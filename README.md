@@ -90,6 +90,9 @@ let r2 = sodium.crypto_secretstream_xchacha20poly1305_pull(state_in, c2);
 let { message: m2_bytes, tag: tag2 } = r2;
 let m2 = sodium.to_string(m2_bytes);
 
+sodium.free(state_out);
+sodium.free(state_in);
+
 console.log(m1);
 console.log(m2);
 ```
