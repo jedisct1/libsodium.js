@@ -78,13 +78,7 @@ function symbols() {
 }
 
 function free(state_address) {
-  if (
-    typeof state_address !== "number" ||
-    !isFinite(state_address) ||
-    state_address <= 0
-  ) {
-    throw new TypeError("state_address must be a valid StateAddress");
-  }
+  _require_address(null, state_address, "state_address");
   _free(state_address);
 }
 
@@ -581,6 +575,20 @@ function _require_defined(address_pool, varValue, varName) {
     _free_and_throw_type_error(
       address_pool,
       varName + " cannot be null or undefined"
+    );
+  }
+}
+
+function _require_address(address_pool, varValue, varName) {
+  _require_defined(address_pool, varValue, varName);
+  if (
+    typeof varValue !== "number" ||
+    !Number.isInteger(varValue) ||
+    varValue <= 0 || varValue > 0xffffffff
+  ) {
+    _free_and_throw_type_error(
+      address_pool,
+      varName + " is not a valid address"
     );
   }
 }
