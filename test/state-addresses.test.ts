@@ -10,7 +10,7 @@ test("free rejects invalid addresses", () => {
 	}
 });
 
-test("crypto_sign_update rejects invalid state_address values", () => {
+test("crypto_sign_update rejects addresses", () => {
 	const message = sodium.from_string("hello");
 	for (const bad of [undefined, null, NaN, 0, -1, 1.5, "foo", true]) {
 		expect(() => sodium.crypto_sign_update(bad, message)).toThrow(TypeError);
