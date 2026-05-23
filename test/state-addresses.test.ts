@@ -36,6 +36,16 @@ test("free rejects untracked state", () => {
 	sodium.libsodium._free(garbage);
 });
 
+test("crypto_sign_final_create accepts valid state", () => {
+	const message = sodium.from_string("hello");
+	const keypair = sodium.crypto_sign_keypair();
+	const state = sodium.crypto_sign_init();
+	sodium.crypto_sign_update(state, message);
+	expect(() =>
+		sodium.crypto_sign_final_create(state, keypair.privateKey),
+	).not.toThrow();
+});
+
 test("crypto_xof_shake128_update rejects untracked state", () => {
 	const garbage = sodium.libsodium._malloc(256);
 	const message = sodium.from_string("hello");
@@ -52,16 +62,6 @@ test("crypto_xof_shake128_update rejects freed state", () => {
 	expect(() => sodium.crypto_xof_shake128_update(state, message)).toThrow(
 		Error,
 	);
-});
-
-test("crypto_sign_final_create accepts valid state", () => {
-	const message = sodium.from_string("hello");
-	const keypair = sodium.crypto_sign_keypair();
-	const state = sodium.crypto_sign_init();
-	sodium.crypto_sign_update(state, message);
-	expect(() =>
-		sodium.crypto_sign_final_create(state, keypair.privateKey),
-	).not.toThrow();
 });
 
 test("crypto_sign_final_create rejects double-final", () => {

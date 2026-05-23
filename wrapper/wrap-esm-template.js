@@ -78,8 +78,8 @@ function symbols() {
 }
 
 function free(state_address) {
-  _require_address(null, state_address, "state_address");
-  _free(state_address);
+  _require_state_address(null, state_address);
+  _free_state_address(state_address);
 }
 
 function increment(bytes) {
@@ -548,14 +548,23 @@ function _malloc(length) {
   return result;
 }
 
-function _free(address) {
+var _state_addresses = new Set();
+
+function _malloc_state_address(size) {
+  var address = _malloc(size);
+  _state_addresses.add(address);
+  return address;
+}
+
+function _free_state_address(address) {
+  _state_addresses.delete(address);
   libsodium._free(address);
 }
 
 function _free_all(addresses) {
   if (addresses) {
     for (var i = 0; i < addresses.length; i++) {
-      _free(addresses[i]);
+      libsodium._free(addresses[i]);
     }
   }
 }
@@ -590,6 +599,13 @@ function _require_address(address_pool, varValue, varName) {
       address_pool,
       varName + " is not a valid address"
     );
+  }
+}
+
+function _require_state_address(address_pool, address) {
+  _require_address(address_pool, address, "state_address");
+  if (!_state_addresses.has(address)) {
+    _free_and_throw_error(address_pool, "state_address is unknown");
   }
 }
 

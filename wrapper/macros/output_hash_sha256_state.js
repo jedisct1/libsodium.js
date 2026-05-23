@@ -1,3 +1,3 @@
 // ---------- output {var_name} (hash_sha256_state)
 
-var {var_name}_address = new AllocatedBuf(104).address;
+var {var_name}_address = _malloc_state_address(104);
