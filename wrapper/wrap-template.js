@@ -141,13 +141,11 @@
       }
       var address_pool = [],
         padded,
-        padded_buflen_p = _malloc(4),
+        padded_buflen_p = _malloc_pool_buf(address_pool, 4).address,
         st = 1 | 0,
         i = 0 | 0,
         k = buf.length | 0,
-        bufx = new AllocatedBuf(k + blocksize);
-      address_pool.push(padded_buflen_p);
-      address_pool.push(bufx.address);
+        bufx = _malloc_pool_buf(address_pool, k + blocksize);
       for (
         var j = bufx.address, jmax = bufx.address + k + blocksize; j < jmax; j++
       ) {
@@ -168,9 +166,8 @@
       ) {
         _free_and_throw_error(address_pool, "internal error");
       }
-      bufx.length = libsodium.getValue(padded_buflen_p, "i32");
-      padded = bufx.to_Uint8Array();
-      _free_all(address_pool);
+      padded = bufx.to_Uint8Array(libsodium.getValue(padded_buflen_p, "i32"));
+      _free_pool(address_pool);
       return padded;
     }
 
@@ -183,10 +180,8 @@
         throw new Error("block size must be > 0");
       }
       var address_pool = [],
-        unpadded_address = _to_allocated_buf_address(buf),
-        unpadded_buflen_p = _malloc(4);
-      address_pool.push(unpadded_address);
-      address_pool.push(unpadded_buflen_p);
+        unpadded_address = _to_allocated_buf_address(address_pool, buf),
+        unpadded_buflen_p = _malloc_pool_buf(address_pool, 4).address;
       if (
         libsodium._sodium_unpad(
           unpadded_buflen_p,
@@ -199,7 +194,7 @@
       }
       buf = new Uint8Array(buf);
       buf = buf.subarray(0, libsodium.getValue(unpadded_buflen_p, "i32"));
-      _free_all(address_pool);
+      _free_pool(address_pool);
       return buf;
     }
 
@@ -296,14 +291,11 @@
     function from_hex(input) {
       var address_pool = [],
         input = _any_to_Uint8Array(address_pool, input, "input"),
-        result = new AllocatedBuf(input.length / 2),
+        result = _malloc_pool_buf(address_pool, input.length / 2),
         result_str,
-        input_address = _to_allocated_buf_address(input),
-        hex_end_p = _malloc(4),
+        input_address = _to_allocated_buf_address(address_pool, input),
+        hex_end_p = _malloc_pool_buf(address_pool, 4).address,
         hex_end;
-      address_pool.push(input_address);
-      address_pool.push(result.address);
-      address_pool.push(hex_end_p);
       if (
         libsodium._sodium_hex2bin(
           result.address,
@@ -322,7 +314,7 @@
         _free_and_throw_error(address_pool, "incomplete input");
       }
       result_str = result.to_Uint8Array();
-      _free_all(address_pool);
+      _free_pool(address_pool);
       return result_str;
     }
 
@@ -369,16 +361,12 @@
       variant = check_base64_variant(variant);
       var address_pool = [],
         input = _any_to_Uint8Array(address_pool, input, "input"),
-        result = new AllocatedBuf(input.length * 3 / 4),
+        result = _malloc_pool_buf(address_pool, input.length * 3 / 4),
         result_bin,
-        input_address = _to_allocated_buf_address(input),
-        result_bin_len_p = _malloc(4),
-        b64_end_p = _malloc(4),
+        input_address = _to_allocated_buf_address(address_pool, input),
+        result_bin_len_p = _malloc_pool_buf(address_pool, 4).address,
+        b64_end_p = _malloc_pool_buf(address_pool, 4).address,
         b64_end;
-      address_pool.push(input_address);
-      address_pool.push(result.address);
-      address_pool.push(result_bin_len_p);
-      address_pool.push(b64_end_p);
       if (
         libsodium._sodium_base642bin(
           result.address,
@@ -397,9 +385,8 @@
       if (b64_end - input_address !== input.length) {
         _free_and_throw_error(address_pool, "incomplete input");
       }
-      result.length = libsodium.getValue(result_bin_len_p, "i32");
-      result_bin = result.to_Uint8Array();
-      _free_all(address_pool);
+      result_bin = result.to_Uint8Array(libsodium.getValue(result_bin_len_p, "i32"));
+      _free_pool(address_pool);
       return result_bin;
     }
 
@@ -414,11 +401,9 @@
         (remainder !== 0 ?
           (variant & 2) === 0 ? 4 : 2 + (remainder >>> 1) :
           0),
-        result = new AllocatedBuf(b64_len + 1),
+        result = _malloc_pool_buf(address_pool, b64_len + 1),
         result_b64,
-        input_address = _to_allocated_buf_address(input);
-      address_pool.push(input_address);
-      address_pool.push(result.address);
+        input_address = _to_allocated_buf_address(address_pool, input);
       if (
         libsodium._sodium_bin2base64(
           result.address,
@@ -430,9 +415,8 @@
       ) {
         _free_and_throw_error(address_pool, "conversion failed");
       }
-      result.length = b64_len;
-      result_b64 = to_string(result.to_Uint8Array());
-      _free_all(address_pool);
+      result_b64 = to_string(result.to_Uint8Array(b64_len));
+      _free_pool(address_pool);
       return result_b64;
     }
 
@@ -512,19 +496,23 @@
     }
 
     // Copy the content of a AllocatedBuf (_malloc()'d memory) into a Uint8Array
-    AllocatedBuf.prototype.to_Uint8Array = function () {
-      var result = new Uint8Array(this.length);
-      result.set(
-        libsodium.HEAPU8.subarray(this.address, this.address + this.length)
-      );
+    AllocatedBuf.prototype.to_Uint8Array = function (length) {
+      var n = length === undefined ? this.length : length;
+      var result = new Uint8Array(n);
+      result.set(libsodium.HEAPU8.subarray(this.address, this.address + n));
       return result;
     };
 
-    // _malloc() a region and initialize it with the content of a Uint8Array
-    function _to_allocated_buf_address(bytes) {
-      var address = _malloc(bytes.length);
-      libsodium.HEAPU8.set(bytes, address);
-      return address;
+    function _malloc_pool_buf(pool, size) {
+      var buf = new AllocatedBuf(size);
+      pool.push(buf);
+      return buf;
+    }
+
+    function _to_allocated_buf_address(pool, bytes) {
+      var buf = _malloc_pool_buf(pool, bytes.length);
+      libsodium.HEAPU8.set(bytes, buf.address);
+      return buf.address;
     }
 
     function _malloc(length) {
@@ -538,34 +526,40 @@
       return result;
     }
 
-    var _state_addresses = new Set();
+    var _state_addresses = new Map();
 
     function _malloc_state_address(size) {
-      var address = _malloc(size);
-      _state_addresses.add(address);
-      return address;
+      var buf = new AllocatedBuf(size);
+      _state_addresses.set(buf.address, buf);
+      return buf.address;
     }
 
     function _free_state_address(address) {
-      _state_addresses.delete(address);
+      var buf = _state_addresses.get(address);
+      if (buf !== undefined) {
+        libsodium.HEAPU8.fill(0, buf.address, buf.address + buf.length);
+        _state_addresses.delete(address);
+      }
       libsodium._free(address);
     }
 
-    function _free_all(addresses) {
-      if (addresses) {
-        for (var i = 0; i < addresses.length; i++) {
-          libsodium._free(addresses[i]);
+    function _free_pool(pool) {
+      if (pool) {
+        for (var i = 0; i < pool.length; i++) {
+          var buf = pool[i];
+          libsodium.HEAPU8.fill(0, buf.address, buf.address + buf.length);
+          libsodium._free(buf.address);
         }
       }
     }
 
     function _free_and_throw_error(address_pool, err) {
-      _free_all(address_pool);
+      _free_pool(address_pool);
       throw new Error(err);
     }
 
     function _free_and_throw_type_error(address_pool, err) {
-      _free_all(address_pool);
+      _free_pool(address_pool);
       throw new TypeError(err);
     }
 
