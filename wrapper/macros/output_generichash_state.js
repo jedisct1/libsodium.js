@@ -1,3 +1,3 @@
 // ---------- output {var_name} (generichash_state)
 
-var {var_name}_address = new AllocatedBuf(libsodium._crypto_generichash_statebytes()).address;
+var {var_name}_address = _malloc_state_address(libsodium._crypto_generichash_statebytes());
