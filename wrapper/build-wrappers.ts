@@ -163,7 +163,7 @@ class WrapperBuilder {
 			if (symbol.return !== undefined) {
 				lines.push(`if ((${target}) ${assert.condition}) {`);
 				lines.push(`\tvar ret = ${symbol.return};`);
-				lines.push("\t_free_all(address_pool);");
+				lines.push("\t_free_pool(address_pool);");
 				lines.push("\treturn ret;");
 				lines.push("}");
 				lines.push(
@@ -175,12 +175,12 @@ class WrapperBuilder {
 					`\t_free_and_throw_error(address_pool, "${assert.or_else_throw}");`,
 				);
 				lines.push("}");
-				lines.push("_free_all(address_pool);");
+				lines.push("_free_pool(address_pool);");
 			}
 		} else if (symbol.return !== undefined) {
 			lines.push(this.ensureSemicolon(symbol.target!));
 			lines.push(`var ret = (${symbol.return});`);
-			lines.push("_free_all(address_pool);");
+			lines.push("_free_pool(address_pool);");
 			lines.push("return ret;");
 		} else {
 			lines.push(this.ensureSemicolon(symbol.target!));
