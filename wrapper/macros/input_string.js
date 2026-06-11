@@ -7,6 +7,5 @@ if (typeof {var_name} !== "string") {
 if ({var_name}.length - 1 !== {var_length}) {
     _free_and_throw_type_error(address_pool, "invalid {var_name} length");
 }
-var {var_name}_address = _to_allocated_buf_address({var_name}),
+var {var_name}_address = _to_allocated_buf_address(address_pool, {var_name}),
     {var_name}_length = {var_name}.length - 1;
-address_pool.push({var_name}_address);
