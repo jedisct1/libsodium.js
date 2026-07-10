@@ -1,0 +1,36 @@
+{
+  "name": "crypto_kdf_hkdf_sha512_expand",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "out_len",
+      "type": "ranged_uint",
+      "min_value": "libsodium._crypto_kdf_hkdf_sha512_bytes_min()",
+      "max_value": "libsodium._crypto_kdf_hkdf_sha512_bytes_max()"
+    },
+    {
+      "name": "ctx",
+      "type": "unsized_string"
+    },
+    {
+      "name": "prk",
+      "type": "buf",
+      "length": "libsodium._crypto_kdf_hkdf_sha512_keybytes()"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "out",
+      "length": "out_len",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha512_expand(out_address, out_len, ctx_address, ctx_length, prk_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(out, outputFormat)"
+}
