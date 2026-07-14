@@ -1,0 +1,29 @@
+{
+  "name": "crypto_kdf_hkdf_sha256_extract",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "salt",
+      "type": "unsized_buf_optional"
+    },
+    {
+      "name": "ikm",
+      "type": "unsized_buf"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prk",
+      "length": "libsodium._crypto_kdf_hkdf_sha256_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha256_extract(prk_address, salt_address, salt_length, ikm_address, ikm_length) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "_format_output(prk, outputFormat)"
+}

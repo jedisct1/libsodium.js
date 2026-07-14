@@ -1,0 +1,24 @@
+{
+  "name": "crypto_kdf_hkdf_sha256_extract_init",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "salt",
+      "type": "unsized_buf_optional"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "state",
+      "type": "kdf_hkdf_sha256_state"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha256_extract_init(state_address, salt_address, salt_length) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "state_address"
+}

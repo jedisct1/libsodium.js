@@ -1,0 +1,22 @@
+{
+  "name": "crypto_kdf_hkdf_sha512_extract_update",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "kdf_hkdf_sha512_state_address"
+    },
+    {
+      "name": "ikm",
+      "type": "unsized_buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha512_extract_update(state_address, ikm_address, ikm_length) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "outputs": []
+}

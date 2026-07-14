@@ -47,6 +47,8 @@ export const INPUT_TYPES = {
 
 export const STATE_TYPES = [
 	"generichash_state",
+	"kdf_hkdf_sha256_state",
+	"kdf_hkdf_sha512_state",
 	"hash_sha256_state",
 	"hash_sha512_state",
 	"hash_sha3256_state",

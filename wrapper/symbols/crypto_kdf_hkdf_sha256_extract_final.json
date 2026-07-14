@@ -1,0 +1,25 @@
+{
+  "name": "crypto_kdf_hkdf_sha256_extract_final",
+  "type": "function",
+  "inputs": [
+    {
+      "name": "state_address",
+      "type": "kdf_hkdf_sha256_state_address"
+    }
+  ],
+  "outputs": [
+    {
+      "name": "prk",
+      "length": "libsodium._crypto_kdf_hkdf_sha256_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha256_extract_final(state_address, prk_address) | 0",
+  "assert_retval": [
+    {
+      "condition": "=== 0",
+      "or_else_throw": "invalid usage"
+    }
+  ],
+  "return": "(_free_state_address(state_address), _format_output(prk, outputFormat))"
+}

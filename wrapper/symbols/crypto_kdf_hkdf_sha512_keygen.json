@@ -1,0 +1,14 @@
+{
+  "name": "crypto_kdf_hkdf_sha512_keygen",
+  "type": "function",
+  "inputs": [],
+  "outputs": [
+    {
+      "name": "prk",
+      "length": "libsodium._crypto_kdf_hkdf_sha512_keybytes()",
+      "type": "buf"
+    }
+  ],
+  "target": "libsodium._crypto_kdf_hkdf_sha512_keygen(prk_address)",
+  "return": "_format_output(prk, outputFormat)"
+}
