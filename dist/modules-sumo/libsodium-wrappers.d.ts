@@ -1421,6 +1421,86 @@ export function crypto_ipcrypt_pfx_keygen(outputFormat: StringOutputFormat): str
 export function crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number | bigint, ctx: string, key: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
 export function crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number | bigint, ctx: string, key: Uint8Array, outputFormat: StringOutputFormat): string;
 /**
+ * @param out_len
+ * @param ctx
+ * @param prk (CRYPTO_KDF_HKDF_SHA256_KEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string
+ */
+export function crypto_kdf_hkdf_sha256_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha256_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat: StringOutputFormat): string;
+/**
+ * @param salt
+ * @param ikm
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA256_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha256_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha256_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat: StringOutputFormat): string;
+/**
+ * @param state_address
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA256_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha256_extract_final(state_address: StateAddress, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha256_extract_final(state_address: StateAddress, outputFormat: StringOutputFormat): string;
+/**
+ * @param salt
+ * @returns StateAddress
+ */
+export function crypto_kdf_hkdf_sha256_extract_init(salt: Uint8Array | string | null): StateAddress;
+/**
+ * @param state_address
+ * @param ikm
+ */
+export function crypto_kdf_hkdf_sha256_extract_update(state_address: StateAddress, ikm: Uint8Array | string): void;
+/**
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA256_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha256_keygen(outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha256_keygen(outputFormat: StringOutputFormat): string;
+/**
+ * @param out_len
+ * @param ctx
+ * @param prk (CRYPTO_KDF_HKDF_SHA512_KEYBYTES bytes)
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string
+ */
+export function crypto_kdf_hkdf_sha512_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha512_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat: StringOutputFormat): string;
+/**
+ * @param salt
+ * @param ikm
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA512_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha512_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha512_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat: StringOutputFormat): string;
+/**
+ * @param state_address
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA512_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha512_extract_final(state_address: StateAddress, outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha512_extract_final(state_address: StateAddress, outputFormat: StringOutputFormat): string;
+/**
+ * @param salt
+ * @returns StateAddress
+ */
+export function crypto_kdf_hkdf_sha512_extract_init(salt: Uint8Array | string | null): StateAddress;
+/**
+ * @param state_address
+ * @param ikm
+ */
+export function crypto_kdf_hkdf_sha512_extract_update(state_address: StateAddress, ikm: Uint8Array | string): void;
+/**
+ * @param outputFormat Output format (default: Uint8Array)
+ * @returns Uint8Array | string (CRYPTO_KDF_HKDF_SHA512_KEYBYTES bytes)
+ */
+export function crypto_kdf_hkdf_sha512_keygen(outputFormat?: Uint8ArrayOutputFormat | null): Uint8Array;
+export function crypto_kdf_hkdf_sha512_keygen(outputFormat: StringOutputFormat): string;
+/**
  * @param outputFormat Output format (default: Uint8Array)
  * @returns Uint8Array | string (CRYPTO_KDF_KEYBYTES bytes)
  */

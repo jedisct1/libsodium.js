@@ -61,7 +61,7 @@ Do not use a state after passing it to `free()` or after passing it to a `*_fina
 - [Signatures](#signatures) (14)
 - [Hashing](#hashing) (26)
 - [Password Hashing](#password-hashing) (4)
-- [Key Derivation](#key-derivation) (2)
+- [Key Derivation](#key-derivation) (14)
 - [Key Exchange](#key-exchange) (12)
 - [Key Encapsulation](#key-encapsulation) (15)
 - [Message Authentication](#message-authentication) (27)
@@ -1564,6 +1564,146 @@ crypto_kdf_derive_from_key(subkey_len: number, subkey_id: number | bigint, ctx: 
 - `key`: `Uint8Array` — size: `CRYPTO_KDF_KEYBYTES`
 
 **Returns:** `Uint8Array`
+
+### crypto_kdf_hkdf_sha256_expand
+
+```typescript
+crypto_kdf_hkdf_sha256_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `out_len`: `number`
+- `ctx`: `string`
+- `prk`: `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA256_KEYBYTES`
+
+**Returns:** `Uint8Array`
+
+### crypto_kdf_hkdf_sha256_extract
+
+```typescript
+crypto_kdf_hkdf_sha256_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `salt`: `Uint8Array | string | null`
+- `ikm`: `Uint8Array | string`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA256_KEYBYTES`
+
+### crypto_kdf_hkdf_sha256_extract_final
+
+```typescript
+crypto_kdf_hkdf_sha256_extract_final(state_address: StateAddress, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA256_KEYBYTES`
+
+### crypto_kdf_hkdf_sha256_extract_init
+
+```typescript
+crypto_kdf_hkdf_sha256_extract_init(salt: Uint8Array | string | null): StateAddress
+```
+
+**Parameters:**
+
+- `salt`: `Uint8Array | string | null`
+
+**Returns:** `StateAddress`
+
+### crypto_kdf_hkdf_sha256_extract_update
+
+```typescript
+crypto_kdf_hkdf_sha256_extract_update(state_address: StateAddress, ikm: Uint8Array | string): void
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+- `ikm`: `Uint8Array | string`
+
+### crypto_kdf_hkdf_sha256_keygen
+
+```typescript
+crypto_kdf_hkdf_sha256_keygen(outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA256_KEYBYTES`
+
+### crypto_kdf_hkdf_sha512_expand
+
+```typescript
+crypto_kdf_hkdf_sha512_expand(out_len: number, ctx: string, prk: Uint8Array, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `out_len`: `number`
+- `ctx`: `string`
+- `prk`: `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA512_KEYBYTES`
+
+**Returns:** `Uint8Array`
+
+### crypto_kdf_hkdf_sha512_extract
+
+```typescript
+crypto_kdf_hkdf_sha512_extract(salt: Uint8Array | string | null, ikm: Uint8Array | string, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `salt`: `Uint8Array | string | null`
+- `ikm`: `Uint8Array | string`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA512_KEYBYTES`
+
+### crypto_kdf_hkdf_sha512_extract_final
+
+```typescript
+crypto_kdf_hkdf_sha512_extract_final(state_address: StateAddress, outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA512_KEYBYTES`
+
+### crypto_kdf_hkdf_sha512_extract_init
+
+```typescript
+crypto_kdf_hkdf_sha512_extract_init(salt: Uint8Array | string | null): StateAddress
+```
+
+**Parameters:**
+
+- `salt`: `Uint8Array | string | null`
+
+**Returns:** `StateAddress`
+
+### crypto_kdf_hkdf_sha512_extract_update
+
+```typescript
+crypto_kdf_hkdf_sha512_extract_update(state_address: StateAddress, ikm: Uint8Array | string): void
+```
+
+**Parameters:**
+
+- `state_address`: `StateAddress`
+- `ikm`: `Uint8Array | string`
+
+### crypto_kdf_hkdf_sha512_keygen
+
+```typescript
+crypto_kdf_hkdf_sha512_keygen(outputFormat?: OutputFormat): Uint8Array | string
+```
+
+**Returns:** `Uint8Array` — size: `CRYPTO_KDF_HKDF_SHA512_KEYBYTES`
 
 ### crypto_kdf_keygen
 
