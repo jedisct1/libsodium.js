@@ -35,7 +35,7 @@
     "url": "git+https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium": "^0.8.0"
+    "libsodium": "^0.8.4"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
