@@ -180,15 +180,15 @@ $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs: $(LIBSODIUM_SUMO_ESM_FILE)
 	mkdir -p $(MODULES_SUMO_ESM_DIR)
 	cp $(LIBSODIUM_SUMO_ESM_FILE) $(MODULES_SUMO_ESM_DIR)/libsodium-sumo.mjs
 
-$(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure
+$(LIBSODIUM_DIR)/test/default/browser/sodium_core.html: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/dist-build/emscripten.sh
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --browser-tests
 	rm -f $(LIBSODIUM_DIR)/test/default/browser/*.asm.html $(LIBSODIUM_DIR)/test/default/browser/*.asm.js
 	rm -fr $(BROWSERS_TEST_DIR) && cp -R $(LIBSODIUM_DIR)/test/default/browser $(BROWSERS_TEST_DIR)
 
-$(LIBSODIUM_JS_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
+$(LIBSODIUM_JS_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/dist-build/emscripten.sh
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --standard
 
-$(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure
+$(LIBSODIUM_JS_SUMO_DIR)/lib/libsodium.js: $(LIBSODIUM_DIR)/configure $(LIBSODIUM_DIR)/dist-build/emscripten.sh
 	cd $(LIBSODIUM_DIR) && env CPPFLAGS="-DFAVOR_PERFORMANCE" ./dist-build/emscripten.sh --sumo
 
 $(LIBSODIUM_DIR)/configure: $(LIBSODIUM_DIR)/configure.ac
