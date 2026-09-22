@@ -19,7 +19,7 @@
       "length": "libsodium._crypto_sign_bytes()"
     }
   ],
-  "target": "libsodium._crypto_sign_detached(signature_address, null, message_address, message_length, 0, privateKey_address) | 0",
+  "target": "libsodium._crypto_sign_detached(signature_address, null, message_address, ..._to_u64(message_length), privateKey_address) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",

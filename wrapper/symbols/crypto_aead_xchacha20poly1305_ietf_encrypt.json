@@ -33,7 +33,7 @@
       "length": "message_length + libsodium._crypto_aead_xchacha20poly1305_ietf_abytes()"
     }
   ],
-  "target": "libsodium._crypto_aead_xchacha20poly1305_ietf_encrypt(ciphertext_address, null, message_address, message_length, 0, additional_data_address, additional_data_length, 0, secret_nonce_address, public_nonce_address, key_address)",
+  "target": "libsodium._crypto_aead_xchacha20poly1305_ietf_encrypt(ciphertext_address, null, message_address, ..._to_u64(message_length), additional_data_address, ..._to_u64(additional_data_length), secret_nonce_address, public_nonce_address, key_address)",
   "assert_retval": [
     {
       "condition": "=== 0",

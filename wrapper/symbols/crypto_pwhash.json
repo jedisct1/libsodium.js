@@ -35,7 +35,7 @@
       "length": "keyLength"
     }
   ],
-  "target": "libsodium._crypto_pwhash(derivedKey_address, keyLength, 0, password_address, password_length, 0, salt_address, opsLimit, 0, memLimit, algorithm) | 0",
+  "target": "libsodium._crypto_pwhash(derivedKey_address, ..._to_u64(keyLength), password_address, ..._to_u64(password_length), salt_address, ..._to_u64(opsLimit), memLimit, algorithm) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",

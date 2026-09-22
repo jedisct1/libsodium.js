@@ -19,6 +19,6 @@
     }
   ],
   "outputs": [],
-  "target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_address, message_address, message_length, 0, publicKey_address) | 0",
+  "target": "var verificationResult = libsodium._crypto_sign_verify_detached(signature_address, message_address, ..._to_u64(message_length), publicKey_address) | 0",
   "return": "verificationResult === 0"
 }

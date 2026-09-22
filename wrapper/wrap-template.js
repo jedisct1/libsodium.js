@@ -5,10 +5,13 @@
     var output_format = "uint8array";
 
     var libsodium;
+    var use_bigint;
     var ready = libsodiumModule.ready.then(function () {
       libsodium = libsodiumModule;
 
       function libsodiumInit() {
+        // Native Wasm takes one i64 argument; asm.js splits it into two i32s.
+        use_bigint = libsodium._crypto_secretbox_easy.length === 5;
         if (libsodium._sodium_init() < 0) {
           throw new Error("libsodium was not correctly initialized.");
         }
@@ -40,6 +43,13 @@
         libsodiumInit();
       });
     });
+
+    function _to_u64(low, high) {
+      if (use_bigint) {
+        return [BigInt(low >>> 0) | (BigInt(high >>> 0) << BigInt(32))];
+      }
+      return [low, high || 0];
+    }
 
     // List of functions and constants defined in the wrapped libsodium
     function symbols() {

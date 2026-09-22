@@ -24,7 +24,7 @@
       "length": "outLength"
     }
   ],
-  "target": "libsodium._crypto_stream_chacha20(out_address, outLength, 0, nonce_address, key_address) | 0",
+  "target": "libsodium._crypto_stream_chacha20(out_address, ..._to_u64(outLength), nonce_address, key_address) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",

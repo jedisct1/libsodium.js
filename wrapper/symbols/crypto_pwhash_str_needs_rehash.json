@@ -15,7 +15,7 @@
       "type": "uint"
     }
   ],
-  "target": "var result = libsodium._crypto_pwhash_str_needs_rehash(hashed_password_address, opsLimit, 0, memLimit) | 0",
+  "target": "var result = libsodium._crypto_pwhash_str_needs_rehash(hashed_password_address, ..._to_u64(opsLimit), memLimit) | 0",
   "assert_retval": [
     {
       "condition": "!== -1",

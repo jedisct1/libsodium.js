@@ -5,6 +5,7 @@ import libsodiumModuleOrFactory from "/*{{libsodium}}*/";
 const output_format = "uint8array";
 
 let libsodium;
+let use_bigint;
 const exports = {};
 
 function _get_sodium_initializer(moduleOrFactory) {
@@ -46,6 +47,8 @@ const ready = (initializer != null
   exports.libsodium = libsodium;
 
   function libsodiumInit() {
+    // Native Wasm takes one i64 argument; asm.js splits it into two i32s.
+    use_bigint = libsodium._crypto_secretbox_easy.length === 5;
     if (libsodium._sodium_init() < 0) {
       throw new Error("libsodium was not correctly initialized.");
     }
@@ -64,6 +67,13 @@ const ready = (initializer != null
     throw new Error("Initialization self-test failed");
   }
 });
+
+function _to_u64(low, high) {
+  if (use_bigint) {
+    return [BigInt(low >>> 0) | (BigInt(high >>> 0) << BigInt(32))];
+  }
+  return [low, high || 0];
+}
 
 function symbols() {
   return Object.keys(exports).sort();

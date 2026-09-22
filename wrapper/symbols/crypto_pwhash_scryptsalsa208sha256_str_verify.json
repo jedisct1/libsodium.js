@@ -11,7 +11,7 @@
       "type": "unsized_buf"
     }
   ],
-  "target": "var result = libsodium._crypto_pwhash_scryptsalsa208sha256_str_verify(hashed_password_address, password_address, password_length, 0) | 0",
+  "target": "var result = libsodium._crypto_pwhash_scryptsalsa208sha256_str_verify(hashed_password_address, password_address, ..._to_u64(password_length)) | 0",
   "return": "result === 0",
   "outputs": []
 }

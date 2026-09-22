@@ -19,6 +19,6 @@
     }
   ],
   "outputs": [],
-  "target": "var result = libsodium._crypto_auth_verify(tag_address, message_address, message_length, 0, key_address) | 0",
+  "target": "var result = libsodium._crypto_auth_verify(tag_address, message_address, ..._to_u64(message_length), key_address) | 0",
   "return": "result === 0"
 }

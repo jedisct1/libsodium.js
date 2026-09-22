@@ -19,7 +19,7 @@
       "length": "message_length + libsodium._crypto_box_sealbytes()"
     }
   ],
-  "target": "libsodium._crypto_box_seal(ciphertext_address, message_address, message_length, 0, publicKey_address) | 0",
+  "target": "libsodium._crypto_box_seal(ciphertext_address, message_address, ..._to_u64(message_length), publicKey_address) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",

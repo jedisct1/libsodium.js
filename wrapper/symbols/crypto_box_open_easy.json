@@ -30,7 +30,7 @@
       "length": "ciphertext_length - libsodium._crypto_box_macbytes()"
     }
   ],
-  "target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ciphertext_length, 0, nonce_address, publicKey_address, privateKey_address) | 0",
+  "target": "libsodium._crypto_box_open_easy(plaintext_address, ciphertext_address, ..._to_u64(ciphertext_length), nonce_address, publicKey_address, privateKey_address) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",

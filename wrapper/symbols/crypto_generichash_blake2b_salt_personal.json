@@ -30,7 +30,7 @@
       "type": "buf"
     }
   ],
-  "target": "libsodium._crypto_generichash_blake2b_salt_personal(subkey_address, subkey_len, null, 0, 0, key_address, key_length, id_address, ctx_address) | 0",
+  "target": "libsodium._crypto_generichash_blake2b_salt_personal(subkey_address, subkey_len, null, ..._to_u64(0), key_address, key_length, id_address, ctx_address) | 0",
   "assert_retval": [
     {
       "condition": "=== 0",
