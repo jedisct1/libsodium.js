@@ -31,14 +31,15 @@ function directStreamXorIc(
 	const keyAddress = allocate(key);
 
 	try {
+		const bigint = libsodium[functionName].length === 6;
 		const ret = libsodium[functionName](
 			outputAddress,
 			messageAddress,
-			message.length,
-			0,
+			...(bigint ? [BigInt(message.length)] : [message.length, 0]),
 			nonceAddress,
-			counterLo,
-			counterHi,
+			...(bigint
+				? [(BigInt(counterHi) << 32n) | BigInt(counterLo)]
+				: [counterLo, counterHi]),
 			keyAddress,
 		);
 		expect(ret).toBe(0);
