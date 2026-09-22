@@ -30,10 +30,10 @@
     "url": "git+https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium-sumo": "^0.8.0"
+    "libsodium-sumo": "^0.8.4"
   },
   "devDependencies": {
-    "terser": "^5.46.1"
+    "terser": "^5.51.2"
   },
   "keywords": [
     "crypto",

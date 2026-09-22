@@ -31,19 +31,11 @@ if (typeof globalThis.crypto === "undefined" || typeof globalThis.crypto.getRand
   throw new Error("globalThis.crypto.getRandomValues is not available. The ESM build of libsodium requires a secure random source (available in all browsers and Node.js 19+).");
 }
 
-const getRandomValue = function() {
-  var buf = new Uint32Array(1);
-  globalThis.crypto.getRandomValues(buf);
-  return buf[0] >>> 0;
-};
-
 const initializer = _get_sodium_initializer(libsodiumModuleOrFactory);
 const moduleInstance = _get_sodium_module(libsodiumModuleOrFactory);
 
 const ready = (initializer != null
-  ? initializer({
-      getRandomValue: getRandomValue
-    })
+  ? initializer({})
   : moduleInstance != null
     ? moduleInstance.ready.then(function () {
         return moduleInstance;

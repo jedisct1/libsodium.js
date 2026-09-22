@@ -35,11 +35,11 @@
     "url": "git+https://github.com/jedisct1/libsodium.js.git"
   },
   "dependencies": {
-    "libsodium": "^0.8.0"
+    "libsodium": "^0.8.4"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.12",
-    "terser": "^5.46.1"
+    "@biomejs/biome": "^2.5.14",
+    "terser": "^5.51.2"
   },
   "keywords": [
     "crypto",
