@@ -263,7 +263,10 @@ function buildDoc(
 
 		if (filteredSymbols.length === 0) continue;
 
-		const anchor = categoryName.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+		const anchor = categoryName
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")
+			.replace(/^-|-$/g, "");
 		lines.push(`- [${categoryName}](#${anchor}) (${filteredSymbols.length})`);
 	}
 

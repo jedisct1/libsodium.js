@@ -68,7 +68,7 @@ Do not use a state after passing it to `free()` or after passing it to a `*_fina
 - [Secret Streams](#secret-streams) (6)
 - [Random](#random) (6)
 - [Utilities](#utilities) (32)
-- [XOF (Extendable Output)](#xof-extendable-output-) (20)
+- [XOF (Extendable Output)](#xof-extendable-output) (20)
 - [IP Address Encryption](#ip-address-encryption) (12)
 - [Constants](#constants)
 
