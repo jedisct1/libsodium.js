@@ -133,6 +133,10 @@ function memzero(bytes) {
   }
 }
 
+function stackzero() {
+  libsodium._sodium_stackzero(libsodium._emscripten_stack_get_free());
+}
+
 function memcmp(b1, b2) {
   if (!(b1 instanceof Uint8Array && b2 instanceof Uint8Array)) {
     throw new TypeError("Only Uint8Array instances can be compared");
@@ -637,6 +641,7 @@ exports.output_formats = output_formats;
 exports.pad = pad;
 exports.unpad = unpad;
 exports.ready = ready;
+exports.stackzero = stackzero;
 exports.symbols = symbols;
 exports.to_base64 = to_base64;
 exports.to_hex = to_hex;
@@ -658,6 +663,7 @@ export {
   memzero,
   pad,
   unpad,
+  stackzero,
   symbols,
   to_base64,
   to_hex,

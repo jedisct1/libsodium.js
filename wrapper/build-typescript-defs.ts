@@ -128,6 +128,7 @@ class TypeScriptDefBuilder {
 			"export function memcmp(b1: Uint8Array, b2: Uint8Array): boolean;",
 		);
 		this.lines.push("export function memzero(bytes: Uint8Array): void;");
+		this.lines.push("export function stackzero(): void;");
 		this.lines.push("export function increment(bytes: Uint8Array): void;");
 		this.lines.push("export function add(a: Uint8Array, b: Uint8Array): void;");
 		this.lines.push(
@@ -290,6 +291,7 @@ class TypeScriptDefBuilder {
 		this.lines.push("  unpad(buf: Uint8Array, blocksize: number): Uint8Array;");
 		this.lines.push("  memcmp(b1: Uint8Array, b2: Uint8Array): boolean;");
 		this.lines.push("  memzero(bytes: Uint8Array): void;");
+		this.lines.push("  stackzero(): void;");
 		this.lines.push("  increment(bytes: Uint8Array): void;");
 		this.lines.push("  add(a: Uint8Array, b: Uint8Array): void;");
 		this.lines.push("  compare(b1: Uint8Array, b2: Uint8Array): number;");
