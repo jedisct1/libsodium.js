@@ -37,3 +37,17 @@ test("stackzero removes plaintext remnants", () => {
 	sodium.stackzero();
 	expect(contains(sodium.libsodium.HEAPU8, message)).toBeFalse();
 });
+
+// Only the unused stack should be cleared, nothing around it
+test("stackzero only clears the free stack", () => {
+	const lib = sodium.libsodium;
+	const end = lib._emscripten_stack_get_end();
+	const sp = lib._emscripten_stack_get_current();
+	const below = lib.HEAPU8.slice(0, end);
+	const above = lib.HEAPU8.slice(sp, sp + 4096);
+	lib.HEAPU8.fill(0xaa, end, sp);
+	sodium.stackzero();
+	expect(lib.HEAPU8.subarray(end, sp).every((b: number) => b === 0)).toBeTrue();
+	expect(Buffer.compare(lib.HEAPU8.subarray(0, end), below)).toBe(0);
+	expect(Buffer.compare(lib.HEAPU8.subarray(sp, sp + 4096), above)).toBe(0);
+});

@@ -133,8 +133,13 @@ function memzero(bytes) {
   }
 }
 
+// Done in JS because sodium_stackzero() would need the whole free stack for itself.
 function stackzero() {
-  libsodium._sodium_stackzero(libsodium._emscripten_stack_get_free());
+  libsodium.HEAPU8.fill(
+    0,
+    libsodium._emscripten_stack_get_end(),
+    libsodium._emscripten_stack_get_current()
+  );
 }
 
 function memcmp(b1, b2) {

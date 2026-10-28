@@ -237,7 +237,7 @@ function buildDoc(
 	);
 	lines.push("| `to_base64(buf, variant?)` | Encode `Uint8Array` to base64 |");
 	lines.push("| `memzero(buf)` | Securely zero memory |");
-	lines.push("| `stackzero()` | Zero WASM shadow stack |");
+	lines.push("| `stackzero()` | Zero the unused part of the WASM stack |");
 	lines.push("| `memcmp(a, b)` | Constant-time comparison |");
 	lines.push("| `increment(buf)` | Increment as little-endian number |");
 	lines.push("| `add(a, b)` | Add as little-endian numbers |");
